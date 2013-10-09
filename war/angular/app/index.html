@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en" ng-app="tkApp">
+<head>
+  <meta charset=utf-8 />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Tuong Ky</title>
+	<link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/app.css"/>
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2">
+        <a href="/"><img src="/img/tuongky.png"></a>
+      </div>
+      <div class="col-md-10 search-bar" ng-controller="SearchBarCtrl">
+        <input type="text" ng-model="queryString" class="search-box" press-enter="search()"><button class="btn btn-sm btn-success search-button" ng-click="search()">Tìm kiếm</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <a href="#/fen/create">Tao fen</a>
+        <a href="#/game/create">Tao game</a>
+      </div>
+    </div>
+    <div ng-view></div>
+  </div>
+  <script src="http://documentcloud.github.io/underscore/underscore-min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+  <script src='https://cdn.firebase.com/v0/firebase.js'></script>
+  <script src='lib/ui-bootstrap-tpls-0.6.0.min.js'></script>
+  <script src="js/common.js"></script>
+  <script src="js/logic.js"></script>
+  <script src="js/position.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/services.js"></script>
+  <script src="js/controllers.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/directives.js"></script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<div class="row">
+  <div class="col-md-12">
+	  {{fen}}
+    <button class="btn btn-link" ng-click="gogo()">GO</button>
+	</div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-bordered">
+      <tr>
+        <td>Số nước 2 bên đã đi:</td>
+        <td><input type="text" ng-model="fullMoveNumber"></td>
+      </tr>
+      <tr>
+        <td>Người chơi tiếp theo:</td>
+        <td>
+          <input type="radio" ng-model="turn" value="1"> Bên đỏ &nbsp;&nbsp;
+          <input type="radio" ng-model="turn" value="2"> Bên đen
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="board">
+      <div ng-repeat="row in board">
+        <div ng-repeat="cell in row"
+             class="board-cell"
+             droppable
+             drop="dropIt(dragId, $parent.$index, $index)">
+          <img ng-src="/img/xq2/{{getImageName(cell)}}.gif"
+               ng-show="cell != 0"
+               id="sq_{{$parent.$index}}_{{$index}}"
+               draggable
+               ng-click="putIntoBox($parent.$index, $index)">
+        </div>
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="black-box">
+        <div ng-repeat="piece in blackBox" class="piece-container">
+          <img ng-src="/img/xq2/{{getImageName(piece)}}.gif"
+               ng-show="piece != 0"
+               ng-click="selectPieceInBox($index, piece)">
+        </div>
+      </div>
+      <div class="box-separator">
+        <span class="glyphicon glyphicon-arrow-left arrow arrow-left"
+              ng-click="putAllOnBoard()"></span>
+        <span class="glyphicon glyphicon-arrow-right arrow"
+              ng-click="putAllIntoBoxes()"></span>
+      </div>
+      <div class="red-box">
+        <div ng-repeat="piece in redBox" class="piece-container">
+          <img ng-src="/img/xq2/{{getImageName(piece)}}.gif"
+               ng-show="piece != 0"
+               ng-click="selectPieceInBox($index, piece)">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

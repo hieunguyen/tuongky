@@ -1,0 +1,31 @@
+<div class="row search-results" ng-show="searchResults">
+	<div class="col-md-12">
+		<table class="table table-striped">
+			<tr>
+				<th>Phân loại</th>
+				<th>Tiêu đề</th>
+				<th>Sách / Giải đấu</th>
+				<th>Người tạo</th>
+			</tr>
+			<tr ng-repeat="searchResult in searchResults">
+				<td>{{searchResult.categoryText}}</td>
+				<td>
+					<a href="#/game/id/{{searchResult.id}}">{{searchResult.title}}</a>
+				</td>
+				<td>{{searchResult.book}}</td>
+				<td>{{searchResult.username}}</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12 pagination-container">
+		<pagination total-items="totalItems"
+								items-per-page="ITEMS_PER_PAGE"
+		            page="currentPage"
+		            max-size="10"
+		            previous-text="Trước"
+		            next-text="Tiếp"
+		            on-select-page="selectPage(page)"></pagination>
+	</diV>
+</div>

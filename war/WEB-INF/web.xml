@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?><web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+	<servlet>
+		<servlet-name>Tuongky</servlet-name>
+		<servlet-class>com.tuongky.TuongkyServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Tuongky</servlet-name>
+		<url-pattern>/tuongky</url-pattern>
+	</servlet-mapping>
+
+  <servlet>
+    <servlet-name>GameInit</servlet-name>
+    <servlet-class>com.tuongky.GameInitServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GameInit</servlet-name>
+    <url-pattern>/game/init</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>GameCreate</servlet-name>
+    <servlet-class>com.tuongky.GameCreateServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GameCreate</servlet-name>
+    <url-pattern>/game/create</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>GameShow</servlet-name>
+    <servlet-class>com.tuongky.GameShowServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GameShow</servlet-name>
+    <url-pattern>/game/show</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>GameSearch</servlet-name>
+    <servlet-class>com.tuongky.GameSearchServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GameSearch</servlet-name>
+    <url-pattern>/game/search</url-pattern>
+  </servlet-mapping>
+
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+ <servlet>
+  <servlet-name>SystemServiceServlet</servlet-name>
+  <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
+  <init-param>
+   <param-name>services</param-name>
+   <param-value/>
+  </init-param>
+ </servlet>
+ <servlet-mapping>
+  <servlet-name>SystemServiceServlet</servlet-name>
+  <url-pattern>/_ah/spi/*</url-pattern>
+ </servlet-mapping>
+</web-app>

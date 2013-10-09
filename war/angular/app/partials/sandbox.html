@@ -1,0 +1,58 @@
+<div class="row sandbox-form">
+	<div class="col-md-12">
+		<table class="table">
+			<tr>
+				<td>Query:</td>
+				<td>
+					<input type="text" ng-model="queryString">
+				</td>
+			</tr>
+			<tr>
+				<td>Phân loại:</td>
+				<td>
+					<select ng-model="game.category">
+						<option value="1">Ván đấu</option>
+						<option value="2">Khai cuộc</option>
+						<option value="3">Trung cuộc</option>
+						<option value="4">Tàn cuộc</option>
+						<option value="5">Cờ thế</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Tiêu đề:</td>
+				<td>
+					<input type="text" ng-model="game.title">
+				</td>
+			</tr>
+			<tr>
+				<td>Sách / Giải đấu:</td>
+				<td>
+					<input type="text" ng-model="game.book">
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<div class="row sandbox-actions">
+	<div class="col-md-12">
+		<button class="btn btn-primary" ng-click="create()">Create</button>
+		<button class="btn btn-success" ng-click="search()">Search</button>
+		<button class="btn btn-success" ng-click="advancedSearch()">Advanced Search</button>
+		<button class="btn" ng-click="clear()">Clear</button>
+		<button class="btn btn-primary" ng-click="init()">Initialize</button>
+	</div>
+</div>
+<div class="row sandbox-results" ng-show="searchResults">
+	<div class="col-md-12">
+		<h3>Search result:</h3>
+		<table class="table table-striped">
+			<tr ng-repeat="searchResult in searchResults">
+				<td>{{$index + 1}}</td>
+				<td>{{searchResult.categoryText}}</td>
+				<td>{{searchResult.title}}</td>
+				<td>{{searchResult.book}}</td>
+			</tr>
+		</table>
+	</div>
+</div>
