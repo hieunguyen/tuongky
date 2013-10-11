@@ -24,9 +24,10 @@ public class GameCreateServlet extends HttpServlet {
     Preconditions.checkState(!category.isUnKnown(), "Unknown game category.");
     String title = req.getParameter("title");
     String book = req.getParameter("book");
+    String data = req.getParameter("data");
     String username = req.getParameter("username");
     GameDao gameDao = new GameDao();
-    Game gameData = gameDao.save(username, category, title, book, "Game Data.");
+    Game gameData = gameDao.save(username, category, title, book, data);
     SearchService.indexGame(gameData);
     resp.setContentType(Constants.CT_JSON);
     resp.getWriter().println(JsonUtils.toJson("status", "ok"));

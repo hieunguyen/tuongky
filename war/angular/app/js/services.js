@@ -199,7 +199,21 @@ tkServices.factory('treeService', function() {
   function fromObject(obj) { // deserialize.
   }
 
+  function toObjectFrom(node) {
+    var subTree = {
+      nodeData: node.nodeData
+    };
+    if (node.hasChildren()) {
+      subTree.children = [];
+      _.each(node.children, function(child) {
+        subTree.children.push(toObjectFrom(child));
+      });
+    }
+    return subTree;
+  }
+
   service.toObject = function() { // serialize.
+    return toObjectFrom(root);
   };
 
   service.addVariation = function(parent, nodeData) {
@@ -388,7 +402,8 @@ tkServices.factory('dbService', function($http, $q) {
       username: username,
       category: game.category,
       title: game.title,
-      book: game.book
+      book: game.book,
+      data: game.data
     }).success(function(response) {
       console.log(response);
       alert('Game created successfully.');

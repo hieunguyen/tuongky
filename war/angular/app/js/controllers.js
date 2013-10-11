@@ -5,7 +5,15 @@
 var tkControllers = angular.module('tkApp.controllers', []);
 
 tkControllers.controller('CreateGameCtrl', function(
-    $scope, $routeParams, gameService, treeService, fenService) {
+    $scope, $routeParams, gameService, treeService, fenService, dbService) {
+
+  var USERNAME = 'hieu';
+
+  $scope.game = {
+    category: 1,
+    title: '',
+    book: ''
+  };
 
   var fen = fenService.getStartingFen();
   if ($routeParams.encodedFen) {
@@ -196,6 +204,16 @@ tkControllers.controller('CreateGameCtrl', function(
     $scope.moveTable = computeMoveTable(line);
     gameService.unMakeMove();
     $scope.turn = gameService.getTurn();
+  };
+
+  $scope.createGame = function() {
+    // console.log(JSON.stringify(treeService.toObject()));
+    // alert('create game');
+    $scope.game.data = JSON.stringify({
+      moveTree: treeService.toObject(),
+      fen: fen
+    });
+    dbService.createGame($scope.game, USERNAME);
   };
 });
 
