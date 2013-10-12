@@ -5,15 +5,24 @@
 var tkControllers = angular.module('tkApp.controllers', []);
 
 tkControllers.controller('CreateGameCtrl', function(
-    $scope, $routeParams, gameService, treeService, fenService, dbService) {
+    $scope, $routeParams, $location,
+    gameService, treeService, fenService, dbService, game) {
 
   var USERNAME = 'hieu';
 
-  $scope.game = {
-    category: 1,
-    title: '',
-    book: ''
-  };
+  if (game) {
+    $scope.game = game;
+    $scope.game.category = game.categoryIndex;
+    console.log(game);
+  } else {
+    $scope.game = {
+      category: 1,
+      title: '',
+      book: ''
+    };
+  }
+
+  $scope.editMode = !game;
 
   var fen = fenService.getStartingFen();
   if ($routeParams.encodedFen) {
@@ -206,14 +215,28 @@ tkControllers.controller('CreateGameCtrl', function(
     $scope.turn = gameService.getTurn();
   };
 
-  $scope.createGame = function() {
-    // console.log(JSON.stringify(treeService.toObject()));
-    // alert('create game');
-    $scope.game.data = JSON.stringify({
-      moveTree: treeService.toObject(),
-      fen: fen
-    });
-    dbService.createGame($scope.game, USERNAME);
+  $scope.saveGame = function() {
+    // $scope.game.data = JSON.stringify({
+    //   moveTree: treeService.toObject(),
+    //   fen: fen
+    // });
+    // dbService.saveGame($scope.game, USERNAME).then(function(game) {
+    //   $scope.editMode = false;
+    //   $location.path('/game/id/' + game.id);
+    // });
+    $scope.editMode = false;
+  };
+
+  $scope.editGame = function() {
+    $scope.editMode = true;
+  };
+
+  $scope.cancelChanges = function() {
+    $scope.editMode = false;
+  };
+
+  $scope.editPosition = function() {
+    $location.path('/fen/create');
   };
 });
 
@@ -450,6 +473,11 @@ tkControllers.controller('SearchBarCtrl', function($scope, $location) {
     params.set('q', $scope.queryString);
     $location.path('/search/' + params.encode());
   };
+
+  $scope.create = function() {
+    $scope.queryString = '';
+    $location.path('/game/create');
+  }
 });
 
 

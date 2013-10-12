@@ -27,6 +27,15 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>GameSave</servlet-name>
+    <servlet-class>com.tuongky.GameSaveServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GameSave</servlet-name>
+    <url-pattern>/game/save</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>GameShow</servlet-name>
     <servlet-class>com.tuongky.GameShowServlet</servlet-class>
   </servlet>

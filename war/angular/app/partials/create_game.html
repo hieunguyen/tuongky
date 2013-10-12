@@ -1,4 +1,4 @@
-<div class="row sandbox-form">
+<div class="row sandbox-form" ng-show="editMode">
   <div class="col-md-12">
     <table class="table">
       <tr>
@@ -28,28 +28,27 @@
       <tr>
         <td></td>
         <td>
-          <button class="btn btn-primary" ng-click="createGame()">Create game</button>
+          <button class="btn btn-sm btn-primary" ng-click="saveGame()">Lưu game</button>
+          <button class="btn btn-sm" ng-click="cancelChanges()" ng-show="game.id">Hủy thay đổi</button>
+          <button class="btn btn-sm btn-primary" ng-click="editPosition()" ng-hide="game.id">Xếp hình cờ</button>
         </td>
       </tr>
     </table>
   </div>
 </div>
-<div class="row">
-	<div class="col-md-12">
-		<table class="table table-bordered">
-			<tr>
-				<td>Người chơi tiếp theo:</td>
-				<td>
-					<span ng-show="turn == 1">Bên đỏ</span>
-					<span ng-show="turn == 2">Bên đen</span>
-				</td>
-			</tr>
-		</table>
-	</div>
+<div class="row sandbox-form" ng-hide="editMode">
+  <div class="col-md-12">
+    Phan loai: {{game.category}}<br/>
+    Tieu de: {{game.title}}<br/>
+    Sach / Giai dau: {{game.book}}<br/>
+    <button class="btn btn-sm btn-primary" ng-click="editGame()">Cập nhật game</button>
+  </div>
 </div>
 <div class="row">
 	<div class="col-md-12">
 		<div class="board">
+      <div class="top-player-turn" ng-show="turn == 2"></div>
+      <div class="bottom-player-turn" ng-show="turn == 1"></div>
 		  <div ng-repeat="row in board">
 		    <div ng-repeat="cell in row"
 		         class="board-cell"
@@ -97,10 +96,5 @@
         <button class="btn btn-link" ng-click="deleteVariation()">Xóa</button>
       </div>
     </div>
-
-		<div class="commands">
-      <button class="btn btn-primary" ng-click="restart()">Restart</button>
-		  <button class="btn" ng-click="undo()">Undo</button>
-		</div>
   </div>
 </div>

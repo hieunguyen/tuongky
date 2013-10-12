@@ -410,6 +410,20 @@ tkServices.factory('dbService', function($http, $q) {
     });
   };
 
+  service.saveGame = function(game, username) {
+    $http.post('/game/save', {
+      id: game.id,
+      username: username,
+      category: game.category,
+      title: game.title,
+      book: game.book,
+      data: game.data
+    }).success(function(response) {
+      console.log(response);
+      alert('Game saved successfully.');
+    });
+  };
+
   service.searchGames = function(queryString, opt_start) {
     var defer = $q.defer();
     $http.post('/game/search', {

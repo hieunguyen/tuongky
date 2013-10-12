@@ -14,16 +14,16 @@
         <a href="/"><img src="/img/tuongky.png"></a>
       </div>
       <div class="col-md-10 search-bar" ng-controller="SearchBarCtrl">
-        <input type="text" ng-model="queryString" class="search-box" press-enter="search()"><button class="btn btn-sm btn-success search-button" ng-click="search()">Tìm kiếm</button>
+        <input type="text" ng-model="queryString" class="search-box" press-enter="search()"><button class="btn btn-sm btn-success search-button" ng-click="search()">Tìm kiếm</button><button class="btn btn-sm btn-primary search-button" ng-click="create()">Tạo game</button>
       </div>
     </div>
-    <div class="row">
+    <div class="row" ng-show="false">
       <div class="col-md-12">
         <a href="#/fen/create">Tao fen</a>
         <a href="#/game/create">Tao game</a>
       </div>
     </div>
-    <div ng-view></div>
+    <div ng-view class="view-container"></div>
   </div>
   <script src="http://documentcloud.github.io/underscore/underscore-min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>

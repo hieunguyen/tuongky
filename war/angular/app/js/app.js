@@ -7,11 +7,11 @@ tkApp.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/fen/create',
       {templateUrl: 'partials/create_fen.html', controller: 'CreateFenCtrl'});
   $routeProvider.when('/game/create',
-      {templateUrl: 'partials/create_game.html', controller: 'CreateGameCtrl'});
+      {templateUrl: 'partials/create_game.html', controller: 'CreateGameCtrl', resolve: UnsavedGameResolve});
   $routeProvider.when('/game/create/fen/:encodedFen',
-      {templateUrl: 'partials/create_game.html', controller: 'CreateGameCtrl'});
+      {templateUrl: 'partials/create_game.html', controller: 'CreateGameCtrl', resolve: UnsavedGameResolve});
   $routeProvider.when('/game/id/:gameId',
-      {templateUrl: 'partials/show_game.html', controller: 'ShowGameCtrl'});
+      {templateUrl: 'partials/create_game.html', controller: 'CreateGameCtrl', resolve: GameResolve});
   $routeProvider.when('/search/:params',
       {templateUrl: 'partials/search.html', controller: 'SearchCtrl'});
   $routeProvider.when('/sandbox',
@@ -30,3 +30,16 @@ tkApp.config(['$httpProvider', function($httpProvider) {
         String(data) !== '[object File]' ? jQuery.param(data) : data;
   }];
 }]);
+
+var UnsavedGameResolve = {
+  game: function($q) {
+    return $q.when(null);
+  }
+};
+
+var GameResolve = {
+  game: function($route, dbService) {
+    var gameId = $route.current.params.gameId
+    return dbService.getGame(gameId);
+  }
+};
