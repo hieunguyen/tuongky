@@ -78,3 +78,18 @@ tkDirectives.directive('pressEnter', function() {
     });
   };
 });
+
+
+tkDirectives.directive('board', function() {
+  return {
+    restrict: 'AE',
+    scope: {
+      fen: '='
+    },
+    replace: true,
+    templateUrl: 'partials/board.html',
+    controller: 'BoardCtrl',
+    link: function(scope, element, attrs) {
+    }
+  };
+});
