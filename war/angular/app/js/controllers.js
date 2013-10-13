@@ -5,7 +5,7 @@
 var tkControllers = angular.module('tkApp.controllers', []);
 
 tkControllers.controller('CreateGameCtrl', function(
-    $scope, $routeParams, $location,
+    $scope, $routeParams, $location, $timeout,
     gameService, treeService, fenService, dbService, game) {
 
   var USERNAME = 'hieu';
@@ -28,6 +28,9 @@ tkControllers.controller('CreateGameCtrl', function(
       fen = fenService.url2fen($routeParams.encodedFen);
     }
     treeService.init();
+    $timeout(function() {
+      $scope.titleFocused = true;
+    });
   }
 
   var pos = fenService.fen2pos(fen);

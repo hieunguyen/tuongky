@@ -93,3 +93,41 @@ tkDirectives.directive('board', function() {
     }
   };
 });
+
+
+tkDirectives.directive('tkFocus', function($parse) {
+  var ownFocusEvent = false;
+  return function(scope, element, attrs) {
+    scope.safeApply = function(fn) {
+      var phase = this.$root.$$phase;
+      if (phase == '$apply' || phase == '$digest') {
+        if (fn && (typeof(fn) === 'function')) {
+          fn();
+        }
+      } else {
+        this.$apply(fn);
+      }
+    };
+
+    var model = $parse(attrs['tkFocus']);
+    element.bind('focus', function() {
+      if (!ownFocusEvent) {
+        scope.safeApply(function() {
+          model.assign(scope, true);
+        });
+      }
+      ownFocusEvent = false;
+    });
+    element.bind('blur', function() {
+      scope.safeApply(function() {
+        model.assign(scope, false);
+      });
+    });
+    scope.$watch(model, function(newValue, oldValue) {
+      if (newValue && !oldValue) {
+        ownFocusEvent = true;
+        $(element).focus();
+      }
+    });
+  };
+});
