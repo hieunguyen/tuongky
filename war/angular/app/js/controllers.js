@@ -17,7 +17,25 @@ tkControllers.controller('BoardCtrl', function(
   PIECE_IMAGE_NAME_MAP[P] = 'p';
 
   var line;
-  var pos = fenService.fen2pos($scope.fen);
+  var pos;
+
+  function start() {
+    $scope.board = gameService.getBoard();
+    $scope.turn = gameService.getTurn();
+    line = treeService.getLine();
+    $scope.currentLineIndex = 0;
+    $scope.moveTable = computeMoveTable(line);
+    $scope.variations = computeVariations($scope.currentLineIndex);
+  };
+
+  $scope.$watch('fen', function(fen) {
+    pos = fenService.fen2pos($scope.fen);
+    if (!pos) {
+      console.log('Invalid FEN: ' + fen);
+      pos = fenService.getStartingPosition();
+    }
+    start();
+  });
 
   $scope.getImageName = function(piece) {
     if (!piece) return 'dot';
@@ -61,16 +79,6 @@ tkControllers.controller('BoardCtrl', function(
     }
     return variations;
   }
-
-  function start() {
-    $scope.board = gameService.getBoard();
-    $scope.turn = gameService.getTurn();
-    line = treeService.getLine();
-    $scope.currentLineIndex = 0;
-    $scope.moveTable = computeMoveTable(line);
-    $scope.variations = computeVariations($scope.currentLineIndex);
-  };
-  start();
 
   $scope.dropIt = function(dragId, row, col) {
     var x = parseInt(dragId.split('_')[1]);
@@ -209,191 +217,9 @@ tkControllers.controller('CreateGameCtrl', function(
     fen = fenService.url2fen($routeParams.encodedFen);
   }
   var pos = fenService.fen2pos(fen);
-  if (!pos) {
-    console.log('Invalid FEN: ' + fen);
-    pos = fenService.getStartingPosition();
-  }
-
-  var PIECE_IMAGE_NAME_MAP = {};
-  PIECE_IMAGE_NAME_MAP[K] = 'k';
-  PIECE_IMAGE_NAME_MAP[A] = 'a';
-  PIECE_IMAGE_NAME_MAP[E] = 'e';
-  PIECE_IMAGE_NAME_MAP[R] = 'r';
-  PIECE_IMAGE_NAME_MAP[C] = 'c';
-  PIECE_IMAGE_NAME_MAP[H] = 'h';
-  PIECE_IMAGE_NAME_MAP[P] = 'p';
-
-  var line;
-
-  function computeMoveTable(line) {
-    var moveTable = [];
-    _.each(line, function(node, index) {
-      var first, second;
-      if (node.isRoot()) {
-        first = '-->';
-        second = 'Bắt đầu';
-        if (pos.fullMoveNumber > 1 || pos.turn === BLACK) {
-          second += ' (...)';
-        }
-      } else {
-        var moveIndex = Math.floor((index + 1) / 2) + pos.fullMoveNumber;
-        if (pos.turn === RED) {
-          moveIndex--;
-        }
-        first = ((index + pos.turn) % 2 === 0) ? (moveIndex + '.') : '';
-        second = node.nodeData.humanMove;
-        var variationCount = node.getSiblingCount();
-        if (variationCount > 1) {
-          second += ' (' + variationCount + ')';
-        }
-      }
-      moveTable.push({first: first, second: second});
-    });
-    return moveTable;
-  };
-
-  function computeVariations(index) {
-    var node = line[index];
-    var variations = [];
-    if (!node.isRoot()) {
-      _.each(node.parent.children, function(sibling) {
-        variations.push(sibling);
-      });
-    }
-    return variations;
-  }
-
-  $scope.restart = function(board, turn) {
-    gameService.init(board, turn);
-    $scope.board = gameService.getBoard();
-    $scope.turn = gameService.getTurn();
-    treeService.init();
-    line = treeService.getLine();
-    $scope.currentLineIndex = 0;
-    $scope.moveTable = computeMoveTable(line);
-    $scope.variations = computeVariations($scope.currentLineIndex);
-  };
-  $scope.restart(pos.board, pos.turn);
-
-  $scope.undo = function() {
-    gameService.unMakeMove();
-    $scope.turn = gameService.getTurn();
-  };
-
-  $scope.getImageName = function(piece) {
-    if (!piece) return 'dot';
-    return (piece > 0 ? 'r' : 'b') + PIECE_IMAGE_NAME_MAP[Math.abs(piece)];
-  };
-
-  $scope.dropIt = function(dragId, row, col) {
-    var x = parseInt(dragId.split('_')[1]);
-    var y = parseInt(dragId.split('_')[2]);
-    if (x === row && y === col) return;
-    if (gameService.isValidMove(x, y, row, col)) {
-      makeMove(x, y, row, col);
-    }
-  };
-
-  function updateVariations() {
-    $scope.variations = computeVariations($scope.currentLineIndex);
-    $scope.currentVariationIndex = _.indexOf($scope.variations, getCurrentNode());
-  }
-
-  function makeMove(x, y, u, v) {
-    var humanMove = gameService.produceHumanMove(x, y, u, v);
-    gameService.makeMove(x, y, u, v);
-    $scope.turn = gameService.getTurn();
-    treeService.addVariation(getCurrentNode(),
-        {
-          humanMove: humanMove,
-          move: {
-            x: x,
-            y: y,
-            u: u,
-            v: v
-          }
-        }
-    );
-    line = treeService.getLine();
-    $scope.moveTable = computeMoveTable(line);
-    $scope.currentLineIndex++;
-    updateVariations();
-  }
-
-  $scope.selectPiece = function(row, col) {
-    console.log('select a piece at ' + row + ' ' + col);
-  };
-
-  $scope.selectMove = function(index) {
-    if (index === $scope.currentLineIndex) {
-      return;
-    }
-    if (index < $scope.currentLineIndex) {
-      for (var i = 0; i < $scope.currentLineIndex - index; i++) {
-        gameService.unMakeMove();
-      }
-    } else {
-      for (var i = $scope.currentLineIndex + 1; i <= index; i++) {
-        var move = line[i].nodeData.move;
-        gameService.makeMove(move.x, move.y, move.u, move.v);
-      }
-    }
-    $scope.turn = gameService.getTurn();
-    $scope.currentLineIndex = index;
-    updateVariations();
-  };
-
-  function getCurrentNode() {
-    return line[$scope.currentLineIndex];
-  }
-
-  $scope.selectVariation = function(vIndex) {
-    if ($scope.currentVariationIndex === vIndex) {
-      return;
-    }
-    treeService.selectVariation(getCurrentNode(), vIndex);
-    line = treeService.getLine();
-    $scope.moveTable = computeMoveTable(line);
-    updateVariations();
-    gameService.unMakeMove();
-    var move = getCurrentNode().nodeData.move;
-    gameService.makeMove(move.x, move.y, move.u, move.v);
-    $scope.turn = gameService.getTurn();
-  };
-
-  $scope.moveVariationUp = function() {
-    if (!$scope.variations.length || !$scope.currentVariationIndex) {
-      return;
-    }
-    treeService.swapNodes(
-        getCurrentNode().parent, $scope.currentVariationIndex, $scope.currentVariationIndex - 1);
-    updateVariations();
-  };
-
-  $scope.moveVariationDown = function() {
-    if (!$scope.variations.length || $scope.currentVariationIndex >= $scope.variations.length - 1) {
-      return;
-    }
-    treeService.swapNodes(
-        getCurrentNode().parent, $scope.currentVariationIndex, $scope.currentVariationIndex + 1);
-    updateVariations();
-  };
-
-  $scope.deleteVariation = function() {
-    if (!$scope.variations.length) {
-      return;
-    }
-    if (!confirm('Bạn có thực sự muốn xóa nước đi này không?')) {
-      return;
-    }
-    treeService.removeChild(getCurrentNode().parent, $scope.currentVariationIndex);
-    line = treeService.getLine();
-    $scope.currentLineIndex--;
-    updateVariations();
-    $scope.moveTable = computeMoveTable(line);
-    gameService.unMakeMove();
-    $scope.turn = gameService.getTurn();
-  };
+  gameService.init(pos.board, pos.turn);
+  treeService.init();
+  $scope.fen = fen;
 
   $scope.saveGame = function() {
     // $scope.game.data = JSON.stringify({
