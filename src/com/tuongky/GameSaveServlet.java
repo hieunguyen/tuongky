@@ -28,7 +28,7 @@ public class GameSaveServlet extends HttpServlet {
     String book = req.getParameter("book");
     String data = req.getParameter("data");
     GameDao gameDao = new GameDao();
-    Game gameData = gameDao.save(username, category, title, book, data);
+    Game gameData = gameDao.save(id, username, category, title, book, data);
     SearchService.indexGame(gameData);
     resp.setContentType(Constants.CT_JSON);
     resp.getWriter().println(JsonUtils.toJson("status", "ok"));

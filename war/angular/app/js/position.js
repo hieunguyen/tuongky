@@ -232,15 +232,14 @@ function initThings() {
 }
 initThings();
 
-var Position = function() {
+var Position = function() {};
+
+Position.prototype.init = function(board, turn) {
 	this.board = init_arr(BOARD_SIZE);
 	this.pieces = init_arr(48);
 	this.bitRows = init_arr(16);
 	this.bitCols = init_arr(16);
 	this.moves = [];
-};
-
-Position.prototype.init = function(board, turn) {
 	this.turn = turn;
 	var startTag = [-1, 0, 1, 3, 5, 7, 9, 11];
 	var count = init_arr(3, 8);

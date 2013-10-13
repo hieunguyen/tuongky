@@ -21,6 +21,13 @@ public class GameDao extends DAOBase {
     return gameData;
   }
 
+  public Game save(String id, String username,
+      GameCategory category, String title, String book, String data) {
+    Game gameData = new Game(id, username, category, title, book, data);
+    ObjectifyService.begin().put(gameData);
+    return gameData;
+  }
+
   public Game add(Game game) {
     return save(
         game.getUsername(), game.getCategory(), game.getTitle(), game.getBook(), game.getData());

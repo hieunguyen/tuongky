@@ -189,7 +189,7 @@ tkServices.factory('treeService', function() {
 
   service.init = function(opt_obj) {
     if (opt_obj) {
-      fromObject(opt_obj);
+      root = fromObject(opt_obj);
     } else {
       root = new Node();
     }
@@ -197,6 +197,11 @@ tkServices.factory('treeService', function() {
   };
 
   function fromObject(obj) { // deserialize.
+    var node = new Node(obj.nodeData);
+    _.each(obj.children, function(childObj) {
+      node.addChild(fromObject(childObj));
+    });
+    return node;
   }
 
   function toObjectFrom(node) {
