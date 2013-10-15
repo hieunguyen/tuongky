@@ -132,3 +132,21 @@ tkDirectives.directive('tkFocus', function($parse) {
     });
   };
 });
+
+
+tkDirectives.directive('autoScrollTo', function($timeout) {
+  return {
+    link: function(scope, element, attrs) {
+      scope.$watch(attrs.autoScrollTo, function(to) {
+        var scrollTo = $('tr', element).eq(to);
+        if (scrollTo) {
+          var container = $(element);
+          container.scrollTop(
+            scrollTo.offset().top - container.offset().top +
+                container.scrollTop()
+          );
+        }
+      });
+    }
+  };
+});
