@@ -269,3 +269,11 @@
 .pagination-container {
 	text-align: center;
 }
+
+.create-game-dropdown {
+	display: inline-block;
+}
+
+.create-game-dropdown .dropdown-menu {
+	left: 9px;
+}

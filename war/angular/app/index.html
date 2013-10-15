@@ -8,19 +8,22 @@
   <link rel="stylesheet" href="css/app.css"/>
 </head>
 <body>
-  <div class="container">
+  <div class="container" ng-controller="AppCtrl">
     <div class="row">
       <div class="col-md-2">
         <a href="/"><img src="/img/tuongky.png"></a>
       </div>
       <div class="col-md-10 search-bar" ng-controller="SearchBarCtrl">
-        <input type="text" ng-model="queryString" class="search-box" press-enter="search()"><button class="btn btn-sm btn-success search-button" ng-click="search()">Tìm kiếm</button><button class="btn btn-sm btn-primary search-button" ng-click="create()">Tạo game</button>
-      </div>
-    </div>
-    <div class="row" ng-show="false">
-      <div class="col-md-12">
-        <a href="#/fen/create">Tao fen</a>
-        <a href="#/game/create">Tao game</a>
+        <input type="text" ng-model="queryString" class="search-box" press-enter="search()" tk-focus="$root.searchBoxFocused"><button class="btn btn-sm btn-success search-button" ng-click="search()">
+          Tìm kiếm
+        </button><div class="create-game-dropdown dropdown">
+          <button data-toggle="dropdown" class="btn btn-sm btn-primary search-button" ng-click="create()">Tạo game</button>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            <li><a href="#/game/create">Từ đầu ván cờ</a></li>
+            <li><a href="#/fen/create">Xếp hình cờ</a></li>
+          </ul>
+        </div>
+
       </div>
     </div>
     <div ng-view class="view-container"></div>
@@ -29,6 +32,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
   <script src='https://cdn.firebase.com/v0/firebase.js'></script>
+  <script src='lib/bootstrap/dropdown.js'></script>
   <script src='lib/json2.js'></script>
   <script src='lib/ui-bootstrap-tpls-0.6.0.min.js'></script>
   <script src="js/common.js"></script>

@@ -5,11 +5,11 @@
         <td>Phân loại:</td>
         <td>
           <select ng-model="game.category">
-            <option value="1">Ván đấu</option>
-            <option value="2">Khai cuộc</option>
-            <option value="3">Trung cuộc</option>
-            <option value="4">Tàn cuộc</option>
-            <option value="5">Cờ thế</option>
+            <option value="1">{{CATEGORIES[1]}}</option>
+            <option value="2">{{CATEGORIES[2]}}</option>
+            <option value="3">{{CATEGORIES[3]}}</option>
+            <option value="4">{{CATEGORIES[4]}}</option>
+            <option value="5">{{CATEGORIES[5]}}</option>
           </select>
         </td>
       </tr>
@@ -30,7 +30,6 @@
         <td>
           <button class="btn btn-sm btn-primary" ng-click="saveGame()">Lưu game</button>
           <button class="btn btn-sm" ng-click="cancelChanges()" ng-show="game.id">Hủy thay đổi</button>
-          <button class="btn btn-sm btn-primary" ng-click="editPosition()" ng-hide="game.id">Xếp hình cờ</button>
         </td>
       </tr>
     </table>
@@ -38,10 +37,8 @@
 </div>
 <div class="row sandbox-form" ng-hide="editMode">
   <div class="col-md-12">
-    Phan loai: {{game.category}}<br/>
-    Tieu de: {{game.title}}<br/>
-    Sach / Giai dau: {{game.book}}<br/>
-    <button class="btn btn-sm btn-primary" ng-click="editGame()">Cập nhật game</button>
+    {{game.title}} - {{game.book}}
+    <button class="btn btn-link" ng-click="editGame()">Thay đổi game</button>
   </div>
 </div>
 <board fen="fen"></board>

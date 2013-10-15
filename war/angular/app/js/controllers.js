@@ -4,6 +4,12 @@
 
 var tkControllers = angular.module('tkApp.controllers', []);
 
+tkControllers.controller('AppCtrl', function($scope) {
+  $scope.CATEGORIES =
+      ['', 'Ván đấu', 'Khai cuộc', 'Trung cuộc', 'Tàn cuộc', 'Cờ thế'];
+});
+
+
 tkControllers.controller('CreateGameCtrl', function(
     $scope, $routeParams, $location, $timeout,
     gameService, treeService, fenService, dbService, game) {
@@ -61,10 +67,6 @@ tkControllers.controller('CreateGameCtrl', function(
 
   $scope.cancelChanges = function() {
     $scope.editMode = false;
-  };
-
-  $scope.editPosition = function() {
-    $location.path('/fen/create');
   };
 });
 
@@ -251,7 +253,7 @@ tkControllers.controller('CreateFenCtrl', function($scope, $location, fenService
 
 
 tkControllers.controller('SandboxCtrl', function(
-    $scope, dbService, gameService, treeService, fenService) {
+    $scope, $timeout, dbService, gameService, treeService, fenService) {
 
   var USERNAME = 'nguoituyet';
   var CATEGORIES = ['', 'Ván đấu', 'Khai cuộc', 'Trung cuộc', 'Tàn cuộc', 'Cờ thế'];
@@ -267,6 +269,10 @@ tkControllers.controller('SandboxCtrl', function(
   };
 
   $scope.clear();
+
+  $timeout(function() {
+    $scope.$root.searchBoxFocused = true;
+  });
 
   $scope.create = function() {
     dbService.createGame($scope.game, USERNAME);
@@ -304,8 +310,8 @@ tkControllers.controller('SearchBarCtrl', function($scope, $location) {
   };
 
   $scope.create = function() {
-    $scope.queryString = '';
-    $location.path('/game/create');
+    // $scope.queryString = '';
+    // $location.path('/game/create');
   }
 });
 
