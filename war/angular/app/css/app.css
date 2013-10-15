@@ -277,3 +277,31 @@
 .create-game-dropdown .dropdown-menu {
 	left: 9px;
 }
+
+.create-game-form-read, .create-game-form-edit {
+	margin: 20px 0;
+}
+
+.create-game-form-read {
+	font-size: 20px;
+}
+
+.create-game-form-read button {
+	margin-left: 20px;
+}
+
+.create-game-form-edit select {
+	width: 100px;
+}
+
+.create-game-form-edit button {
+	margin-right: 10px;
+}
+
+.create-game-form-edit input.game-title {
+	width: 600px;
+}
+
+.create-game-form-edit input.game-book {
+	width: 400px;
+}

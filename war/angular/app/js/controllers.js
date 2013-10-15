@@ -50,19 +50,22 @@ tkControllers.controller('CreateGameCtrl', function(
       fen: fen
     });
     if (game) {
-      dbService.saveGame($scope.game, USERNAME).then(function(game) {
+      dbService.saveGame($scope.game, USERNAME).then(function() {
         $scope.editMode = false;
       });
     } else {
-      dbService.createGame($scope.game, USERNAME).then(function(game) {
+      dbService.createGame($scope.game, USERNAME).then(function(gameId) {
         $scope.editMode = false;
-        $location.path('/game/id/' + game.id);
+        $location.path('/game/id/' + gameId);
       });
     }
   };
 
   $scope.editGame = function() {
     $scope.editMode = true;
+    $timeout(function() {
+      $scope.titleFocused = true;
+    });
   };
 
   $scope.cancelChanges = function() {

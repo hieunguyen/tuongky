@@ -1,8 +1,12 @@
-<div class="row sandbox-form" ng-show="editMode">
+<div class="row create-game-form-edit" ng-show="editMode">
   <div class="col-md-12">
     <table class="table">
       <tr>
         <td>Phân loại:</td>
+        <td>Tiêu đề:</td>
+        <td>Sách / Giải đấu:</td>
+      </tr>
+      <tr>
         <td>
           <select ng-model="game.category">
             <option value="1">{{CATEGORIES[1]}}</option>
@@ -12,33 +16,30 @@
             <option value="5">{{CATEGORIES[5]}}</option>
           </select>
         </td>
-      </tr>
-      <tr>
-        <td>Tiêu đề:</td>
         <td>
-          <input type="text" ng-model="game.title" tk-focus="titleFocused">
+          <input type="text" class="game-title" ng-model="game.title" tk-focus="titleFocused">
         </td>
-      </tr>
-      <tr>
-        <td>Sách / Giải đấu:</td>
         <td>
-          <input type="text" ng-model="game.book">
+          <input type="text" class="game-book" ng-model="game.book">
         </td>
       </tr>
       <tr>
         <td></td>
         <td>
-          <button class="btn btn-sm btn-primary" ng-click="saveGame()">Lưu game</button>
+          <button class="btn btn-sm btn-primary" ng-click="saveGame()">Lưu thay đổi</button>
           <button class="btn btn-sm" ng-click="cancelChanges()" ng-show="game.id">Hủy thay đổi</button>
         </td>
+        <td></td>
       </tr>
     </table>
   </div>
 </div>
-<div class="row sandbox-form" ng-hide="editMode">
+<div class="row create-game-form-read" ng-hide="editMode">
   <div class="col-md-12">
-    {{game.title}} - {{game.book}}
-    <button class="btn btn-link" ng-click="editGame()">Thay đổi game</button>
+    {{CATEGORIES[game.category]}} -
+    {{game.title}} -
+    {{game.book}}
+    <button class="btn btn-sm btn-danger" ng-click="editGame()">Cập nhật</button>
   </div>
 </div>
 <board fen="fen" edit-mode="editMode"></board>

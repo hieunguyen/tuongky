@@ -403,6 +403,7 @@ tkServices.factory('dbService', function($http, $q) {
   var service = {};
 
   service.createGame = function(game, username) {
+    var defer = $q.defer();
     $http.post('/game/create', {
       username: username,
       category: game.category,
@@ -410,12 +411,16 @@ tkServices.factory('dbService', function($http, $q) {
       book: game.book,
       data: game.data
     }).success(function(response) {
-      console.log(response);
+      defer.resolve(response.gameId);
       alert('Game created successfully.');
+    }).error(function() {
+      defer.reject();
     });
+  return defer.promise;
   };
 
   service.saveGame = function(game, username) {
+    var defer = $q.defer();
     $http.post('/game/save', {
       id: game.id,
       username: username,
@@ -424,9 +429,12 @@ tkServices.factory('dbService', function($http, $q) {
       book: game.book,
       data: game.data
     }).success(function(response) {
-      console.log(response);
+      defer.resolve(response);
       alert('Game saved successfully.');
+    }).error(function() {
+      defer.reject();
     });
+    return defer.promise;
   };
 
   service.searchGames = function(queryString, opt_start) {
