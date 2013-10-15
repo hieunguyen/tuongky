@@ -374,6 +374,7 @@ tkControllers.controller('BoardCtrl', function(
     $scope.currentLineIndex = 0;
     $scope.moveTable = computeMoveTable(line);
     $scope.variations = computeVariations($scope.currentLineIndex);
+    $scope.line = line;
   };
 
   $scope.$watch('fen', function(fen) {
@@ -429,6 +430,9 @@ tkControllers.controller('BoardCtrl', function(
   }
 
   $scope.dropIt = function(dragId, row, col) {
+    if (!$scope.editMode) {
+      return;
+    }
     var x = parseInt(dragId.split('_')[1]);
     var y = parseInt(dragId.split('_')[2]);
     if (x === row && y === col) return;
@@ -461,6 +465,7 @@ tkControllers.controller('BoardCtrl', function(
     $scope.moveTable = computeMoveTable(line);
     $scope.currentLineIndex++;
     updateVariations();
+    $scope.line = line;
   }
 
   $scope.selectPiece = function(row, col) {
@@ -502,6 +507,7 @@ tkControllers.controller('BoardCtrl', function(
     var move = getCurrentNode().nodeData.move;
     gameService.makeMove(move.x, move.y, move.u, move.v);
     $scope.turn = gameService.getTurn();
+    $scope.line = line;
   };
 
   $scope.moveVariationUp = function() {
@@ -536,5 +542,6 @@ tkControllers.controller('BoardCtrl', function(
     $scope.moveTable = computeMoveTable(line);
     gameService.unMakeMove();
     $scope.turn = gameService.getTurn();
+    $scope.line = line;
   };
 });

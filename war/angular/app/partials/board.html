@@ -23,14 +23,20 @@
             ng-class="{selected: $index == currentLineIndex}"
             ng-click="selectMove($index)">
           <td class="first" align="right">{{move.first}}</td>
-          <td class="second">{{move.second}}</td>
+          <td class="second">
+            {{move.second}}
+            <span ng-show="line[$index].nodeData.comment">*</span>
+          </td>
         </tr>
       </table>
     </div>
 
     <div class="commentContainer">
       <div class="title">Bình luận</div>
-      <textarea class="comment" ng-show="true" ng-readonly="false"></textarea>
+      <textarea ng-model="line[currentLineIndex].nodeData.comment"
+                class="comment"
+                ng-show="true"
+                ng-readonly="!editMode"></textarea>
     </div>
 
     <div class="variationContainer">
@@ -45,9 +51,9 @@
         </ul>
       </div>
       <div class="actions">
-        <button class="btn btn-link" ng-click="moveVariationUp()">Lên</button>
-        <button class="btn btn-link" ng-click="moveVariationDown()">Xuống</button>
-        <button class="btn btn-link" ng-click="deleteVariation()">Xóa</button>
+        <button class="btn btn-link" ng-disabled="!editMode" ng-click="moveVariationUp()">Lên</button>
+        <button class="btn btn-link" ng-disabled="!editMode" ng-click="moveVariationDown()">Xuống</button>
+        <button class="btn btn-link" ng-disabled="!editMode" ng-click="deleteVariation()">Xóa</button>
       </div>
     </div>
   </div>

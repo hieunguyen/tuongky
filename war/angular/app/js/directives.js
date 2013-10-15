@@ -84,7 +84,8 @@ tkDirectives.directive('board', function() {
   return {
     restrict: 'AE',
     scope: {
-      fen: '='
+      fen: '=',
+      editMode: '='
     },
     replace: true,
     templateUrl: 'partials/board.html',
