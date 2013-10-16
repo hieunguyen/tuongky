@@ -21,9 +21,14 @@ tkControllers.controller('CreateGameCtrl', function(
   if (game) {
     $scope.game = game;
     $scope.game.category = game.categoryIndex;
-    var dataObj = JSON.parse(game.data);
-    treeService.init(dataObj.moveTree);
-    fen = dataObj.fen;
+    try {
+      var dataObj = JSON.parse(game.data);
+      treeService.init(dataObj.moveTree);
+      fen = dataObj.fen;
+    } catch (error) {
+      alert('Game error.');
+      treeService.init();
+    }
   } else {
     $scope.game = {
       category: 1,
@@ -69,6 +74,9 @@ tkControllers.controller('CreateGameCtrl', function(
   };
 
   $scope.deleteGame = function() {
+    if (!confirm('Bạn có thực sự muốn xóa game này không?')) {
+      return;
+    }
     dbService.deleteGame($scope.game.id, USERNAME).then(function() {
       $location.path('/');
     }, function() {

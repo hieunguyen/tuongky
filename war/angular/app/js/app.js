@@ -16,7 +16,7 @@ tkApp.config(['$routeProvider', function($routeProvider) {
       {templateUrl: 'partials/search.html', controller: 'SearchCtrl'});
   $routeProvider.when('/sandbox',
       {templateUrl: 'partials/sandbox.html', controller: 'SandboxCtrl'});
-  $routeProvider.otherwise({redirectTo: '/sandbox'});
+  $routeProvider.otherwise({redirectTo: '/search/q='});
 }]);
 
 tkApp.config(['$httpProvider', function($httpProvider) {
