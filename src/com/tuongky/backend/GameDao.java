@@ -41,4 +41,8 @@ public class GameDao extends DAOBase {
   public Game getById(String id) {
     return ObjectifyService.begin().get(Game.class, id);
   }
+
+  public void delete(String id) {
+    ObjectifyService.begin().delete(Game.class, id);
+  }
 }

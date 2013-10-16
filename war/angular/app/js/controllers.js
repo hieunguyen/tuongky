@@ -68,6 +68,14 @@ tkControllers.controller('CreateGameCtrl', function(
     });
   };
 
+  $scope.deleteGame = function() {
+    dbService.deleteGame($scope.game.id, USERNAME).then(function() {
+      $location.path('/');
+    }, function() {
+      alert('Could not delete this game.');
+    });
+  };
+
   $scope.cancelChanges = function() {
     $scope.editMode = false;
   };

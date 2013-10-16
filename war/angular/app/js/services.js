@@ -485,5 +485,18 @@ tkServices.factory('dbService', function($http, $q) {
     return defer.promise;
   };
 
+  service.deleteGame = function(gameId, username) {
+    var defer = $q.defer();
+    $http.post('/game/delete', {
+      id: gameId,
+      username: username
+    }).success(function(response) {
+      defer.resolve(response);
+    }).error(function() {
+      defer.reject();
+    });
+    return defer.promise;
+  };
+
   return service;
 });

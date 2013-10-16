@@ -36,6 +36,15 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>GameDelete</servlet-name>
+    <servlet-class>com.tuongky.GameDeleteServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GameDelete</servlet-name>
+    <url-pattern>/game/delete</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>GameShow</servlet-name>
     <servlet-class>com.tuongky.GameShowServlet</servlet-class>
   </servlet>

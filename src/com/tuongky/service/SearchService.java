@@ -140,4 +140,8 @@ public final class SearchService {
     }
     return new GameSearchResult(games, result.getNumberFound());
   }
+
+  public static void deleteGame(String gameId) {
+    getIndex().delete(gameId);
+  }
 }

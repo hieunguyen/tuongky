@@ -26,7 +26,9 @@
       <tr>
         <td></td>
         <td>
-          <button class="btn btn-sm btn-primary" ng-click="saveGame()">Lưu thay đổi</button>
+          <button class="btn btn-sm btn-primary" ng-click="saveGame()">
+            {{game.id && 'Lưu thay đổi' || 'Tạo game mới'}}
+          </button>
           <button class="btn btn-sm" ng-click="cancelChanges()" ng-show="game.id">Hủy thay đổi</button>
         </td>
         <td></td>
@@ -39,7 +41,10 @@
     {{CATEGORIES[game.category]}} -
     {{game.title}} -
     {{game.book}}
-    <button class="btn btn-sm btn-danger" ng-click="editGame()">Cập nhật</button>
+    <div>
+      <button class="btn btn-sm btn-primary" ng-click="editGame()">Cập nhật</button>
+      <button class="btn btn-sm btn-danger" ng-click="deleteGame()">Xóa game</button>
+    </div>
   </div>
 </div>
 <board fen="fen" edit-mode="editMode"></board>
