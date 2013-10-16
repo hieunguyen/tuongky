@@ -7,6 +7,7 @@ var tkControllers = angular.module('tkApp.controllers', []);
 tkControllers.controller('AppCtrl', function($scope) {
   $scope.CATEGORIES =
       ['', 'Ván đấu', 'Khai cuộc', 'Trung cuộc', 'Tàn cuộc', 'Cờ thế'];
+  $scope.alertType = 'success';
 });
 
 

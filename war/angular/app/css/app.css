@@ -1,3 +1,8 @@
+.header {
+	/*border-bottom: 1px solid gray;*/
+	position: relative;
+}
+
 .view-container {
 	margin-bottom: 200px;
 }
@@ -304,4 +309,25 @@
 
 .create-game-form-edit input.game-book {
 	width: 400px;
+}
+
+.notifications {
+	position: absolute;
+	width: 500px;
+	z-index: 100;
+	left: 50%;
+	padding: 0;
+	margin: 0;
+	margin-left: -250px;
+	top: 0;
+}
+
+.notifications .alert {
+	padding: 10px;
+	text-align: center;
+	margin-bottom: 0;
+}
+
+.notifications .alert .close {
+	margin-top: -2px;
 }

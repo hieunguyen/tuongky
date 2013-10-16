@@ -9,7 +9,10 @@
 </head>
 <body>
   <div class="container" ng-controller="AppCtrl">
-    <div class="row">
+    <div class="row header">
+      <div class="notifications">
+        <alert type="alertType" close="">Đã lưu game thành công.</alert>
+      </div>
       <div class="col-md-2">
         <a href="/"><img src="/img/tuongky.png"></a>
       </div>
@@ -23,7 +26,6 @@
             <li><a href="#/fen/create">Xếp hình cờ</a></li>
           </ul>
         </div>
-
       </div>
     </div>
     <div ng-view class="view-container"></div>

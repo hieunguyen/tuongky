@@ -500,3 +500,10 @@ tkServices.factory('dbService', function($http, $q) {
 
   return service;
 });
+
+
+tkServices.factory('notificationService', function() {
+  var service = {};
+
+  return service;
+});
