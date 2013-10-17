@@ -499,7 +499,7 @@ tkServices.factory('dbService', function($http, $q, notificationService) {
       notificationService.show('Đã xóa game thành công.');
       defer.resolve(response);
     }).error(function() {
-      notificationService.show('Gặp lỗi, chưa xóa được game.');
+      notificationService.showError('Gặp lỗi, chưa xóa được game.');
       defer.reject();
     });
     return defer.promise;
@@ -552,6 +552,36 @@ tkServices.factory('notificationService', function($timeout) {
   service.hide = function() {
     alert.visible = false;
     showingCount = 0;
+  };
+
+  return service;
+});
+
+
+tkServices.factory('authService', function() {
+  var service = {};
+
+  var user = {
+    username: '',
+    authenticated: false
+  };
+
+  service.getUser = function() {
+    return user;
+  };
+
+  service.signIn = function(username) {
+    user.username = username;
+    user.authenticated = true;
+  };
+
+  service.signOut = function() {
+    user.username = '';
+    user.authenticated = false;
+  };
+
+  service.isAuthenticated = function() {
+    return user.authenticated;
   };
 
   return service;

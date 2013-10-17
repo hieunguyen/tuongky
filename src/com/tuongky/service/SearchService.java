@@ -22,8 +22,8 @@ import com.tuongky.model.datastore.Game;
 
 public final class SearchService {
 
-//  private static final String GAME_INDEX_NAME = "GameIndex";
-  private static final String GAME_INDEX_NAME = "tmp1";
+  private static final String GAME_INDEX_NAME = "GameIndex";
+//  private static final String GAME_INDEX_NAME = "tmp1";
   private static int LIMIT = 10;
 
   private static final ImmutableMap<GameCategory, String> CATEGORY_TO_STRING_MAP =

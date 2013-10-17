@@ -4,11 +4,24 @@
 
 var tkControllers = angular.module('tkApp.controllers', []);
 
-tkControllers.controller('AppCtrl', function($scope, notificationService) {
+tkControllers.controller('AppCtrl', function(
+    $scope, notificationService, authService) {
   $scope.CATEGORIES =
       ['', 'Ván đấu', 'Khai cuộc', 'Trung cuộc', 'Tàn cuộc', 'Cờ thế'];
 
   $scope.alert = notificationService.getAlert();
+  $scope.user = authService.getUser();
+});
+
+
+tkControllers.controller('AuthController', function($scope, authService) {
+  $scope.signIn = function() {
+    authService.signIn('ongbe');
+  };
+
+  $scope.signOut = function() {
+    authService.signOut();
+  };
 });
 
 
@@ -81,8 +94,6 @@ tkControllers.controller('CreateGameCtrl', function(
     }
     dbService.deleteGame($scope.game.id, USERNAME).then(function() {
       $location.path('/');
-    }, function() {
-      alert('Could not delete this game.');
     });
   };
 

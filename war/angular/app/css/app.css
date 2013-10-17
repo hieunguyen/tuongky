@@ -20,6 +20,10 @@
 	margin-top: -2px;
 }
 
+.user-bar {
+	text-align: right;
+}
+
 .view-container {
 	margin-bottom: 200px;
 }
