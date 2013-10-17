@@ -9,13 +9,14 @@ import com.googlecode.objectify.annotation.Unindexed;
 public class User {
 
   private @Id Long id;
+  private String email;
   private String username;
   @Unindexed private String hashed;
 
   @SuppressWarnings("unused") // Used by Objectify.
   private User() {}
 
-  public User(String username, String hashed) {
+  public User(String email, String username, String hashed) {
     this.username = username;
     this.hashed = hashed;
   }
@@ -26,6 +27,10 @@ public class User {
 
   public Long getId() {
     return id;
+  }
+
+  public String getEmail() {
+    return email;
   }
 
   public String getUsername() {

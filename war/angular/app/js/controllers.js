@@ -16,7 +16,12 @@ tkControllers.controller('AppCtrl', function(
 
 tkControllers.controller('AuthController', function(
     $scope, $location, authService) {
+
   $scope.signIn = function() {
+    $location.path('/signin');
+  };
+
+  $scope.fakeSignIn = function() {
     authService.signIn('ongbe');
   };
 
@@ -29,8 +34,6 @@ tkControllers.controller('AuthController', function(
 tkControllers.controller('CreateGameCtrl', function(
     $scope, $routeParams, $location, $timeout,
     gameService, treeService, fenService, dbService, game) {
-
-  var USERNAME = 'hieu';
 
   var fen = fenService.getStartingFen();
 
@@ -71,14 +74,15 @@ tkControllers.controller('CreateGameCtrl', function(
       fen: fen
     });
     if (game) {
-      dbService.saveGame($scope.game, USERNAME).then(function() {
+      dbService.saveGame($scope.game, $scope.user.username).then(function() {
         $scope.editMode = false;
       });
     } else {
-      dbService.createGame($scope.game, USERNAME).then(function(gameId) {
-        $scope.editMode = false;
-        $location.path('/game/id/' + gameId);
-      });
+      dbService.createGame($scope.game, $scope.user.username).then(
+          function(gameId) {
+            $scope.editMode = false;
+            $location.path('/game/id/' + gameId);
+          });
     }
   };
 
@@ -93,8 +97,8 @@ tkControllers.controller('CreateGameCtrl', function(
     if (!confirm('Bạn có thực sự muốn xóa game này không?')) {
       return;
     }
-    dbService.deleteGame($scope.game.id, USERNAME).then(function() {
-      $location.path('#/');
+    dbService.deleteGame($scope.game.id, $scope.user.username).then(function() {
+      $location.path('/');
     });
   };
 
@@ -288,7 +292,6 @@ tkControllers.controller('CreateFenCtrl', function($scope, $location, fenService
 tkControllers.controller('SandboxCtrl', function(
     $scope, $timeout, dbService, gameService, treeService, fenService) {
 
-  var USERNAME = 'nguoituyet';
   var CATEGORIES = ['', 'Ván đấu', 'Khai cuộc', 'Trung cuộc', 'Tàn cuộc', 'Cờ thế'];
 
   $scope.clear = function() {
@@ -308,7 +311,7 @@ tkControllers.controller('SandboxCtrl', function(
   });
 
   $scope.create = function() {
-    dbService.createGame($scope.game, USERNAME);
+    dbService.createGame($scope.game, $scope.user.username);
   };
 
   function searchSuccessCallback(searchResults) {
@@ -334,7 +337,8 @@ tkControllers.controller('SandboxCtrl', function(
 });
 
 
-tkControllers.controller('SearchBarCtrl', function($scope, $location) {
+tkControllers.controller('SearchBarCtrl', function(
+    $scope, $location, $timeout) {
 
   $scope.search = function() {
     var params = new Params();
@@ -342,10 +346,9 @@ tkControllers.controller('SearchBarCtrl', function($scope, $location) {
     $location.path('/search/' + params.encode());
   };
 
-  $scope.create = function() {
-    // $scope.queryString = '';
-    // $location.path('/game/create');
-  }
+  $timeout(function() {
+    $scope.searchBoxFocused = true;
+  });
 });
 
 
@@ -576,5 +579,29 @@ tkControllers.controller('BoardCtrl', function(
     gameService.unMakeMove();
     $scope.turn = gameService.getTurn();
     $scope.line = line;
+  };
+});
+
+
+tkControllers.controller('SigninCtrl', function($scope, $timeout, authService) {
+
+  $timeout(function() {
+    $scope.usernameFocused = true;
+  });
+
+  $scope.signIn = function() {
+    authService.signIn($scope.username);
+  };
+});
+
+
+tkControllers.controller('SignupCtrl', function($scope, $timeout) {
+
+  $timeout(function() {
+    $scope.emailFocused = true;
+  });
+
+  $scope.signUp = function() {
+    alert('sign up');
   };
 });

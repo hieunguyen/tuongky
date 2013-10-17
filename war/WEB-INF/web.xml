@@ -9,6 +9,24 @@
 	</servlet-mapping>
 
   <servlet>
+    <servlet-name>Signin</servlet-name>
+    <servlet-class>com.tuongky.SigninServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Signin</servlet-name>
+    <url-pattern>/signin</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>Signup</servlet-name>
+    <servlet-class>com.tuongky.SignupServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Signup</servlet-name>
+    <url-pattern>/signup</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>GameInit</servlet-name>
     <servlet-class>com.tuongky.GameInitServlet</servlet-class>
   </servlet>

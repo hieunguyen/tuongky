@@ -13,9 +13,9 @@ public class UserDao extends DAOBase {
     ObjectifyService.register(User.class);
   }
 
-  public User save(String username, String password) {
+  public User save(String email, String username, String password) {
     String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
-    User user = new User(username, hashed);
+    User user = new User(email, username, hashed);
     ObjectifyService.begin().put(user);
     return user;
   }
@@ -26,6 +26,16 @@ public class UserDao extends DAOBase {
 
   public User getById(long id, Objectify ofy) {
     return ofy.get(User.class, id);
+  }
+
+  public User getByEmail(String email) {
+    return getByEmail(email, ObjectifyService.begin());
+  }
+
+  public User getByEmail(String email, Objectify ofy) {
+    return ofy.query(User.class).
+        filter("email", email).
+        get();
   }
 
   public User getByUsername(String username) {

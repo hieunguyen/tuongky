@@ -14,6 +14,10 @@ tkApp.config(['$routeProvider', function($routeProvider) {
       {templateUrl: 'partials/create_game.html', controller: 'CreateGameCtrl', resolve: GameResolve});
   $routeProvider.when('/search/:params',
       {templateUrl: 'partials/search.html', controller: 'SearchCtrl'});
+  $routeProvider.when('/signin',
+      {templateUrl: 'partials/signin.html', controller: 'SigninCtrl'});
+  $routeProvider.when('/signup',
+      {templateUrl: 'partials/signup.html', controller: 'SignupCtrl'});
   $routeProvider.when('/sandbox',
       {templateUrl: 'partials/sandbox.html', controller: 'SandboxCtrl'});
   $routeProvider.otherwise({redirectTo: '/search/q='});
