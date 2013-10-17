@@ -583,25 +583,34 @@ tkControllers.controller('BoardCtrl', function(
 });
 
 
-tkControllers.controller('SigninCtrl', function($scope, $timeout, authService) {
+tkControllers.controller('SigninCtrl', function(
+    $scope, $timeout, $location, authService, userService) {
 
   $timeout(function() {
     $scope.usernameFocused = true;
   });
 
   $scope.signIn = function() {
-    authService.signIn($scope.username);
+    userService.signIn($scope.username, $scope.password)
+        .then(function() {
+          authService.signIn($scope.username);
+          $location.path('/');
+        });
   };
 });
 
 
-tkControllers.controller('SignupCtrl', function($scope, $timeout) {
+tkControllers.controller('SignupCtrl', function(
+    $scope, $timeout, $location, userService) {
 
   $timeout(function() {
     $scope.emailFocused = true;
   });
 
   $scope.signUp = function() {
-    alert('sign up');
+    userService.signUp($scope.email, $scope.username, $scope.password)
+        .then(function() {
+          $location.path('/');
+        });
   };
 });

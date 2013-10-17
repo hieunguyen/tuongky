@@ -586,3 +586,51 @@ tkServices.factory('authService', function() {
 
   return service;
 });
+
+
+tkServices.factory('userService', function($q, $http, notificationService) {
+  var service = {};
+
+  service.signIn = function(username, password) {
+    var defer = $q.defer();
+    notificationService.show('Đang đăng nhập...');
+    $http.post('/signin', {
+      username: username,
+      password: password
+    }).success(function(response) {
+      if (!response.code) {
+        notificationService.show('Đã đăng nhập thành công.');
+        defer.resolve(response);
+      } else if (response.code == 1) {
+        notificationService.showError('Tài khoản của bạn chưa được đăng ký.');
+        defer.reject();
+      } else if (response.code == 2) {
+        notificationService.showError('Sai mật khẩu.');
+        defer.reject();
+      }
+    }).error(function() {
+      notificationService.showError('Gặp lỗi, không đăng nhập được.');
+      defer.reject();
+    });
+    return defer.promise;
+  };
+
+  service.signUp = function(email, username, password) {
+    var defer = $q.defer();
+    notificationService.show('Đang đăng ký tài khoản mới...');
+    $http.post('/signup', {
+      email: email,
+      username: username,
+      password: password
+    }).success(function(response) {
+      notificationService.show('Đã đăng ký tài khoản thành công.');
+      defer.resolve(response);
+    }).error(function() {
+      notificationService.showError('Gặp lỗi, chưa đăng ký được tài khoản.');
+      defer.reject();
+    });
+    return defer.promise;
+  };
+
+  return service;
+});
