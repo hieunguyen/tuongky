@@ -14,7 +14,8 @@ tkControllers.controller('AppCtrl', function(
 });
 
 
-tkControllers.controller('AuthController', function($scope, authService) {
+tkControllers.controller('AuthController', function(
+    $scope, $location, authService) {
   $scope.signIn = function() {
     authService.signIn('ongbe');
   };
@@ -93,7 +94,7 @@ tkControllers.controller('CreateGameCtrl', function(
       return;
     }
     dbService.deleteGame($scope.game.id, USERNAME).then(function() {
-      $location.path('/');
+      $location.path('#/');
     });
   };
 

@@ -41,7 +41,7 @@
     {{CATEGORIES[game.category]}} -
     {{game.title}} -
     {{game.book}}
-    <div>
+    <div ng-show="game.username == user.username">
       <button class="btn btn-sm btn-primary" ng-click="editGame()">Cập nhật</button>
       <button class="btn btn-sm btn-danger" ng-click="deleteGame()">Xóa game</button>
     </div>
