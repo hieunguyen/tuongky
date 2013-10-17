@@ -19,7 +19,7 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-12 pagination-container">
+	<div class="col-md-12 pagination-container" ng-show="totalItems > ITEMS_PER_PAGE">
 		<pagination total-items="totalItems"
 								items-per-page="ITEMS_PER_PAGE"
 		            page="currentPage"

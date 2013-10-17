@@ -1,6 +1,23 @@
 .header {
-	/*border-bottom: 1px solid gray;*/
+	/*background-color: rgb(237, 237, 237);*/
+	/*border-bottom: 1px solid rgb(237, 237, 237);*/
+}
+
+.notification-bar {
+	height: 28px;
+	text-align: center;
+}
+
+.notification-bar .alert {
+	display: inline-block;
+	margin: 0;
+	padding: 3px 30px;
 	position: relative;
+	top: -14px;
+}
+
+.notification-bar .alert .close {
+	margin-top: -2px;
 }
 
 .view-container {
@@ -225,8 +242,8 @@
 }
 
 .search-results {
-	margin-top: 20px;
-}
+/*	margin-top: 20px;
+*/}
 
 .search-results table {
 	border-bottom: 1px solid #ddd;
@@ -284,7 +301,7 @@
 }
 
 .create-game-form-read, .create-game-form-edit {
-	margin: 20px 0;
+	margin: 0;
 }
 
 .create-game-form-read {
@@ -309,25 +326,4 @@
 
 .create-game-form-edit input.game-book {
 	width: 400px;
-}
-
-.notifications {
-	position: absolute;
-	width: 500px;
-	z-index: 100;
-	left: 50%;
-	padding: 0;
-	margin: 0;
-	margin-left: -250px;
-	top: 0;
-}
-
-.notifications .alert {
-	padding: 10px;
-	text-align: center;
-	margin-bottom: 0;
-}
-
-.notifications .alert .close {
-	margin-top: -2px;
 }

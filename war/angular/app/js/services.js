@@ -398,12 +398,13 @@ tkServices.factory('fenService', function() {
 });
 
 
-tkServices.factory('dbService', function($http, $q) {
+tkServices.factory('dbService', function($http, $q, notificationService) {
 
   var service = {};
 
   service.createGame = function(game, username) {
     var defer = $q.defer();
+    notificationService.show('Đang tạo game...');
     $http.post('/game/create', {
       username: username,
       category: game.category,
@@ -411,9 +412,10 @@ tkServices.factory('dbService', function($http, $q) {
       book: game.book,
       data: game.data
     }).success(function(response) {
+      notificationService.show('Đã tạo game thành công.');
       defer.resolve(response.gameId);
-      alert('Game created successfully.');
     }).error(function() {
+      notificationService.showError('Gặp lỗi, chưa tạo được game.');
       defer.reject();
     });
   return defer.promise;
@@ -421,6 +423,7 @@ tkServices.factory('dbService', function($http, $q) {
 
   service.saveGame = function(game, username) {
     var defer = $q.defer();
+    notificationService.show('Đang lưu game...');
     $http.post('/game/save', {
       id: game.id,
       username: username,
@@ -429,9 +432,10 @@ tkServices.factory('dbService', function($http, $q) {
       book: game.book,
       data: game.data
     }).success(function(response) {
+      notificationService.show('Đã lưu game thành công.');
       defer.resolve(response);
-      alert('Game saved successfully.');
     }).error(function() {
+      notificationService.showError('Gặp lỗi, chưa lưu được game.');
       defer.reject();
     });
     return defer.promise;
@@ -487,12 +491,15 @@ tkServices.factory('dbService', function($http, $q) {
 
   service.deleteGame = function(gameId, username) {
     var defer = $q.defer();
+    notificationService.show('Đang xóa game...');
     $http.post('/game/delete', {
       id: gameId,
       username: username
     }).success(function(response) {
+      notificationService.show('Đã xóa game thành công.');
       defer.resolve(response);
     }).error(function() {
+      notificationService.show('Gặp lỗi, chưa xóa được game.');
       defer.reject();
     });
     return defer.promise;
@@ -502,8 +509,50 @@ tkServices.factory('dbService', function($http, $q) {
 });
 
 
-tkServices.factory('notificationService', function() {
+tkServices.factory('notificationService', function($timeout) {
+  var SHOW_TIME = 3000; // 3s.
+
   var service = {};
+
+  var alert = {
+    type: '',
+    content: '',
+    visible: false
+  };
+
+  var showingCount = 0;
+
+  service.getAlert = function() {
+    return alert;
+  };
+
+  function maybeHide() {
+    showingCount--;
+    if (!showingCount) {
+      service.hide();
+    }
+  };
+
+  service.show = function(text) {
+    showingCount++;
+    alert.type = 'success';
+    alert.content = text;
+    alert.visible = true;
+    $timeout(maybeHide, SHOW_TIME);
+  };
+
+  service.showError = function(text) {
+    showingCount++;
+    alert.type = 'danger';
+    alert.content = text;
+    alert.visible = true;
+    $timeout(maybeHide, SHOW_TIME);
+  };
+
+  service.hide = function() {
+    alert.visible = false;
+    showingCount = 0;
+  };
 
   return service;
 });

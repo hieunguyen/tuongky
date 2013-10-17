@@ -4,10 +4,11 @@
 
 var tkControllers = angular.module('tkApp.controllers', []);
 
-tkControllers.controller('AppCtrl', function($scope) {
+tkControllers.controller('AppCtrl', function($scope, notificationService) {
   $scope.CATEGORIES =
       ['', 'Ván đấu', 'Khai cuộc', 'Trung cuộc', 'Tàn cuộc', 'Cờ thế'];
-  $scope.alertType = 'success';
+
+  $scope.alert = notificationService.getAlert();
 });
 
 
