@@ -1,26 +1,38 @@
 <div class="row signin-form">
   <div class="col-md-4"></div>
   <div class="col-md-4 well">
-    <legend>Mời bạn đăng nhập</legend>
-    <div class="form-group">
-      <input type="text"
-             class="form-control"
-             ng-model="username"
-             tk-focus="usernameFocused"
-             placeholder="Tài khoản">
-    </div>
-    <div class="form-group">
-      <input type="password"
-             class="form-control"
-             ng-model="password"
-             placeholder="Mật khẩu">
-    </div>
-    <div class="checkbox">
-      <label>
-        <input type="checkbox"> Nhớ mặt
-      </label>
-    </div>
-    <button class="btn btn-info btn-block" ng-click="signIn()">Đăng nhập</button>
+    <form name="form">
+      <legend>Mời bạn đăng nhập</legend>
+      <div class="form-group">
+        <input type="text"
+               class="form-control"
+               ng-model="username"
+               name="username"
+               tk-focus="usernameFocused"
+               placeholder="Tài khoản"
+               required>
+        <span class="help-block error" ng-show="form.username.$error.required && form.username.$dirty">
+          Mời bạn điền thông tin về tên tài khoản.
+        </span>
+      </div>
+      <div class="form-group">
+        <input type="password"
+               class="form-control"
+               ng-model="password"
+               name="password"
+               placeholder="Mật khẩu"
+               required>
+        <span class="help-block error" ng-show="form.password.$error.required && form.password.$dirty">
+          Mời bạn điền mật khẩu.
+        </span>
+      </div>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox"> Nhớ mặt
+        </label>
+      </div>
+      <button class="btn btn-info btn-block" ng-click="signIn()" ng-disabled="form.$invalid">Đăng nhập</button>
+    </form>
   </div>
   <div class="col-md-4"></div>
 </div>

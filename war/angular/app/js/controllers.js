@@ -21,6 +21,10 @@ tkControllers.controller('AuthController', function(
     $location.path('/signin');
   };
 
+  $scope.signUp = function() {
+    $location.path('/signup');
+  };
+
   $scope.fakeSignIn = function() {
     authService.signIn('ongbe');
   };
@@ -602,6 +606,8 @@ tkControllers.controller('SigninCtrl', function(
 
 tkControllers.controller('SignupCtrl', function(
     $scope, $timeout, $location, userService) {
+
+  $scope.showPassword = false;
 
   $timeout(function() {
     $scope.emailFocused = true;
