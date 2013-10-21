@@ -11,6 +11,7 @@ tkControllers.controller('AppCtrl', function(
 
   $scope.alert = notificationService.getAlert();
   $scope.user = authService.getUser();
+  $scope.data = {loading: false};
 });
 
 
@@ -605,7 +606,7 @@ tkControllers.controller('SigninCtrl', function(
 
 
 tkControllers.controller('SignupCtrl', function(
-    $scope, $timeout, $location, userService) {
+    $scope, $timeout, $location, userService, authService) {
 
   $scope.showPassword = false;
 
@@ -616,6 +617,7 @@ tkControllers.controller('SignupCtrl', function(
   $scope.signUp = function() {
     userService.signUp($scope.email, $scope.username, $scope.password)
         .then(function() {
+          authService.signIn($scope.username);
           $location.path('/');
         });
   };

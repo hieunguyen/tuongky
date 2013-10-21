@@ -4,15 +4,14 @@
     <form name="form">
       <legend>Mời bạn đăng ký tài khoản</legend>
       <div class="form-group">
-        <input type="text"
+        <input type="email"
                class="form-control"
                ng-model="email"
                name="email"
                tk-focus="emailFocused"
-               placeholder="Thư điện tử"
-               required>
-        <span class="help-block error" ng-show="form.email.$error.required && form.email.$dirty">
-          Mời bạn điền thông tin về thư điện tử.
+               placeholder="Thư điện tử (có thể bỏ trống)">
+        <span class="help-block error" ng-show="form.email.$error.email && form.email.$dirty">
+          Thư điện tử không hợp lệ.
         </span>
       </div>
       <div class="form-group">
@@ -21,9 +20,13 @@
                ng-model="username"
                name="username"
                placeholder="Tài khoản"
+               ng-pattern="/^[a-zA-Z0-9_]+$/"
                required>
         <span class="help-block error" ng-show="form.username.$error.required && form.username.$dirty">
-          Mời bạn điền thông tin về tên tài khoản.
+          Mời bạn điền tên tài khoản.
+        </span>
+        <span class="help-block error" ng-show="form.username.$error.pattern && form.username.$dirty">
+          Chỉ chấp nhận các ký tự a-z, A-Z, 0-9, và _.
         </span>
       </div>
       <div class="form-group">
@@ -32,9 +35,13 @@
                ng-model="password"
                name="password"
                placeholder="Mật khẩu"
+               ng-pattern="/^\S+$/"
                required>
         <span class="help-block error" ng-show="form.password.$error.required && form.password.$dirty">
           Mời bạn điền mật khẩu.
+        </span>
+        <span class="help-block error" ng-show="form.password.$error.pattern && form.password.$dirty">
+          Mật khẩu không hợp lệ vì chứa dấu cách.
         </span>
       </div>
       <div class="checkbox">

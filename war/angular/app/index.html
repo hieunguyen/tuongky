@@ -27,8 +27,8 @@
       <div class="col-md-3 user-bar" ng-controller="AuthController">
         <div ng-hide="user.authenticated" ng-cloak>
           <button class="btn btn-link" ng-click="signIn()">Sign in</button> |
+          <button class="btn btn-link" ng-click="signUp()">Sign up</button> |
           <button class="btn btn-link" ng-click="fakeSignIn()">Fake sign in</button>
-          | <button class="btn btn-link" ng-click="signUp()">Sign up</button>
         </div>
         <div ng-show="user.authenticated" ng-cloak>
           Xin chào {{user.username}}
@@ -45,7 +45,12 @@
         </div>
       </div>
     </div>
-    <div ng-view class="view-container"></div>
+    <div class="row">
+      <div class="col-md-12 loading">
+        <img src="img/load_lg.gif" ng-show="data.loading" ng-cloak>
+      </div>
+    </div>
+    <div ng-view class="view-container" ng-hide="data.loading"></div>
   </div>
   <script src="http://documentcloud.github.io/underscore/underscore-min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>

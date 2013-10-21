@@ -601,10 +601,10 @@ tkServices.factory('userService', function($q, $http, notificationService) {
       if (!response.code) {
         notificationService.show('Đã đăng nhập thành công.');
         defer.resolve(response);
-      } else if (response.code == 1) {
+      } else if (response.code === 1) {
         notificationService.showError('Tài khoản của bạn chưa được đăng ký.');
         defer.reject();
-      } else if (response.code == 2) {
+      } else if (response.code === 2) {
         notificationService.showError('Sai mật khẩu.');
         defer.reject();
       }
@@ -623,8 +623,14 @@ tkServices.factory('userService', function($q, $http, notificationService) {
       username: username,
       password: password
     }).success(function(response) {
-      notificationService.show('Đã đăng ký tài khoản thành công.');
-      defer.resolve(response);
+      if (!response.code) {
+        notificationService.show('Đã đăng ký tài khoản thành công.');
+        defer.resolve(response);
+      } else if (response.code === 1) {
+        notificationService.showError('Tài khoản này đã được đăng ký sử dụng.');
+        defer.reject();
+      } else if (response.code === 2) {
+      }
     }).error(function() {
       notificationService.showError('Gặp lỗi, chưa đăng ký được tài khoản.');
       defer.reject();

@@ -17,6 +17,7 @@ public class User {
   private User() {}
 
   public User(String email, String username, String hashed) {
+    this.email = email;
     this.username = username;
     this.hashed = hashed;
   }
