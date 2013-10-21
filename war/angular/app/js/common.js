@@ -16,3 +16,9 @@ var R = 4; // Rook
 var C = 5; // Cannon
 var H = 6; // Horse
 var P = 7; // Pawn
+
+var Roles = {
+  ANONYMOUS: 0,
+  USER: 1,
+  ADMIN: 2
+};

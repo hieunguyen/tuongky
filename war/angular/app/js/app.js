@@ -5,22 +5,49 @@ var tkApp = angular.module('tkApp',
 
 tkApp.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/fen/create',
-      {templateUrl: 'partials/create_fen.html', controller: 'CreateFenCtrl'});
-  $routeProvider.when('/game/create',
-      {templateUrl: 'partials/create_game.html', controller: 'CreateGameCtrl', resolve: UnsavedGameResolve});
-  $routeProvider.when('/game/create/fen/:encodedFen',
-      {templateUrl: 'partials/create_game.html', controller: 'CreateGameCtrl', resolve: UnsavedGameResolve});
-  $routeProvider.when('/game/id/:gameId',
-      {templateUrl: 'partials/create_game.html', controller: 'CreateGameCtrl', resolve: GameResolve});
-  $routeProvider.when('/search/:params',
-      {templateUrl: 'partials/search.html', controller: 'SearchCtrl'});
-  $routeProvider.when('/signin',
-      {templateUrl: 'partials/signin.html', controller: 'SigninCtrl'});
-  $routeProvider.when('/signup',
-      {templateUrl: 'partials/signup.html', controller: 'SignupCtrl'});
-  $routeProvider.when('/sandbox',
-      {templateUrl: 'partials/sandbox.html', controller: 'SandboxCtrl'});
-  $routeProvider.otherwise({redirectTo: '/search/q='});
+      {
+        templateUrl: 'partials/create_fen.html',
+        controller: 'CreateFenCtrl'
+      })
+  .when('/game/create',
+      {
+        templateUrl: 'partials/create_game.html',
+        controller: 'CreateGameCtrl',
+        resolve: UnsavedGameResolve
+      })
+  .when('/game/create/fen/:encodedFen',
+      {
+        templateUrl: 'partials/create_game.html',
+        controller: 'CreateGameCtrl',
+        resolve: UnsavedGameResolve
+      })
+  .when('/game/id/:gameId',
+      {
+        templateUrl: 'partials/create_game.html',
+        controller: 'CreateGameCtrl',
+        resolve: GameResolve
+      })
+  .when('/search/:params',
+      {
+        templateUrl: 'partials/search.html',
+        controller: 'SearchCtrl'
+      })
+  .when('/signin',
+      {
+        templateUrl: 'partials/signin.html',
+        controller: 'SigninCtrl'
+      })
+  .when('/signup',
+      {
+        templateUrl: 'partials/signup.html',
+        controller: 'SignupCtrl'
+      })
+  .when('/sandbox',
+      {
+        templateUrl: 'partials/sandbox.html',
+        controller: 'SandboxCtrl'
+      });
+  .otherwise({redirectTo: '/search/q='});
 }]);
 
 tkApp.config(['$httpProvider', function($httpProvider) {
