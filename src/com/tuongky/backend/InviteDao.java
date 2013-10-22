@@ -29,6 +29,6 @@ public class InviteDao extends DAOBase {
   }
 
   public Invite getById(String id, Objectify ofy) {
-    return ofy.get(Invite.class, id);
+    return ofy.find(Invite.class, id);
   }
 }

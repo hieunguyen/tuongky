@@ -9,8 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
+import com.tuongky.backend.InviteDao;
 import com.tuongky.backend.SessionDao;
 import com.tuongky.backend.UserDao;
+import com.tuongky.model.datastore.Invite;
 import com.tuongky.model.datastore.Session;
 import com.tuongky.model.datastore.User;
 
@@ -36,6 +38,22 @@ public class SignupServlet extends HttpServlet {
     String email = req.getParameter("email");
     String username = req.getParameter("username");
     String password = req.getParameter("password");
+
+    String inviteCode = req.getParameter("invite_code");
+    boolean inviteOk = true;
+    if (Settings.BETA) {
+      inviteOk = false;
+      if (inviteCode != null && inviteCode.trim().length() > 0) {
+        InviteDao inviteDao = new InviteDao();
+        Invite invite = inviteDao.getById(inviteCode.trim());
+        if (invite != null && !invite.hasUsed()) {
+          inviteOk = true;
+          invite.useIt();
+          inviteDao.save(invite);
+        }
+      }
+    }
+
     int code = 0; // Valid
     UserDao userDao = new UserDao();
     User user = userDao.getByUsername(username);
@@ -43,6 +61,8 @@ public class SignupServlet extends HttpServlet {
       code = 1; // Existing username.
     } else if (!isValid(username, password)) {
       code = 2; // All other invalid cases (should be already tested on the client side).
+    } else if (!inviteOk) {
+      code = 3;
     }
     Map<String, Object> data = Maps.newHashMap();
     data.put("code", code);

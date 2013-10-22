@@ -27,11 +27,13 @@
       <div class="col-md-3 user-bar" ng-controller="AuthController">
         <div ng-hide="user.authenticated" ng-cloak>
           <button class="btn btn-link" ng-click="signIn()">Sign in</button> |
-          <button class="btn btn-link" ng-click="signUp()">Sign up</button> |
-          <button class="btn btn-link" ng-click="fakeSignIn()">Fake sign in</button>
+          <button class="btn btn-link" ng-click="signUp()">Sign up</button>
         </div>
         <div ng-show="user.authenticated" ng-cloak>
           Xin chào {{user.username}}
+          <span ng-show="user.isAdmin">
+            <button class="btn btn-link" ng-click="invite()">Invite</button> |
+          </span>
           <button class="btn btn-link" ng-click="signOut()">Sign out</button>
         </div>
       </div>
@@ -56,9 +58,12 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
   <script src='https://cdn.firebase.com/v0/firebase.js'></script>
+
+  <script src="lib/angular/angular-cookies.js"></script>
   <script src='lib/bootstrap/dropdown.js'></script>
   <script src='lib/json2.js'></script>
   <script src='lib/ui-bootstrap-tpls-0.6.0.min.js'></script>
+
   <script src="js/common.js"></script>
   <script src="js/logic.js"></script>
   <script src="js/position.js"></script>

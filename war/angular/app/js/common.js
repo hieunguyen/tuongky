@@ -22,3 +22,5 @@ var Roles = {
   USER: 1,
   ADMIN: 2
 };
+
+var ADMIN_USERS = ['admin', 'hieu']; // TODO(): remove this.

@@ -558,12 +558,13 @@ tkServices.factory('notificationService', function($timeout) {
 });
 
 
-tkServices.factory('authService', function() {
+tkServices.factory('authService', function($cookies) {
   var service = {};
 
   var user = {
     username: '',
-    authenticated: false
+    authenticated: false,
+    isAdmin: false
   };
 
   service.getUser = function() {
@@ -573,15 +574,22 @@ tkServices.factory('authService', function() {
   service.signIn = function(username) {
     user.username = username;
     user.authenticated = true;
+    user.isAdmin = _.contains(ADMIN_USERS, username);
   };
 
   service.signOut = function() {
     user.username = '';
     user.authenticated = false;
+    user.isAdmin = false;
+    delete $cookies.sid;
   };
 
   service.isAuthenticated = function() {
     return user.authenticated;
+  };
+
+  service.isAdmin = function() {
+    return user.isAdmin;
   };
 
   return service;
@@ -615,13 +623,14 @@ tkServices.factory('userService', function($q, $http, notificationService) {
     return defer.promise;
   };
 
-  service.signUp = function(email, username, password) {
+  service.signUp = function(email, username, password, inviteCode) {
     var defer = $q.defer();
     notificationService.show('Đang đăng ký tài khoản mới...');
     $http.post('/signup', {
       email: email,
       username: username,
-      password: password
+      password: password,
+      invite_code: inviteCode
     }).success(function(response) {
       if (!response.code) {
         notificationService.show('Đã đăng ký tài khoản thành công.');
@@ -630,9 +639,35 @@ tkServices.factory('userService', function($q, $http, notificationService) {
         notificationService.showError('Tài khoản này đã được đăng ký sử dụng.');
         defer.reject();
       } else if (response.code === 2) {
+        notificationService.showError('Tài khoản hoặc mật khẩu không hợp lệ.');
+        defer.reject();
+      } else if (response.code === 3) {
+        notificationService.showError('Mã mời tạo tài khoản không hợp lệ.');
+        defer.reject();
       }
     }).error(function() {
       notificationService.showError('Gặp lỗi, chưa đăng ký được tài khoản.');
+      defer.reject();
+    });
+    return defer.promise;
+  };
+
+  return service;
+});
+
+
+tkServices.factory('inviteService', function($q, $http, notificationService) {
+  var service = {};
+
+  service.createInvite = function() {
+    var defer = $q.defer();
+    notificationService.show('Đang tạo invite link...');
+    $http.post('/invite/create', {
+    }).success(function(response) {
+      notificationService.show('Đã tạo invite link thành công.');
+      defer.resolve(response);
+    }).error(function() {
+      notificationService.showError('Gặp lỗi, không tạo được invite link.');
       defer.reject();
     });
     return defer.promise;

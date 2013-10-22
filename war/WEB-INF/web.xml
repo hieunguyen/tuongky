@@ -9,6 +9,15 @@
 	</servlet-mapping>
 
   <servlet>
+    <servlet-name>InviteCreate</servlet-name>
+    <servlet-class>com.tuongky.InviteCreateServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>InviteCreate</servlet-name>
+    <url-pattern>/invite/create</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>Signin</servlet-name>
     <servlet-class>com.tuongky.SigninServlet</servlet-class>
   </servlet>

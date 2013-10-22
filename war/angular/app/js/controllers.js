@@ -5,13 +5,23 @@
 var tkControllers = angular.module('tkApp.controllers', []);
 
 tkControllers.controller('AppCtrl', function(
-    $scope, notificationService, authService) {
+    $scope, $location, notificationService, authService) {
   $scope.CATEGORIES =
       ['', 'Ván đấu', 'Khai cuộc', 'Trung cuộc', 'Tàn cuộc', 'Cờ thế'];
 
   $scope.alert = notificationService.getAlert();
   $scope.user = authService.getUser();
   $scope.data = {loading: false};
+
+  $scope.$on('$routeChangeStart', function(event, next) {
+    if (next.accessLevel > Roles.ANONYMOUS && !authService.isAuthenticated()) {
+      $location.path('/signin');
+      return;
+    }
+    if (next.accessLevel === Roles.ADMIN && !authService.isAdmin()) {
+      $location.path('/accessdenied');
+    }
+  });
 });
 
 
@@ -26,12 +36,12 @@ tkControllers.controller('AuthController', function(
     $location.path('/signup');
   };
 
-  $scope.fakeSignIn = function() {
-    authService.signIn('ongbe');
-  };
-
   $scope.signOut = function() {
     authService.signOut();
+  };
+
+  $scope.invite = function() {
+    $location.path('/invite');
   };
 });
 
@@ -589,7 +599,7 @@ tkControllers.controller('BoardCtrl', function(
 
 
 tkControllers.controller('SigninCtrl', function(
-    $scope, $timeout, $location, authService, userService) {
+    $scope, $timeout, $location, $cookies, authService, userService) {
 
   $timeout(function() {
     $scope.usernameFocused = true;
@@ -597,7 +607,8 @@ tkControllers.controller('SigninCtrl', function(
 
   $scope.signIn = function() {
     userService.signIn($scope.username, $scope.password)
-        .then(function() {
+        .then(function(response) {
+          $cookies.sid = response.sid;
           authService.signIn($scope.username);
           $location.path('/');
         });
@@ -606,7 +617,10 @@ tkControllers.controller('SigninCtrl', function(
 
 
 tkControllers.controller('SignupCtrl', function(
-    $scope, $timeout, $location, userService, authService) {
+    $scope, $timeout, $location, $cookies, $routeParams,
+    userService, authService) {
+
+  var inviteCode = $routeParams.inviteCode || '';
 
   $scope.showPassword = false;
 
@@ -615,10 +629,29 @@ tkControllers.controller('SignupCtrl', function(
   });
 
   $scope.signUp = function() {
-    userService.signUp($scope.email, $scope.username, $scope.password)
-        .then(function() {
+    userService.signUp(
+        $scope.email, $scope.username, $scope.password, inviteCode)
+        .then(function(response) {
+          $cookies.sid = response.sid;
           authService.signIn($scope.username);
           $location.path('/');
         });
+  };
+});
+
+
+tkControllers.controller('AccessDeniedCtrl', function() {});
+
+
+tkControllers.controller('InviteCtrl', function($scope, inviteService) {
+
+  function createInviteUrl(inviteId) {
+    return window.location.origin + '/#/signup/' + inviteId;
+  }
+
+  $scope.generateInvite = function() {
+    inviteService.createInvite().then(function(response) {
+      $scope.inviteUrl = createInviteUrl(response.inviteId);
+    });
   };
 });

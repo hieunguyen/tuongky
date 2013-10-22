@@ -1,25 +1,32 @@
 'use strict';
 
 var tkApp = angular.module('tkApp',
-    ['tkApp.filters', 'tkApp.services', 'tkApp.directives', 'tkApp.controllers']);
+    ['ngCookies',
+     'tkApp.filters',
+     'tkApp.services',
+     'tkApp.directives',
+     'tkApp.controllers']);
 
 tkApp.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/fen/create',
       {
         templateUrl: 'partials/create_fen.html',
-        controller: 'CreateFenCtrl'
+        controller: 'CreateFenCtrl',
+        accessLevel: Roles.USER
       })
   .when('/game/create',
       {
         templateUrl: 'partials/create_game.html',
         controller: 'CreateGameCtrl',
-        resolve: UnsavedGameResolve
+        resolve: UnsavedGameResolve,
+        accessLevel: Roles.USER
       })
   .when('/game/create/fen/:encodedFen',
       {
         templateUrl: 'partials/create_game.html',
         controller: 'CreateGameCtrl',
-        resolve: UnsavedGameResolve
+        resolve: UnsavedGameResolve,
+        accessLevel: Roles.USER
       })
   .when('/game/id/:gameId',
       {
@@ -42,11 +49,27 @@ tkApp.config(['$routeProvider', function($routeProvider) {
         templateUrl: 'partials/signup.html',
         controller: 'SignupCtrl'
       })
+  .when('/signup/:inviteCode',
+      {
+        templateUrl: 'partials/signup.html',
+        controller: 'SignupCtrl'
+      })
+  .when('/invite',
+      {
+        templateUrl: 'partials/invite.html',
+        controller: 'InviteCtrl',
+        accessLevel: Roles.ADMIN
+      })
+  .when('/accessdenied',
+      {
+        templateUrl: 'partials/accessdenied.html',
+        controller: 'AccessDeniedCtrl'
+      })
   .when('/sandbox',
       {
         templateUrl: 'partials/sandbox.html',
         controller: 'SandboxCtrl'
-      });
+      })
   .otherwise({redirectTo: '/search/q='});
 }]);
 
