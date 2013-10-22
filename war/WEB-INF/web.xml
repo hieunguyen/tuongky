@@ -7,6 +7,15 @@
 		<servlet-name>Tuongky</servlet-name>
 		<url-pattern>/tuongky</url-pattern>
 	</servlet-mapping>
+	
+	<filter>
+	 <filter-name>AuthFilter</filter-name>
+	 <filter-class>com.tuongky.AuthFilter</filter-class>
+	</filter>
+	<filter-mapping>
+	 <filter-name>AuthFilter</filter-name>
+	 <url-pattern>/*</url-pattern>
+	</filter-mapping>
 
   <servlet>
     <servlet-name>InviteCreate</servlet-name>

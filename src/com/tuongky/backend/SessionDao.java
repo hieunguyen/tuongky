@@ -24,6 +24,6 @@ public class SessionDao {
 
   public Session getById(String id) {
     Objectify ofy = ObjectifyService.begin();
-    return ofy.get(Session.class, id);
+    return ofy.find(Session.class, id);
   }
 }
