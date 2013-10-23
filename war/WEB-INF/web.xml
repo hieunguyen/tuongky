@@ -16,6 +16,15 @@
 	 <filter-name>AuthFilter</filter-name>
 	 <url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
+  <servlet>
+    <servlet-name>UserStatus</servlet-name>
+    <servlet-class>com.tuongky.UserStatusServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UserStatus</servlet-name>
+    <url-pattern>/user_status</url-pattern>
+  </servlet-mapping>
 
   <servlet>
     <servlet-name>InviteCreate</servlet-name>

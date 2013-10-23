@@ -652,6 +652,17 @@ tkServices.factory('userService', function($q, $http, notificationService) {
     return defer.promise;
   };
 
+  service.getStatus = function() {
+    var defer = $q.defer();
+    $http.get('/user_status')
+    .success(function(response) {
+      defer.resolve(response.username);
+    }).error(function() {
+      defer.reject();
+    });
+    return defer.promise;
+  };
+
   return service;
 });
 

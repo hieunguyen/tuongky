@@ -5,7 +5,7 @@
 var tkControllers = angular.module('tkApp.controllers', []);
 
 tkControllers.controller('AppCtrl', function(
-    $scope, $location, notificationService, authService) {
+    $scope, $location, notificationService, authService, userService) {
   $scope.CATEGORIES =
       ['', 'Ván đấu', 'Khai cuộc', 'Trung cuộc', 'Tàn cuộc', 'Cờ thế'];
 
@@ -20,6 +20,14 @@ tkControllers.controller('AppCtrl', function(
     }
     if (next.accessLevel === Roles.ADMIN && !authService.isAdmin()) {
       $location.path('/accessdenied');
+    }
+  });
+
+  $scope.data.loading = true;
+  userService.getStatus().then(function(username) {
+    $scope.data.loading = false;
+    if (username) {
+      authService.signIn(username);
     }
   });
 });
