@@ -60,10 +60,18 @@
     <div class="clear"></div>
 
     <div class="board-control-panel">
-      <button class="btn btn-sm" ng-click="goFirst()">Đầu</button>
-      <button class="btn btn-sm" ng-click="goPrevious()">Trước</button>
-      <button class="btn btn-sm" ng-click="goNext()">Tiếp</button>
-      <button class="btn btn-sm" ng-click="goLast()">Cuối</button>
+      <button class="btn btn-sm btn-default"
+              ng-click="goFirst()"
+              tabindex="10">Đầu</button>
+      <button class="btn btn-sm btn-default"
+              ng-click="goPrevious()"
+              tabindex="11">Trước</button>
+      <button class="btn btn-sm btn-default"
+              ng-click="goNext()"
+              tabindex="12">Tiếp</button>
+      <button class="btn btn-sm btn-default"
+              ng-click="goLast()"
+              tabindex="13">Cuối</button>
     </div>
   </div>
 </div>
