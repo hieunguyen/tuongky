@@ -761,3 +761,35 @@ tkServices.factory('vnService', function() {
 
   return service;
 });
+
+
+tkServices.factory('annotateService', function(vnService) {
+  var service = {};
+
+  function annotateToken(token, tag) {
+    return '<' + tag + '>' + token + '</' + tag + '>';
+  }
+
+  function maybeAnnotateToken(token, queryTokens, tag) {
+    if (_.contains(queryTokens, vnService.normalize(token))) {
+      return annotateToken(token, tag);
+    }
+    return token;
+  }
+
+  service.annotate = function(s, query, opt_tag) {
+    if (!query) {
+      return s;
+    }
+    var tag = opt_tag || 'em';
+    var words = s.split(/\s+/);
+    var normalized_query = vnService.normalize(query);
+    var queryWords = normalized_query.toLowerCase().split(/\s+/);
+    var annotated_words = _.map(words, function(token) {
+      return maybeAnnotateToken(token, queryWords, tag);
+    });
+    return annotated_words.join(' ');
+  };
+
+  return service;
+});

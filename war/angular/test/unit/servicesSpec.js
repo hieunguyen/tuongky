@@ -111,6 +111,8 @@ describe('tkApp.services:', function() {
     it('should do the normalization correctly.', function() {
       expect(vnService.normalize(
           'Thuận pháo trực xa')).toBe('thuan phao truc xe');
+      expect(vnService.normalize(
+          'Tam bộ hổ')).toBe('tam bo ho');
     });
   });
 });

@@ -269,6 +269,11 @@ form .error {
 	font-size: 20px;
 }
 
+.search-results em {
+	font-weight: bold;
+	font-style: normal;
+}
+
 .search-results table {
 	border: 1px solid #ddd;
 }

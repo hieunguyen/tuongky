@@ -10,10 +10,20 @@
 			<tr ng-repeat="searchResult in searchResults">
 				<td>{{searchResult.categoryText}}</td>
 				<td>
-					<a href="#/game/id/{{searchResult.id}}">{{searchResult.title}}</a>
+					<a href="#/game/id/{{searchResult.id}}">
+						<span ng-bind-html-unsafe="searchResult.annotated_title"></span>
+					</a>
 				</td>
-				<td><a href="#/search/q={{searchResult.book}}">{{searchResult.book}}</a></td>
-				<td><a href="#/search/q={{searchResult.username}}">{{searchResult.username}}</a></td>
+				<td>
+					<a href="#/search/q={{searchResult.book}}">
+						<span ng-bind-html-unsafe="searchResult.annotated_book"></span>
+					</a>
+				</td>
+				<td>
+					<a href="#/search/q={{searchResult.username}}">
+						<span ng-bind-html-unsafe="searchResult.annotated_username"></span>
+					</a>
+				</td>
 			</tr>
 		</table>
 	</div>

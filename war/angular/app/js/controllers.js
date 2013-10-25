@@ -381,7 +381,7 @@ tkControllers.controller('SearchBarCtrl', function(
 
 
 tkControllers.controller('SearchCtrl', function(
-    $scope, $routeParams, $location, $timeout, dbService) {
+    $scope, $routeParams, $location, $timeout, dbService, annotateService) {
 
   $scope.ITEMS_PER_PAGE = 10;
 
@@ -390,6 +390,12 @@ tkControllers.controller('SearchCtrl', function(
       game.categoryText = $scope.CATEGORIES[Number(game.categoryIndex)];
       game.categoryKeyword =
           $scope.CATEGORY_KEYWORDS[Number(game.categoryIndex)];
+      game.annotated_title = annotateService.annotate(
+          game.title, $scope.searchData.queryString);
+      game.annotated_book = annotateService.annotate(
+          game.book, $scope.searchData.queryString);
+      game.annotated_username = annotateService.annotate(
+          game.username, $scope.searchData.queryString);
     });
     $scope.searchResults = response.games;
     $scope.totalItems = Number(response.numberFound);
@@ -403,9 +409,11 @@ tkControllers.controller('SearchCtrl', function(
   $scope.searchData.queryString = params.get('q');
 
   $scope.data.loading = true;
-  dbService.searchGames(params.get('q'), params.get('start')).then(searchSuccessCallback);
+  dbService.searchGames(
+      params.get('q'), params.get('start')).then(searchSuccessCallback);
 
-  $scope.currentPage = Math.floor(params.get('start') / $scope.ITEMS_PER_PAGE) + 1;
+  $scope.currentPage =
+      Math.floor(params.get('start') / $scope.ITEMS_PER_PAGE) + 1;
 
   $scope.selectPage = function(page) {
     params.set('start', (page - 1) * $scope.ITEMS_PER_PAGE);
