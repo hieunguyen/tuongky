@@ -620,6 +620,26 @@ tkControllers.controller('BoardCtrl', function(
     $scope.turn = gameService.getTurn();
     $scope.line = line;
   };
+
+  $scope.goFirst = function() {
+    $scope.selectMove(0);
+  };
+
+  $scope.goPrevious = function() {
+    if ($scope.currentLineIndex - 1 >= 0) {
+      $scope.selectMove($scope.currentLineIndex - 1);
+    }
+  };
+
+  $scope.goNext = function() {
+    if ($scope.currentLineIndex + 1 < line.length) {
+      $scope.selectMove($scope.currentLineIndex + 1);
+    }
+  };
+
+  $scope.goLast = function() {
+    $scope.selectMove(line.length - 1);
+  };
 });
 
 

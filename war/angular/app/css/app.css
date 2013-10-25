@@ -1,3 +1,7 @@
+.clear {
+  clear: both;
+}
+
 form .error {
 	color: #b94a48;
 }
@@ -76,6 +80,18 @@ form .error {
 	cursor: pointer;
 	height: 57px;
 	width: 57px;
+}
+
+.board-control-panel {
+	/*border: 1px solid;*/
+	width: 521px;
+	text-align: center;
+	margin: 20px 0;
+}
+
+.board-control-panel button {
+	width: 80px;
+	margin: 5px;
 }
 
 .over {
