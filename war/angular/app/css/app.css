@@ -8,7 +8,7 @@ form .error {
 }
 
 .notification-bar {
-	height: 28px;
+	height: 15px;
 	text-align: center;
 }
 
@@ -249,16 +249,15 @@ form .error {
 	margin-top: 20px;
 }
 
-.search-results {
-/*	margin-top: 20px;
-*/}
+.no-search-results {
+	font-size: 20px;
+}
 
 .search-results table {
-	border-bottom: 1px solid #ddd;
+	border: 1px solid #ddd;
 }
 
 .search-bar {
-	/*border: 1px solid;*/
 	height: 72px;
 }
 
@@ -313,27 +312,48 @@ form .error {
 }
 
 .create-game-form-read {
-	font-size: 20px;
+	text-align: center;
+	margin-bottom: 20px;
 }
 
 .create-game-form-read button {
 	margin: 10px 5px 0 0;
 }
 
-.create-game-form-edit select {
-	width: 100px;
+.create-game-form-read .game-title {
+	font-size: 20px;
 }
 
-.create-game-form-edit button {
-	margin-right: 10px;
+.create-game-form-read .game-book {
+	font-size: 18px;
 }
 
-.create-game-form-edit input.game-title {
-	width: 600px;
+.create-game-form-read .game-category-username {
+	font-size: 16px;
 }
 
-.create-game-form-edit input.game-book {
-	width: 400px;
+.create-game-form-edit .form-group {
+	margin-bottom: 10px;
+}
+
+.create-game-form-edit .game-category {
+	display: inline-block;
+	width: 120px;
+}
+
+.create-game-form-edit .game-book {
+	display: inline-block;
+	margin-left: 6px;
+	width: 410px;
+}
+
+.create-game-form-edit .form-group.action-buttons {
+	text-align: center;
+	margin-bottom: 15px;
+}
+
+.create-game-form-edit .action-buttons .left-button {
+	margin-right: 5px;
 }
 
 .loading {

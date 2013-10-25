@@ -1,50 +1,55 @@
 <div class="row create-game-form-edit" ng-show="editMode">
-  <div class="col-md-12">
-    <table class="table">
-      <tr>
-        <td>Phân loại:</td>
-        <td>Tiêu đề:</td>
-        <td>Sách / Giải đấu:</td>
-      </tr>
-      <tr>
-        <td>
-          <select ng-model="game.category">
-            <option value="1">{{CATEGORIES[1]}}</option>
-            <option value="2">{{CATEGORIES[2]}}</option>
-            <option value="3">{{CATEGORIES[3]}}</option>
-            <option value="4">{{CATEGORIES[4]}}</option>
-            <option value="5">{{CATEGORIES[5]}}</option>
-          </select>
-        </td>
-        <td>
-          <input type="text" class="game-title" ng-model="game.title" tk-focus="titleFocused">
-        </td>
-        <td>
-          <input type="text" class="game-book" ng-model="game.book">
-        </td>
-      </tr>
-      <tr>
-        <td></td>
-        <td>
-          <button class="btn btn-sm btn-primary" ng-click="saveGame()">
-            {{game.id && 'Lưu thay đổi' || 'Tạo game mới'}}
-          </button>
-          <button class="btn btn-sm" ng-click="cancelChanges()" ng-show="game.id">Hủy thay đổi</button>
-        </td>
-        <td></td>
-      </tr>
-    </table>
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+    <form name="form">
+      <div class="form-group">
+        <input type="text"
+               class="form-control"
+               ng-model="game.title"
+               name="gameTitle"
+               tk-focus="titleFocused"
+               placeholder="Tiêu đề"
+               required>
+        <span class="help-block error" ng-show="form.gameTitle.$error.required && form.gameTitle.$dirty">
+          Mời bạn nhập tiêu đề.
+        </span>
+      </div>
+      <div class="form-group">
+        <select ng-model="game.category" class="game-category form-control">
+          <option value="1">{{CATEGORIES[1]}}</option>
+          <option value="2">{{CATEGORIES[2]}}</option>
+          <option value="3">{{CATEGORIES[3]}}</option>
+          <option value="4">{{CATEGORIES[4]}}</option>
+          <option value="5">{{CATEGORIES[5]}}</option>
+        </select>
+        <input type="text"
+               ng-model="game.book"
+               name="gameBook"
+               class="game-book form-control"
+               placeholder="Sách / Giải đấu">
+      </div>
+      <div class="form-group action-buttons">
+        <button class="btn btn-sm btn-primary left-button" ng-click="saveGame()" ng-disabled="form.$invalid">
+          {{game.id && 'Lưu thay đổi' || 'Tạo game'}}
+        </button>
+        <button class="btn btn-sm btn-danger" ng-click="cancelChanges()" ng-show="game.id">Hủy thay đổi</button>
+      </div>
+    </form>
   </div>
+  <div class="col-md-3"></div>
 </div>
+
 <div class="row create-game-form-read" ng-hide="editMode">
   <div class="col-md-12">
-    {{CATEGORIES[game.category]}} -
-    {{game.title}} -
-    {{game.book}}
+    <div class="game-title">{{game.title}}</div>
+    <div class="game-book"><a href="#/search/q={{game.book}}">{{game.book}}</a></div>
+    <div class="game-category-username">{{CATEGORIES[game.category]}} được tạo bởi
+      <a href="#/search/q={{game.username}}">{{game.username}}</a></div>
     <div ng-show="game.username == user.username">
       <button class="btn btn-sm btn-primary" ng-click="editGame()">Cập nhật</button>
       <button class="btn btn-sm btn-danger" ng-click="deleteGame()">Xóa game</button>
     </div>
   </div>
 </div>
+
 <board fen="fen" edit-mode="editMode"></board>

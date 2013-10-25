@@ -8,10 +8,16 @@ tkControllers.controller('AppCtrl', function(
     $scope, $location, notificationService, authService, userService) {
   $scope.CATEGORIES =
       ['', 'Ván đấu', 'Khai cuộc', 'Trung cuộc', 'Tàn cuộc', 'Cờ thế'];
+  $scope.CATEGORY_KEYWORDS =
+      ['', 'vandau', 'khaicuoc', 'trungcuoc', 'tancuoc', 'cothe'];
 
   $scope.alert = notificationService.getAlert();
   $scope.user = authService.getUser();
   $scope.data = {loading: false};
+  $scope.searchData = {
+    queryString: '',
+    searchBoxFocused: false
+  };
 
   $scope.$on('$routeChangeStart', function(event, next) {
     if (next.accessLevel > Roles.ANONYMOUS && !authService.isAuthenticated()) {
@@ -315,8 +321,6 @@ tkControllers.controller('CreateFenCtrl', function($scope, $location, fenService
 tkControllers.controller('SandboxCtrl', function(
     $scope, $timeout, dbService, gameService, treeService, fenService) {
 
-  var CATEGORIES = ['', 'Ván đấu', 'Khai cuộc', 'Trung cuộc', 'Tàn cuộc', 'Cờ thế'];
-
   $scope.clear = function() {
     $scope.game = {
       category: '1',
@@ -330,7 +334,7 @@ tkControllers.controller('SandboxCtrl', function(
   $scope.clear();
 
   $timeout(function() {
-    $scope.$root.searchBoxFocused = true;
+    $scope.searchData.searchBoxFocused = true;
   });
 
   $scope.create = function() {
@@ -339,7 +343,8 @@ tkControllers.controller('SandboxCtrl', function(
 
   function searchSuccessCallback(searchResults) {
     _.each(searchResults, function(searchResult) {
-      searchResult.categoryText = CATEGORIES[Number(searchResult.category)];
+      searchResult.categoryText =
+          $scope.CATEGORIES[Number(searchResult.category)];
     });
     $scope.searchResults = searchResults;
   }
@@ -365,35 +370,39 @@ tkControllers.controller('SearchBarCtrl', function(
 
   $scope.search = function() {
     var params = new Params();
-    params.set('q', $scope.queryString);
+    params.set('q', $scope.searchData.queryString);
     $location.path('/search/' + params.encode());
   };
 
   $timeout(function() {
-    $scope.searchBoxFocused = true;
+    $scope.searchData.searchBoxFocused = true;
   });
 });
 
 
 tkControllers.controller('SearchCtrl', function(
-    $scope, $routeParams, $location, dbService) {
+    $scope, $routeParams, $location, $timeout, dbService) {
 
   $scope.ITEMS_PER_PAGE = 10;
 
-  var CATEGORIES = ['', 'Ván đấu', 'Khai cuộc', 'Trung cuộc', 'Tàn cuộc', 'Cờ thế'];
-
   function searchSuccessCallback(response) {
     _.each(response.games, function(game) {
-      game.categoryText = CATEGORIES[Number(game.categoryIndex)];
+      game.categoryText = $scope.CATEGORIES[Number(game.categoryIndex)];
+      game.categoryKeyword =
+          $scope.CATEGORY_KEYWORDS[Number(game.categoryIndex)];
     });
     $scope.searchResults = response.games;
     $scope.totalItems = Number(response.numberFound);
+    $scope.data.loading = false;
   }
 
   var params = new Params($routeParams.params);
 
   $scope.start = Number(params.get('start') || '0');
 
+  $scope.searchData.queryString = params.get('q');
+
+  $scope.data.loading = true;
   dbService.searchGames(params.get('q'), params.get('start')).then(searchSuccessCallback);
 
   $scope.currentPage = Math.floor(params.get('start') / $scope.ITEMS_PER_PAGE) + 1;
@@ -402,6 +411,14 @@ tkControllers.controller('SearchCtrl', function(
     params.set('start', (page - 1) * $scope.ITEMS_PER_PAGE);
     $location.path('/search/' + params.encode());
   };
+
+  $timeout(function() {
+    $scope.searchData.searchBoxFocused = true;
+  });
+
+  $scope.$on('$routeChangeStart', function() {
+    $scope.searchData.queryString = '';
+  });
 });
 
 
@@ -607,7 +624,12 @@ tkControllers.controller('BoardCtrl', function(
 
 
 tkControllers.controller('SigninCtrl', function(
-    $scope, $timeout, $location, $cookies, authService, userService) {
+    $scope, $timeout, $location, cookieService, authService, userService) {
+
+  if (authService.isAuthenticated()) {
+    $location.path('/');
+    return;
+  }
 
   $timeout(function() {
     $scope.usernameFocused = true;
@@ -616,7 +638,7 @@ tkControllers.controller('SigninCtrl', function(
   $scope.signIn = function() {
     userService.signIn($scope.username, $scope.password)
         .then(function(response) {
-          $cookies.sid = response.sid;
+          cookieService.set('sid', response.sid);
           authService.signIn($scope.username);
           $location.path('/');
         });
@@ -625,8 +647,13 @@ tkControllers.controller('SigninCtrl', function(
 
 
 tkControllers.controller('SignupCtrl', function(
-    $scope, $timeout, $location, $cookies, $routeParams,
+    $scope, $timeout, $location, cookieService, $routeParams,
     userService, authService) {
+
+  if (authService.isAuthenticated()) {
+    $location.path('/');
+    return;
+  }
 
   var inviteCode = $routeParams.inviteCode || '';
 
@@ -640,7 +667,7 @@ tkControllers.controller('SignupCtrl', function(
     userService.signUp(
         $scope.email, $scope.username, $scope.password, inviteCode)
         .then(function(response) {
-          $cookies.sid = response.sid;
+          cookieService.set('sid', response.sid);
           authService.signIn($scope.username);
           $location.path('/');
         });

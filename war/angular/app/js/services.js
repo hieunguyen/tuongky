@@ -533,20 +533,20 @@ tkServices.factory('notificationService', function($timeout) {
     }
   };
 
-  service.show = function(text) {
+  service.show = function(text, showTime) {
     showingCount++;
     alert.type = 'success';
     alert.content = text;
     alert.visible = true;
-    $timeout(maybeHide, SHOW_TIME);
+    $timeout(maybeHide, showTime || SHOW_TIME);
   };
 
-  service.showError = function(text) {
+  service.showError = function(text, showTime) {
     showingCount++;
     alert.type = 'danger';
     alert.content = text;
     alert.visible = true;
-    $timeout(maybeHide, SHOW_TIME);
+    $timeout(maybeHide, showTime || SHOW_TIME);
   };
 
   service.hide = function() {
@@ -558,7 +558,26 @@ tkServices.factory('notificationService', function($timeout) {
 });
 
 
-tkServices.factory('authService', function($cookies) {
+tkServices.factory('cookieService', function() {
+  var service = {};
+
+  service.set = function(name, value, options) {
+    $.cookie(name, value, options || {expires : 365});
+  };
+
+  service.get = function(name) {
+    return $.cookie(name);
+  };
+
+  service.delete = function(name) {
+    $.removeCookie(name);
+  };
+
+  return service;
+});
+
+
+tkServices.factory('authService', function(cookieService) {
   var service = {};
 
   var user = {
@@ -581,7 +600,7 @@ tkServices.factory('authService', function($cookies) {
     user.username = '';
     user.authenticated = false;
     user.isAdmin = false;
-    delete $cookies.sid;
+    cookieService.delete('sid');
   };
 
   service.isAuthenticated = function() {

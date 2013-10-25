@@ -1,25 +1,28 @@
 <div class="row">
-  <div class="col-md-12">
-    <button class="btn btn-primary btn-sm" ng-click="gogo()">Xếp xong</button>
-	</div>
-</div>
-<div class="row">
-  <div class="col-md-12">
-    <table class="table table-bordered">
+  <div class="col-md-6">
+    <table class="table">
       <tr>
-        <td>Số nước 2 bên đã đi:</td>
+        <td align="right"><b>Số nước 2 bên đã đi:</b></td>
         <td><input type="text" ng-model="fullMoveNumber"></td>
       </tr>
       <tr>
-        <td>Người chơi tiếp theo:</td>
+        <td align="right"><b>Người chơi tiếp theo:<b/></td>
         <td>
           <input type="radio" ng-model="turn" value="1"> Bên đỏ &nbsp;&nbsp;
           <input type="radio" ng-model="turn" value="2"> Bên đen
         </td>
       </tr>
+      <tr>
+        <td></td>
+        <td>
+          <button class="btn btn-primary btn-sm" ng-click="gogo()">Xếp xong</button>
+        </td>
+      </tr>
     </table>
   </div>
+  <div class="col-md-6"></div>
 </div>
+
 <div class="row">
   <div class="col-md-12">
     <div class="board">

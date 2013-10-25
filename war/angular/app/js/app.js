@@ -1,8 +1,7 @@
 'use strict';
 
 var tkApp = angular.module('tkApp',
-    ['ngCookies',
-     'tkApp.filters',
+    ['tkApp.filters',
      'tkApp.services',
      'tkApp.directives',
      'tkApp.controllers']);
@@ -12,14 +11,14 @@ tkApp.config(['$routeProvider', function($routeProvider) {
       {
         templateUrl: 'partials/create_fen.html',
         controller: 'CreateFenCtrl',
-        accessLevel: Roles.USER
+        accessLevel: Roles.ANONYMOUS // Roles.USER
       })
   .when('/game/create',
       {
         templateUrl: 'partials/create_game.html',
         controller: 'CreateGameCtrl',
         resolve: UnsavedGameResolve,
-        accessLevel: Roles.USER
+        accessLevel: Roles.ANONYMOUS // Roles.USER
       })
   .when('/game/create/fen/:encodedFen',
       {

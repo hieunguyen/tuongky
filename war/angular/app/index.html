@@ -14,7 +14,11 @@
         <a href="#/"><img src="/img/tuongky.png"></a>
       </div>
       <div class="col-md-7 search-bar" ng-controller="SearchBarCtrl">
-        <input type="text" ng-model="queryString" class="search-box" press-enter="search()" tk-focus="searchBoxFocused"><button class="btn btn-sm btn-success search-button" ng-click="search()">
+        <input type="text"
+               ng-model="searchData.queryString"
+               class="search-box"
+               press-enter="search()"
+               tk-focus="searchData.searchBoxFocused"><button class="btn btn-sm btn-success search-button" ng-click="search()">
           Tìm kiếm
         </button><div class="create-game-dropdown dropdown">
           <button data-toggle="dropdown" class="btn btn-sm btn-primary search-button">Tạo game</button>
@@ -59,7 +63,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
   <script src='https://cdn.firebase.com/v0/firebase.js'></script>
 
-  <script src="lib/angular/angular-cookies.js"></script>
+  <script src="lib/jquery.cookie.js"></script>
   <script src='lib/bootstrap/dropdown.js'></script>
   <script src='lib/json2.js'></script>
   <script src='lib/ui-bootstrap-tpls-0.6.0.min.js'></script>

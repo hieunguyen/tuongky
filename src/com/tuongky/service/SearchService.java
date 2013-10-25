@@ -15,6 +15,7 @@ import com.google.appengine.api.search.SearchServiceFactory;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.tuongky.Settings;
 import com.tuongky.model.GameCategory;
 import com.tuongky.model.GameQuery;
 import com.tuongky.model.GameSearchResult;
@@ -22,8 +23,7 @@ import com.tuongky.model.datastore.Game;
 
 public final class SearchService {
 
-  private static final String GAME_INDEX_NAME = "GameIndex";
-//  private static final String GAME_INDEX_NAME = "tmp1";
+  private static final String GAME_INDEX_NAME = Settings.DEV ? "GameIndex" : "tmp1";
   private static int LIMIT = 10;
 
   private static final ImmutableMap<GameCategory, String> CATEGORY_TO_STRING_MAP =
