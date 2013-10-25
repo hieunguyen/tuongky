@@ -720,7 +720,7 @@ tkServices.factory('vnService', function() {
   };
 
   var STEMMINGS = {
-    xe: ['xa']
+    xa: 'xe'
   };
 
   var service = {};
@@ -740,7 +740,11 @@ tkServices.factory('vnService', function() {
   }
 
   function stems(s) {
-    return s;
+    var words = s.toLowerCase().split(/\s+/);
+    var ws = _.map(words, function(word) {
+      return STEMMINGS[word] || word;
+    });
+    return ws.join(' ');
   }
 
   function removeAnnotation(s) {

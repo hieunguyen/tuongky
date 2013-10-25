@@ -103,7 +103,14 @@ describe('tkApp.services:', function() {
 
     it('should do the stemming correctly.', function() {
       expect(vnService.normalize(
+          'xe Xe Xa xa')).toBe('xe xe xe xe');
+      expect(vnService.normalize(
           'Thuan phao truc xa')).toBe('thuan phao truc xe');
+    });
+
+    it('should do the normalization correctly.', function() {
+      expect(vnService.normalize(
+          'Thuận pháo trực xa')).toBe('thuan phao truc xe');
     });
   });
 });
