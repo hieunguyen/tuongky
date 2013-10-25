@@ -17,10 +17,11 @@ describe('tkApp.services:', function() {
 
   beforeEach(module('tkApp.services'));
 
-  var fenService;
+  var fenService, vnService;
 
-  beforeEach(inject(function(_fenService_) {
+  beforeEach(inject(function(_fenService_, _vnService_) {
     fenService = _fenService_;
+    vnService = _vnService_;
   }));
 
   describe('fenService', function() {
@@ -60,6 +61,49 @@ describe('tkApp.services:', function() {
       for (var i = 0; i < INVALID_FENS.length; i++) {
         expect(fenService.fen2pos(INVALID_FENS[i])).toBeFalsy();
       }
+    });
+  });
+
+  describe('vnService', function() {
+
+    it('should remove annotation correctly.', function() {
+      expect(vnService.normalize('à')).toBe('a');
+      expect(vnService.normalize(' ')).toBe(' ');
+      expect(vnService.normalize('Ô')).toBe('o');
+      expect(vnService.normalize('Ư')).toBe('u');
+      expect(vnService.normalize('Ế')).toBe('e');
+      expect(vnService.normalize('đại việt')).toBe('dai viet');
+      expect(vnService.normalize(
+          'Hứa Ngân Xuyên')).toBe('hua ngan xuyen');
+      expect(vnService.normalize(
+          'Nguyễn Anh Quân')).toBe('nguyen anh quan');
+      expect(vnService.normalize(
+          'Phạm Quốc Hương')).toBe('pham quoc huong');
+      expect(vnService.normalize(
+          'Hồ Vinh Hoa')).toBe('ho vinh hoa');
+      expect(vnService.normalize(
+          'Lý Lai Quần')).toBe('ly lai quan');
+      expect(vnService.normalize(
+          'Thăng Long Kỳ Đạo')).toBe('thang long ky dao');
+      expect(vnService.normalize(
+          'Quất Trung Bí')).toBe('quat trung bi');
+      expect(vnService.normalize(
+          'Pháo Đầu Mã Đội')).toBe('phao dau ma doi');
+      expect(vnService.normalize(
+          'Bình Phong Mã Tiến tam binh')).toBe('binh phong ma tien tam binh');
+      expect(vnService.normalize(
+          'Ngũ Dương Bôi')).toBe('ngu duong boi');
+      expect(vnService.normalize(
+          'Đặc cấp quốc tế đại sư')).toBe('dac cap quoc te dai su');
+      expect(vnService.normalize(
+          'Vương Trùng Dương')).toBe('vuong trung duong');
+      expect(vnService.normalize(
+          'Trương Vô Kỵ')).toBe('truong vo ky');
+    });
+
+    it('should do the stemming correctly.', function() {
+      expect(vnService.normalize(
+          'Thuan phao truc xa')).toBe('thuan phao truc xe');
     });
   });
 });

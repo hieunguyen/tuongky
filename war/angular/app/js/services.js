@@ -705,3 +705,55 @@ tkServices.factory('inviteService', function($q, $http, notificationService) {
 
   return service;
 });
+
+
+tkServices.factory('vnService', function() {
+
+  var ROOTS = {
+    a: 'à á ả ã ạ ầ ấ ẩ ẫ ậ â ằ ắ ẳ ẵ ặ ă',
+    e: 'è é ẻ ẽ ẹ ề ế ể ễ ệ ê',
+    o: 'ò ó ỏ õ ọ ồ ố ổ ỗ ộ ô ờ ớ ở ỡ ợ ơ',
+    u: 'ù ú ủ ũ ụ ừ ứ ử ữ ự ư',
+    i: 'ì í ỉ ĩ ị',
+    y: 'ỳ ý ỷ ỹ ỵ',
+    d: 'đ'
+  };
+
+  var STEMMINGS = {
+    xe: ['xa']
+  };
+
+  var service = {};
+
+  function reduceChar(c) {
+    if (!c || c === ' ') {
+      return c;
+    }
+    c = c.toLowerCase();
+    var res = c;
+    _.each(ROOTS, function(value, root) {
+      if (value.indexOf(c) >= 0) {
+        res = root;
+      }
+    });
+    return res;
+  }
+
+  function stems(s) {
+    return s;
+  }
+
+  function removeAnnotation(s) {
+    var res = '';
+    for (var i = 0; i < s.length; i++) {
+      res += reduceChar(s.charAt(i));
+    }
+    return res;
+  }
+
+  service.normalize = function(s) {
+    return stems(removeAnnotation(s));
+  };
+
+  return service;
+});
