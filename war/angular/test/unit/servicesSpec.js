@@ -17,11 +17,12 @@ describe('tkApp.services:', function() {
 
   beforeEach(module('tkApp.services'));
 
-  var fenService, vnService;
+  var fenService, vnService, annotateService;
 
-  beforeEach(inject(function(_fenService_, _vnService_) {
+  beforeEach(inject(function(_fenService_, _vnService_, _annotateService_) {
     fenService = _fenService_;
     vnService = _vnService_;
+    annotateService = _annotateService_;
   }));
 
   describe('fenService', function() {
@@ -67,44 +68,44 @@ describe('tkApp.services:', function() {
   describe('vnService', function() {
 
     it('should remove annotation correctly.', function() {
-      expect(vnService.normalize('à')).toBe('a');
-      expect(vnService.normalize(' ')).toBe(' ');
-      expect(vnService.normalize('Ô')).toBe('o');
-      expect(vnService.normalize('Ư')).toBe('u');
-      expect(vnService.normalize('Ế')).toBe('e');
-      expect(vnService.normalize('đại việt')).toBe('dai viet');
-      expect(vnService.normalize(
+      expect(vnService.removeAnnotation('à')).toBe('a');
+      expect(vnService.removeAnnotation(' ')).toBe(' ');
+      expect(vnService.removeAnnotation('Ô')).toBe('o');
+      expect(vnService.removeAnnotation('Ư')).toBe('u');
+      expect(vnService.removeAnnotation('Ế')).toBe('e');
+      expect(vnService.removeAnnotation('đại việt')).toBe('dai viet');
+      expect(vnService.removeAnnotation(
           'Hứa Ngân Xuyên')).toBe('hua ngan xuyen');
-      expect(vnService.normalize(
+      expect(vnService.removeAnnotation(
           'Nguyễn Anh Quân')).toBe('nguyen anh quan');
-      expect(vnService.normalize(
+      expect(vnService.removeAnnotation(
           'Phạm Quốc Hương')).toBe('pham quoc huong');
-      expect(vnService.normalize(
+      expect(vnService.removeAnnotation(
           'Hồ Vinh Hoa')).toBe('ho vinh hoa');
-      expect(vnService.normalize(
+      expect(vnService.removeAnnotation(
           'Lý Lai Quần')).toBe('ly lai quan');
-      expect(vnService.normalize(
+      expect(vnService.removeAnnotation(
           'Thăng Long Kỳ Đạo')).toBe('thang long ky dao');
-      expect(vnService.normalize(
+      expect(vnService.removeAnnotation(
           'Quất Trung Bí')).toBe('quat trung bi');
-      expect(vnService.normalize(
+      expect(vnService.removeAnnotation(
           'Pháo Đầu Mã Đội')).toBe('phao dau ma doi');
-      expect(vnService.normalize(
+      expect(vnService.removeAnnotation(
           'Bình Phong Mã Tiến tam binh')).toBe('binh phong ma tien tam binh');
-      expect(vnService.normalize(
+      expect(vnService.removeAnnotation(
           'Ngũ Dương Bôi')).toBe('ngu duong boi');
-      expect(vnService.normalize(
+      expect(vnService.removeAnnotation(
           'Đặc cấp quốc tế đại sư')).toBe('dac cap quoc te dai su');
-      expect(vnService.normalize(
-          'Vương Trùng Dương')).toBe('vuong trung duong');
-      expect(vnService.normalize(
-          'Trương Vô Kỵ')).toBe('truong vo ky');
+      expect(vnService.removeAnnotation(
+          'Vương "Trùng  ""Dương')).toBe('vuong "trung  ""duong');
+      expect(vnService.removeAnnotation(
+          'Trương "Vô" Kỵ')).toBe('truong "vo" ky');
     });
 
     it('should do the stemming correctly.', function() {
-      expect(vnService.normalize(
+      expect(vnService.stems(
           'xe Xe Xa xa')).toBe('xe xe xe xe');
-      expect(vnService.normalize(
+      expect(vnService.stems(
           'Thuan phao truc xa')).toBe('thuan phao truc xe');
     });
 
@@ -112,7 +113,35 @@ describe('tkApp.services:', function() {
       expect(vnService.normalize(
           'Thuận pháo trực xa')).toBe('thuan phao truc xe');
       expect(vnService.normalize(
+          'Thuận pháo "trực xa"')).toBe('thuan phao truc xe');
+      expect(vnService.normalize(
           'Tam bộ hổ')).toBe('tam bo ho');
+      expect(vnService.normalize(
+          'Tam   "bộ" hổ""')).toBe('tam bo ho');
+      expect(vnService.normalize(
+          'Tam   "bộ" hổ""123-xa9-xa')).toBe('tam bo ho 123 xa9 xe');
+      expect(vnService.normalize(
+          'Pháo tốt thắng sỹ voi bền')).toBe('phao tot thang si tuong ben');
+      expect(vnService.normalize(undefined)).toBe(undefined);
+      expect(vnService.normalize(' ')).toBe('');
+    });
+  });
+
+  describe('annotateService', function() {
+
+    it('should annotate correctly.', function() {
+      expect(annotateService.annotate('test', 'test'))
+          .toBe('<em>test</em>');
+      expect(annotateService.annotate('Nguyễn Anh Quân', 'quan'))
+          .toBe('Nguyễn Anh <em>Quân</em>');
+      expect(annotateService.annotate('xã', 'xe'))
+          .toBe('<em>xã</em>');
+      expect(annotateService.annotate('xã đ-', 'xe "phao ma" đ', 'b'))
+          .toBe('<b>xã</b> <b>đ</b>-');
+      expect(annotateService.annotate('xã "pháo mã"', 'xe phao ma'))
+          .toBe('<em>xã</em> "<em>pháo</em> <em>mã</em>"');
+      expect(annotateService.annotate(' -+xã   "pháo "mã"787 ', 'xa phao ma 787'))
+          .toBe(' -+<em>xã</em>   "<em>pháo</em> "<em>mã</em>"<em>787</em> ');
     });
   });
 });

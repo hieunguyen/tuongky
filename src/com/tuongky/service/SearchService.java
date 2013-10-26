@@ -23,7 +23,7 @@ import com.tuongky.model.datastore.Game;
 
 public final class SearchService {
 
-  private static final String GAME_INDEX_NAME = Settings.DEV ? "GameIndex" : "tmp1";
+  private static final String GAME_INDEX_NAME = Settings.DEV ? "GameIndex" : "GameIndex_1";
   private static int LIMIT = 10;
 
   private static final ImmutableMap<GameCategory, String> CATEGORY_TO_STRING_MAP =
@@ -56,8 +56,16 @@ public final class SearchService {
                 .setText(game.getTitle()))
         .addField(
             Field.newBuilder()
+                .setName("n_title")
+                .setText(game.getNTitle()))
+        .addField(
+            Field.newBuilder()
                 .setName("book")
                 .setText(game.getBook()))
+        .addField(
+            Field.newBuilder()
+                .setName("n_book")
+                .setText(game.getNBook()))
         .build();
   }
 
@@ -96,13 +104,13 @@ public final class SearchService {
       if (builder.length() > 0) {
         builder.append(" AND ");
       }
-      builder.append("title:" + gameQuery.getTitle().toLowerCase());
+      builder.append("n_title:" + gameQuery.getTitle().toLowerCase());
     }
     if (gameQuery.hasBook()) {
       if (builder.length() > 0) {
         builder.append(" AND ");
       }
-      builder.append("book:" + gameQuery.getBook().toLowerCase());
+      builder.append("n_book:" + gameQuery.getBook().toLowerCase());
     }
     return builder.toString();
   }
@@ -121,8 +129,11 @@ public final class SearchService {
     String username = scoredDocument.getOnlyField("username").getAtom();
     String category = scoredDocument.getOnlyField("category").getAtom();
     String title = scoredDocument.getOnlyField("title").getText();
+    String nTitle = scoredDocument.getOnlyField("n_title").getText();
     String book = scoredDocument.getOnlyField("book").getText();
-    return new Game(id, username, getGameCategoryFromString(category), title, book, null);
+    String nBook = scoredDocument.getOnlyField("n_book").getText();
+    return new Game(id, username, getGameCategoryFromString(category),
+        title, nTitle, book, nBook, null);
   }
 
   public static GameSearchResult search(GameQuery gameQuery) {

@@ -11,14 +11,14 @@ tkApp.config(['$routeProvider', function($routeProvider) {
       {
         templateUrl: 'partials/create_fen.html',
         controller: 'CreateFenCtrl',
-        accessLevel: Roles.ANONYMOUS // Roles.USER
+        accessLevel: Roles.USER
       })
   .when('/game/create',
       {
         templateUrl: 'partials/create_game.html',
         controller: 'CreateGameCtrl',
         resolve: UnsavedGameResolve,
-        accessLevel: Roles.ANONYMOUS // Roles.USER
+        accessLevel: Roles.USER
       })
   .when('/game/create/fen/:encodedFen',
       {

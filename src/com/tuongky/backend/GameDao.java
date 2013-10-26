@@ -14,23 +14,24 @@ public class GameDao extends DAOBase {
   }
 
   public Game save(String username,
-      GameCategory category, String title, String book, String data) {
+      GameCategory category, String title, String nTitle, String book, String nBook, String data) {
     String id = UUID.randomUUID().toString();
-    Game gameData = new Game(id, username, category, title, book, data);
+    Game gameData = new Game(id, username, category, title, nTitle, book, nBook, data);
     ObjectifyService.begin().put(gameData);
     return gameData;
   }
 
   public Game save(String id, String username,
-      GameCategory category, String title, String book, String data) {
-    Game gameData = new Game(id, username, category, title, book, data);
+      GameCategory category, String title, String nTitle, String book, String nBook, String data) {
+    Game gameData = new Game(id, username, category, title, nTitle, book, nBook, data);
     ObjectifyService.begin().put(gameData);
     return gameData;
   }
 
   public Game add(Game game) {
     return save(
-        game.getUsername(), game.getCategory(), game.getTitle(), game.getBook(), game.getData());
+        game.getUsername(), game.getCategory(),
+        game.getTitle(), game.getNTitle(), game.getBook(), game.getNBook(), game.getData());
   }
 
   public Game save(Game game) {

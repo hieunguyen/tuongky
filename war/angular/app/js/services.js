@@ -398,7 +398,8 @@ tkServices.factory('fenService', function() {
 });
 
 
-tkServices.factory('dbService', function($http, $q, notificationService) {
+tkServices.factory('dbService', function(
+    $http, $q, notificationService, vnService) {
 
   var service = {};
 
@@ -409,7 +410,9 @@ tkServices.factory('dbService', function($http, $q, notificationService) {
       username: username,
       category: game.category,
       title: game.title,
-      book: game.book,
+      n_title: vnService.normalize(game.title),
+      book: game.book || '',
+      n_book: vnService.normalize(game.book || ''),
       data: game.data
     }).success(function(response) {
       notificationService.show('Đã tạo game thành công.');
@@ -429,7 +432,9 @@ tkServices.factory('dbService', function($http, $q, notificationService) {
       username: username,
       category: game.category,
       title: game.title,
-      book: game.book,
+      n_title: vnService.normalize(game.title),
+      book: game.book || '',
+      n_book: vnService.normalize(game.book || ''),
       data: game.data
     }).success(function(response) {
       notificationService.show('Đã lưu game thành công.');
@@ -444,7 +449,7 @@ tkServices.factory('dbService', function($http, $q, notificationService) {
   service.searchGames = function(queryString, opt_start) {
     var defer = $q.defer();
     $http.post('/game/search', {
-      q: queryString,
+      q: vnService.normalize(queryString),
       start: opt_start || 0
     }).success(function(response) {
       defer.resolve(response);
@@ -458,8 +463,8 @@ tkServices.factory('dbService', function($http, $q, notificationService) {
     var defer = $q.defer();
     $http.post('/game/search', {
       category: query.category,
-      title: query.title,
-      book: query.book
+      title: vnService.normalize(query.title),
+      book: vnService.normalize(query.book)
     }).success(function(response) {
       defer.resolve(response);
     }).error(function() {
@@ -720,7 +725,10 @@ tkServices.factory('vnService', function() {
   };
 
   var STEMMINGS = {
-    xa: 'xe'
+    xa: 'xe',
+    chot: 'tot',
+    voi: 'tuong',
+    sy: 'si'
   };
 
   var service = {};
@@ -739,24 +747,27 @@ tkServices.factory('vnService', function() {
     return res;
   }
 
-  function stems(s) {
-    var words = s.toLowerCase().split(/\s+/);
+  service.stems = function(s) {
+    var words = s.toLowerCase().split(/[^a-zA-z0-9]+/);
     var ws = _.map(words, function(word) {
       return STEMMINGS[word] || word;
     });
-    return ws.join(' ');
-  }
+    return _.filter(ws, function(w) { return !!w; }).join(' ');
+  };
 
-  function removeAnnotation(s) {
+  service.removeAnnotation = function(s) {
     var res = '';
     for (var i = 0; i < s.length; i++) {
       res += reduceChar(s.charAt(i));
     }
     return res;
-  }
+  };
 
   service.normalize = function(s) {
-    return stems(removeAnnotation(s));
+    if (!s) {
+      return s;
+    }
+    return service.stems(service.removeAnnotation(s));
   };
 
   return service;
@@ -770,25 +781,51 @@ tkServices.factory('annotateService', function(vnService) {
     return '<' + tag + '>' + token + '</' + tag + '>';
   }
 
-  function maybeAnnotateToken(token, queryTokens, tag) {
-    if (_.contains(queryTokens, vnService.normalize(token))) {
-      return annotateToken(token, tag);
-    }
-    return token;
+  function inRange(c, l, r) {
+    return l <= c && c <= r;
+  }
+
+  function isLetter(c) {
+    return inRange(c, 'a', 'z') || inRange(c, 'A', 'Z');
+  }
+
+  function isDigit(c) {
+    return inRange(c, '0', '9');
+  }
+
+  function isLetterOrDigit(c) {
+    return isLetter(c) || isDigit(c);
   }
 
   service.annotate = function(s, query, opt_tag) {
     if (!query) {
       return s;
     }
-    var tag = opt_tag || 'em';
-    var words = s.split(/\s+/);
-    var normalized_query = vnService.normalize(query);
-    var queryWords = normalized_query.toLowerCase().split(/\s+/);
-    var annotated_words = _.map(words, function(token) {
-      return maybeAnnotateToken(token, queryWords, tag);
-    });
-    return annotated_words.join(' ');
+    var queryTokens = vnService.normalize(query).split(/[^a-zA-z0-9]/);
+    if (!queryTokens.length) {
+      return s;
+    }
+    var tag, annotated, rs, originalWord, word, i, j;
+    tag = opt_tag || 'em';
+    annotated = '';
+    rs = vnService.removeAnnotation(s);
+    for (i = 0; i < rs.length; i++) {
+      if (isLetterOrDigit(rs[i])) {
+        j = i;
+        while (j + 1 < rs.length && isLetterOrDigit(rs[j + 1])) {
+          j++;
+        }
+        originalWord = s.substring(i, j + 1);
+        word = rs.substring(i, j + 1);
+        if (_.contains(queryTokens, vnService.normalize(word))) {
+          annotated += annotateToken(originalWord, tag);
+        } else {
+          annotated += originalWord;
+        }
+        i = j;
+      } else annotated += s[i];
+    }
+    return annotated;
   };
 
   return service;
