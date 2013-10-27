@@ -408,6 +408,8 @@ tkControllers.controller('SearchCtrl', function(
 
   $scope.searchData.queryString = params.get('q');
 
+  $scope.searchResults = [];
+  $scope.totalItems = 1;
   $scope.data.loading = true;
   dbService.searchGames(
       params.get('q'), params.get('start')).then(searchSuccessCallback);
