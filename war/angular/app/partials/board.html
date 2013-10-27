@@ -51,9 +51,9 @@
         </ul>
       </div>
       <div class="actions">
-        <button class="btn btn-link" ng-disabled="!editMode" ng-click="moveVariationUp()">Lên</button>
-        <button class="btn btn-link" ng-disabled="!editMode" ng-click="moveVariationDown()">Xuống</button>
-        <button class="btn btn-link" ng-disabled="!editMode" ng-click="deleteVariation()">Xóa</button>
+        <button class="btn btn-link" ng-show="editMode" ng-click="moveVariationUp()">Lên</button>
+        <button class="btn btn-link" ng-show="editMode" ng-click="moveVariationDown()">Xuống</button>
+        <button class="btn btn-link" ng-show="editMode" ng-click="deleteVariation()">Xóa</button>
       </div>
     </div>
 
