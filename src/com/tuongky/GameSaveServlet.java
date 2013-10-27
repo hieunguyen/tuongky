@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.common.base.Preconditions;
+import com.tuongky.backend.BookDao;
 import com.tuongky.backend.GameDao;
 import com.tuongky.model.GameCategory;
 import com.tuongky.model.datastore.Game;
@@ -29,6 +30,13 @@ public class GameSaveServlet extends HttpServlet {
     String book = req.getParameter("book");
     String nBook = req.getParameter("n_book");
     String data = req.getParameter("data");
+
+    String oldBook = req.getParameter("old_book");
+    if (oldBook == null || Integer.parseInt(oldBook) == 1) {
+      BookDao bookDao = new BookDao();
+      bookDao.save(username, book, nBook);
+    }
+
     GameDao gameDao = new GameDao();
     Game gameData = gameDao.save(id, username, category, title, nTitle, book, nBook, data);
     SearchService.indexGame(gameData);

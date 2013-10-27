@@ -18,6 +18,15 @@
 	</filter-mapping>
 	
   <servlet>
+    <servlet-name>BookList</servlet-name>
+    <servlet-class>com.tuongky.BookListServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BookList</servlet-name>
+    <url-pattern>/books</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>UserStatus</servlet-name>
     <servlet-class>com.tuongky.UserStatusServlet</servlet-class>
   </servlet>

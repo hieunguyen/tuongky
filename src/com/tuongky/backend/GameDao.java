@@ -16,16 +16,16 @@ public class GameDao extends DAOBase {
   public Game save(String username,
       GameCategory category, String title, String nTitle, String book, String nBook, String data) {
     String id = UUID.randomUUID().toString();
-    Game gameData = new Game(id, username, category, title, nTitle, book, nBook, data);
-    ObjectifyService.begin().put(gameData);
-    return gameData;
+    Game game = new Game(id, username, category, title, nTitle, book, nBook, data);
+    ObjectifyService.begin().put(game);
+    return game;
   }
 
   public Game save(String id, String username,
       GameCategory category, String title, String nTitle, String book, String nBook, String data) {
-    Game gameData = new Game(id, username, category, title, nTitle, book, nBook, data);
-    ObjectifyService.begin().put(gameData);
-    return gameData;
+    Game game = new Game(id, username, category, title, nTitle, book, nBook, data);
+    ObjectifyService.begin().put(game);
+    return game;
   }
 
   public Game add(Game game) {
@@ -40,7 +40,7 @@ public class GameDao extends DAOBase {
   }
 
   public Game getById(String id) {
-    return ObjectifyService.begin().get(Game.class, id);
+    return ObjectifyService.begin().find(Game.class, id);
   }
 
   public void delete(String id) {

@@ -726,6 +726,7 @@ tkServices.factory('vnService', function() {
 
   var STEMMINGS = {
     xa: 'xe',
+    binh: 'tot',
     chot: 'tot',
     voi: 'tuong',
     sy: 'si'

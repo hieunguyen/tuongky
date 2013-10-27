@@ -25,7 +25,7 @@ public class UserDao extends DAOBase {
   }
 
   public User getById(long id, Objectify ofy) {
-    return ofy.get(User.class, id);
+    return ofy.find(User.class, id);
   }
 
   public User getByEmail(String email) {
