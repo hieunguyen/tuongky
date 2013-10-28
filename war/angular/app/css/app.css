@@ -29,7 +29,17 @@ form .error {
 }
 
 .user-bar {
+	margin-top: 10px;
 	text-align: right;
+}
+
+.user-bar a {
+	cursor: pointer;
+	margin: 5px;
+}
+
+.user-bar .separator {
+	color: rgb(218, 207, 207);
 }
 
 .view-container {
@@ -160,6 +170,7 @@ form .error {
 
 .comment {
 	border: 0;
+	font-size: 16px;
 	height: 347px;
 	resize: none;
 }

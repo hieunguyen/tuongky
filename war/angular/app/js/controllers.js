@@ -53,6 +53,7 @@ tkControllers.controller('AuthController', function(
 
   $scope.signOut = function() {
     authService.signOut();
+    $location.path('/');
   };
 
   $scope.invite = function() {
@@ -101,7 +102,6 @@ tkControllers.controller('CreateGameCtrl', function(
 
   $scope.books = [];
   bookService.getBooksForUser($scope.user.username).then(function(books) {
-    console.log(books);
     $scope.books = books;
     _.each($scope.books, function(book) {
       book.normalizedName = vnService.removeAnnotation(book.name).toLowerCase();
