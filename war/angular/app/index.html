@@ -30,15 +30,15 @@
       </div>
       <div class="col-md-3 user-bar" ng-controller="AuthController">
         <div ng-hide="user.authenticated" ng-cloak>
-          <button class="btn btn-link" ng-click="signIn()">Sign in</button> |
-          <button class="btn btn-link" ng-click="signUp()">Sign up</button>
+          <button class="btn btn-link" ng-click="signIn()">Đăng nhập</button> |
+          <button class="btn btn-link" ng-click="signUp()">Đăng ký</button>
         </div>
         <div ng-show="user.authenticated" ng-cloak>
-          Xin chào {{user.username}}
+          Xin chào <a href="#/search/q={{searchResult.username}}">{{user.username}}</a>
           <span ng-show="user.isAdmin">
-            <button class="btn btn-link" ng-click="invite()">Invite</button> |
+            <button class="btn btn-link" ng-click="invite()">Mời</button> |
           </span>
-          <button class="btn btn-link" ng-click="signOut()">Sign out</button>
+          <button class="btn btn-link" ng-click="signOut()">Thoát</button>
         </div>
       </div>
     </div>

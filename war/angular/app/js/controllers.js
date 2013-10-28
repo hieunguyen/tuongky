@@ -6,6 +6,7 @@ var tkControllers = angular.module('tkApp.controllers', []);
 
 tkControllers.controller('AppCtrl', function(
     $scope, $location, notificationService, authService, userService) {
+
   $scope.CATEGORIES =
       ['', 'Ván đấu', 'Khai cuộc', 'Trung cuộc', 'Tàn cuộc', 'Cờ thế'];
   $scope.CATEGORY_KEYWORDS =
@@ -62,7 +63,8 @@ tkControllers.controller('AuthController', function(
 
 tkControllers.controller('CreateGameCtrl', function(
     $scope, $routeParams, $location, $timeout,
-    gameService, treeService, fenService, dbService, game) {
+    gameService, treeService, fenService, dbService, game,
+    vnService, bookService) {
 
   var fen = fenService.getStartingFen();
 
@@ -97,6 +99,24 @@ tkControllers.controller('CreateGameCtrl', function(
   $scope.fen = fen;
   $scope.editMode = !game;
 
+  $scope.books = [];
+  bookService.getBooksForUser($scope.user.username).then(function(books) {
+    console.log(books);
+    $scope.books = books;
+    _.each($scope.books, function(book) {
+      book.normalizedName = vnService.removeAnnotation(book.name).toLowerCase();
+    });
+  });
+
+  function addBook(name) {
+    var book = {
+      name: name,
+      normalizedName: vnService.removeAnnotation(name)
+    };
+    bookService.addBook(book);
+    $scope.books = bookService.getBooks();
+  }
+
   $scope.saveGame = function() {
     $scope.game.data = JSON.stringify({
       moveTree: treeService.toObject(),
@@ -104,11 +124,13 @@ tkControllers.controller('CreateGameCtrl', function(
     });
     if (game) {
       dbService.saveGame($scope.game, $scope.user.username).then(function() {
+        addBook($scope.game.book);
         $scope.editMode = false;
       });
     } else {
       dbService.createGame($scope.game, $scope.user.username).then(
           function(gameId) {
+            addBook($scope.game.book);
             $scope.editMode = false;
             $location.path('/game/id/' + gameId);
           });
@@ -409,7 +431,7 @@ tkControllers.controller('SearchCtrl', function(
   $scope.searchData.queryString = params.get('q');
 
   $scope.searchResults = [];
-  $scope.totalItems = 1;
+  $scope.totalItems = 0;
   $scope.data.loading = true;
   dbService.searchGames(
       params.get('q'), params.get('start')).then(searchSuccessCallback);

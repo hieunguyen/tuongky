@@ -399,13 +399,16 @@ tkServices.factory('fenService', function() {
 
 
 tkServices.factory('dbService', function(
-    $http, $q, notificationService, vnService) {
+    $http, $q, notificationService, vnService, bookService) {
 
   var service = {};
+
 
   service.createGame = function(game, username) {
     var defer = $q.defer();
     notificationService.show('Đang tạo game...');
+    debugger;
+    var oldBook = bookService.isOldBook(game.book) ? 1 : 0;
     $http.post('/game/create', {
       username: username,
       category: game.category,
@@ -413,6 +416,7 @@ tkServices.factory('dbService', function(
       n_title: vnService.normalize(game.title),
       book: game.book || '',
       n_book: vnService.normalize(game.book || ''),
+      old_book: oldBook,
       data: game.data
     }).success(function(response) {
       notificationService.show('Đã tạo game thành công.');
@@ -427,6 +431,7 @@ tkServices.factory('dbService', function(
   service.saveGame = function(game, username) {
     var defer = $q.defer();
     notificationService.show('Đang lưu game...');
+    var oldBook = bookService.isOldBook(game.book) ? 1 : 0;
     $http.post('/game/save', {
       id: game.id,
       username: username,
@@ -435,6 +440,7 @@ tkServices.factory('dbService', function(
       n_title: vnService.normalize(game.title),
       book: game.book || '',
       n_book: vnService.normalize(game.book || ''),
+      old_book: oldBook,
       data: game.data
     }).success(function(response) {
       notificationService.show('Đã lưu game thành công.');
@@ -685,6 +691,55 @@ tkServices.factory('userService', function($q, $http, notificationService) {
       defer.reject();
     });
     return defer.promise;
+  };
+
+  return service;
+});
+
+
+tkServices.factory('bookService', function($q, $http) {
+  var service = {};
+
+  var books;
+
+  service.getBooksForUser = function(username, lastCreatedAt) {
+    if (books) {
+      return $q.when(books);
+    }
+    var defer = $q.defer();
+    var url = '/books?username=' + username;
+    if (lastCreatedAt) {
+      url += '&last_created_at=' + lastCreatedAt;
+    }
+    $http.get(url)
+    .success(function(response) {
+      books = response.books;
+      defer.resolve(response.books);
+    }).error(function() {
+      defer.reject();
+    });
+    return defer.promise;
+  };
+
+  service.isOldBook = function(name) {
+    return _.contains(_.pluck(books, 'name'), name);
+  };
+
+  service.addBook = function(book) {
+    if (!books) {
+      books = [];
+    }
+    if (!service.isOldBook(book.name)) {
+      books.push(book);
+    }
+  };
+
+  service.getBooks = function() {
+    return books;
+  };
+
+  service.clearBooks = function() {
+    books = undefined;
   };
 
   return service;

@@ -3,7 +3,9 @@
 /* Directives */
 
 var tkDirectives = angular.module('tkApp.directives',
-    ['ui.bootstrap.pagination', 'ui.bootstrap.alert']);
+    ['ui.bootstrap.pagination',
+     'ui.bootstrap.alert',
+     'ui.bootstrap.typeahead']);
 
 tkDirectives.directive('draggable', function() {
   return function(scope, element) {

@@ -31,7 +31,7 @@ public class GameCreateServlet extends HttpServlet {
     String data = req.getParameter("data");
 
     String oldBook = req.getParameter("old_book");
-    if (oldBook == null || Integer.parseInt(oldBook) == 1) {
+    if (oldBook == null || Integer.parseInt(oldBook) == 0) {
       BookDao bookDao = new BookDao();
       bookDao.save(username, book, nBook);
     }
