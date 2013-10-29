@@ -521,7 +521,7 @@ tkServices.factory('notificationService', function($timeout) {
 
   var service = {};
 
-  var alert = {
+  var alert_ = {
     type: '',
     content: '',
     visible: false
@@ -530,7 +530,7 @@ tkServices.factory('notificationService', function($timeout) {
   var showingCount = 0;
 
   service.getAlert = function() {
-    return alert;
+    return alert_;
   };
 
   function maybeHide() {
@@ -542,22 +542,22 @@ tkServices.factory('notificationService', function($timeout) {
 
   service.show = function(text, showTime) {
     showingCount++;
-    alert.type = 'success';
-    alert.content = text;
-    alert.visible = true;
+    alert_.type = 'success';
+    alert_.content = text;
+    alert_.visible = true;
     $timeout(maybeHide, showTime || SHOW_TIME);
   };
 
   service.showError = function(text, showTime) {
     showingCount++;
-    alert.type = 'danger';
-    alert.content = text;
-    alert.visible = true;
+    alert_.type = 'danger';
+    alert_.content = text;
+    alert_.visible = true;
     $timeout(maybeHide, showTime || SHOW_TIME);
   };
 
   service.hide = function() {
-    alert.visible = false;
+    alert_.visible = false;
     showingCount = 0;
   };
 
@@ -730,9 +730,13 @@ tkServices.factory('bookService', function($q, $http) {
     if (!booksForUsers[username]) {
       booksForUsers[username] = [];
     }
-    if (!service.isOldBook(book.name)) {
+    if (!service.isOldBook(username, book.name)) {
       booksForUsers[username].push(book);
     }
+  };
+
+  service.getBooks = function(username) {
+    return booksForUsers[username];
   };
 
   return service;

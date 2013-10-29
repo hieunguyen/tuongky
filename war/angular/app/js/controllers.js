@@ -113,8 +113,8 @@ tkControllers.controller('CreateGameCtrl', function(
       name: name,
       normalizedName: vnService.removeAnnotation(name)
     };
-    $scope.books.push(book);
     bookService.addBook($scope.user.username, book);
+    $scope.books = bookService.getBooks($scope.user.username);
   }
 
   $scope.saveGame = function() {

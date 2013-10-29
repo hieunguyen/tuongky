@@ -19,14 +19,20 @@ import com.tuongky.model.datastore.User;
 @SuppressWarnings("serial")
 public class SignupServlet extends HttpServlet {
 
-  private static final String USERNAME_PATTERN = "[a-z0-9_]+";
-  private static final String PASSWORD_PATTERN = "[A-Za-z0-9_]+";
+  private static final String USERNAME_PATTERN = "[a-zA-Z0-9_]+";
+  private static final String PASSWORD_PATTERN = "\\S+";
+  private static final int MIN_LENGTH_USERNAME = 3;
+  private static final int MAX_LENGTH_USERNAME = 30;
+  private static final int MIN_LENGTH_PASSWORD = 5;
+  private static final int MAX_LENGTH_PASSWORD = 50;
 
   private boolean isValid(String username, String password) {
-    if (username.length() < 2 || !username.matches(USERNAME_PATTERN)) {
+    if (username.length() < MIN_LENGTH_USERNAME || username.length() > MAX_LENGTH_USERNAME ||
+        !username.matches(USERNAME_PATTERN)) {
       return false;
     }
-    if (password.length() < 6 || !password.matches(PASSWORD_PATTERN)) {
+    if (password.length() < MIN_LENGTH_PASSWORD || password.length() > MAX_LENGTH_PASSWORD ||
+        !password.matches(PASSWORD_PATTERN)) {
       return false;
     }
     return true;

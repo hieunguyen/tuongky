@@ -19,11 +19,19 @@
                class="form-control"
                ng-model="username"
                name="username"
-               placeholder="Tài khoản"
+               placeholder="Tên tài khoản"
+               ng-minlength="3"
+               ng-maxlength="30"
                ng-pattern="/^[a-zA-Z0-9_]+$/"
                required>
         <span class="help-block error" ng-show="form.username.$error.required && form.username.$dirty">
           Mời bạn điền tên tài khoản.
+        </span>
+        <span class="help-block error" ng-show="form.username.$error.minlength && form.username.$dirty">
+          Tên tài khoản phải có ít nhất 3 ký tự.
+        </span>
+        <span class="help-block error" ng-show="form.username.$error.maxlength && form.username.$dirty">
+          Tên tài khoản phải không quá 30 ký tự.
         </span>
         <span class="help-block error" ng-show="form.username.$error.pattern && form.username.$dirty">
           Chỉ chấp nhận các ký tự a-z, A-Z, 0-9, và _.
@@ -35,10 +43,18 @@
                ng-model="password"
                name="password"
                placeholder="Mật khẩu"
+               ng-minlength="5"
+               ng-maxlength="50"
                ng-pattern="/^\S+$/"
                required>
         <span class="help-block error" ng-show="form.password.$error.required && form.password.$dirty">
           Mời bạn điền mật khẩu.
+        </span>
+        <span class="help-block error" ng-show="form.password.$error.minlength && form.password.$dirty">
+          Mật khẩu phải có ít nhất 5 ký tự.
+        </span>
+        <span class="help-block error" ng-show="form.password.$error.maxlength && form.password.$dirty">
+          Mật khẩu phải không quá 50 ký tự.
         </span>
         <span class="help-block error" ng-show="form.password.$error.pattern && form.password.$dirty">
           Mật khẩu không hợp lệ vì chứa dấu cách.

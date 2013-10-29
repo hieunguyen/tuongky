@@ -1,24 +1,34 @@
 <div class="row">
   <div class="col-md-6">
-    <table class="table">
-      <tr>
-        <td align="right"><b>Số nước 2 bên đã đi:</b></td>
-        <td><input type="text" ng-model="fullMoveNumber"></td>
-      </tr>
-      <tr>
-        <td align="right"><b>Người chơi tiếp theo:<b/></td>
-        <td>
-          <input type="radio" ng-model="turn" value="1"> Bên đỏ &nbsp;&nbsp;
-          <input type="radio" ng-model="turn" value="2"> Bên đen
-        </td>
-      </tr>
-      <tr>
-        <td></td>
-        <td>
-          <button class="btn btn-primary btn-sm" ng-click="gogo()">Xếp xong</button>
-        </td>
-      </tr>
-    </table>
+    <form name="form">
+      <table class="table">
+        <tr>
+          <td align="right"><b>Số nước 2 bên đã đi:</b></td>
+          <td>
+            <input type="text"
+                   ng-model="fullMoveNumber"
+                   name="fullMoveNumber"
+                   ng-pattern="/^[1-9][0-9]{0,2}$/">
+            <span class="help-block error" ng-show="form.fullMoveNumber.$error.pattern">
+              Phải là số từ 1 đến 999.
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td align="right"><b>Người chơi tiếp theo:<b/></td>
+          <td>
+            <input type="radio" ng-model="turn" value="1"> Bên đỏ &nbsp;&nbsp;
+            <input type="radio" ng-model="turn" value="2"> Bên đen
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <button class="btn btn-primary btn-sm" ng-click="gogo()">Xếp xong</button>
+          </td>
+        </tr>
+      </table>
+    </form>
   </div>
   <div class="col-md-6"></div>
 </div>
