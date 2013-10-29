@@ -113,8 +113,8 @@ tkControllers.controller('CreateGameCtrl', function(
       name: name,
       normalizedName: vnService.removeAnnotation(name)
     };
-    bookService.addBook(book);
-    $scope.books = bookService.getBooks();
+    $scope.books.push(book);
+    bookService.addBook($scope.user.username, book);
   }
 
   $scope.saveGame = function() {
@@ -122,15 +122,21 @@ tkControllers.controller('CreateGameCtrl', function(
       moveTree: treeService.toObject(),
       fen: fen
     });
+    $scope.game.oldBook = bookService.isOldBook(
+        $scope.user.username, $scope.game.book) ? 1 : 0;
     if (game) {
       dbService.saveGame($scope.game, $scope.user.username).then(function() {
-        addBook($scope.game.book);
+        if (!$scope.game.oldBook) {
+          addBook($scope.game.book);
+        }
         $scope.editMode = false;
       });
     } else {
       dbService.createGame($scope.game, $scope.user.username).then(
           function(gameId) {
-            addBook($scope.game.book);
+            if (!$scope.game.oldBook) {
+              addBook($scope.game.book);
+            }
             $scope.editMode = false;
             $location.path('/game/id/' + gameId);
           });

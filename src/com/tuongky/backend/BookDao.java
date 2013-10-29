@@ -13,8 +13,8 @@ public class BookDao extends DAOBase {
     ObjectifyService.register(Book.class);
   }
 
-  public Book save(String username, String name, String normalizedName) {
-    Book book = new Book(username, name, normalizedName);
+  public Book save(String username, String name) {
+    Book book = new Book(username, name);
     ObjectifyService.begin().put(book);
     return book;
   }

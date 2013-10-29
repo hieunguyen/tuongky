@@ -12,16 +12,14 @@ public class Book {
   private String username;
   private long createdAt;
   @Unindexed private String name;
-  @Unindexed private String normalizedName;
 
   @SuppressWarnings("unused")
   private Book() {} // Used by Objectify.
 
-  public Book(String username, String name, String normalizedName) {
+  public Book(String username, String name) {
     this.username = username;
     this.createdAt = new Date().getTime();
     this.name = name;
-    this.normalizedName = normalizedName;
   }
 
   public long getId() {
@@ -38,9 +36,5 @@ public class Book {
 
   public String getName() {
     return name;
-  }
-
-  public String getNormalizedName() {
-    return normalizedName;
   }
 }
