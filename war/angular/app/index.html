@@ -30,8 +30,8 @@
       </div>
       <div class="col-md-3 user-bar" ng-controller="AuthController">
         <div ng-hide="user.authenticated" ng-cloak>
-          <a ng-click="signIn()">Đăng nhập</a> <span class="separator">|</span>
-          <a ng-click="signUp()">Đăng ký</a>
+          <a ng-click="signIn()">Đăng nhập</a> <span class="separator" ng-hide="true">|</span>
+          <a ng-click="signUp()" ng-hide="true">Đăng ký</a>
         </div>
         <div ng-show="user.authenticated" ng-cloak>
           Chào <a href="#/search/q={{user.username}}">{{user.username}}</a> <span class="separator">|</span>
@@ -42,11 +42,11 @@
         </div>
       </div>
     </div>
-    <div class="row notification-bar" ng-cloak>
+    <div class="row notification-bar">
       <div class="col-md-12">
         <div class='alert alert-dismissable'
              ng-class='alert.type && "alert-" + alert.type'
-             ng-show="alert.visible">
+             ng-show="alert.visible" ng-cloak>
           {{alert.content}}
         </div>
       </div>

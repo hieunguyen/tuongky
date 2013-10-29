@@ -1,5 +1,8 @@
 <div class="row search-results" ng-show="totalItems && !data.loading">
 	<div class="col-md-12">
+		<div class="search-stats">
+			Có <em>{{totalItems | number:0}}</em> kết quả
+		</div>
 		<table class="table table-striped">
 			<tr>
 				<th>Phân loại</th>
@@ -40,7 +43,5 @@
 	</diV>
 </div>
 <div class="row no-search-results" ng-hide="totalItems || data.loading" ng-cloak>
-	<div class="col-md-12">
-		Xin lỗi, không tìm thấy kết quả nào cho bạn. Bạn có thể thử các từ khóa khác.
-	</div>
+	<div ng-include="'partials/no_search_results.html'"></div>
 </div>
