@@ -698,6 +698,18 @@ tkServices.factory('bookService', function($q, $http) {
 
   var booksForUsers = {};
 
+  function unique(books) {
+    var output = [];
+    var found = {};
+    _.each(books, function(book) {
+      if (!found[book.name]) {
+        found[book.name] = true;
+        output.push(book);
+      }
+    });
+    return output;
+  }
+
   service.getBooksForUser = function(username, lastCreatedAt) {
     if (booksForUsers[username]) {
       return $q.when(booksForUsers[username]);
@@ -709,7 +721,7 @@ tkServices.factory('bookService', function($q, $http) {
     }
     $http.get(url)
     .success(function(response) {
-      var books = _.uniq(response.books);
+      var books = unique(response.books);
       booksForUsers[username] = books;
       defer.resolve(books);
     }).error(function() {
