@@ -153,3 +153,28 @@ tkDirectives.directive('autoScrollTo', function($timeout) {
     }
   };
 });
+
+
+tkDirectives.directive('shortcut', function() {
+  return {
+    restrict: 'E',
+    scope: {
+      handler: '&'
+    },
+    link: function(scope, element, attrs) {
+      var keyCode = attrs['keycode'];
+      var eventName = 'keydown.' + keyCode + '.' +
+          Math.floor(Math.random() * 1000000);
+      $(document).on(eventName, function(e) {
+        scope.$apply(function() {
+          if (e.which === Number(keyCode)) {
+            scope.handler();
+          }
+        });
+      });
+      scope.$on('$destroy', function() {
+        $(document).off(eventName);
+      });
+    }
+  };
+});

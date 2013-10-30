@@ -2,6 +2,10 @@
   clear: both;
 }
 
+.shortcut-key {
+	text-decoration: underline;
+}
+
 form .error {
 	color: #b94a48;
 }

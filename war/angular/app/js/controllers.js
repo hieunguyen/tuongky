@@ -401,10 +401,6 @@ tkControllers.controller('SearchBarCtrl', function(
     params.set('q', $scope.searchData.queryString);
     $location.path('/search/' + params.encode());
   };
-
-  $timeout(function() {
-    $scope.searchData.searchBoxFocused = true;
-  });
 });
 
 

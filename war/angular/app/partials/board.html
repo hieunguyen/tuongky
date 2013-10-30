@@ -62,16 +62,24 @@
     <div class="board-control-panel">
       <button class="btn btn-sm btn-default"
               ng-click="goFirst()"
-              tabindex="10">Đầu</button>
+              tabindex="10"><span class="shortcut-key">Đ</span>ầu</button>
       <button class="btn btn-sm btn-default"
               ng-click="goPrevious()"
-              tabindex="11">Trước</button>
+              tabindex="11"><span class="shortcut-key">T</span>rước</button>
       <button class="btn btn-sm btn-default"
               ng-click="goNext()"
-              tabindex="12">Tiếp</button>
+              tabindex="12"><span class="shortcut-key">S</span>au</button>
       <button class="btn btn-sm btn-default"
               ng-click="goLast()"
-              tabindex="13">Cuối</button>
+              tabindex="13"><span class="shortcut-key">C</span>uối</button>
     </div>
+
+    <shortcut keycode="37" handler="goPrevious()"></shortcut>
+    <shortcut keycode="39" handler="goNext()"></shortcut>
+
+    <shortcut keycode="68" handler="goFirst()"></shortcut>
+    <shortcut keycode="84" handler="goPrevious()"></shortcut>
+    <shortcut keycode="83" handler="goNext()"></shortcut>
+    <shortcut keycode="67" handler="goLast()"></shortcut>
   </div>
 </div>
