@@ -10,6 +10,9 @@ function opp(turn) {
 
 tkServices.factory('gameService', function() {
 
+  var PIECES = 'TSVXPMC';
+  var DIRS = '.-/';
+
   var Move = function(x, y, u, v, cap) {
     this.x = x;
     this.y = y;
@@ -71,16 +74,76 @@ tkServices.factory('gameService', function() {
     return turn;
   };
 
-  service.produceHumanMove = function(x, y, u, v) {
-    var PIECES = 'TSVXPMC';
-    var DIRS = '.-/';
+  function getCol(c) {
+    return turn === RED ? COLS - c : c + 1;
+  }
+
+  function isDiagonalPiece(piece) {
+    var p = Math.abs(piece);
+    return p === A || p === E || p === H;
+  }
+
+  service.produceHumanPosition = function(x, y) {
     var piece = board[x][y];
-    var pieceChar, pieceId, dir, dst;
+    var pieceChar, pieceId;
     pieceChar = PIECES.charAt(Math.abs(piece) - 1);
 
-    function getCol(c) {
-      return turn === RED ? COLS - c : c + 1;
+    function getOrder(n, k) {
+      if (n < 2) {
+        return '';
+      }
+      if (n === 2) {
+        return k === 0 ? 't' : 's';
+      }
+      if (n === 3) {
+        return k === 0 ? 't' : (k === 1 ? 'g' : 's');
+      }
+      return k + 1;
     }
+
+    function getPieceId(c, totalSameType, totalSameTypeAhead, isPawn) {
+      var pieceId = getCol(c);
+      if (totalSameType === 1) {
+        return pieceId;
+      }
+      if (isPawn) {
+        pieceId += '' + getOrder(totalSameType, totalSameTypeAhead);
+      } else {
+        pieceId = '' + getOrder(totalSameType, totalSameTypeAhead);
+      }
+      return pieceId;
+    }
+
+    function countSameType(piece, col, opt_row) {
+      var count = 0;
+      var row, i;
+      if (turn === RED) {
+        row = opt_row || ROWS;
+        for (i = 0; i < row; i++) {
+          if (board[i][col] === piece) {
+            count++;
+          }
+        }
+      } else {
+        var row = opt_row || -1;
+        for (i = ROWS - 1; i > row; i--) {
+          if (board[i][col] === piece) {
+            count++;
+          }
+        }
+      }
+      return count;
+    }
+
+    var totalSameType = countSameType(piece, y);
+    var totalSameTypeAhead = countSameType(piece, y, x);
+
+    pieceId = getPieceId(y, totalSameType, totalSameTypeAhead, piece === P);
+    return pieceChar + pieceId;
+  };
+
+  service.produceHumanMove = function(x, y, u, v) {
+    var dir, dst;
 
     // dir = 1, 2, 3 = ., -, /
     if (x === u) {
@@ -91,36 +154,143 @@ tkServices.factory('gameService', function() {
       dir = turn === RED ? 3 : 1;
     }
 
-    // TODO: process s/g/t.
+    if (isDiagonalPiece(board[x][y])) {
+      dst = getCol(v);
+    } else {
+      if (dir === 2) {
+        dst = getCol(v);
+      } else {
+        dst = Math.abs(x - u);
+      }
+    }
+    return service.produceHumanPosition(x, y) + DIRS.charAt(dir - 1) + dst;
+  };
 
-    switch (Math.abs(piece)) {
+  service.parseHumanMove = function(humanMove) {
+
+    function trim(str) {
+        return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+    }
+
+    function findPosition(piece, humanPosition) {
+      if (turn === BLACK) {
+        piece = -piece;
+      }
+      for (var i = 0; i < ROWS; i++)
+        for (var j = 0; j < COLS; j++)
+          if (board[i][j] === piece &&
+              service.produceHumanPosition(i, j).toLowerCase() ===
+                  humanPosition) {
+            return [i, j];
+          }
+      return undefined;
+    }
+
+    var hm = trim(humanMove).toLowerCase();
+    if (hm.length < 4 || hm.length > 5) {
+      return undefined;
+    }
+    var x, y, u, v, cap;
+    var piece, col;
+    var piece = PIECES.toLowerCase().indexOf(hm[0]);
+    if (piece < 0) {
+      return undefined;
+    }
+    piece++;
+
+    var ss = hm.split(/[-\.//]/);
+
+    if (ss.length !== 2 ||
+        ss[0].length < 2 || ss[0].length > 3 ||
+        ss[1].length !== 1) {
+      return undefined;
+    }
+
+    var dir = DIRS.indexOf(hm[ss[0].length]);
+    if (dir < 0) return undefined;
+    dir++;
+
+    var dst = Number(ss[1]);
+    if (isNaN(dst)) return undefined;
+
+    var pos = findPosition(piece, ss[0]);
+
+    if (!pos) return undefined;
+
+    x = pos[0];
+    y = pos[1];
+
+    var dstCol = turn === RED ? COLS - dst : dst - 1;
+
+    var dx, dy;
+
+    switch (piece) {
       case K:
+      case R:
+      case C:
       case P:
-        pieceId = getCol(y);
         if (dir === 2) {
-          dst = getCol(v);
+          dx = 0;
+          dy = dstCol - y;
+        } else if (dir === 1) {
+          dx = -dst;
+          dy = 0;
         } else {
-          dst = Math.abs(x - u);
+          dx = dst;
+          dy = 0;
         }
         break;
       case A:
-      case E:
-      case H:
-        pieceId = getCol(y);
-        dst = getCol(v);
-        break;
-      case R:
-      case C:
-        pieceId = getCol(y);
         if (dir === 2) {
-          dst = getCol(v);
+          return undefined;
+        }
+        dy = dstCol - y;
+        if (dir === 1) {
+          dx = -1;
         } else {
-          dst = Math.abs(x - u);
+          dx = +1;
         }
         break;
-    };
-    return pieceChar + pieceId + DIRS.charAt(dir - 1) + dst;
-  };
+      case E:
+        if (dir === 2) {
+          return undefined;
+        }
+        dy = dstCol - y;
+        if (dir === 1) {
+          dx = -2;
+        } else {
+          dx = +2;
+        }
+        break;
+      case H:
+        if (dir === 2) {
+          return undefined;
+        }
+        dy = dstCol - y;
+        if (dir === 1) {
+          dx = -(3 - Math.abs(dy));
+        } else {
+          dx = 3 - Math.abs(dy);
+        }
+        break;
+    }
+
+    if (turn === BLACK) {
+      dx = -dx;
+    }
+
+    u = x + dx;
+    v = y + dy;
+    if (u < 0 || v < 0 || u >= ROWS || v >= COLS) return undefined;
+
+    cap = board[u][v];
+
+    if (service.produceHumanMove(x, y, u, v).toLowerCase() !== hm) {
+      return undefined;
+    }
+
+    return new Move(x, y, u, v, cap);
+  }
 
   service.isValidMove = function(x, y, u, v) {
     return position.isValidMove(toMove(x, y, u, v));

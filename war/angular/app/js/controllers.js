@@ -4,6 +4,21 @@
 
 var tkControllers = angular.module('tkApp.controllers', []);
 
+
+tkControllers.controller('SandboxCtrl', function($scope) {
+  $scope.moveString = 'p2-5';
+
+  $scope.pressEnter = function(value) {
+    // alert('enter:"' + value + '"');
+  };
+
+  $scope.pressSpace = function(value) {
+    // alert('space:"' + value + '"');
+    $scope.moveString = 'm8.7';
+  };
+});
+
+
 tkControllers.controller('AppCtrl', function(
     $scope, $location, notificationService, authService, userService) {
 
@@ -343,53 +358,6 @@ tkControllers.controller('CreateFenCtrl', function($scope, $location, fenService
   $scope.$watch('fullMoveNumber', function() {
     updateFen();
   });
-});
-
-
-tkControllers.controller('SandboxCtrl', function(
-    $scope, $timeout, dbService, gameService, treeService, fenService) {
-
-  $scope.clear = function() {
-    $scope.game = {
-      category: '1',
-      title: '',
-      list: ''
-    };
-    $scope.searchResults = undefined;
-    $scope.queryString = '';
-  };
-
-  $scope.clear();
-
-  $timeout(function() {
-    $scope.searchData.searchBoxFocused = true;
-  });
-
-  $scope.create = function() {
-    dbService.createGame($scope.game, $scope.user.username);
-  };
-
-  function searchSuccessCallback(searchResults) {
-    _.each(searchResults, function(searchResult) {
-      searchResult.categoryText =
-          $scope.CATEGORIES[Number(searchResult.category)];
-    });
-    $scope.searchResults = searchResults;
-  }
-
-  $scope.search = function() {
-    dbService.searchGames($scope.queryString).then(searchSuccessCallback);
-  };
-
-  $scope.advancedSearch = function() {
-    dbService.advancedSearchGames($scope.game).then(searchSuccessCallback);
-  };
-
-  $scope.init = function() {
-    dbService.initGames().then(function() {
-      alert('Init done.');
-    });
-  };
 });
 
 

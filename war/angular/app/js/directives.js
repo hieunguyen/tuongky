@@ -178,3 +178,30 @@ tkDirectives.directive('shortcut', function() {
     }
   };
 });
+
+
+tkDirectives.directive('moveInput', function($parse, $timeout) {
+  return {
+    scope: {
+      onSpace: '&',
+      onEnter: '&'
+    },
+    link: function(scope, element, attrs) {
+      var modelFn = $parse(attrs['ngModel']);
+      var eventName = 'keydown.13_32';
+      $(element).on(eventName, function(e) {
+        if (e.which === 13) {
+          scope.onEnter({value: modelFn(scope)});
+        }
+        if (e.which === 32) {
+          $timeout(function() {
+            scope.onSpace({value: modelFn(scope)});
+          });
+        }
+      });
+      scope.$on('$destroy', function() {
+        $(element).off(eventName);
+      });
+    }
+  };
+});

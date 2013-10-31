@@ -17,12 +17,13 @@ describe('tkApp.services:', function() {
 
   beforeEach(module('tkApp.services'));
 
-  var fenService, vnService, annotateService;
+  var fenService, vnService, annotateService, gameService;
 
-  beforeEach(inject(function(_fenService_, _vnService_, _annotateService_) {
+  beforeEach(inject(function(_fenService_, _vnService_, _annotateService_, _gameService_) {
     fenService = _fenService_;
     vnService = _vnService_;
     annotateService = _annotateService_;
+    gameService = _gameService_;
   }));
 
   describe('fenService', function() {
@@ -142,6 +143,87 @@ describe('tkApp.services:', function() {
           .toBe('<em>xã</em> "<em>pháo</em> <em>mã</em>"');
       expect(annotateService.annotate(' -+xã   "pháo "mã"787 ', 'xa phao ma 787'))
           .toBe(' -+<em>xã</em>   "<em>pháo</em> "<em>mã</em>"<em>787</em> ');
+    });
+  });
+
+  describe('gameService', function() {
+
+    function createBoard1() {
+      return [
+        [-R, 0, -E, -A, -K, -A, -E, -H, -R],
+        [0, 0, 0, P, 0, P, 0, 0, 0],
+        [0, -C, 0, P, 0, P, 0, 0, 0],
+        [-P, 0, -P, P, -P, P, -P, 0, -P],
+        [0, -H, 0, 0, 0, P, 0, 0, 0],
+        [0, 0, E, 0, 0, 0, 0, C, 0],
+        [P, 0, 0, 0, 0, H, 0, 0, 0],
+        [0, -C, 0, 0, 0, 0, 0, C, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [R, H, E, A, K, A, 0, 0, R]
+      ];
+    }
+
+    function ept(humanMove, x, y, u, v) {
+      var move = gameService.parseHumanMove(humanMove);
+      if (!x) {
+        expect(move).not.toBeDefined();
+        return;
+      }
+      expect(move).toBeDefined();
+      expect(move.x).toBe(x);
+      expect(move.y).toBe(y);
+      expect(move.u).toBe(u);
+      expect(move.v).toBe(v);
+    }
+
+    it('should produce correct human moves.', function() {
+      gameService.init();
+      expect(gameService.produceHumanMove(7, 7, 7, 4)).toBe('P2-5');
+
+      gameService.init(createBoard1());
+      expect(gameService.produceHumanMove(7, 7, 7, 4)).toBe('Ps-5');
+      expect(gameService.produceHumanMove(5, 7, 5, 4)).toBe('Pt-5');
+      expect(gameService.produceHumanMove(1, 5, 1, 4)).toBe('C41-5');
+      expect(gameService.produceHumanMove(4, 5, 4, 4)).toBe('C44-5');
+      expect(gameService.produceHumanMove(1, 3, 1, 2)).toBe('C6t-7');
+      expect(gameService.produceHumanMove(2, 3, 2, 2)).toBe('C6g-7');
+      expect(gameService.produceHumanMove(3, 3, 3, 2)).toBe('C6s-7');
+      expect(gameService.produceHumanMove(9, 2, 7, 4)).toBe('Vs.5');
+      expect(gameService.produceHumanMove(5, 2, 7, 4)).toBe('Vt/5');
+
+      gameService.init(createBoard1(), BLACK);
+      expect(gameService.produceHumanMove(2, 1, 2, 3)).toBe('Ps-4');
+      expect(gameService.produceHumanMove(7, 1, 7, 3)).toBe('Pt-4');
+    });
+
+    it('should parse human moves correctly.', function() {
+      gameService.init();
+      ept('P2-5', 7, 7, 7, 4);
+      ept('P2.7', 7, 7, 0, 7);
+      ept('M2.5');
+      ept('M2.3', 9, 7, 7, 6);
+      ept('M2.1', 9, 7, 7, 8);
+      ept('V3.5', 9, 6, 7, 4);
+      ept('V7.5', 9, 2, 7, 4);
+
+      gameService.init(createBoard1());
+      ept('Ps-5', 7, 7, 7, 4);
+      ept('Pt-5', 5, 7, 5, 4);
+      ept('C41-5', 1, 5, 1, 4);
+      ept('C44-5', 4, 5, 4, 4);
+      ept('C6t-7', 1, 3, 1, 2);
+      ept('C6g-7', 2, 3, 2, 2);
+      ept('C6s-7', 3, 3, 3, 2);
+      ept('Vs.5', 9, 2, 7, 4);
+      ept('Vt/5', 5, 2, 7, 4);
+      ept('M4.5', 6, 5, 4, 4);
+      ept('X1.4', 9, 8, 5, 8);
+      ept('X9.4', 9, 0, 5, 0);
+
+      gameService.init(createBoard1(), BLACK);
+      ept('Ps-4', 2, 1, 2, 3);
+      ept('Pt-4', 7, 1, 7, 3);
+      ept('M2.4', 4, 1, 5, 3);
     });
   });
 });
