@@ -1,85 +1,102 @@
-<div class="row">
-  <div class="col-md-12">
-    <div class="board">
-      <div class="top-player-turn" ng-show="turn == 2"></div>
-      <div class="bottom-player-turn" ng-show="turn == 1"></div>
-      <div ng-repeat="row in board">
-        <div ng-repeat="cell in row"
-             class="board-cell"
-             droppable
-             drop="dropIt(dragId, $parent.$index, $index)">
-          <img ng-src="/img/xq2/{{getImageName(cell)}}.gif"
-               ng-show="cell != 0"
-               id="sq_{{$parent.$index}}_{{$index}}"
-               draggable
-               ng-click="selectPiece($parent.$index, $index)">
+<div class="board-container">
+  <div class="row move-input-container" ng-show="editMode">
+    <div class="col-md-12">
+      <div ng-show="invalidMove" class="error">
+        "{{invalidMove}}" không phải nước đi hợp lệ.
+      </div>
+      <input type="text"
+             class="move-input"
+             ng-model="$parent.moveString"
+             placeholder="Nhập một dãy nước đi và gõ enter"
+             move-input
+             stop-propagation="true"
+             on-enter="pressEnter(value)"
+             on-space="pressSpace(value)">
+     </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="board">
+        <div class="top-player-turn" ng-show="turn == 2"></div>
+        <div class="bottom-player-turn" ng-show="turn == 1"></div>
+        <div ng-repeat="row in board">
+          <div ng-repeat="cell in row"
+               class="board-cell"
+               droppable
+               drop="dropIt(dragId, $parent.$index, $index)">
+            <img ng-src="/img/xq2/{{getImageName(cell)}}.gif"
+                 ng-show="cell != 0"
+                 id="sq_{{$parent.$index}}_{{$index}}"
+                 draggable
+                 ng-click="selectPiece($parent.$index, $index)">
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="move-list" auto-scroll-to="currentLineIndex">
-      <table>
-        <tr ng-repeat="move in moveTable"
-            ng-class="{selected: $index == currentLineIndex}"
-            ng-click="selectMove($index)">
-          <td class="first" align="right">{{move.first}}</td>
-          <td class="second">
-            {{move.second}}
-            <span ng-show="line[$index].nodeData.comment">*</span>
-          </td>
-        </tr>
-      </table>
-    </div>
-
-    <div class="commentContainer">
-      <div class="title">Bình luận</div>
-      <textarea ng-model="line[currentLineIndex].nodeData.comment"
-                class="comment"
-                ng-show="true"
-                ng-readonly="!editMode"></textarea>
-    </div>
-
-    <div class="variationContainer">
-      <div class="title">Lựa chọn</div>
-      <div class="variation">
-        <ul>
-          <li ng-repeat="node in variations"
-              ng-class="{selected: $index == currentVariationIndex}"
-              ng-click="selectVariation($index)">
-            {{$index + 1}}. {{node.nodeData.humanMove}}
-          </li>
-        </ul>
+      <div class="move-list" auto-scroll-to="currentLineIndex">
+        <table>
+          <tr ng-repeat="move in moveTable"
+              ng-class="{selected: $index == currentLineIndex}"
+              ng-click="selectMove($index)">
+            <td class="first" align="right">{{move.first}}</td>
+            <td class="second">
+              {{move.second}}
+              <span ng-show="line[$index].nodeData.comment">*</span>
+            </td>
+          </tr>
+        </table>
       </div>
-      <div class="actions">
-        <button class="btn btn-link" ng-show="editMode" ng-click="moveVariationUp()">Lên</button>
-        <button class="btn btn-link" ng-show="editMode" ng-click="moveVariationDown()">Xuống</button>
-        <button class="btn btn-link" ng-show="editMode" ng-click="deleteVariation()">Xóa</button>
+
+      <div class="commentContainer">
+        <div class="title">Bình luận</div>
+        <textarea ng-model="line[currentLineIndex].nodeData.comment"
+                  class="comment"
+                  ng-show="true"
+                  ng-readonly="!editMode"></textarea>
       </div>
+
+      <div class="variationContainer">
+        <div class="title">Lựa chọn</div>
+        <div class="variation">
+          <ul>
+            <li ng-repeat="node in variations"
+                ng-class="{selected: $index == currentVariationIndex}"
+                ng-click="selectVariation($index)">
+              {{$index + 1}}. {{node.nodeData.humanMove}}
+            </li>
+          </ul>
+        </div>
+        <div class="actions">
+          <button class="btn btn-link" ng-show="editMode" ng-click="moveVariationUp()">Lên</button>
+          <button class="btn btn-link" ng-show="editMode" ng-click="moveVariationDown()">Xuống</button>
+          <button class="btn btn-link" ng-show="editMode" ng-click="deleteVariation()">Xóa</button>
+        </div>
+      </div>
+
+      <div class="clear"></div>
+
+      <div class="board-control-panel">
+        <button class="btn btn-sm btn-default"
+                ng-click="goFirst()"
+                tabindex="10"><span class="shortcut-key">Đ</span>ầu</button>
+        <button class="btn btn-sm btn-default"
+                ng-click="goPrevious()"
+                tabindex="11"><span class="shortcut-key">T</span>rước</button>
+        <button class="btn btn-sm btn-default"
+                ng-click="goNext()"
+                tabindex="12"><span class="shortcut-key">S</span>au</button>
+        <button class="btn btn-sm btn-default"
+                ng-click="goLast()"
+                tabindex="13"><span class="shortcut-key">C</span>uối</button>
+      </div>
+
+      <shortcut keycode="37" handler="goPrevious()"></shortcut>
+      <shortcut keycode="39" handler="goNext()"></shortcut>
+
+      <shortcut keycode="68" handler="goFirst()"></shortcut>
+      <shortcut keycode="84" handler="goPrevious()"></shortcut>
+      <shortcut keycode="83" handler="goNext()"></shortcut>
+      <shortcut keycode="67" handler="goLast()"></shortcut>
     </div>
-
-    <div class="clear"></div>
-
-    <div class="board-control-panel">
-      <button class="btn btn-sm btn-default"
-              ng-click="goFirst()"
-              tabindex="10"><span class="shortcut-key">Đ</span>ầu</button>
-      <button class="btn btn-sm btn-default"
-              ng-click="goPrevious()"
-              tabindex="11"><span class="shortcut-key">T</span>rước</button>
-      <button class="btn btn-sm btn-default"
-              ng-click="goNext()"
-              tabindex="12"><span class="shortcut-key">S</span>au</button>
-      <button class="btn btn-sm btn-default"
-              ng-click="goLast()"
-              tabindex="13"><span class="shortcut-key">C</span>uối</button>
-    </div>
-
-    <shortcut keycode="37" handler="goPrevious()"></shortcut>
-    <shortcut keycode="39" handler="goNext()"></shortcut>
-
-    <shortcut keycode="68" handler="goFirst()"></shortcut>
-    <shortcut keycode="84" handler="goPrevious()"></shortcut>
-    <shortcut keycode="83" handler="goNext()"></shortcut>
-    <shortcut keycode="67" handler="goLast()"></shortcut>
   </div>
 </div>

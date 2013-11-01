@@ -17,6 +17,7 @@
         <input type="text"
                ng-model="searchData.queryString"
                class="search-box"
+               stop-propagation="true"
                press-enter="search()"
                tk-focus="searchData.searchBoxFocused"><button class="btn btn-sm btn-success search-button" ng-click="search()">
           Tìm kiếm

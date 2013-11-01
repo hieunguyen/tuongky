@@ -6,7 +6,7 @@
 	text-decoration: underline;
 }
 
-form .error {
+.error {
 	color: #b94a48;
 }
 
@@ -48,6 +48,22 @@ form .error {
 
 .view-container {
 	margin-bottom: 200px;
+}
+
+.board-container .move-input-container {
+	margin-bottom: 15px;
+}
+
+.board-container .move-input-container .error {
+	margin-bottom: 5px;
+}
+
+.board-container .move-input {
+	border: 1px solid gray;
+	font-size: 16px;
+	height: 30px;
+	padding: 2px 5px;
+	width: 521px;
 }
 
 .board {

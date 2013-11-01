@@ -168,7 +168,9 @@ tkDirectives.directive('shortcut', function() {
       $(document).on(eventName, function(e) {
         scope.$apply(function() {
           if (e.which === Number(keyCode)) {
-            scope.handler();
+            if (!$(e.target).attr('stop-propagation')) {
+              scope.handler();
+            }
           }
         });
       });

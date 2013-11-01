@@ -5,17 +5,15 @@
 var tkControllers = angular.module('tkApp.controllers', []);
 
 
-tkControllers.controller('SandboxCtrl', function($scope) {
-  $scope.moveString = 'p2-5';
+tkControllers.controller('SandboxCtrl', function(
+    $scope, gameService, treeService, fenService) {
 
-  $scope.pressEnter = function(value) {
-    // alert('enter:"' + value + '"');
-  };
+  $scope.fen = fenService.getStartingFen();
+  $scope.editMode = true;
 
-  $scope.pressSpace = function(value) {
-    // alert('space:"' + value + '"');
-    $scope.moveString = 'm8.7';
-  };
+  var pos = fenService.fen2pos($scope.fen);
+  gameService.init(pos.board, pos.turn);
+  treeService.init();
 });
 
 
@@ -514,14 +512,20 @@ tkControllers.controller('BoardCtrl', function(
     var x = parseInt(dragId.split('_')[1]);
     var y = parseInt(dragId.split('_')[2]);
     if (x === row && y === col) return;
-    if (gameService.isValidMove(x, y, row, col)) {
-      makeMove(x, y, row, col);
-    }
+    maybeMakeMove(x, y, row, col);
   };
 
   function updateVariations() {
     $scope.variations = computeVariations($scope.currentLineIndex);
     $scope.currentVariationIndex = _.indexOf($scope.variations, getCurrentNode());
+  }
+
+  function maybeMakeMove(x, y, u, v) {
+    if (gameService.isValidMove(x, y, u, v)) {
+      makeMove(x, y, u, v);
+      return true;
+    }
+    return false;
   }
 
   function makeMove(x, y, u, v) {
@@ -642,6 +646,40 @@ tkControllers.controller('BoardCtrl', function(
   $scope.goLast = function() {
     $scope.selectMove(line.length - 1);
   };
+
+  $scope.pressEnter = function(value) {
+    processHumanMoves(value);
+  };
+
+  $scope.pressSpace = function(value) {
+    // processHumanMoves(value);
+  };
+
+  function processHumanMoves(value) {
+    var moveTokens = value.split(' ');
+    while (moveTokens.length > 0) {
+      var next = moveTokens[0];
+      if (!next.length) {
+        moveTokens.shift();
+      } else {
+        if (processHumanMove(next)) {
+          moveTokens.shift();
+        } else {
+          break;
+        }
+      }
+    }
+    $scope.moveString = moveTokens.join(' ');
+    $scope.invalidMove = moveTokens.length ? moveTokens[0] : '';
+  }
+
+  function processHumanMove(moveString) {
+    var move = gameService.parseHumanMove(moveString);
+    if (move) {
+      return maybeMakeMove(move.x, move.y, move.u, move. v);
+    }
+    return false;
+  }
 });
 
 
