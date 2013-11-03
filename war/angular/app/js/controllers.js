@@ -376,7 +376,6 @@ tkControllers.controller('SearchCtrl', function(
   $scope.ITEMS_PER_PAGE = 10;
 
   function searchSuccessCallback(response) {
-    console.log('searchSuccessCallback');
     _.each(response.games, function(game) {
       game.categoryText = $scope.CATEGORIES[Number(game.categoryIndex)];
       game.categoryKeyword =
