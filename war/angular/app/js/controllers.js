@@ -43,9 +43,9 @@ tkControllers.controller('AppCtrl', function(
     }
   });
 
-  $scope.data.loading = true;
+  $scope.data.loading = 1;
   userService.getStatus().then(function(username) {
-    $scope.data.loading = false;
+    $scope.data.loading--;
     if (username) {
       authService.signIn(username);
     }
@@ -376,6 +376,7 @@ tkControllers.controller('SearchCtrl', function(
   $scope.ITEMS_PER_PAGE = 10;
 
   function searchSuccessCallback(response) {
+    console.log('searchSuccessCallback');
     _.each(response.games, function(game) {
       game.categoryText = $scope.CATEGORIES[Number(game.categoryIndex)];
       game.categoryKeyword =
@@ -389,7 +390,7 @@ tkControllers.controller('SearchCtrl', function(
     });
     $scope.searchResults = response.games;
     $scope.totalItems = Number(response.numberFound);
-    $scope.data.loading = false;
+    $scope.data.loading--;
   }
 
   var params = new Params($routeParams.params);
@@ -400,7 +401,7 @@ tkControllers.controller('SearchCtrl', function(
 
   $scope.searchResults = [];
   $scope.totalItems = 0;
-  $scope.data.loading = true;
+  $scope.data.loading++;
   dbService.searchGames(
       params.get('q'), params.get('start')).then(searchSuccessCallback);
 
