@@ -442,6 +442,7 @@ tkControllers.controller('BoardCtrl', function(
 
   var line;
   var pos;
+  var selectedRow, selectedCol;
 
   function start() {
     $scope.board = gameService.getBoard();
@@ -462,9 +463,21 @@ tkControllers.controller('BoardCtrl', function(
     start();
   });
 
+  $scope.$watch('editMode', function() {
+    forgetSelectedPiece();
+  });
+
   $scope.getImageName = function(piece) {
     if (!piece) return 'dot';
     return (piece > 0 ? 'r' : 'b') + PIECE_IMAGE_NAME_MAP[Math.abs(piece)];
+  };
+
+  $scope.extractMoveQualityFromComment = function(index, comment) {
+    if (index === 0 || !comment) return '';
+    var QUALITIES = ['!!', '!?', '??', '?!', '!', '?'];
+    return _.find(QUALITIES, function(quality) {
+      return comment.indexOf(quality) === 0;
+    }) || '';
   };
 
   function computeMoveTable(line) {
@@ -548,10 +561,36 @@ tkControllers.controller('BoardCtrl', function(
     $scope.currentLineIndex++;
     updateVariations();
     $scope.line = line;
+    forgetSelectedPiece();
+  }
+
+  function forgetSelectedPiece() {
+    selectedRow = undefined;
+    selectedCol = undefined;
   }
 
   $scope.selectPiece = function(row, col) {
-    console.log('select a piece at ' + row + ' ' + col);
+    if (!$scope.editMode) return;
+    var color = $scope.board[row][col] > 0 ? RED : BLACK;
+    if ($scope.turn !== color) return;
+    if (selectedRow === row && selectedCol === col) {
+      forgetSelectedPiece();
+    } else {
+      selectedRow = row;
+      selectedCol = col;
+    }
+  };
+
+  $scope.selectBoardCell = function(row, col) {
+    if (selectedRow === undefined || selectedCol === undefined) return;
+    if (selectedRow === row && selectedCol === col) return;
+    maybeMakeMove(selectedRow, selectedCol, row, col);
+  };
+
+  $scope.isHighlighted = function(row, col) {
+    if (!$scope.editMode ||
+        selectedRow === undefined || selectedCol === undefined) return false;
+    return row === selectedRow && col === selectedCol;
   };
 
   $scope.selectMove = function(index) {
@@ -571,6 +610,7 @@ tkControllers.controller('BoardCtrl', function(
     $scope.turn = gameService.getTurn();
     $scope.currentLineIndex = index;
     updateVariations();
+    forgetSelectedPiece();
   };
 
   function getCurrentNode() {
@@ -590,6 +630,7 @@ tkControllers.controller('BoardCtrl', function(
     gameService.makeMove(move.x, move.y, move.u, move.v);
     $scope.turn = gameService.getTurn();
     $scope.line = line;
+    forgetSelectedPiece();
   };
 
   $scope.moveVariationUp = function() {

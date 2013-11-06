@@ -112,6 +112,11 @@
 	width: 57px;
 }
 
+.board-cell img.highlighted {
+	border: 3px solid rgba(13, 40, 95, 0.4);
+	border-radius: 28px 28px;
+}
+
 .board-control-panel {
 	/*border: 1px solid;*/
 	width: 521px;

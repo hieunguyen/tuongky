@@ -163,9 +163,14 @@ describe('tkApp.services:', function() {
       ];
     }
 
+    function createPosition() {
+      var encodedFen = '3a1RC2.4k4.h3e4.p3p2rp.9.4c4.P5P1P.4E1C2.4A4.2EA1K3_w_-_-_-_1';
+      return fenService.fen2pos(fenService.url2fen(encodedFen));
+    }
+
     function ept(humanMove, x, y, u, v) {
       var move = gameService.parseHumanMove(humanMove);
-      if (!x) {
+      if (x === undefined) {
         expect(move).not.toBeDefined();
         return;
       }
@@ -175,6 +180,12 @@ describe('tkApp.services:', function() {
       expect(move.u).toBe(u);
       expect(move.v).toBe(v);
     }
+
+    it('should produce correct human position', function() {
+      var pos = createPosition();
+      gameService.init(pos.board, pos.turn);
+      expect(gameService.produceHumanPosition(0, 6)).toBe('Pt');
+    })
 
     it('should produce correct human moves.', function() {
       gameService.init();
@@ -224,6 +235,10 @@ describe('tkApp.services:', function() {
       ept('Ps-4', 2, 1, 2, 3);
       ept('Pt-4', 7, 1, 7, 3);
       ept('M2.4', 4, 1, 5, 3);
+
+      var pos = createPosition();
+      gameService.init(pos.board, pos.turn);
+      ept('pt/3', 0, 6, 3, 6);
     });
   });
 });

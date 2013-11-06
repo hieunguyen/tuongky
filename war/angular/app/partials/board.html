@@ -23,12 +23,15 @@
           <div ng-repeat="cell in row"
                class="board-cell"
                droppable
-               drop="dropIt(dragId, $parent.$index, $index)">
+               drop="dropIt(dragId, $parent.$index, $index)"
+               ng-click="selectBoardCell($parent.$index, $index)"
+               >
             <img ng-src="/img/xq2/{{getImageName(cell)}}.gif"
                  ng-show="cell != 0"
                  id="sq_{{$parent.$index}}_{{$index}}"
                  draggable
-                 ng-click="selectPiece($parent.$index, $index)">
+                 ng-click="selectPiece($parent.$index, $index)"
+                 ng-class="{highlighted: isHighlighted($parent.$index, $index)}">
           </div>
         </div>
       </div>
@@ -41,7 +44,8 @@
             <td class="first" align="right">{{move.first}}</td>
             <td class="second">
               {{move.second}}
-              <span ng-show="line[$index].nodeData.comment">*</span>
+              {{extractMoveQualityFromComment($index, line[$index].nodeData.comment)}}
+              <span ng-show="line[$index].nodeData.comment && line[$index].nodeData.comment.length > 2">*</span>
             </td>
           </tr>
         </table>

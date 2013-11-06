@@ -118,14 +118,14 @@ tkServices.factory('gameService', function() {
       var count = 0;
       var row, i;
       if (turn === RED) {
-        row = opt_row || ROWS;
+        row = opt_row === undefined ? ROWS : opt_row;
         for (i = 0; i < row; i++) {
           if (board[i][col] === piece) {
             count++;
           }
         }
       } else {
-        var row = opt_row || -1;
+        var row = opt_row === undefined ? -1 : opt_row;
         for (i = ROWS - 1; i > row; i--) {
           if (board[i][col] === piece) {
             count++;
@@ -138,7 +138,8 @@ tkServices.factory('gameService', function() {
     var totalSameType = countSameType(piece, y);
     var totalSameTypeAhead = countSameType(piece, y, x);
 
-    pieceId = getPieceId(y, totalSameType, totalSameTypeAhead, piece === P);
+    pieceId = getPieceId(
+        y, totalSameType, totalSameTypeAhead, Math.abs(piece) === P);
     return pieceChar + pieceId;
   };
 
@@ -657,10 +658,13 @@ tkServices.factory('dbService', function(
 
   service.getGame = function(gameId) {
     var defer = $q.defer();
+    notificationService.show('Đang đọc game...');
     $http.get('/game/show?gameId=' + gameId)
     .success(function(response) {
+      notificationService.hide();
       defer.resolve(response.game);
     }).error(function() {
+      notificationService.show('Gặp lỗi, không đọc được game.');
       defer.reject();
     });
     return defer.promise;
