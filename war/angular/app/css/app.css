@@ -325,6 +325,22 @@
 	font-size: 15px;
 }
 
+.search-results .categoryColumn {
+	width: 10%;
+}
+
+.search-results .titleColumn {
+	width: 50%;
+}
+
+.search-results .bookColumn {
+	width: 30%;
+}
+
+.search-results .usernameColumn {
+	width: 10%;
+}
+
 .search-bar {
 	height: 72px;
 }
