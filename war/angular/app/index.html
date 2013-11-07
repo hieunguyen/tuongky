@@ -49,8 +49,8 @@
       <div class="col-md-12">
         <div class='alert alert-dismissable'
              ng-class='alert.type && "alert-" + alert.type'
-             ng-show="alert.visible" ng-cloak>
-          {{alert.content}}
+             ng-show="alert.visible">
+          <span ng-bind="alert.content"></span>
         </div>
       </div>
     </div>
