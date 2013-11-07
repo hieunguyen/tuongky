@@ -360,12 +360,22 @@ tkControllers.controller('CreateFenCtrl', function($scope, $location, fenService
 
 
 tkControllers.controller('SearchBarCtrl', function(
-    $scope, $location, $timeout) {
+    $scope, $location, $timeout, fenService) {
 
   $scope.search = function() {
     var params = new Params();
     params.set('q', $scope.searchData.queryString);
     $location.path('/search/' + params.encode());
+  };
+
+  $scope.createGame = function(e) {
+    var fen = $scope.searchData.queryString;
+    if (!fenService.fen2pos(fen)) {
+      return;
+    }
+    e.stopPropagation();
+    var nextToken = '/game/create/fen/' + fenService.fen2url(fen);
+    $location.path(nextToken);
   };
 });
 

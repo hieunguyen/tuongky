@@ -22,7 +22,9 @@
                tk-focus="searchData.searchBoxFocused"><button class="btn btn-sm btn-success search-button" ng-click="search()">
           Tìm kiếm
         </button><div class="create-game-dropdown dropdown">
-          <button data-toggle="dropdown" class="btn btn-sm btn-primary search-button">Tạo game</button>
+          <button data-toggle="dropdown"
+                  class="btn btn-sm btn-primary search-button"
+                  ng-click="createGame($event)">Tạo game</button>
           <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
             <li><a href="#/game/create">Từ đầu ván cờ</a></li>
             <li><a href="#/fen/create">Xếp hình cờ</a></li>
