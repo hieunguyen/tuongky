@@ -11,7 +11,7 @@ tkApp.config(['$routeProvider', function($routeProvider) {
       {
         templateUrl: 'partials/create_fen.html',
         controller: 'CreateFenCtrl',
-        accessLevel: Roles.ANONYMOUS
+        accessLevel: Roles.USER
       })
   .when('/fen/create/fen/:encodedFen',
       {
