@@ -456,6 +456,7 @@ tkControllers.controller('SearchCtrl', function(
           game.title, $scope.searchData.queryString);
       game.annotated_book = annotateService.annotate(
           game.book, $scope.searchData.queryString);
+      game.encoded_book = encodeURIComponent(encodeURIComponent(game.book));
       game.annotated_username = annotateService.annotate(
           game.username, $scope.searchData.queryString);
     });
