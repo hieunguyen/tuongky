@@ -16,7 +16,7 @@
   </div>
   <div class="row">
     <div class="col-md-12">
-      <div class="board">
+      <div class="board" ng-show="boardVisible">
         <div class="top-player-turn" ng-show="turn == 2"></div>
         <div class="bottom-player-turn" ng-show="turn == 1"></div>
         <div ng-repeat="row in board">
@@ -36,7 +36,7 @@
         </div>
       </div>
 
-      <div class="move-list" auto-scroll-to="currentLineIndex">
+      <div class="move-list" ng-show="movesVisible" auto-scroll-to="currentLineIndex">
         <table>
           <tr ng-repeat="move in moveTable"
               ng-class="{selected: $index == currentLineIndex}"
@@ -51,7 +51,7 @@
         </table>
       </div>
 
-      <div class="commentContainer">
+      <div class="commentContainer" ng-show="commentVisible">
         <div class="title">Bình luận</div>
         <textarea ng-model="line[currentLineIndex].nodeData.comment"
                   class="comment"
@@ -60,7 +60,7 @@
                   ng-readonly="!editMode"></textarea>
       </div>
 
-      <div class="variationContainer">
+      <div class="variationContainer" ng-show="variationsVisible">
         <div class="title">Lựa chọn</div>
         <div class="variation">
           <ul>

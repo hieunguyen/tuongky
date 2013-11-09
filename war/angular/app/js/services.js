@@ -981,7 +981,10 @@ tkServices.factory('vnService', function() {
     binh: 'tot',
     chot: 'tot',
     voi: 'tuong',
-    sy: 'si'
+    sy: 'si',
+    ly: 'li',
+    ti: 'ty',
+    cuc: 'cuoc'
   };
 
   var service = {};

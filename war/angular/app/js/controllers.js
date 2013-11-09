@@ -517,6 +517,11 @@ tkControllers.controller('BoardCtrl', function(
   var pos;
   var selectedRow, selectedCol;
 
+  $scope.boardVisible = true;
+  $scope.movesVisible = true;
+  $scope.commentVisible = true;
+  $scope.variationsVisible = true;
+
   function start() {
     $scope.board = gameService.getBoard();
     $scope.turn = gameService.getTurn();
