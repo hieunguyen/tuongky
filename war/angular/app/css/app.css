@@ -288,6 +288,12 @@
 	margin-right: 60px;
 }
 
+.fen {
+	font-size: 17px;
+	margin-bottom: 10px;
+	margin-left: 120px;
+}
+
 .sandbox-form input {
 	width: 600px;
 }

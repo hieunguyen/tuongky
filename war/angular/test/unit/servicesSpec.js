@@ -7,6 +7,11 @@ describe('tkApp.services:', function() {
   var FEN2 = '7r1/5k3/9/5PP1H/9/9/9/9/9/4K4 w - - - 1';
   var URL2 = '7r1.5k3.9.5PP1H.9.9.9.9.9.4K4_w_-_-_-_1';
 
+  var FEN3 = '3ak1b2/r1P1a4/3n5/2RR5/6b2/9/9/4BA3/4A4/2B1K4 b - - 48 72';
+  var FEN4 = '3ak1e2/r1P1a4/3n5/2RR5/6b2/9/9/4EA3/4A4/2E1K4 b - - 48 72';
+  var FEN5 = '4k4/4a4/3abn3/1N7/6b2/2B3B2/2C6/3A5/4AK3/9 w - - 121 129';
+  var FEN6 = '4k4/4a4/3aeh3/1H7/6e2/2E3E2/2C6/3A5/4AK3/9 w - - 121 129';
+
   var INVALID_FENS = [
     '7r1/5k3/9/5PP4H/9/9/9/9/9/4K3 w - - - 1',
     '7r1/5k3/9/5PP1H/9/9/9/9/8/4K4 w - - - 1',
@@ -63,6 +68,13 @@ describe('tkApp.services:', function() {
       for (var i = 0; i < INVALID_FENS.length; i++) {
         expect(fenService.fen2pos(INVALID_FENS[i])).toBeFalsy();
       }
+    });
+
+    it('should recognize either b or e for elephant.', function() {
+      expect(fenService.fen2pos(FEN3)).toBeTruthy();
+      expect(fenService.fen2pos(FEN4)).toBeTruthy();
+      expect(fenService.fen2pos(FEN5)).toBeTruthy();
+      expect(fenService.fen2pos(FEN6)).toBeTruthy();
     });
   });
 

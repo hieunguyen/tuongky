@@ -178,7 +178,14 @@ tkControllers.controller('CreateGameCtrl', function(
 });
 
 
-tkControllers.controller('CreateFenCtrl', function($scope, $location, fenService) {
+tkControllers.controller('CreateFenCtrl', function(
+    $scope, $location, $routeParams, fenService) {
+
+  var pos;
+  if ($routeParams.encodedFen) {
+    pos = fenService.url2pos($routeParams.encodedFen);
+  }
+
   function createInitialBoard() {
     return [
       [-R, -H, -E, -A, -K, -A, -E, -H, -R],
@@ -219,17 +226,29 @@ tkControllers.controller('CreateFenCtrl', function($scope, $location, fenService
   $scope.getImageName = function(piece) {
     if (!piece) return 'dot';
     return (piece > 0 ? 'r' : 'b') + PIECE_IMAGE_NAME_MAP[Math.abs(piece)];
-    if (1 + 1 === 2) {
-    }
   };
 
-  $scope.dropIt = function(dragId, row, col) {
-    var x = parseInt(dragId.split('_')[1]);
-    var y = parseInt(dragId.split('_')[2]);
+  function dropWithinBoard(dragId, row, col) {
+    var x = Number(dragId.split('_')[1]);
+    var y = Number(dragId.split('_')[2]);
     if (x === row && y === col) return;
     putPieceIntoBox(row, col);
     $scope.board[row][col] = $scope.board[x][y];
     $scope.board[x][y] = 0;
+  }
+
+  function dropBoxToBoard(dragId, row, col) {
+    var index = Number(dragId.split('_')[1]);
+    var piece = index < 16 ? $scope.blackBox[index] : $scope.redBox[index - 16];
+    putOnBoardAt(index < 16 ? index : index - 16, piece, row, col);
+  }
+
+  $scope.dropIt = function(dragId, row, col) {
+    if (dragId.indexOf('sq') === 0) {
+      dropWithinBoard(dragId, row, col);
+    } else {
+      dropBoxToBoard(dragId, row, col);
+    }
     updateFen();
   };
 
@@ -262,7 +281,7 @@ tkControllers.controller('CreateFenCtrl', function($scope, $location, fenService
     updateFen();
   };
 
-  $scope.gogo = function() {
+  $scope.toCreateGame = function() {
     var nextToken = '/game/create/fen/' + fenService.fen2url($scope.fen);
     $location.path(nextToken);
   };
@@ -303,7 +322,11 @@ tkControllers.controller('CreateFenCtrl', function($scope, $location, fenService
     if (!cell) {
       return;
     }
-    $scope.board[cell.row][cell.col] = piece;
+    putOnBoardAt(index, piece, cell.row, cell.col);
+  }
+
+  function putOnBoardAt(index, piece, row, col) {
+    $scope.board[row][col] = piece;
     if (piece > 0) {
       $scope.redBox[index] = 0;
     } else {
@@ -342,12 +365,42 @@ tkControllers.controller('CreateFenCtrl', function($scope, $location, fenService
     return piece * -1;
   });
 
-  $scope.board = createEmptyBoard(ROWS, COLS);
-  $scope.turn = RED;
-  $scope.fullMoveNumber = 1;
-  putOnBoard(11, K);
-  putOnBoard(11, -K);
-  updateFen();
+  function findPieceInBox(box, piece) {
+    return _.indexOf(box, piece);
+  }
+
+  function initializeFromPos(pos) {
+    $scope.turn = pos.turn;
+    $scope.fullMoveNumber = pos.fullMoveNumber;
+    $scope.halfMoveClock = pos.halfMoveClock;
+    for (var i = 0; i < ROWS; i++)
+      for (var j = 0; j < COLS; j++)
+        if (pos.board[i][j] !== EMPTY) {
+          var piece = pos.board[i][j];
+          var index = piece < 0 ?
+              findPieceInBox($scope.blackBox, piece) :
+              findPieceInBox($scope.redBox, piece);
+          if (index !== -1) {
+            putOnBoardAt(index, piece, i, j);
+          }
+        }
+    updateFen();
+  }
+
+  function init(pos) {
+    $scope.board = createEmptyBoard(ROWS, COLS);
+    if (pos) {
+      initializeFromPos(pos);
+      return;
+    }
+    $scope.turn = RED;
+    $scope.fullMoveNumber = 1;
+    putOnBoard(11, K);
+    putOnBoard(11, -K);
+    updateFen();
+  }
+
+  init(pos);
 
   $scope.$watch('turn', function() {
     updateFen();
@@ -362,10 +415,18 @@ tkControllers.controller('CreateFenCtrl', function($scope, $location, fenService
 tkControllers.controller('SearchBarCtrl', function(
     $scope, $location, $timeout, fenService) {
 
-  $scope.search = function() {
-    var params = new Params();
-    params.set('q', $scope.searchData.queryString);
-    $location.path('/search/' + params.encode());
+  $scope.search = function(e) {
+    var query = $scope.searchData.queryString;
+    if (!fenService.fen2pos(query)) {
+      var params = new Params();
+      params.set('q', query);
+      $location.path('/search/' + params.encode());
+      return;
+    }
+    $scope.searchData.queryString = '';
+    if (e) e.stopPropagation();
+    var nextToken = '/fen/create/fen/' + fenService.fen2url(query);
+    $location.path(nextToken);
   };
 
   $scope.createGame = function(e) {
@@ -373,6 +434,7 @@ tkControllers.controller('SearchBarCtrl', function(
     if (!fenService.fen2pos(fen)) {
       return;
     }
+    $scope.searchData.queryString = '';
     e.stopPropagation();
     var nextToken = '/game/create/fen/' + fenService.fen2url(fen);
     $location.path(nextToken);
@@ -532,8 +594,8 @@ tkControllers.controller('BoardCtrl', function(
     if (!$scope.editMode) {
       return;
     }
-    var x = parseInt(dragId.split('_')[1]);
-    var y = parseInt(dragId.split('_')[2]);
+    var x = Number(dragId.split('_')[1]);
+    var y = Number(dragId.split('_')[2]);
     if (x === row && y === col) return;
     maybeMakeMove(x, y, row, col);
   };

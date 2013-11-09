@@ -462,6 +462,20 @@ tkServices.factory('fenService', function() {
     return fen.replace(/\//g, '.').replace(/\s/g, '_');
   };
 
+  function getPieceType(c) {
+    if (c.toLowerCase() === 'b') {
+      c = 'e';
+    }
+    if (c.toLowerCase() === 'n') {
+      c = 'h';
+    }
+    return RED_PIECES.indexOf(c.toUpperCase());
+  }
+
+  service.url2pos = function(url) {
+    return service.fen2pos(service.url2fen(url));
+  };
+
   service.fen2pos = function(fen) {
     var board, turn, halfMoveClock = -1, fullMoveNumber = 1;
     var as = fen.split(' ');
@@ -483,7 +497,7 @@ tkServices.factory('fenService', function() {
         if ('0' <= c && c <= '9') {
           col += Number(c);
         } else {
-          var pieceType = RED_PIECES.indexOf(c.toUpperCase());
+          var pieceType = getPieceType(c);
           if (pieceType < 0) {
             return null;
           }
