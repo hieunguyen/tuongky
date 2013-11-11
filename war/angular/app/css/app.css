@@ -74,6 +74,10 @@
 	float: left;
 }
 
+.create-fen .board {
+	float: left;
+}
+
 .board {
 	background-image: url('/img/xq2/board.jpg');
 	background-size: 100%;
