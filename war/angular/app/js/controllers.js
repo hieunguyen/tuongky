@@ -517,10 +517,8 @@ tkControllers.controller('BoardCtrl', function(
   var pos;
   var selectedRow, selectedCol;
 
-  $scope.boardVisible = true;
-  $scope.movesVisible = true;
+  $scope.commentFull = false;
   $scope.commentVisible = true;
-  $scope.variationsVisible = true;
 
   function start() {
     $scope.board = gameService.getBoard();
@@ -799,6 +797,10 @@ tkControllers.controller('BoardCtrl', function(
     }
     return false;
   }
+
+  $scope.toggleFullCommentMode = function() {
+    $scope.commentFull = !$scope.commentFull;
+  };
 });
 
 

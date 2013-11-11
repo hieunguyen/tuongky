@@ -67,7 +67,11 @@
 	font-size: 16px;
 	height: 30px;
 	padding: 2px 5px;
-	width: 521px;
+	width: 100%;
+}
+
+.board-n-controls, .moves-n-variations {
+	float: left;
 }
 
 .board {
@@ -78,7 +82,6 @@
 	margin: 0 auto;
 	padding-top: 3px;
 	padding-left: 4px;
-	float: left;
 	position: relative;
 }
 
@@ -122,7 +125,6 @@
 }
 
 .board-control-panel {
-	/*border: 1px solid;*/
 	width: 521px;
 	text-align: center;
 	margin: 20px 0;
@@ -141,12 +143,15 @@
 }
 
 .move-list {
-	height: 577px;
+	height: 477px;
 	width: 180px;
 	margin-left: 10px;
 	border: 1px solid;
-	float: left;
 	overflow-y: scroll;
+}
+
+.move-list.full {
+	height: 577px;
 }
 
 .move-list table {
@@ -176,37 +181,64 @@
 }
 
 .commentContainer {
-	height: 380px;
-	width: 370px;
-	margin-left: 10px;
+	height: 577px;
+	margin-left: 721px;
 	border: 1px solid;
-	float: left;
+	position: relative;
+}
+
+.commentContainer.full {
+	height: 727px;
+  margin-left: 0;
+}
+
+.commentContainer .resize-button {
+	font-size: 24px;
+	position: absolute;
+	right: 5px;
+	color: rgb(148, 30, 30);
+
+	cursor: pointer;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-webkit-user-select: none;
 }
 
 .variationContainer {
-	height: 187px;
-	width: 370px;
+	height: 90px;
+	width: 180px;
 	margin-top: 10px;
 	margin-left: 10px;
-	border: 1px solid;
-	float: left;
 }
 
 .comment, .variation {
 	overflow-y: scroll;
-	width: 368px;
+	width: 100%;
 }
 
 .comment {
 	border: 0;
 	font-size: 16px;
-	height: 347px;
+	height: 544px;
 	resize: none;
+	padding: 0 5px;
+}
+
+.commentContainer.full .comment {
+	height: 694px;
 }
 
 .variation {
-	height: 124px;
+	height: 90px;
 	padding: 2px 0;
+	width: 130px;
+	display: inline-block;
+	border: 1px solid;
+	float: left;
+}
+
+.variation.full {
+	width: 100%;
 }
 
 .variation ul {
@@ -232,10 +264,32 @@
 }
 
 .variationContainer .actions {
-	width: 368px;
-	height: 30px;
+	height: 90px;
+	width: 50px;
 	border-top: 1px solid;
 	text-align: center;
+  border-right: 1px solid;
+  border-bottom: 1px solid;
+  margin-left: 130px;
+}
+
+.variationContainer .actions span {
+	display: block;
+	height: 30px;
+	vertical-align: center;
+	line-height: 30px;
+	text-align: center;
+	color: rgb(148, 30, 30);
+	font-size: 16px;
+}
+
+.variationContainer .actions .glyphicon-arrow-down {
+	margin-left: 3px;
+}
+
+.variationContainer .actions .glyphicon-remove {
+	margin-left: 2px;
+	margin-top: -3px;
 }
 
 .title {

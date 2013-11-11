@@ -15,43 +15,97 @@
      </div>
   </div>
   <div class="row">
-    <div class="col-md-12">
-      <div class="board" ng-show="boardVisible">
-        <div class="top-player-turn" ng-show="turn == 2"></div>
-        <div class="bottom-player-turn" ng-show="turn == 1"></div>
-        <div ng-repeat="row in board">
-          <div ng-repeat="cell in row"
-               class="board-cell"
-               droppable
-               drop="dropIt(dragId, $parent.$index, $index)"
-               ng-click="selectBoardCell($parent.$index, $index)"
-               >
-            <img ng-src="/img/xq2/{{getImageName(cell)}}.gif"
-                 ng-show="cell != 0"
-                 id="sq_{{$parent.$index}}_{{$index}}"
-                 draggable
-                 ng-click="selectPiece($parent.$index, $index)"
-                 ng-class="{highlighted: isHighlighted($parent.$index, $index)}">
+    <div class="col-md-12 board-row">
+      <div class="board-n-controls" ng-hide="commentFull">
+        <div class="board">
+          <div class="top-player-turn" ng-show="turn == 2"></div>
+          <div class="bottom-player-turn" ng-show="turn == 1"></div>
+          <div ng-repeat="row in board">
+            <div ng-repeat="cell in row"
+                 class="board-cell"
+                 droppable
+                 drop="dropIt(dragId, $parent.$index, $index)"
+                 ng-click="selectBoardCell($parent.$index, $index)"
+                 >
+              <img ng-src="/img/xq2/{{getImageName(cell)}}.gif"
+                   ng-show="cell != 0"
+                   id="sq_{{$parent.$index}}_{{$index}}"
+                   draggable
+                   ng-click="selectPiece($parent.$index, $index)"
+                   ng-class="{highlighted: isHighlighted($parent.$index, $index)}">
+            </div>
+          </div>
+        </div>
+
+        <div class="board-control-panel">
+          <button class="btn btn-sm btn-default"
+                  ng-click="goFirst()"
+                  tabindex="10"><span class="shortcut-key">Đ</span>ầu</button>
+          <button class="btn btn-sm btn-default"
+                  ng-click="goPrevious()"
+                  tabindex="11"><span class="shortcut-key">T</span>rước</button>
+          <button class="btn btn-sm btn-default"
+                  ng-click="goNext()"
+                  tabindex="12"><span class="shortcut-key">S</span>au</button>
+          <button class="btn btn-sm btn-default"
+                  ng-click="goLast()"
+                  tabindex="13"><span class="shortcut-key">C</span>uối</button>
+        </div>
+
+        <shortcut keycode="37" handler="goPrevious()"></shortcut>
+        <shortcut keycode="39" handler="goNext()"></shortcut>
+
+        <shortcut keycode="68" handler="goFirst()"></shortcut>
+        <shortcut keycode="84" handler="goPrevious()"></shortcut>
+        <shortcut keycode="83" handler="goNext()"></shortcut>
+        <shortcut keycode="67" handler="goLast()"></shortcut>
+      </div>
+
+      <div class="moves-n-variations" ng-hide="commentFull">
+        <div class="move-list"
+             ng-class="{full: variations.length <= 1}"
+             auto-scroll-to="currentLineIndex">
+          <table>
+            <tr ng-repeat="move in moveTable"
+                ng-class="{selected: $index == currentLineIndex}"
+                ng-click="selectMove($index)">
+              <td class="first" align="right">{{move.first}}</td>
+              <td class="second">
+                {{move.second}}
+                {{extractMoveQualityFromComment($index, line[$index].nodeData.comment)}}
+                <span ng-show="line[$index].nodeData.comment && line[$index].nodeData.comment.length > 2">*</span>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="variationContainer" ng-show="variations.length > 1">
+          <div class="variation" ng-class="{full: !editMode}">
+            <ul>
+              <li ng-repeat="node in variations"
+                  ng-class="{selected: $index == currentVariationIndex}"
+                  ng-click="selectVariation($index)">
+                {{$index + 1}}. {{node.nodeData.humanMove}}
+              </li>
+            </ul>
+          </div>
+          <div class="actions" ng-show="editMode">
+            <span class="glyphicon glyphicon-arrow-up" ng-click="moveVariationUp()"></span>
+            <span class="glyphicon glyphicon-arrow-down" ng-click="moveVariationDown()"></span>
+            <span class="glyphicon glyphicon-remove" ng-click="deleteVariation()"></span>
           </div>
         </div>
       </div>
 
-      <div class="move-list" ng-show="movesVisible" auto-scroll-to="currentLineIndex">
-        <table>
-          <tr ng-repeat="move in moveTable"
-              ng-class="{selected: $index == currentLineIndex}"
-              ng-click="selectMove($index)">
-            <td class="first" align="right">{{move.first}}</td>
-            <td class="second">
-              {{move.second}}
-              {{extractMoveQualityFromComment($index, line[$index].nodeData.comment)}}
-              <span ng-show="line[$index].nodeData.comment && line[$index].nodeData.comment.length > 2">*</span>
-            </td>
-          </tr>
-        </table>
-      </div>
-
-      <div class="commentContainer" ng-show="commentVisible">
+      <div class="commentContainer" ng-class="{full: commentFull}">
+        <div class="resize-button">
+           <span class="glyphicon glyphicon-resize-full"
+                 ng-hide="commentFull"
+                 ng-click="toggleFullCommentMode()"></span>
+           <span class="glyphicon glyphicon-resize-small"
+                 ng-show="commentFull"
+                 ng-click="toggleFullCommentMode()"></span>
+        </div>
         <div class="title">Bình luận</div>
         <textarea ng-model="line[currentLineIndex].nodeData.comment"
                   class="comment"
@@ -59,49 +113,6 @@
                   stop-propagation="true"
                   ng-readonly="!editMode"></textarea>
       </div>
-
-      <div class="variationContainer" ng-show="variationsVisible">
-        <div class="title">Lựa chọn</div>
-        <div class="variation">
-          <ul>
-            <li ng-repeat="node in variations"
-                ng-class="{selected: $index == currentVariationIndex}"
-                ng-click="selectVariation($index)">
-              {{$index + 1}}. {{node.nodeData.humanMove}}
-            </li>
-          </ul>
-        </div>
-        <div class="actions">
-          <button class="btn btn-link" ng-show="editMode" ng-click="moveVariationUp()">Lên</button>
-          <button class="btn btn-link" ng-show="editMode" ng-click="moveVariationDown()">Xuống</button>
-          <button class="btn btn-link" ng-show="editMode" ng-click="deleteVariation()">Xóa</button>
-        </div>
-      </div>
-
-      <div class="clear"></div>
-
-      <div class="board-control-panel">
-        <button class="btn btn-sm btn-default"
-                ng-click="goFirst()"
-                tabindex="10"><span class="shortcut-key">Đ</span>ầu</button>
-        <button class="btn btn-sm btn-default"
-                ng-click="goPrevious()"
-                tabindex="11"><span class="shortcut-key">T</span>rước</button>
-        <button class="btn btn-sm btn-default"
-                ng-click="goNext()"
-                tabindex="12"><span class="shortcut-key">S</span>au</button>
-        <button class="btn btn-sm btn-default"
-                ng-click="goLast()"
-                tabindex="13"><span class="shortcut-key">C</span>uối</button>
-      </div>
-
-      <shortcut keycode="37" handler="goPrevious()"></shortcut>
-      <shortcut keycode="39" handler="goNext()"></shortcut>
-
-      <shortcut keycode="68" handler="goFirst()"></shortcut>
-      <shortcut keycode="84" handler="goPrevious()"></shortcut>
-      <shortcut keycode="83" handler="goNext()"></shortcut>
-      <shortcut keycode="67" handler="goLast()"></shortcut>
     </div>
   </div>
 </div>
