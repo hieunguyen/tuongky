@@ -63,7 +63,7 @@
 
       <div class="moves-n-variations" ng-hide="commentFull">
         <div class="move-list"
-             ng-class="{full: variations.length <= 1}"
+             ng-class="{full: variations.length <= 1 && !editMode}"
              auto-scroll-to="currentLineIndex">
           <table>
             <tr ng-repeat="move in moveTable"
@@ -79,7 +79,7 @@
           </table>
         </div>
 
-        <div class="variationContainer" ng-show="variations.length > 1">
+        <div class="variationContainer" ng-show="editMode || variations.length > 1">
           <div class="variation" ng-class="{full: !editMode}">
             <ul>
               <li ng-repeat="node in variations"

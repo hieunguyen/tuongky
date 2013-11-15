@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?><web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 	<servlet>
-		<servlet-name>Tuongky</servlet-name>
-		<servlet-class>com.tuongky.TuongkyServlet</servlet-class>
+		<servlet-name>ShardedCounter</servlet-name>
+		<servlet-class>com.tuongky.ShardedCounterServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>Tuongky</servlet-name>
-		<url-pattern>/tuongky</url-pattern>
+		<servlet-name>ShardedCounter</servlet-name>
+		<url-pattern>/sharded_counter</url-pattern>
 	</servlet-mapping>
 	
 	<filter>
