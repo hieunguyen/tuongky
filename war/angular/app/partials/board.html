@@ -50,6 +50,14 @@
           <button class="btn btn-sm btn-default"
                   ng-click="goLast()"
                   tabindex="13"><span class="shortcut-key">C</span>uối</button>
+
+          <button class="btn btn-sm btn-default"
+                  ng-click="showFen()"
+                  tabindex="14"><span class="shortcut-key">F</span>EN</button>
+          <button class="btn btn-sm btn-default"
+                  ng-click="analyzePosition()"
+                  ng-show="false"
+                  tabindex="15">Thẩm cờ</button>
         </div>
 
         <shortcut keycode="37" handler="goPrevious()"></shortcut>
@@ -59,6 +67,8 @@
         <shortcut keycode="84" handler="goPrevious()"></shortcut>
         <shortcut keycode="83" handler="goNext()"></shortcut>
         <shortcut keycode="67" handler="goLast()"></shortcut>
+
+        <shortcut keycode="70" handler="showFen()"></shortcut>
       </div>
 
       <div class="moves-n-variations" ng-hide="commentFull">

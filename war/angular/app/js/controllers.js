@@ -769,6 +769,34 @@ tkControllers.controller('BoardCtrl', function(
     $scope.selectMove(line.length - 1);
   };
 
+  $scope.showFen = function() {
+    function indexToFullMove(index) {
+      return Math.floor((index + 1)/2);
+    }
+
+    function posToIndex(pos) {
+      var index = pos.fullMoveNumber * 2;
+      if (pos.turn === RED) index--;
+      return index;
+    }
+
+    function getFullMoveNumber(initialPos, currentLineIndex) {
+      var index = posToIndex(initialPos) + currentLineIndex;
+      return indexToFullMove(index);
+    }
+
+    var fen = fenService.pos2fen({
+      board: $scope.board,
+      turn: $scope.turn,
+      fullMoveNumber: getFullMoveNumber(pos, $scope.currentLineIndex)
+    });
+    alert(fen);
+  };
+
+  $scope.analyzePosition = function() {
+    alert('analyze position');
+  };
+
   $scope.pressEnter = function(value) {
     processHumanMoves(value);
   };

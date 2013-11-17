@@ -565,11 +565,16 @@ tkServices.factory('fenService', function() {
     }
     var turnInFen = pos.turn === RED ? 'w' : 'b';
 
-    var halfMoveClockInFen = pos.halfMoveClock < 0 ? '-' : pos.halfMoveClock.toString();
-    var fullMoveNumberInFen = pos.fullMoveNumber < 0 ? '-' : pos.fullMoveNumber.toString();
+    var halfMoveClockInFen =
+        pos.halfMoveClock === undefined || pos.halfMoveClock < 0 ?
+        '-' : pos.halfMoveClock.toString();
 
-    return rows.join('/') + ' ' + turnInFen + ' - - ' + halfMoveClockInFen + ' ' +
-        fullMoveNumberInFen;
+    var fullMoveNumberInFen =
+        pos.fullMoveNumber === undefined || pos.fullMoveNumber < 0 ?
+        '-' : pos.fullMoveNumber.toString();
+
+    return rows.join('/') + ' ' + turnInFen + ' - - ' + halfMoveClockInFen +
+        ' ' + fullMoveNumberInFen;
   };
 
   service.getStartingFen = function() {
@@ -705,7 +710,7 @@ tkServices.factory('dbService', function(
 
 
 tkServices.factory('notificationService', function($timeout) {
-  var SHOW_TIME = 3000; // 3s.
+  var SHOW_TIME = 7000; // 7s.
 
   var service = {};
 
