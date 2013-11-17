@@ -448,6 +448,10 @@ tkControllers.controller('SearchCtrl', function(
   $scope.ITEMS_PER_PAGE = 10;
 
   function searchSuccessCallback(response) {
+    var idsToViews = {};
+    _.each(response.gameMetadatas, function(gameMetadata) {
+      idsToViews[gameMetadata.id] = gameMetadata.views;
+    });
     _.each(response.games, function(game) {
       game.categoryText = $scope.CATEGORIES[Number(game.categoryIndex)];
       game.categoryKeyword =
@@ -459,6 +463,7 @@ tkControllers.controller('SearchCtrl', function(
       game.encoded_book = encodeURIComponent(encodeURIComponent(game.book));
       game.annotated_username = annotateService.annotate(
           game.username, $scope.searchData.queryString);
+      game.views = idsToViews[game.id] || 0;
     });
     $scope.searchResults = response.games;
     $scope.totalItems = Number(response.numberFound);

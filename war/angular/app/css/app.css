@@ -398,14 +398,18 @@
 }
 
 .search-results .titleColumn {
-	width: 50%;
+	width: 45%;
 }
 
 .search-results .bookColumn {
-	width: 30%;
+	width: 25%;
 }
 
 .search-results .usernameColumn {
+	width: 10%;
+}
+
+.search-results .viewsColumn {
 	width: 10%;
 }
 

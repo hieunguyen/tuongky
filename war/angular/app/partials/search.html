@@ -9,12 +9,14 @@
 				<col class="titleColumn"></col>
 				<col class="bookColumn"></col>
 				<col class="usernameColumn"></col>
+				<col class="viewsColumn"></col>
 			</colgroup>
 			<tr>
 				<th>Phân loại</th>
 				<th>Tiêu đề</th>
 				<th>Sách / Giải đấu</th>
 				<th>Người tạo</th>
+  			<th>Lượt xem</th>
 			</tr>
 			<tr ng-repeat="searchResult in searchResults">
 				<td>{{searchResult.categoryText}}</td>
@@ -33,6 +35,7 @@
 						<span ng-bind-html-unsafe="searchResult.annotated_username"></span>
 					</a>
 				</td>
+				<td>{{searchResult.views}}</td>
 			</tr>
 		</table>
 	</div>
