@@ -4,7 +4,8 @@
   <meta charset=utf-8 />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Tuong Ky</title>
-	<link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+	<!-- <link href="lib/cdn/bootstrap.min.css" rel="stylesheet"> -->
   <link rel="stylesheet" href="css/app.css"/>
 </head>
 <body>
@@ -23,8 +24,7 @@
           Tìm kiếm
         </button><div class="create-game-dropdown dropdown">
           <button data-toggle="dropdown"
-                  class="btn btn-sm btn-primary search-button"
-                  ng-click="createGame($event)">Tạo game</button>
+                  class="btn btn-sm btn-primary search-button" ng-click="createGame($event)">Tạo game</button>
           <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
             <li><a href="#/game/create">Từ đầu ván cờ</a></li>
             <li><a href="#/fen/create">Xếp hình cờ</a></li>
@@ -61,8 +61,12 @@
     </div>
     <div ng-view class="view-container" ng-hide="data.loading"></div>
   </div>
+<!--
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+-->
+  <script src="lib/cdn/jquery.min.js"></script>
+  <script src="lib/cdn/angular.min.js"></script>
 
   <script src="lib/underscore-min.js"></script>
   <script src="lib/jquery.cookie.js"></script>

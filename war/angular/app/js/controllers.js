@@ -6,14 +6,57 @@ var tkControllers = angular.module('tkApp.controllers', []);
 
 
 tkControllers.controller('SandboxCtrl', function(
-    $scope, gameService, treeService, fenService) {
+    $scope, $timeout, $routeParams,
+    gameService, treeService, fenService, engineService) {
 
   $scope.fen = fenService.getStartingFen();
+  if ($routeParams.encodedFen) {
+    $scope.fen = fenService.url2fen($routeParams.encodedFen);
+  }
+
   $scope.editMode = true;
 
   var pos = fenService.fen2pos($scope.fen);
   gameService.init(pos.board, pos.turn);
   treeService.init();
+
+  $scope.playerTypes = [0, HUMAN, COMPUTER];
+
+  $scope.$watch(function() {
+    return gameService.getTurn();
+  }, function(turn) {
+    if (Number($scope.playerTypes[turn]) === COMPUTER) {
+      $timeout(function() {
+        // $scope.editMode = false;
+        computerPlay().then(function(move) {
+          // $scope.editMode = true;
+          $scope.$broadcast('new_move', move);
+        });
+      });
+    }
+  });
+
+  function computerPlay() {
+    var fen = fenService.pos2fen({
+      board: gameService.getBoard(),
+      turn: gameService.getTurn(),
+      fullMoveNumber: 1
+    });
+    var moves = '';
+    return engineService.think(fen, moves);
+  }
+
+  $scope.gogo = function() {
+    var fen = fenService.pos2fen({
+      board: gameService.getBoard(),
+      turn: gameService.getTurn(),
+      fullMoveNumber: 1
+    });
+    var moves = '';
+    engineService.think(fen, moves).then(function(move) {
+      alert(move);
+    });
+  };
 });
 
 
@@ -430,7 +473,7 @@ tkControllers.controller('SearchBarCtrl', function(
   };
 
   $scope.createGame = function(e) {
-    var fen = $scope.searchData.queryString;
+    var fen = $scope.searchData.queryString || '';
     if (!fenService.fen2pos(fen)) {
       return;
     }
@@ -507,7 +550,7 @@ tkControllers.controller('ShowGameCtrl', function(
 
 
 tkControllers.controller('BoardCtrl', function(
-    $scope, gameService, treeService, fenService) {
+    $scope, $location, gameService, treeService, fenService) {
 
   var PIECE_IMAGE_NAME_MAP = {};
   PIECE_IMAGE_NAME_MAP[K] = 'k';
@@ -613,6 +656,24 @@ tkControllers.controller('BoardCtrl', function(
     $scope.variations = computeVariations($scope.currentLineIndex);
     $scope.currentVariationIndex = _.indexOf($scope.variations, getCurrentNode());
   }
+
+  $scope.$on('new_move', function(e, move) {
+
+    function row(c) {
+      return c.charCodeAt() - '0'.charCodeAt();
+    }
+
+    function col(c) {
+      return c.charCodeAt() - 'a'.charCodeAt();
+    }
+
+    var x = ROWS - 1 - row(move[1]);
+    var y = col(move[0]);
+    var u = ROWS - 1 - row(move[3]);
+    var v = col(move[2]);
+
+    maybeMakeMove(x, y, u, v);
+  });
 
   function maybeMakeMove(x, y, u, v) {
     if (gameService.isValidMove(x, y, u, v)) {
@@ -769,7 +830,7 @@ tkControllers.controller('BoardCtrl', function(
     $scope.selectMove(line.length - 1);
   };
 
-  $scope.showFen = function() {
+  function produceFen() {
     function indexToFullMove(index) {
       return Math.floor((index + 1)/2);
     }
@@ -790,11 +851,17 @@ tkControllers.controller('BoardCtrl', function(
       turn: $scope.turn,
       fullMoveNumber: getFullMoveNumber(pos, $scope.currentLineIndex)
     });
-    alert(fen);
+
+    return fen;
+  }
+
+  $scope.showFen = function() {
+    alert(produceFen());
   };
 
   $scope.analyzePosition = function() {
-    alert('analyze position');
+    var nextToken = '/sandbox/fen/' + fenService.fen2url(produceFen());
+    $location.path(nextToken);
   };
 
   $scope.pressEnter = function(value) {

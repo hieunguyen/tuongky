@@ -9,6 +9,9 @@ var WIN = 1;
 var LOSS = 2;
 var DRAW = 3;
 
+var HUMAN = 1;
+var COMPUTER = 2;
+
 var K = 1; // King
 var A = 2; // Assistant
 var E = 3; // Elephant

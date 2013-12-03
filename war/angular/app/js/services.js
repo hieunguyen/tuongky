@@ -1091,3 +1091,28 @@ tkServices.factory('annotateService', function(vnService) {
 
   return service;
 });
+
+
+tkServices.factory('engineService', function($q, $http, notificationService) {
+  var service = {};
+
+  service.think = function(fen, moves) {
+    var defer = $q.defer();
+    var params = {
+      fen: fen,
+      moves: moves
+    };
+    var url = 'http://localhost:1234/go?' + $.param(params);
+    notificationService.show('Đang suy nghĩ...');
+    $http.get(url).success(function(response) {
+      notificationService.hide();
+      defer.resolve(response.split(' ')[1]);
+    }).error(function() {
+      notificationService.showError('Trục trặc, chưa nghĩ được.');
+      defer.reject();
+    });
+    return defer.promise;
+  };
+
+  return service;
+});

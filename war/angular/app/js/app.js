@@ -75,6 +75,11 @@ tkApp.config(['$routeProvider', function($routeProvider) {
         templateUrl: 'partials/sandbox.html',
         controller: 'SandboxCtrl'
       })
+  .when('/sandbox/fen/:encodedFen',
+      {
+        templateUrl: 'partials/sandbox.html',
+        controller: 'SandboxCtrl'
+      })
   .otherwise({redirectTo: '/search/q='});
 }]);
 
@@ -88,6 +93,8 @@ tkApp.config(['$httpProvider', function($httpProvider) {
     return angular.isObject(data) &&
         String(data) !== '[object File]' ? jQuery.param(data) : data;
   }];
+
+  delete $httpProvider.defaults.headers.common["X-Requested-With"];
 }]);
 
 var UnsavedGameResolve = {

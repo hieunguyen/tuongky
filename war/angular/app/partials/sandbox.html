@@ -1,1 +1,17 @@
-Hello World.
+<table class="table">
+  <tr>
+    <td align="right"><b>First player:<b/></td>
+    <td>
+      <input type="radio" ng-model="playerTypes[1]" value="1"> Human &nbsp;&nbsp;
+      <input type="radio" ng-model="playerTypes[1]" value="2"> Computer
+    </td>
+  </tr>
+  <tr>
+    <td align="right"><b>Second player:<b/></td>
+    <td>
+      <input type="radio" ng-model="playerTypes[2]" value="1"> Human &nbsp;&nbsp;
+      <input type="radio" ng-model="playerTypes[2]" value="2"> Computer
+    </td>
+  </tr>
+</table>
+<board fen="fen" edit-mode="editMode"></board>
