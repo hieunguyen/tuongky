@@ -443,7 +443,8 @@ tkControllers.controller('SearchBarCtrl', function(
 
 
 tkControllers.controller('SearchCtrl', function(
-    $scope, $routeParams, $location, $timeout, dbService, annotateService) {
+    $scope, $routeParams, $location, $timeout, $sce,
+    dbService, annotateService) {
 
   $scope.ITEMS_PER_PAGE = 10;
 
@@ -456,13 +457,14 @@ tkControllers.controller('SearchCtrl', function(
       game.categoryText = $scope.CATEGORIES[Number(game.categoryIndex)];
       game.categoryKeyword =
           $scope.CATEGORY_KEYWORDS[Number(game.categoryIndex)];
-      game.annotated_title = annotateService.annotate(
-          game.title, $scope.searchData.queryString);
-      game.annotated_book = annotateService.annotate(
-          game.book, $scope.searchData.queryString);
+      game.annotated_title = $sce.trustAsHtml(
+          annotateService.annotate(game.title, $scope.searchData.queryString));
+      game.annotated_book = $sce.trustAsHtml(
+          annotateService.annotate(game.book, $scope.searchData.queryString));
       game.encoded_book = encodeURIComponent(encodeURIComponent(game.book));
-      game.annotated_username = annotateService.annotate(
-          game.username, $scope.searchData.queryString);
+      game.annotated_username = $sce.trustAsHtml(
+          annotateService.annotate(
+              game.username, $scope.searchData.queryString));
       game.views = idsToViews[game.id] || 0;
     });
     $scope.searchResults = response.games;

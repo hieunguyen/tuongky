@@ -20,8 +20,8 @@
         <div class="board">
           <div class="top-player-turn" ng-show="turn == 2"></div>
           <div class="bottom-player-turn" ng-show="turn == 1"></div>
-          <div ng-repeat="row in board">
-            <div ng-repeat="cell in row"
+          <div ng-repeat="row in board track by $index">
+            <div ng-repeat="cell in row track by $index"
                  class="board-cell"
                  droppable
                  drop="dropIt(dragId, $parent.$index, $index)"

@@ -1,7 +1,8 @@
 'use strict';
 
 var tkApp = angular.module('tkApp',
-    ['tkApp.filters',
+    ['ngRoute',
+     'tkApp.filters',
      'tkApp.services',
      'tkApp.directives',
      'tkApp.controllers']);

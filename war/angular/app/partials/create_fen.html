@@ -44,8 +44,8 @@
     <div class="board">
       <div class="top-player-turn" ng-show="turn == 2"></div>
       <div class="bottom-player-turn" ng-show="turn == 1"></div>
-      <div ng-repeat="row in board">
-        <div ng-repeat="cell in row"
+      <div ng-repeat="row in board track by $index">
+        <div ng-repeat="cell in row track by $index"
              class="board-cell"
              droppable
              drop="dropIt(dragId, $parent.$index, $index)">
@@ -60,7 +60,7 @@
 
     <div class="box">
       <div class="black-box">
-        <div ng-repeat="piece in blackBox" class="piece-container">
+        <div ng-repeat="piece in blackBox track by $index" class="piece-container">
           <img ng-src="/img/xq2/{{getImageName(piece)}}.gif"
                ng-show="piece != 0"
                ng-click="selectPieceInBox($index, piece)"
@@ -75,7 +75,7 @@
               ng-click="putAllIntoBoxes()"></span>
       </div>
       <div class="red-box">
-        <div ng-repeat="piece in redBox" class="piece-container">
+        <div ng-repeat="piece in redBox track by $index" class="piece-container">
           <img ng-src="/img/xq2/{{getImageName(piece)}}.gif"
                ng-show="piece != 0"
                ng-click="selectPieceInBox($index, piece)"
