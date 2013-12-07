@@ -430,7 +430,7 @@ tkControllers.controller('SearchBarCtrl', function(
   };
 
   $scope.createGame = function(e) {
-    var fen = $scope.searchData.queryString;
+    var fen = $scope.searchData.queryString || '';
     if (!fenService.fen2pos(fen)) {
       return;
     }
