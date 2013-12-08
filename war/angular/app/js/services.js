@@ -595,7 +595,7 @@ tkServices.factory('dbService', function(
 
   service.createGame = function(game, username) {
     var defer = $q.defer();
-    notificationService.show('Đang tạo game...');
+    notificationService.show('Đang tạo tài liệu...');
     $http.post('/game/create', {
       username: username,
       category: game.category,
@@ -606,10 +606,10 @@ tkServices.factory('dbService', function(
       old_book: game.oldBook,
       data: game.data
     }).success(function(response) {
-      notificationService.show('Đã tạo game thành công.');
+      notificationService.show('Đã tạo tài liệu thành công.');
       defer.resolve(response.gameId);
     }).error(function() {
-      notificationService.showError('Gặp lỗi, chưa tạo được game.');
+      notificationService.showError('Gặp lỗi, chưa tạo được tài liệu.');
       defer.reject();
     });
   return defer.promise;
@@ -617,7 +617,7 @@ tkServices.factory('dbService', function(
 
   service.saveGame = function(game, username) {
     var defer = $q.defer();
-    notificationService.show('Đang lưu game...');
+    notificationService.show('Đang lưu tài liệu...');
     $http.post('/game/save', {
       id: game.id,
       username: username,
@@ -629,10 +629,10 @@ tkServices.factory('dbService', function(
       old_book: game.oldBook,
       data: game.data
     }).success(function(response) {
-      notificationService.show('Đã lưu game thành công.');
+      notificationService.show('Đã lưu tài liệu thành công.');
       defer.resolve(response);
     }).error(function() {
-      notificationService.showError('Gặp lỗi, chưa lưu được game.');
+      notificationService.showError('Gặp lỗi, chưa lưu được tài liệu.');
       defer.reject();
     });
     return defer.promise;
@@ -677,13 +677,13 @@ tkServices.factory('dbService', function(
 
   service.getGame = function(gameId) {
     var defer = $q.defer();
-    notificationService.show('Đang đọc game...');
+    notificationService.show('Đang đọc tài liệu...');
     $http.get('/game/show?gameId=' + gameId)
     .success(function(response) {
       notificationService.hide();
       defer.resolve(response.game);
     }).error(function() {
-      notificationService.show('Gặp lỗi, không đọc được game.');
+      notificationService.show('Gặp lỗi, không đọc được tài liệu.');
       defer.reject();
     });
     return defer.promise;
@@ -691,15 +691,15 @@ tkServices.factory('dbService', function(
 
   service.deleteGame = function(gameId, username) {
     var defer = $q.defer();
-    notificationService.show('Đang xóa game...');
+    notificationService.show('Đang xóa tài liệu...');
     $http.post('/game/delete', {
       id: gameId,
       username: username
     }).success(function(response) {
-      notificationService.show('Đã xóa game thành công.');
+      notificationService.show('Đã xóa tài liệu thành công.');
       defer.resolve(response);
     }).error(function() {
-      notificationService.showError('Gặp lỗi, chưa xóa được game.');
+      notificationService.showError('Gặp lỗi, chưa xóa được tài liệu.');
       defer.reject();
     });
     return defer.promise;

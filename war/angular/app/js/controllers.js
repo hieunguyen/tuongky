@@ -90,7 +90,7 @@ tkControllers.controller('CreateGameCtrl', function(
       treeService.init(dataObj.moveTree);
       fen = dataObj.fen;
     } catch (error) {
-      alert('Game error.');
+      alert('Tài liệu lỗi.');
       treeService.init();
     }
   } else {
@@ -164,7 +164,7 @@ tkControllers.controller('CreateGameCtrl', function(
   };
 
   $scope.deleteGame = function() {
-    if (!confirm('Bạn có thực sự muốn xóa game này không?')) {
+    if (!confirm('Bạn có thực sự muốn xóa tài liệu này không?')) {
       return;
     }
     dbService.deleteGame($scope.game.id, $scope.user.username).then(function() {
