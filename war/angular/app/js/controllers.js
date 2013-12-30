@@ -5,7 +5,11 @@
 var tkControllers = angular.module('tkApp.controllers', []);
 
 
-tkControllers.controller('SandboxCtrl', function(
+tkControllers.controller('SandboxCtrl', function($scope) {
+});
+
+
+tkControllers.controller('StudyCtrl', function(
     $scope, $timeout, $routeParams,
     gameService, treeService, fenService, engineService) {
 
@@ -22,19 +26,25 @@ tkControllers.controller('SandboxCtrl', function(
 
   $scope.playerTypes = [0, HUMAN, COMPUTER];
 
-  $scope.$watch(function() {
-    return gameService.getTurn();
-  }, function(turn) {
-    if (Number($scope.playerTypes[turn]) === COMPUTER) {
+  function maybeComputerPlay(inTurn) {
+    if (Number(inTurn) === COMPUTER) {
       $timeout(function() {
-        // $scope.editMode = false;
         computerPlay().then(function(move) {
-          // $scope.editMode = true;
           $scope.$broadcast('new_move', move);
         });
       });
     }
+  }
+
+  $scope.$watch(function() {
+    return gameService.getTurn();
+  }, function(turn) {
+    maybeComputerPlay($scope.playerTypes[turn]);
   });
+
+  $scope.$watch(function() {
+    return $scope.playerTypes[gameService.getTurn()];
+  }, maybeComputerPlay);
 
   function computerPlay() {
     var fen = fenService.pos2fen({
@@ -133,7 +143,7 @@ tkControllers.controller('CreateGameCtrl', function(
       treeService.init(dataObj.moveTree);
       fen = dataObj.fen;
     } catch (error) {
-      alert('Game error.');
+      alert('Tài liệu lỗi.');
       treeService.init();
     }
   } else {
@@ -207,7 +217,7 @@ tkControllers.controller('CreateGameCtrl', function(
   };
 
   $scope.deleteGame = function() {
-    if (!confirm('Bạn có thực sự muốn xóa game này không?')) {
+    if (!confirm('Bạn có thực sự muốn xóa tài liệu này không?')) {
       return;
     }
     dbService.deleteGame($scope.game.id, $scope.user.username).then(function() {
@@ -486,7 +496,8 @@ tkControllers.controller('SearchBarCtrl', function(
 
 
 tkControllers.controller('SearchCtrl', function(
-    $scope, $routeParams, $location, $timeout, dbService, annotateService) {
+    $scope, $routeParams, $location, $timeout, $sce,
+    dbService, annotateService) {
 
   $scope.ITEMS_PER_PAGE = 10;
 
@@ -499,13 +510,14 @@ tkControllers.controller('SearchCtrl', function(
       game.categoryText = $scope.CATEGORIES[Number(game.categoryIndex)];
       game.categoryKeyword =
           $scope.CATEGORY_KEYWORDS[Number(game.categoryIndex)];
-      game.annotated_title = annotateService.annotate(
-          game.title, $scope.searchData.queryString);
-      game.annotated_book = annotateService.annotate(
-          game.book, $scope.searchData.queryString);
+      game.annotated_title = $sce.trustAsHtml(
+          annotateService.annotate(game.title, $scope.searchData.queryString));
+      game.annotated_book = $sce.trustAsHtml(
+          annotateService.annotate(game.book, $scope.searchData.queryString));
       game.encoded_book = encodeURIComponent(encodeURIComponent(game.book));
-      game.annotated_username = annotateService.annotate(
-          game.username, $scope.searchData.queryString);
+      game.annotated_username = $sce.trustAsHtml(
+          annotateService.annotate(
+              game.username, $scope.searchData.queryString));
       game.views = idsToViews[game.id] || 0;
     });
     $scope.searchResults = response.games;
@@ -859,8 +871,8 @@ tkControllers.controller('BoardCtrl', function(
     alert(produceFen());
   };
 
-  $scope.analyzePosition = function() {
-    var nextToken = '/sandbox/fen/' + fenService.fen2url(produceFen());
+  $scope.studyPosition = function() {
+    var nextToken = '/study/fen/' + fenService.fen2url(produceFen());
     $location.path(nextToken);
   };
 

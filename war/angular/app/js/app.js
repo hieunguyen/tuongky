@@ -1,7 +1,8 @@
 'use strict';
 
 var tkApp = angular.module('tkApp',
-    ['tkApp.filters',
+    ['ngRoute',
+     'tkApp.filters',
      'tkApp.services',
      'tkApp.directives',
      'tkApp.controllers']);
@@ -70,12 +71,17 @@ tkApp.config(['$routeProvider', function($routeProvider) {
         templateUrl: 'partials/accessdenied.html',
         controller: 'AccessDeniedCtrl'
       })
-  .when('/sandbox',
+  .when('/study',
       {
-        templateUrl: 'partials/sandbox.html',
-        controller: 'SandboxCtrl'
+        templateUrl: 'partials/study.html',
+        controller: 'StudyCtrl'
       })
-  .when('/sandbox/fen/:encodedFen',
+  .when('/study/fen/:encodedFen',
+      {
+        templateUrl: 'partials/study.html',
+        controller: 'StudyCtrl'
+      })
+  .when('/sandbox',
       {
         templateUrl: 'partials/sandbox.html',
         controller: 'SandboxCtrl'

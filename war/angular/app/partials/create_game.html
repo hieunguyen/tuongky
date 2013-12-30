@@ -33,7 +33,7 @@
       </div>
       <div class="form-group action-buttons">
         <button class="btn btn-sm btn-primary left-button" ng-click="saveGame()" ng-disabled="form.$invalid">
-          {{game.id && 'Lưu thay đổi' || 'Lưu dữ liệu'}}
+          {{game.id && 'Lưu thay đổi' || 'Lưu tài liệu'}}
         </button>
         <button class="btn btn-sm btn-danger" ng-click="cancelChanges()" ng-show="game.id">Hủy thay đổi</button>
       </div>
@@ -50,13 +50,13 @@
       <a href="#/search/q={{game.username}}">{{game.username}}</a></div>
     <div ng-show="game.username == user.username">
       <button class="btn btn-sm btn-primary" ng-click="editGame()">Cập nhật</button>
-      <button class="btn btn-sm btn-danger" ng-click="deleteGame()">Xóa game</button>
+      <button class="btn btn-sm btn-danger" ng-click="deleteGame()">Xóa tài liệu</button>
     </div>
   </div>
 </div>
 
 <board fen="fen" edit-mode="editMode"></board>
-
+<!--
 <div class="disqus-container">
   <div id="disqus_thread"></div>
    <script type="text/javascript">
@@ -72,4 +72,5 @@
    </script>
    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+ -->
 </div>

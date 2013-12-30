@@ -1,0 +1,20 @@
+<table class="table table-condensed">
+  <tr>
+    <td align="right"><b>Cầm quân đỏ:<b/></td>
+    <td>
+      <input type="radio" ng-model="playerTypes[1]" value="1"> Người &nbsp;&nbsp;
+      <input type="radio" ng-model="playerTypes[1]" value="2"> Máy
+    </td>
+  </tr>
+  <tr>
+    <td align="right"><b>Cầm quân đen:<b/></td>
+    <td>
+      <input type="radio" ng-model="playerTypes[2]" value="1"> Người &nbsp;&nbsp;
+      <input type="radio" ng-model="playerTypes[2]" value="2"> Máy
+    </td>
+  </tr>
+</table>
+<board fen="fen"
+       edit-mode="editMode"
+       hide-move-text="true"
+       hide-study-btn="true"></board>

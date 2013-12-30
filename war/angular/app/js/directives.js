@@ -88,7 +88,12 @@ tkDirectives.directive('board', function() {
     restrict: 'AE',
     scope: {
       fen: '=',
-      editMode: '='
+      editMode: '=',
+      hideMoveList: '=',
+      hideVariations: '=',
+      hideComment: '=',
+      hideMoveText: '=',
+      hideStudyBtn: '='
     },
     replace: true,
     templateUrl: 'partials/board.html',

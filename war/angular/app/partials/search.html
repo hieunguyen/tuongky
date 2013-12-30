@@ -22,17 +22,17 @@
 				<td>{{searchResult.categoryText}}</td>
 				<td>
 					<a href="#/game/id/{{searchResult.id}}">
-						<span ng-bind-html-unsafe="searchResult.annotated_title"></span>
+						<span ng-bind-html="searchResult.annotated_title"></span>
 					</a>
 				</td>
 				<td>
 					<a href="#/search/q={{searchResult.encoded_book}}">
-						<span ng-bind-html-unsafe="searchResult.annotated_book"></span>
+						<span ng-bind-html="searchResult.annotated_book"></span>
 					</a>
 				</td>
 				<td>
 					<a href="#/search/q={{searchResult.username}}">
-						<span ng-bind-html-unsafe="searchResult.annotated_username"></span>
+						<span ng-bind-html="searchResult.annotated_username"></span>
 					</a>
 				</td>
 				<td>{{searchResult.views}}</td>

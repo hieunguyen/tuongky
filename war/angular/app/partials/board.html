@@ -1,5 +1,5 @@
 <div class="board-container">
-  <div class="row move-input-container" ng-show="editMode">
+  <div class="row move-input-container" ng-show="editMode && !hideMoveText">
     <div class="col-md-12">
       <div ng-show="invalidMove" class="error">
         "{{invalidMove}}" không phải nước đi hợp lệ.
@@ -20,8 +20,8 @@
         <div class="board">
           <div class="top-player-turn" ng-show="turn == 2"></div>
           <div class="bottom-player-turn" ng-show="turn == 1"></div>
-          <div ng-repeat="row in board">
-            <div ng-repeat="cell in row"
+          <div ng-repeat="row in board track by $index">
+            <div ng-repeat="cell in row track by $index"
                  class="board-cell"
                  droppable
                  drop="dropIt(dragId, $parent.$index, $index)"
@@ -55,7 +55,8 @@
                   ng-click="showFen()"
                   tabindex="14"><span class="shortcut-key">F</span>EN</button>
           <button class="btn btn-sm btn-default"
-                  ng-click="analyzePosition()"
+                  ng-click="studyPosition()"
+                  ng-hide="hideStudyBtn"
                   tabindex="15">Thẩm cờ</button>
         </div>
 
@@ -88,7 +89,7 @@
           </table>
         </div>
 
-        <div class="variationContainer" ng-show="editMode || variations.length > 1">
+        <div class="variationContainer" ng-show="(editMode || variations.length > 1) && !hideVariations">
           <div class="variation" ng-class="{full: !editMode}">
             <ul>
               <li ng-repeat="node in variations"
@@ -106,7 +107,7 @@
         </div>
       </div>
 
-      <div class="commentContainer" ng-class="{full: commentFull}">
+      <div class="commentContainer" ng-class="{full: commentFull}" ng-hide="hideComment">
         <div class="resize-button">
            <span class="glyphicon glyphicon-resize-full"
                  ng-hide="commentFull"
