@@ -21,10 +21,27 @@ tkControllers.controller('StudyCtrl', function(
   $scope.editMode = true;
 
   var pos = fenService.fen2pos($scope.fen);
-  gameService.init(pos.board, pos.turn);
+
+  if (pos) {
+    gameService.init(pos.board, pos.turn);
+  } else {
+    alert('FEN không hợp lệ.');
+    gameService.init();
+  }
   treeService.init();
 
   $scope.playerTypes = [0, HUMAN, COMPUTER];
+
+  function computerPlay() {
+    var fen = $scope.fen;
+    var moves = _.map(gameService.getMoves(), function(move) {
+      function where(x, y) {
+        return String.fromCharCode(97 + y) + (ROWS - 1 - x);
+      }
+      return where(move.x, move.y) + where(move.u, move.v);
+    }).join(' ');
+    return engineService.think(fen, moves);
+  }
 
   function maybeComputerPlay(inTurn) {
     if (Number(inTurn) === COMPUTER) {
@@ -45,28 +62,6 @@ tkControllers.controller('StudyCtrl', function(
   $scope.$watch(function() {
     return $scope.playerTypes[gameService.getTurn()];
   }, maybeComputerPlay);
-
-  function computerPlay() {
-    var fen = fenService.pos2fen({
-      board: gameService.getBoard(),
-      turn: gameService.getTurn(),
-      fullMoveNumber: 1
-    });
-    var moves = '';
-    return engineService.think(fen, moves);
-  }
-
-  $scope.gogo = function() {
-    var fen = fenService.pos2fen({
-      board: gameService.getBoard(),
-      turn: gameService.getTurn(),
-      fullMoveNumber: 1
-    });
-    var moves = '';
-    engineService.think(fen, moves).then(function(move) {
-      alert(move);
-    });
-  };
 });
 
 
@@ -162,7 +157,14 @@ tkControllers.controller('CreateGameCtrl', function(
   }
 
   var pos = fenService.fen2pos(fen);
-  gameService.init(pos.board, pos.turn);
+
+  if (pos) {
+    gameService.init(pos.board, pos.turn);
+  } else {
+    alert('FEN không hợp lệ.');
+    gameService.init();
+  }
+
   $scope.fen = fen;
   $scope.editMode = !game;
 

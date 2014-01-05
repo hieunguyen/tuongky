@@ -74,6 +74,10 @@ tkServices.factory('gameService', function() {
     return turn;
   };
 
+  service.getMoves = function() {
+    return moves;
+  };
+
   function getCol(c) {
     return turn === RED ? COLS - c : c + 1;
   }
@@ -294,7 +298,20 @@ tkServices.factory('gameService', function() {
   }
 
   service.isValidMove = function(x, y, u, v) {
-    return position.isValidMove(toMove(x, y, u, v));
+    var move = toMove(x, y, u, v);
+    if (!position.isValidMove(move)) return false;
+    position.makeMove(move);
+    var checked = position.isChecked(turn);
+    position.unMakeMove();
+    return !checked;
+  };
+
+  service.isChecked = function(opt_player) {
+    return position.isChecked(opt_player);
+  };
+
+  service.isCheckmated = function(opt_player) {
+    return position.isCheckmated(opt_player);
   };
 
   service.makeMove = function(x, y, u, v) {
@@ -1109,7 +1126,7 @@ tkServices.factory('engineService', function($q, $http, notificationService) {
       notificationService.hide();
       defer.resolve(response);
     }).error(function() {
-      notificationService.showError('Trục trặc, chưa nghĩ được.');
+      notificationService.showError('Gặp vấn đề, chưa nghĩ ra.');
       defer.reject();
     });
     return defer.promise;

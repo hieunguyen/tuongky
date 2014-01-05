@@ -4,6 +4,11 @@ var PIECE_TYPES = [
 	K, A, A, E, E, R, R, C, C, H, H, P, P, P, P, P,
 	K, A, A, E, E, R, R, C, C, H, H, P, P, P, P, P];
 
+var KING_MOVE_TAB	= [-0x10, -0x01, +0x01, +0x10];
+var ADVISOR_MOVE_TAB	= [-0x11, -0x0f, +0x0f, +0x11];
+var ELEPHANT_MOVE_TAB	= [-0x22, -0x1e, +0x1e, +0x22];
+var HORSE_MOVE_TAB = [-0x21, -0x1f, -0x12, -0x0e, +0x0e, +0x12, +0x1f, +0x21];
+
 var LEGAL_MOVE_TAB = [
                        0, 0, 0, 0, 0, 0, 0, 0, 0,
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -83,6 +88,9 @@ var CANNON_ROW_CAP_MASK, CANNON_COL_CAP_MASK;
 var ROOK_ROW_CAP_TAB, ROOK_ROW_NO_CAP_TAB, CANNON_ROW_CAP_TAB;
 var ROOK_COL_CAP_TAB, ROOK_COL_NO_CAP_TAB, CANNON_COL_CAP_TAB;
 
+var KING_MOVES, ADVISOR_MOVES, ELEPHANT_MOVES, HORSE_MOVES, PAWN_MOVES;
+var ELEPHANT_EYES, HORSE_LEGS;
+
 function init_arr() {
 	var args = Array.prototype.slice.call(arguments);
 	if (args.length === 0) {
@@ -111,6 +119,77 @@ function initInPalace() {
 		}
 		for (var i = 10; i < 13; i++) {
 			IN_PALACE[i << 4 | j] = true;
+		}
+	}
+}
+
+function initKingBishopMoves() {
+	// King & Bishop
+
+	KING_MOVES = init_arr(BOARD_SIZE, 5);
+	ADVISOR_MOVES = init_arr(BOARD_SIZE, 5);
+
+	var src, dst, cc, i;
+	for (src = 0; src < BOARD_SIZE; src++) {
+		if (IN_PALACE[src]) {
+			cc = 0;
+			for (i = 0; i < KING_MOVE_TAB.length; i++) {
+				dst = src + KING_MOVE_TAB[i];
+				if (IN_PALACE[dst]) KING_MOVES[src][cc++] = dst;
+			}
+			cc = 0;
+			for (i = 0; i < ADVISOR_MOVE_TAB.length; i++) {
+				dst = src + ADVISOR_MOVE_TAB[i];
+				if (IN_PALACE[dst]) ADVISOR_MOVES[src][cc++] = dst;
+			}
+		}
+	}
+}
+
+function initElephanKnightPawnMoves() {
+	// Elephant, Knight & Pawn
+
+	ELEPHANT_MOVES = init_arr(BOARD_SIZE, 5);
+	ELEPHANT_EYES = init_arr(BOARD_SIZE, 5);
+	HORSE_MOVES = init_arr(BOARD_SIZE, 10);
+	HORSE_LEGS = init_arr(BOARD_SIZE, 10);
+	PAWN_MOVES = init_arr(BOARD_SIZE, 2, 5);
+
+	var src, dst, cc, i, j;
+	for (src = 0; src < BOARD_SIZE; src++) {
+		if (IN_BOARD[src]) {
+			cc = 0;
+			for (i = 0; i < ELEPHANT_MOVE_TAB.length; i++) {
+				dst = src + ELEPHANT_MOVE_TAB[i];
+				if (IN_BOARD[dst] && ((src^dst) & 0x80) === 0) {
+					ELEPHANT_MOVES[src][cc] = dst;
+					ELEPHANT_EYES[src][cc] = (src + dst) >> 1;
+					cc++;
+				}
+			}
+
+			cc = 0;
+			for (i = 0; i < HORSE_MOVE_TAB.length; i++) {
+				dst = src + HORSE_MOVE_TAB[i];
+				if (IN_BOARD[dst]) {
+					HORSE_MOVES[src][cc] = dst;
+					HORSE_LEGS[src][cc] = src + HORSE_LEG_TAB[dst - src + BOARD_SIZE];
+					cc++;
+				}
+			}
+
+			for (i = 0; i < 2; i++) {
+				cc = 0;
+				if (i === 0) dst = src - 16; else dst = src + 16;
+				if (IN_BOARD[dst]) PAWN_MOVES[src][i][cc++] = dst;
+
+				if (i===0 ? (src & 0x80) === 0 : (src & 0x80) !== 0) {
+					for (j = -1; j <= 1; j += 2) {
+						dst = src + j;
+						if (IN_BOARD[dst]) PAWN_MOVES[src][i][cc++] = dst;
+					}
+				}
+			}
 		}
 	}
 }
@@ -144,7 +223,7 @@ function initRookCannonMoves() {
 		CANNON_ROW_CAP_TAB[i][j][0] = CANNON_ROW_CAP_TAB[i][j][1] = i + 3;
 		ROOK_ROW_NO_CAP_MASK[i][j] = ROOK_ROW_CAP_MASK[i][j] = CANNON_ROW_CAP_MASK[i][j] = 0;
 
-		for (k = i + 1; k < ROWS; k++) {
+		for (k = i + 1; k < COLS; k++) {
 			if (j >> k & 1) {
 				ROOK_ROW_CAP_TAB[i][j][0] = k + 3;
 				ROOK_ROW_CAP_MASK[i][j] |= 1 << (k + 3);
@@ -154,7 +233,7 @@ function initRookCannonMoves() {
 			ROOK_ROW_NO_CAP_MASK[i][j] |= 1 << (k + 3);
 		}
 
-		for (k++; k < ROWS; k++)
+		for (k++; k < COLS; k++)
 		if (j >> k & 1) {
 			CANNON_ROW_CAP_TAB[i][j][0] = k + 3;
 			CANNON_ROW_CAP_MASK[i][j] |= 1 << (k + 3);
@@ -228,6 +307,8 @@ function initRookCannonMoves() {
 function initThings() {
 	initInBoard();
 	initInPalace();
+	initKingBishopMoves();
+	initElephanKnightPawnMoves();
 	initRookCannonMoves();
 }
 initThings();
@@ -393,4 +474,323 @@ Position.prototype.isValidMove = function(move) {
 			else
 				return dst === src + 16 || ((dst & 0x80) && Math.abs(dst - src) === 1);
 	};
+};
+
+Position.prototype.isChecked = function(opt_player) {
+	var player = opt_player || this.turn;
+	var src, dst, rank, file, pieceTag, y;
+
+	pieceTag = 48 - (player << 4);
+	src = this.pieces[48 - pieceTag]; // KING
+
+	rank = src >> 4;
+	file = src & 0xf;
+
+	// KING kills KING
+	dst = this.pieces[pieceTag];
+	if (dst) {
+		y = dst & 0xf;
+		if (y === file && ROOK_COL_CAP_MASK[rank - 3][this.bitCols[file] >> 3] & (1 << (dst >> 4))) return true;
+	}
+
+	// ROOK kills KING
+	for (var i = 5; i <= 6; i++) {
+		dst = this.pieces[pieceTag + i];
+		if (dst) {
+			if ((dst >> 4) === rank) {
+				if (ROOK_ROW_CAP_MASK[file - 3][this.bitRows[rank] >> 3] & (1 << (dst & 0xf))) return true;
+			} else
+			if ((dst & 0xf) === file) {
+				if (ROOK_COL_CAP_MASK[rank - 3][this.bitCols[file] >> 3] & (1 << (dst >> 4))) return true;
+			}
+		}
+	}
+
+	// CANNON kills KING
+	for (var i = 7; i <= 8; i++) {
+		dst = this.pieces[pieceTag + i];
+		if (dst) {
+			if ((dst >> 4) === rank) {
+				if (CANNON_ROW_CAP_MASK[file - 3][this.bitRows[rank] >> 3] & (1 << (dst & 0xf))) return true;
+			} else
+			if ((dst & 0xf) === file) {
+				if (CANNON_COL_CAP_MASK[rank - 3][this.bitCols[file] >> 3] & (1 << (dst >> 4))) return true;
+			}
+		}
+	}
+
+	// HORSE kills KING
+	for (var i = 9; i <= 10; i++) {
+		dst = this.pieces[pieceTag + i];
+		if (dst) {
+			var hleg = HORSE_LEG_TAB[src - dst + 256];
+			if (hleg && !this.board[dst + hleg]) return true;
+		}
+	}
+
+	// PAWN kills KING
+	var ptmp;
+
+	ptmp = this.board[src - 1];
+	if ((ptmp & pieceTag) && PIECE_TYPES[ptmp] === P) return true;
+
+	ptmp = this.board[src + 1];
+	if ((ptmp & pieceTag) && PIECE_TYPES[ptmp] === P) return true;
+
+	ptmp = this.board[src - 16 + ((player - 1) << 5)];
+	if ((ptmp & pieceTag) && PIECE_TYPES[ptmp] === P) return true;
+
+	return false;
+};
+
+Position.prototype.isCheckmated = function(opt_player) {
+	var player = opt_player || this.turn;
+	var moveList = this.genMoves(player);
+	if (!moveList.length) { // no valid moves.
+		return true;
+	}
+	var validMoveFound = false;
+	for (var i = 0; i < moveList.length; i++) {
+		this.makeMove(moveList[i]);
+		if (!this.isChecked(player)) {
+			validMoveFound = true;
+		}
+		this.unMakeMove();
+		if (validMoveFound) {
+			return false;
+		}
+	}
+	return true;
+};
+
+Position.prototype.genMoves = function(opt_player) {
+	var player = opt_player || this.turn;
+
+	var moveList = [];
+	var moves;
+
+	var src, dst, num;
+	var pieceTag, ind, rank, file, x, y, i;
+
+	pieceTag = player << 4;
+
+	// KING
+	src = this.pieces[pieceTag];
+	moves = KING_MOVES[src];
+	if (src) {
+		ind = 0;
+		dst = moves[ind];
+		while (dst) {
+			if (!(this.board[dst] & pieceTag)) {
+				moveList.push(src << 8 | dst);
+			}
+			ind++;
+			dst = moves[ind];
+		}
+	}
+
+	// ADVISOR
+	for (i = 1; i <= 2; i++) {
+		src = this.pieces[pieceTag + i];
+		moves = ADVISOR_MOVES[src];
+		if (src) {
+			ind = 0;
+			dst = moves[ind];
+			while (dst) {
+				if (!(this.board[dst] & pieceTag)) {
+					moveList.push(src << 8 | dst);
+				}
+				ind++;
+				dst = moves[ind];
+			}
+		}
+	}
+
+	// ELEPHANT
+	for (i = 3; i <= 4; i++) {
+		src = this.pieces[pieceTag + i];
+		if (src) {
+			ind = 0;
+			moves = ELEPHANT_MOVES[src];
+			dst = moves[ind];
+			while (dst) {
+				var ee = ELEPHANT_EYES[src][ind];
+				if (!this.board[ee] && !(this.board[dst] & pieceTag)) {
+					moveList.push(src << 8 | dst);
+				}
+				ind++;
+				dst = moves[ind];
+			}
+		}
+	}
+
+	// ROOK
+	for (i = 5; i <= 6; i++) {
+		src = this.pieces[pieceTag + i];
+		if (src) {
+
+			rank = src >> 4;
+			file = src & 0xf;
+
+			var bitRank, bitFile;
+			bitRank = this.bitRows[rank] >> 3;
+			bitFile = this.bitCols[file] >> 3;
+
+			// HORIZONTAL
+
+			y = ROOK_ROW_NO_CAP_TAB[file - 3][bitRank][0];
+			while (y > file) {
+				moveList.push(src << 8 | rank << 4 | y);
+				y--;
+			}
+
+			y = ROOK_ROW_NO_CAP_TAB[file - 3][bitRank][1];
+			while (y < file) {
+				moveList.push(src << 8 | rank << 4 | y);
+				y++;
+			}
+
+			y = ROOK_ROW_CAP_TAB[file - 3][bitRank][0];
+			dst = rank << 4 | y;
+			if (y !== file && !(this.board[dst] & pieceTag)) {
+				moveList.push(src << 8 | dst);
+			}
+
+			y = ROOK_ROW_CAP_TAB[file - 3][bitRank][1];
+			dst = rank << 4 | y;
+			if (y !== file && !(this.board[dst] & pieceTag)) {
+				moveList.push(src << 8 | dst);
+			}
+
+			// VERTICAL
+
+			x = ROOK_COL_NO_CAP_TAB[rank - 3][bitFile][0];
+			while (x > rank) {
+				moveList.push(src << 8 | x << 4 | file);
+				x--;
+			}
+
+			x = ROOK_COL_NO_CAP_TAB[rank - 3][bitFile][1];
+			while (x < rank) {
+				moveList.push(src << 8 | x << 4 | file);
+				x++;
+			}
+
+			x = ROOK_COL_CAP_TAB[rank - 3][bitFile][0];
+			dst = x << 4 | file;
+			if (x !== rank && !(this.board[dst] & pieceTag)) {
+				moveList.push(src << 8 | dst);
+			}
+
+			x = ROOK_COL_CAP_TAB[rank - 3][bitFile][1];
+			dst = x << 4 | file;
+			if (x !== rank && !(this.board[dst] & pieceTag)) {
+				moveList.push(src << 8 | dst);
+			}
+
+		}
+	}
+
+	// CANNON
+	for (i = 7; i <= 8; i++) {
+		src = this.pieces[pieceTag + i];
+		if (src) {
+
+			rank = src >> 4;
+			file = src & 0xf;
+
+			var bitRank, bitFile;
+			bitRank = this.bitRows[rank] >> 3;
+			bitFile = this.bitCols[file] >> 3;
+
+			// HORIZONTAL
+
+			y = ROOK_ROW_NO_CAP_TAB[file - 3][bitRank][0];
+			while (y > file) {
+				moveList.push(src << 8 | rank << 4 | y);
+				y--;
+			}
+
+			y = ROOK_ROW_NO_CAP_TAB[file - 3][bitRank][1];
+			while (y < file) {
+				moveList.push(src << 8 | rank << 4 | y);
+				y++;
+			}
+
+			y = CANNON_ROW_CAP_TAB[file - 3][bitRank][0];
+			dst = rank << 4 | y;
+			if (y !== file && !(this.board[dst] & pieceTag)) {
+				moveList.push(src << 8 | dst);
+			}
+
+			y = CANNON_ROW_CAP_TAB[file - 3][bitRank][1];
+			dst = rank << 4 | y;
+			if (y !== file && !(this.board[dst] & pieceTag)) {
+				moveList.push(src << 8 | dst);
+			}
+
+			// VERTICAL
+
+			x = ROOK_COL_NO_CAP_TAB[rank - 3][bitFile][0];
+			while (x > rank) {
+				moveList.push(src << 8 | x << 4 | file);
+				x--;
+			}
+
+			x = ROOK_COL_NO_CAP_TAB[rank - 3][bitFile][1];
+			while (x < rank) {
+				moveList.push(src << 8 | x << 4 | file);
+				x++;
+			}
+
+			x = CANNON_COL_CAP_TAB[rank - 3][bitFile][0];
+			dst = x << 4 | file;
+			if (x !== rank && !(this.board[dst] & pieceTag)) {
+				moveList.push(src << 8 | dst);
+			}
+
+			x = CANNON_COL_CAP_TAB[rank - 3][bitFile][1];
+			dst = x << 4 | file;
+			if (x !== rank && !(this.board[dst] & pieceTag)) {
+				moveList.push(src << 8 | dst);
+			}
+		}
+	}
+
+	// KNIGHT
+	for (i = 9; i <= 10; i++) {
+		src = this.pieces[pieceTag + i];
+		if (src) {
+			ind = 0;
+			moves = HORSE_MOVES[src];
+			dst = moves[ind];
+			while (dst) {
+				var hleg = HORSE_LEGS[src][ind];
+				if (!this.board[hleg] && !(this.board[dst] & pieceTag)) {
+					moveList.push(src << 8 | dst);
+				}
+				ind++;
+				dst = moves[ind];
+			}
+		}
+	}
+
+	// PAWN
+	for (var i = 11; i <= 15; i++) {
+		src = this.pieces[pieceTag + i];
+		if (src) {
+			ind = 0;
+			moves = PAWN_MOVES[src][player - 1];
+			dst = moves[ind];
+			while (dst) {
+				if (!(this.board[dst] & pieceTag)) {
+					moveList.push(src << 8 | dst);
+				}
+				ind++;
+				dst = moves[ind];
+			}
+		}
+	}
+
+	return moveList;
 };
