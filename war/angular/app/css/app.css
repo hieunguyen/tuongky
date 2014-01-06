@@ -515,3 +515,7 @@
 .loading {
 	text-align: center;
 }
+
+.table.player-types td {
+	border-top: 0;
+}

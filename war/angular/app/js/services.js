@@ -1119,14 +1119,14 @@ tkServices.factory('engineService', function($q, $http, notificationService) {
       fen: fen,
       moves: moves
     };
-    var url = 'http://localhost:1234/go?' + $.param(params);
-    // var url = 'http://8.35.197.17:1234/go?' + $.param(params);
-    notificationService.show('Đang suy nghĩ...');
+    // var url = 'http://localhost:1234/go?' + $.param(params);
+    var url = 'http://162.222.182.147:1234/go?' + $.param(params);
+    notificationService.show('Máy đang nghĩ...');
     $http.get(url).success(function(response) {
       notificationService.hide();
       defer.resolve(response);
     }).error(function() {
-      notificationService.showError('Gặp vấn đề, chưa nghĩ ra.');
+      notificationService.showError('Gặp vấn đề, máy chưa nghĩ ra.');
       defer.reject();
     });
     return defer.promise;

@@ -45,6 +45,9 @@ tkControllers.controller('StudyCtrl', function(
 
   function maybeComputerPlay(inTurn) {
     if (Number(inTurn) === COMPUTER) {
+      if (gameService.isCheckmated()) {
+        return;
+      }
       $timeout(function() {
         computerPlay().then(function(move) {
           $scope.$broadcast('new_move', move);
@@ -564,7 +567,7 @@ tkControllers.controller('ShowGameCtrl', function(
 
 
 tkControllers.controller('BoardCtrl', function(
-    $scope, $location, gameService, treeService, fenService) {
+    $scope, $location, $timeout, gameService, treeService, fenService) {
 
   var PIECE_IMAGE_NAME_MAP = {};
   PIECE_IMAGE_NAME_MAP[K] = 'k';
@@ -718,6 +721,12 @@ tkControllers.controller('BoardCtrl', function(
     updateVariations();
     $scope.line = line;
     forgetSelectedPiece();
+
+    $timeout(function() {
+      if (gameService.isCheckmated()) {
+        alert($scope.turn === BLACK ? 'Đỏ thắng.' : 'Đen thắng.');
+      }
+    });
   }
 
   function forgetSelectedPiece() {

@@ -57,7 +57,7 @@
           <button class="btn btn-sm btn-default"
                   ng-click="studyPosition()"
                   ng-hide="hideStudyBtn"
-                  tabindex="15">Thẩm cờ</button>
+                  tabindex="15">Th<span class="shortcut-key">ẩ</span>m cờ</button>
         </div>
 
         <shortcut keycode="37" handler="goPrevious()"></shortcut>
@@ -69,6 +69,8 @@
         <shortcut keycode="67" handler="goLast()"></shortcut>
 
         <shortcut keycode="70" handler="showFen()"></shortcut>
+
+        <shortcut keycode="65" handler="studyPosition()"></shortcut>
       </div>
 
       <div class="moves-n-variations" ng-hide="commentFull">
