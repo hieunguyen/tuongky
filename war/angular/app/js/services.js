@@ -1120,7 +1120,7 @@ tkServices.factory('engineService', function($q, $http, notificationService) {
       moves: moves
     };
     // var url = 'http://localhost:1234/go?' + $.param(params);
-    var url = 'http://162.222.182.147:1234/go?' + $.param(params);
+    var url = 'http://8.34.217.129:1234/go?' + $.param(params);
     notificationService.show('Máy đang nghĩ...');
     $http.get(url).success(function(response) {
       notificationService.hide();
