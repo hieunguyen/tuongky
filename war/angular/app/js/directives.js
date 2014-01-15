@@ -212,3 +212,49 @@ tkDirectives.directive('moveInput', function($parse, $timeout) {
     }
   };
 });
+
+
+tkDirectives.directive('tkBoard', function($q) {
+
+  var PIECE_IMAGE_NAME_MAP = {};
+  PIECE_IMAGE_NAME_MAP[K] = 'k';
+  PIECE_IMAGE_NAME_MAP[A] = 'a';
+  PIECE_IMAGE_NAME_MAP[E] = 'e';
+  PIECE_IMAGE_NAME_MAP[R] = 'r';
+  PIECE_IMAGE_NAME_MAP[C] = 'c';
+  PIECE_IMAGE_NAME_MAP[H] = 'h';
+  PIECE_IMAGE_NAME_MAP[P] = 'p';
+
+  return {
+    replace: true,
+    scope: {
+      board: '=data',
+      api: '=',
+      dropOn: '&'
+    },
+    templateUrl: 'partials/tk_board.html',
+    controller: function($scope) {
+      $scope.getImageName = function(piece) {
+        if (!piece) return 'dummy.png';
+        return (piece > 0 ? 'r' : 'b') +
+            PIECE_IMAGE_NAME_MAP[Math.abs(piece)] + '.gif';
+      };
+      $scope.dropIt = function(dragId, row, col) {
+        $scope.dropOn({dragId: dragId, row: row, col: col});
+      };
+    },
+    link: function(scope, elem, attrs) {
+      scope.api.go = function(x, y, u, v) {
+        var deferred = $q.defer();
+        var imgs = $('.tk-board-cell img', elem);
+        var img = imgs.eq(x * 9 + y);
+        var w = img.height();
+        var h = img.width();
+        $(img).animate({left: (v - y) * w, top: (u - x) * h}, 200, function() {
+          deferred.resolve(true);
+        });
+        return deferred.promise;
+      };
+    }
+  };
+});

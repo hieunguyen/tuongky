@@ -519,3 +519,38 @@
 .table.player-types td {
 	border-top: 0;
 }
+
+.sandbox {
+	width: 288px;
+}
+
+.tk-board-container {
+	position: relative;
+}
+
+.tk-board-container .tk-board-img {
+  width: 100%;
+}
+
+.tk-board {
+	width: 100%;
+	position: absolute;
+	top: -1px;
+	left: 0px;
+}
+
+.tk-board-row {
+	display: table;
+	table-layout: fixed;
+	width: 100%;
+}
+
+.tk-board-cell {
+	display: table-cell;
+	text-align: center;
+}
+
+.tk-board-cell img {
+	width: 100%;
+	position: relative;
+}
