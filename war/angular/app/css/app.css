@@ -50,8 +50,11 @@
 	color: rgb(218, 207, 207);
 }
 
-.view-container {
-	margin-bottom: 200px;
+.view-container {}
+
+.doc-container .tk-doc {
+	margin: 0 auto;
+	padding: 0;
 }
 
 .doc-container .move-input-container {
@@ -112,12 +115,12 @@
 
 .board-control-panel {
 	text-align: center;
-	margin: 20px 0;
+	margin: 20px 0 0 0;
 }
 
 .board-control-panel button {
 	width: 60px;
-	margin: 5px;
+	margin: 2px;
 }
 
 .drag {
@@ -432,7 +435,7 @@
 
 .create-game-form-read {
 	text-align: center;
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 }
 
 .create-game-form-read button {

@@ -85,6 +85,7 @@ tkControllers.controller('AppCtrl', function(
   };
 
   $scope.$on('$routeChangeStart', function(event, next) {
+
     if (next.accessLevel > Roles.ANONYMOUS && !authService.isAuthenticated()) {
       $location.path('/signin');
       return;
