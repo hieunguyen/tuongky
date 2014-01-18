@@ -1,4 +1,5 @@
-<div class="board-container">
+<div class="doc-container">
+
   <div class="row move-input-container" ng-show="editMode && !hideMoveText">
     <div class="col-md-12">
       <div ng-show="invalidMove" class="error">
@@ -14,66 +15,62 @@
              on-space="pressSpace(value)">
      </div>
   </div>
+
   <div class="row">
-    <div class="col-md-12 board-row">
-      <div class="board-n-controls" ng-hide="commentFull">
+    <div class="col-md-12">
+      <div class="board-n-controls">
         <div class="board">
           <div class="top-player-turn" ng-show="turn == 2"></div>
           <div class="bottom-player-turn" ng-show="turn == 1"></div>
-          <div ng-repeat="row in board track by $index">
-            <div ng-repeat="cell in row track by $index"
-                 class="board-cell"
-                 droppable
-                 drop="dropIt(dragId, $parent.$index, $index)"
-                 ng-click="selectBoardCell($parent.$index, $index)"
-                 >
-              <img ng-src="/img/xq2/{{getImageName(cell)}}.gif"
-                   ng-show="cell != 0"
-                   id="sq_{{$parent.$index}}_{{$index}}"
-                   draggable
-                   ng-click="selectPiece($parent.$index, $index)"
-                   ng-class="{highlighted: isHighlighted($parent.$index, $index)}">
-            </div>
-          </div>
+          <div tk-board
+               data="board"
+               api="boardApi"
+               drop-on="dropOn(dragId, row, col)"></div>
         </div>
 
         <div class="board-control-panel">
           <button class="btn btn-sm btn-default"
                   ng-click="goFirst()"
-                  tabindex="10"><span class="shortcut-key">Đ</span>ầu</button>
+                  tabindex="10">
+            <span class="glyphicon glyphicon-fast-backward"></span>
+          </button>
           <button class="btn btn-sm btn-default"
                   ng-click="goPrevious()"
-                  tabindex="11"><span class="shortcut-key">T</span>rước</button>
+                  tabindex="11">
+            <span class="glyphicon glyphicon-backward"></span>
+          </button>
           <button class="btn btn-sm btn-default"
                   ng-click="goNext()"
-                  tabindex="12"><span class="shortcut-key">S</span>au</button>
+                  tabindex="12">
+            <span class="glyphicon glyphicon-forward"></span>
+          </button>
           <button class="btn btn-sm btn-default"
                   ng-click="goLast()"
-                  tabindex="13"><span class="shortcut-key">C</span>uối</button>
+                  tabindex="13">
+            <span class="glyphicon glyphicon-fast-forward"></span>
+          </button>
 
-          <button class="btn btn-sm btn-default"
+          <button class="btn btn-sm btn-success"
                   ng-click="showFen()"
                   tabindex="14"><span class="shortcut-key">F</span>EN</button>
-          <button class="btn btn-sm btn-default"
+          <button class="btn btn-sm btn-primary"
                   ng-click="studyPosition()"
                   ng-hide="hideStudyBtn"
-                  tabindex="15">Th<span class="shortcut-key">ẩ</span>m cờ</button>
+                  tabindex="15"><span class="shortcut-key">T</span>hẩ</span>m</button>
         </div>
 
         <shortcut keycode="37" handler="goPrevious()"></shortcut>
         <shortcut keycode="39" handler="goNext()"></shortcut>
 
         <shortcut keycode="68" handler="goFirst()"></shortcut>
-        <shortcut keycode="84" handler="goPrevious()"></shortcut>
         <shortcut keycode="83" handler="goNext()"></shortcut>
         <shortcut keycode="67" handler="goLast()"></shortcut>
 
         <shortcut keycode="70" handler="showFen()"></shortcut>
-
-        <shortcut keycode="65" handler="studyPosition()"></shortcut>
+        <shortcut keycode="84" handler="studyPosition()"></shortcut>
       </div>
 
-      <div class="moves-n-variations" ng-hide="commentFull">
+      <div class="moves-n-variations" ng-class="{empty: commentFull}">
         <div class="move-list"
              ng-class="{full: variations.length <= 1 && !editMode}"
              auto-scroll-to="currentLineIndex">
@@ -111,10 +108,10 @@
 
       <div class="commentContainer" ng-class="{full: commentFull}" ng-hide="hideComment">
         <div class="resize-button">
-           <span class="glyphicon glyphicon-resize-full"
+           <span class="glyphicon glyphicon-chevron-left"
                  ng-hide="commentFull"
                  ng-click="toggleFullCommentMode()"></span>
-           <span class="glyphicon glyphicon-resize-small"
+           <span class="glyphicon glyphicon-chevron-right"
                  ng-show="commentFull"
                  ng-click="toggleFullCommentMode()"></span>
         </div>

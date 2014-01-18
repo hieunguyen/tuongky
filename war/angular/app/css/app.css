@@ -54,15 +54,15 @@
 	margin-bottom: 200px;
 }
 
-.board-container .move-input-container {
+.doc-container .move-input-container {
 	margin-bottom: 15px;
 }
 
-.board-container .move-input-container .error {
+.doc-container .move-input-container .error {
 	margin-bottom: 5px;
 }
 
-.board-container .move-input {
+.doc-container .move-input {
 	border: 1px solid gray;
 	font-size: 16px;
 	height: 30px;
@@ -79,14 +79,8 @@
 }
 
 .board {
-	background-image: url('/img/xq2/board.jpg');
-	background-size: 100%;
-	height: 577px;
-	width: 521px;
 	margin: 0 auto;
-	padding-top: 3px;
-	padding-left: 4px;
-	position: relative;
+  position: relative;
 }
 
 .board .top-player-turn {
@@ -111,35 +105,19 @@
   margin-left: -60px;
 }
 
-.board-cell {
-	height: 57px;
-	width: 57px;
-	float: left;
-}
-
-.board-cell img {
-	cursor: pointer;
-	height: 57px;
-	width: 57px;
-}
-
 .board-cell img.highlighted {
 	border: 3px solid rgba(13, 40, 95, 0.4);
 	border-radius: 28px 28px;
 }
 
 .board-control-panel {
-	width: 521px;
 	text-align: center;
 	margin: 20px 0;
 }
 
 .board-control-panel button {
-	width: 70px;
+	width: 60px;
 	margin: 5px;
-}
-
-.over {
 }
 
 .drag {
@@ -148,14 +126,10 @@
 
 .move-list {
 	height: 477px;
-	width: 180px;
+	width: 150px;
 	margin-left: 10px;
-	border: 1px solid;
+	border: 1px solid #C9C1C1;
 	overflow-y: scroll;
-}
-
-.move-list.full {
-	height: 577px;
 }
 
 .move-list table {
@@ -175,9 +149,9 @@
 }
 
 .move-list .first {
-	width: 50px;
+	width: 44px;
 	float: left;
-	padding-right: 10px;
+	padding-right: 4px;
 }
 
 .move-list .second {
@@ -185,21 +159,15 @@
 }
 
 .commentContainer {
-	height: 577px;
-	margin-left: 721px;
-	border: 1px solid;
+	border: 1px solid #C9C1C1;
 	position: relative;
 }
 
-.commentContainer.full {
-	height: 727px;
-  margin-left: 0;
-}
-
 .commentContainer .resize-button {
-	font-size: 24px;
+	font-size: 17px;
 	position: absolute;
-	right: 5px;
+	top: 4px;
+	left: 2px;
 	color: rgb(148, 30, 30);
 
 	cursor: pointer;
@@ -210,7 +178,7 @@
 
 .variationContainer {
 	height: 90px;
-	width: 180px;
+	width: 150px;
 	margin-top: 10px;
 	margin-left: 10px;
 }
@@ -223,13 +191,8 @@
 .comment {
 	border: 0;
 	font-size: 16px;
-	height: 544px;
 	resize: none;
 	padding: 0 5px;
-}
-
-.commentContainer.full .comment {
-	height: 694px;
 }
 
 .variation {

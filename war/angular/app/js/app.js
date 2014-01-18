@@ -2,6 +2,7 @@
 
 var tkApp = angular.module('tkApp',
     ['ngRoute',
+     'ngAnimate',
      'tkApp.filters',
      'tkApp.services',
      'tkApp.directives',

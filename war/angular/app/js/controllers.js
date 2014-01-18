@@ -6,36 +6,6 @@ var tkControllers = angular.module('tkApp.controllers', []);
 
 
 tkControllers.controller('SandboxCtrl', function($scope, $location) {
-  $scope.boardApi = {};
-
-  function createInitialBoard() {
-    return [
-      [-R, -H, -E, -A, -K, -A, -E, -H, -R],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, -C, 0, 0, 0, 0, 0, -C, 0],
-      [-P, 0, -P, 0, -P, 0, -P, 0, -P],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [P, 0, P, 0, P, 0, P, 0, P],
-      [0, C, 0, 0, 0, 0, 0, C, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [R, H, E, A, K, A, E, H, R]
-    ];
-  }
-
-  $scope.board = createInitialBoard();
-
-  function makeMove(x, y, u, v) {
-    if (!$scope.board[x][y]) return;
-    $scope.board[u][v] = $scope.board[x][y];
-    $scope.board[x][y] = EMPTY;
-  }
-
-  $scope.dropOn = function(dragId, row, col) {
-    var x = Number(dragId.split('_')[1]);
-    var y = Number(dragId.split('_')[2]);
-    makeMove(x, y, row, col);
-  };
 });
 
 
@@ -596,8 +566,23 @@ tkControllers.controller('ShowGameCtrl', function(
 });
 
 
-tkControllers.controller('BoardCtrl', function(
+tkControllers.controller('DocCtrl', function(
     $scope, $location, $timeout, gameService, treeService, fenService) {
+
+  $scope.boardApi = {};
+
+  function makeMove2(x, y, u, v) {
+    if (!$scope.board[x][y]) return;
+    $scope.board[u][v] = $scope.board[x][y];
+    $scope.board[x][y] = EMPTY;
+  }
+
+  $scope.dropOn = function(dragId, row, col) {
+    var x = Number(dragId.split('_')[1]);
+    var y = Number(dragId.split('_')[2]);
+    makeMove2(x, y, row, col);
+  };
+
 
   var PIECE_IMAGE_NAME_MAP = {};
   PIECE_IMAGE_NAME_MAP[K] = 'k';

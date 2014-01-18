@@ -83,7 +83,7 @@ tkDirectives.directive('pressEnter', function() {
 });
 
 
-tkDirectives.directive('board', function() {
+tkDirectives.directive('tkDoc', function() {
   return {
     restrict: 'AE',
     scope: {
@@ -96,10 +96,8 @@ tkDirectives.directive('board', function() {
       hideStudyBtn: '='
     },
     replace: true,
-    templateUrl: 'partials/board.html',
-    controller: 'BoardCtrl',
-    link: function(scope, element, attrs) {
-    }
+    templateUrl: 'partials/tk_doc.html',
+    controller: 'DocCtrl'
   };
 });
 
