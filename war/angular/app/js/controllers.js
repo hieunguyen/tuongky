@@ -84,6 +84,12 @@ tkControllers.controller('AppCtrl', function(
     searchBoxFocused: false
   };
 
+  $scope.$watch(function() {
+    return $location.search()['embed'];
+  }, function(embed) {
+    $scope.embed = embed;
+  });
+
   $scope.$on('$routeChangeStart', function(event, next) {
 
     if (next.accessLevel > Roles.ANONYMOUS && !authService.isAuthenticated()) {

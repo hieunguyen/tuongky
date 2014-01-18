@@ -11,7 +11,7 @@
 </head>
 <body>
   <div class="container" ng-controller="AppCtrl">
-    <div class="row header">
+    <div class="row header" ng-hide="embed">
       <div class="col-md-2">
         <a href="#/"><img src="/img/tuongky.png"></a>
       </div>
@@ -47,7 +47,7 @@
         </div>
       </div>
     </div>
-    <div class="row notification-bar">
+    <div class="row notification-bar" ng-hide="embed">
       <div class="col-md-12">
         <div class='alert alert-dismissable'
              ng-class='alert.type && "alert-" + alert.type'
@@ -56,7 +56,7 @@
         </div>
       </div>
     </div>
-    <div class="row">
+    <div class="row" ng-hide="embed">
       <div class="col-md-12 loading">
         <img src="img/load_lg.gif" ng-show="data.loading" ng-cloak>
       </div>

@@ -115,7 +115,7 @@
 
 .board-control-panel {
 	text-align: center;
-	margin: 20px 0 0 0;
+	margin: 15px 0 0 0;
 }
 
 .board-control-panel button {
@@ -201,9 +201,9 @@
 .variation {
 	height: 90px;
 	padding: 2px 0;
-	width: 130px;
+	width: 110px;
 	display: inline-block;
-	border: 1px solid;
+	border: 1px solid #C9C1C1;
 	float: left;
 }
 
@@ -235,12 +235,12 @@
 
 .variationContainer .actions {
 	height: 90px;
-	width: 50px;
-	border-top: 1px solid;
+	width: 40px;
+	border-top: 1px solid #C9C1C1;
 	text-align: center;
-  border-right: 1px solid;
-  border-bottom: 1px solid;
-  margin-left: 130px;
+  border-right: 1px solid #C9C1C1;
+  border-bottom: 1px solid #C9C1C1;
+  margin-left: 110px;
 }
 
 .variationContainer .actions span {
