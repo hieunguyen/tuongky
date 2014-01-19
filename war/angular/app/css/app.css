@@ -50,7 +50,9 @@
 	color: rgb(218, 207, 207);
 }
 
-.view-container {}
+.view-container.embed {
+	margin-top: 10px;
+}
 
 .doc-container .tk-doc {
 	margin: 0 auto;
