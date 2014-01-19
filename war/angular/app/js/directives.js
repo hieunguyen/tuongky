@@ -147,10 +147,19 @@ tkDirectives.directive('autoScrollTo', function($timeout) {
         var scrollTo = $('tr', element).eq(to);
         if (scrollTo) {
           var container = $(element);
-          container.scrollTop(
-            scrollTo.offset().top - container.offset().top +
-                container.scrollTop()
-          );
+          var scrollTop = container.scrollTop();
+          var h = container.height();
+          var currentHeight = scrollTo.height();
+          var top = container.offset().top;
+          var selectedTop = scrollTo.offset().top;
+
+          if (selectedTop < top) { // over the top.
+            container.scrollTop(selectedTop - top + scrollTop);
+          } else
+          if (h + top < selectedTop + currentHeight) { // below the bototm.
+            container.scrollTop(
+                selectedTop - top + scrollTop - h + currentHeight);
+          }
         }
       });
     }

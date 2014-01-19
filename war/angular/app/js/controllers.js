@@ -578,28 +578,6 @@ tkControllers.controller('DocCtrl', function(
 
   $scope.boardApi = {};
 
-  function makeMove2(x, y, u, v) {
-    if (!$scope.board[x][y]) return;
-    $scope.board[u][v] = $scope.board[x][y];
-    $scope.board[x][y] = EMPTY;
-  }
-
-  $scope.dropOn = function(dragId, row, col) {
-    var x = Number(dragId.split('_')[1]);
-    var y = Number(dragId.split('_')[2]);
-    makeMove2(x, y, row, col);
-  };
-
-
-  var PIECE_IMAGE_NAME_MAP = {};
-  PIECE_IMAGE_NAME_MAP[K] = 'k';
-  PIECE_IMAGE_NAME_MAP[A] = 'a';
-  PIECE_IMAGE_NAME_MAP[E] = 'e';
-  PIECE_IMAGE_NAME_MAP[R] = 'r';
-  PIECE_IMAGE_NAME_MAP[C] = 'c';
-  PIECE_IMAGE_NAME_MAP[H] = 'h';
-  PIECE_IMAGE_NAME_MAP[P] = 'p';
-
   var line;
   var pos;
   var selectedRow, selectedCol;
@@ -629,11 +607,6 @@ tkControllers.controller('DocCtrl', function(
   $scope.$watch('editMode', function() {
     forgetSelectedPiece();
   });
-
-  $scope.getImageName = function(piece) {
-    if (!piece) return 'dot';
-    return (piece > 0 ? 'r' : 'b') + PIECE_IMAGE_NAME_MAP[Math.abs(piece)];
-  };
 
   $scope.extractMoveQualityFromComment = function(index, comment) {
     if (index === 0 || !comment) return '';
