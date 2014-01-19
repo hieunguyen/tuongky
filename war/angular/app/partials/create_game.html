@@ -45,8 +45,11 @@
 <div class="row create-game-form-read" ng-hide="editMode">
   <div class="col-md-12">
     <div class="game-title">{{game.title}}</div>
-    <div class="game-book"><a href="#/search/q={{game.book}}">{{game.book}}</a></div>
-    <div class="game-category-username">{{CATEGORIES[game.category]}} được tạo bởi
+    <div class="game-book">
+      <a href="#/search/q={{game.book}}" ng-if="!embed">{{game.book}}</a>
+      <span ng-if="embed">{{game.book}}</span>
+    </div>
+    <div class="game-category-username" ng-hide="embed">{{CATEGORIES[game.category]}} được tạo bởi
       <a href="#/search/q={{game.username}}">{{game.username}}</a></div>
     <div ng-show="game.username == user.username">
       <button class="btn btn-sm btn-primary" ng-click="editGame()">Cập nhật</button>

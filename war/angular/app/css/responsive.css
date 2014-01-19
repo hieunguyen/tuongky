@@ -1,4 +1,4 @@
-@media only screen and (min-width : 320px) and (max-width : 599px) {
+@media only screen and (min-width : 300px) and (max-width : 619px) {
   .doc-container .tk-doc {
     width: 290px;
   }
@@ -14,9 +14,13 @@
   .commentContainer {
     display: none;
   }
+
+  .board-control-panel button {
+    width: 50px;
+  }
 }
 
-@media only screen and (min-width : 600px) and (max-width : 1023px) {
+@media only screen and (min-width : 620px) and (max-width : 929px) {
   .doc-container .tk-doc {
     width: 610px;
   }
@@ -38,7 +42,7 @@
   }
 }
 
-@media only screen and (min-width : 1024px) {
+@media only screen and (min-width : 930px) {
 
   .doc-container .tk-doc {
     width: 920px;
