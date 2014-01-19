@@ -391,6 +391,9 @@ tkControllers.controller('CreateFenCtrl', function(
   }
 
   function putOnBoardAt(index, piece, row, col) {
+    if ($scope.board[row][col] !== EMPTY) {
+      return;
+    }
     $scope.board[row][col] = piece;
     if (piece > 0) {
       $scope.redBox[index] = 0;

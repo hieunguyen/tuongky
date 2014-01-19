@@ -44,18 +44,10 @@
     <div class="board">
       <div class="top-player-turn" ng-show="turn == 2"></div>
       <div class="bottom-player-turn" ng-show="turn == 1"></div>
-      <div ng-repeat="row in board track by $index">
-        <div ng-repeat="cell in row track by $index"
-             class="board-cell"
-             droppable
-             drop="dropIt(dragId, $parent.$index, $index)">
-          <img ng-src="/img/xq2/{{getImageName(cell)}}.gif"
-               ng-show="cell != 0"
-               id="sq_{{$parent.$index}}_{{$index}}"
-               draggable
-               ng-click="putIntoBox($parent.$index, $index)">
-        </div>
-      </div>
+      <div tk-board
+           data="board"
+           api="boardApi"
+           drop-on="dropIt(dragId, row, col)"></div>
     </div>
 
     <div class="box">
