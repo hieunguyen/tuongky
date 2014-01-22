@@ -734,6 +734,10 @@ tkControllers.controller('DocCtrl', function(
 
   $scope.selectPiece = function(row, col) {
     if (!$scope.editMode) return;
+    if ($scope.board[row][col] === EMPTY) {
+      $scope.selectBoardCell(row, col);
+      return;
+    }
     var color = $scope.board[row][col] > 0 ? RED : BLACK;
     if ($scope.turn !== color) return;
     if (selectedRow === row && selectedCol === col) {

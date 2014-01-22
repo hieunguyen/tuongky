@@ -8,7 +8,8 @@
             drop="dropIt(dragId, $parent.$index, $index)">
         <img ng-src="/img/xq2/{{getImageName(cell)}}"
              id="sq_{{$parent.$index}}_{{$index}}"
-             draggable>
+             draggable
+             ng-click="select($parent.$index, $index)">
       </span>
     </div>
   </div>

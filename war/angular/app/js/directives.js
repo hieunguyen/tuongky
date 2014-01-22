@@ -237,7 +237,8 @@ tkDirectives.directive('tkBoard', function($q) {
     scope: {
       board: '=data',
       api: '=',
-      dropOn: '&'
+      dropOn: '&',
+      selectPiece: '&'
     },
     templateUrl: 'partials/tk_board.html',
     controller: function($scope) {
@@ -246,11 +247,17 @@ tkDirectives.directive('tkBoard', function($q) {
         return (piece > 0 ? 'r' : 'b') +
             PIECE_IMAGE_NAME_MAP[Math.abs(piece)] + '.gif';
       };
+
       $scope.dropIt = function(dragId, row, col) {
         $scope.dropOn({dragId: dragId, row: row, col: col});
       };
+
+      $scope.select = function(row, col) {
+        $scope.selectPiece({row: row, col: col});
+      };
     },
     link: function(scope, elem, attrs) {
+      scope.api = scope.api || {};
       scope.api.go = function(x, y, u, v) {
         var deferred = $q.defer();
         var imgs = $('.tk-board-cell img', elem);
