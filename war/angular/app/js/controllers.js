@@ -912,13 +912,14 @@ tkControllers.controller('DocCtrl', function(
     forgetSelectedPiece();
   }
 
-  setInterval(function() {
+  var autoPlayInterval = setInterval(function() {
     if ($scope.autoMode) {
       $scope.$apply(autoPlayNextMove);
     }
   }, 1000);
 
   $scope.$on('$destroy', function() {
+    clearInterval(autoPlayInterval);
     $scope.autoMode = false;
   });
 
