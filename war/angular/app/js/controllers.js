@@ -581,6 +581,8 @@ tkControllers.controller('DocCtrl', function(
 
   $scope.boardApi = {};
 
+  $scope.highlights = [{}, {}];
+
   var line;
   var pos;
   var selectedRow, selectedCol;
@@ -730,21 +732,37 @@ tkControllers.controller('DocCtrl', function(
   function forgetSelectedPiece() {
     selectedRow = undefined;
     selectedCol = undefined;
+    updateSelectedPieces();
+  }
+
+  function updateSelectedPieces() {
+    $scope.highlights[0].x = selectedRow;
+    $scope.highlights[0].y = selectedCol;
+  }
+
+  function pieceToTurn(p) {
+    if (!p) {
+      return EMPTY;
+    }
+    return p > 0 ? RED : BLACK;
   }
 
   $scope.selectPiece = function(row, col) {
     if (!$scope.editMode) return;
-    if ($scope.board[row][col] === EMPTY) {
-      $scope.selectBoardCell(row, col);
+
+    if ($scope.turn !== pieceToTurn($scope.board[row][col])) {
+      if (selectedRow !== undefined) {
+        $scope.selectBoardCell(row, col);
+      }
       return;
     }
-    var color = $scope.board[row][col] > 0 ? RED : BLACK;
-    if ($scope.turn !== color) return;
+
     if (selectedRow === row && selectedCol === col) {
       forgetSelectedPiece();
     } else {
       selectedRow = row;
       selectedCol = col;
+      updateSelectedPieces();
     }
   };
 

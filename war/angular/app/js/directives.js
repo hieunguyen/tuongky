@@ -236,6 +236,7 @@ tkDirectives.directive('tkBoard', function($q) {
     replace: true,
     scope: {
       board: '=data',
+      highlights: '=',
       api: '=',
       dropOn: '&',
       selectPiece: '&'
@@ -254,6 +255,12 @@ tkDirectives.directive('tkBoard', function($q) {
 
       $scope.select = function(row, col) {
         $scope.selectPiece({row: row, col: col});
+      };
+
+      $scope.isHighlighted = function(row, col) {
+        return _.some($scope.highlights, function(h) {
+          return h.x === row && h.y === col;
+        });
       };
     },
     link: function(scope, elem, attrs) {

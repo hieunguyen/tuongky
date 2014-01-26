@@ -24,6 +24,7 @@
           <div class="bottom-player-turn" ng-show="turn == 1"></div>
           <div tk-board
                data="board"
+               highlights="highlights"
                api="boardApi"
                drop-on="dropIt(dragId, row, col)"
                select-piece="selectPiece(row, col)"></div>

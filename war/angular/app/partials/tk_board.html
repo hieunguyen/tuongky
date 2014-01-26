@@ -4,6 +4,7 @@
     <div ng-repeat="row in board track by $index" class="tk-board-row">
       <span ng-repeat="cell in row track by $index"
             class="tk-board-cell"
+            ng-class="{highlighted: isHighlighted($parent.$index, $index)}"
             droppable
             drop="dropIt(dragId, $parent.$index, $index)">
         <img ng-src="/img/xq2/{{getImageName(cell)}}"

@@ -111,11 +111,6 @@
   margin-left: -60px;
 }
 
-.board-cell img.highlighted {
-	border: 3px solid rgba(13, 40, 95, 0.4);
-	border-radius: 28px 28px;
-}
-
 .board-control-panel {
 	text-align: center;
 	margin: 15px 0 0 0;
@@ -518,6 +513,10 @@
 .tk-board-cell {
 	display: table-cell;
 	text-align: center;
+}
+
+.tk-board-cell.highlighted {
+	border: 2px solid #800000;
 }
 
 .tk-board-cell img {
