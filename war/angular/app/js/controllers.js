@@ -910,7 +910,6 @@ tkControllers.controller('DocCtrl', function(
     $scope.currentLineIndex = index;
     updateVariations();
     forgetSelectedPiece();
-    return true;
   }
 
   setInterval(function() {
@@ -918,6 +917,10 @@ tkControllers.controller('DocCtrl', function(
       $scope.$apply(autoPlayNextMove);
     }
   }, 1000);
+
+  $scope.$on('$destroy', function() {
+    $scope.autoMode = false;
+  });
 
   $scope.autoPlay = function() {
     $scope.autoMode = true;
