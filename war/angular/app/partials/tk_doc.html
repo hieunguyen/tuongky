@@ -30,37 +30,6 @@
                select-piece="selectPiece(row, col)"></div>
         </div>
 
-        <div class="board-control-panel">
-          <button class="btn btn-sm btn-default"
-                  ng-click="goFirst()"
-                  tabindex="10">
-            <span class="glyphicon glyphicon-fast-backward"></span>
-          </button>
-          <button class="btn btn-sm btn-default"
-                  ng-click="goPrevious()"
-                  tabindex="11">
-            <span class="glyphicon glyphicon-backward"></span>
-          </button>
-          <button class="btn btn-sm btn-default"
-                  ng-click="goNext()"
-                  tabindex="12">
-            <span class="glyphicon glyphicon-forward"></span>
-          </button>
-          <button class="btn btn-sm btn-default"
-                  ng-click="goLast()"
-                  tabindex="13">
-            <span class="glyphicon glyphicon-fast-forward"></span>
-          </button>
-
-          <button class="btn btn-sm btn-success"
-                  ng-click="showFen()"
-                  tabindex="14"><span class="shortcut-key">F</span>EN</button>
-          <button class="btn btn-sm btn-primary"
-                  ng-click="studyPosition()"
-                  ng-hide="hideStudyBtn"
-                  tabindex="15"><span class="shortcut-key">T</span>hẩ</span>m</button>
-        </div>
-
         <shortcut keycode="37" handler="goPrevious()"></shortcut>
         <shortcut keycode="39" handler="goNext()"></shortcut>
 
@@ -124,6 +93,58 @@
                   stop-propagation="true"
                   ng-readonly="!editMode"></textarea>
       </div>
+
+      <div class="clear"></div>
+
+      <div class="board-control-panel">
+        <button class="btn btn-sm btn-default"
+                ng-click="goFirst()"
+                tabindex="10">
+          <span class="glyphicon glyphicon-fast-backward"></span>
+        </button>
+        <button class="btn btn-sm btn-default"
+                ng-click="goPrevious()"
+                tabindex="11">
+          <span class="glyphicon glyphicon-backward"></span>
+        </button>
+        <button class="btn btn-sm btn-default"
+                ng-click="autoPlay()"
+                ng-hide="autoMode"
+                tabindex="12">
+          <span class="glyphicon glyphicon-play"></span>
+        </button>
+        <button class="btn btn-sm btn-default"
+                ng-click="manualPlay()"
+                ng-show="autoMode"
+                tabindex="13">
+          <span class="glyphicon glyphicon-stop"></span>
+        </button>
+        <button class="btn btn-sm btn-default"
+                ng-click="goNext()"
+                tabindex="14">
+          <span class="glyphicon glyphicon-forward"></span>
+        </button>
+        <button class="btn btn-sm btn-default"
+                ng-click="goLast()"
+                tabindex="15">
+          <span class="glyphicon glyphicon-fast-forward"></span>
+        </button>
+        <button class="btn btn-sm btn-default"
+                ng-click="turnBoard()"
+                ng-hide="true"
+                tabindex="16">
+          <span class="glyphicon glyphicon-sort"></span>
+        </button>
+
+        <button class="btn btn-sm btn-success"
+                ng-click="showFen()"
+                tabindex="17"><span class="shortcut-key">F</span>EN</button>
+        <button class="btn btn-sm btn-primary"
+                ng-click="studyPosition()"
+                ng-hide="hideStudyBtn"
+                tabindex="18"><span class="shortcut-key">T</span>hẩ</span>m</button>
+      </div>
+
     </div>
   </div>
 </div>

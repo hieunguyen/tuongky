@@ -587,8 +587,8 @@ tkControllers.controller('DocCtrl', function(
   var pos;
   var selectedRow, selectedCol;
 
+  $scope.autoMode = false;
   $scope.commentFull = false;
-  $scope.commentVisible = true;
 
   function start() {
     $scope.board = gameService.getBoard();
@@ -897,6 +897,35 @@ tkControllers.controller('DocCtrl', function(
 
     return fen;
   }
+
+  function autoPlayNextMove() {
+    if ($scope.currentLineIndex === line.length - 1) {
+      $scope.autoMode = false;
+      return;
+    }
+    var index = $scope.currentLineIndex + 1;
+    var move = line[index].nodeData.move;
+    gameService.makeMove(move.x, move.y, move.u, move.v);
+    $scope.turn = gameService.getTurn();
+    $scope.currentLineIndex = index;
+    updateVariations();
+    forgetSelectedPiece();
+    return true;
+  }
+
+  setInterval(function() {
+    if ($scope.autoMode) {
+      $scope.$apply(autoPlayNextMove);
+    }
+  }, 1000);
+
+  $scope.autoPlay = function() {
+    $scope.autoMode = true;
+  };
+
+  $scope.manualPlay = function() {
+    $scope.autoMode = false;
+  };
 
   $scope.showFen = function() {
     alert(produceFen());

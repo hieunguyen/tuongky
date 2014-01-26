@@ -112,13 +112,12 @@
 }
 
 .board-control-panel {
-	text-align: center;
-	margin: 15px 0 0 0;
+	margin: 0;
 }
 
 .board-control-panel button {
 	width: 60px;
-	margin: 2px;
+	margin: 15px 5px 0 0;
 }
 
 .drag {
