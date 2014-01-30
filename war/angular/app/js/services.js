@@ -1134,3 +1134,26 @@ tkServices.factory('engineService', function($q, $http, notificationService) {
 
   return service;
 });
+
+
+tkServices.factory('problemService', function($q, $http) {
+  var service = {};
+
+  service.getProblems = function() {
+    var defer = $q.defer();
+    $http.get('json/problems.json').success(function(data) {
+      defer.resolve(data);
+    });
+    return defer.promise;
+  };
+
+  service.getProblem = function(problemId) {
+    var defer = $q.defer();
+    $http.get('json/problem.json').success(function(data) {
+      defer.resolve(data);
+    });
+    return defer.promise;
+  };
+
+  return service;
+});

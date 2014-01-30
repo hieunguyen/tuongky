@@ -92,6 +92,7 @@ tkDirectives.directive('tkDoc', function() {
       hideMoveList: '=',
       hideVariations: '=',
       hideComment: '=',
+      hideControls: '=',
       hideMoveText: '=',
       hideStudyBtn: '='
     },

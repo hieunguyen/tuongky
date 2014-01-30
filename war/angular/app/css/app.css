@@ -522,3 +522,42 @@
 	width: 100%;
 	position: relative;
 }
+
+.main-menu {
+	border: 1px solid rgb(185, 185, 185);
+	height: 3.0em;
+	line-height: 3.0em;
+	border-radius: 5px;
+}
+
+.main-menu li {
+	font-family: 'Cuprum', sans-serif !important;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	float: left;
+	list-style: none;
+	margin-right: 1.5em;
+	padding: 0 0 1px 0;
+	position: relative;
+}
+
+.main-menu li.current {
+	border-bottom: 2px solid #3B5998;
+}
+
+.main-menu a {
+	font-weight: normal;
+	font-size: 15px;
+	text-decoration: none;
+	color: #000;
+	outline: none;
+	text-align: center;
+	text-transform: uppercase;
+	letter-spacing: 0;
+	display: block;
+	float: left;
+	height: 20px;
+	overflow: hidden;
+	margin: auto 2px;
+	margin: 0;
+	line-height: 22px;
+}

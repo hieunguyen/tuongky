@@ -1047,3 +1047,71 @@ tkControllers.controller('InviteCtrl', function($scope, inviteService) {
     });
   };
 });
+
+
+tkControllers.controller('ProblemSetCtrl', function($scope, problemService) {
+  problemService.getProblems().then(function(problems) {
+    $scope.problems = problems;
+  });
+});
+
+
+tkControllers.controller('ProblemCtrl', function($scope, $timeout, $routeParams,
+  problemService, gameService, treeService, fenService, engineService) {
+  var problemId = $routeParams.problemId;
+  problemService.getProblem(problemId).then(function(problem) {
+    $scope.problem = problem;
+    $scope.fen = problem.fen;
+    var pos = fenService.fen2pos($scope.fen);
+
+    if (pos) {
+      gameService.init(pos.board, pos.turn);
+    } else {
+      alert('FEN không hợp lệ.');
+      gameService.init();
+    }
+    treeService.init();
+
+  });
+
+  $scope.editMode = true;
+  $scope.playerTypes = [0, HUMAN, COMPUTER];
+
+  function computerPlay() {
+    var fen = $scope.fen;
+    var moves = _.map(gameService.getMoves(), function(move) {
+      function where(x, y) {
+        return String.fromCharCode(97 + y) + (ROWS - 1 - x);
+      }
+      return where(move.x, move.y) + where(move.u, move.v);
+    }).join(' ');
+    return engineService.think(fen, moves);
+  }
+
+  function maybeComputerPlay(inTurn) {
+    if (Number(inTurn) === COMPUTER) {
+      if (gameService.isCheckmated()) {
+        return;
+      }
+      $timeout(function() {
+        computerPlay().then(function(move) {
+          $scope.$broadcast('new_move', move);
+        });
+      });
+    }
+  }
+
+  $scope.$watch(function() {
+    return gameService.getTurn();
+  }, function(turn) {
+    maybeComputerPlay($scope.playerTypes[turn]);
+  });
+
+  $scope.$watch(function() {
+    return $scope.playerTypes[gameService.getTurn()];
+  }, maybeComputerPlay);
+
+  $scope.won = function() {
+    alert('I won.');
+  };
+});

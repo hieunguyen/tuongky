@@ -82,6 +82,16 @@ tkApp.config(['$routeProvider', function($routeProvider) {
         templateUrl: 'partials/study.html',
         controller: 'StudyCtrl'
       })
+  .when('/practice',
+      {
+        templateUrl: 'partials/practice.html',
+        controller: 'ProblemSetCtrl'
+      })
+  .when('/practice/:problemId',
+      {
+        templateUrl: 'partials/problem.html',
+        controller: 'ProblemCtrl'
+      })
   .when('/sandbox',
       {
         templateUrl: 'partials/sandbox.html',

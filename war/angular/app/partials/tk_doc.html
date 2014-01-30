@@ -30,18 +30,9 @@
                select-piece="selectPiece(row, col)"></div>
         </div>
 
-        <shortcut keycode="37" handler="goPrevious()"></shortcut>
-        <shortcut keycode="39" handler="goNext()"></shortcut>
-
-        <shortcut keycode="68" handler="goFirst()"></shortcut>
-        <shortcut keycode="83" handler="goNext()"></shortcut>
-        <shortcut keycode="67" handler="goLast()"></shortcut>
-
-        <shortcut keycode="70" handler="showFen()"></shortcut>
-        <shortcut keycode="84" handler="studyPosition()"></shortcut>
       </div>
 
-      <div class="moves-n-variations" ng-class="{empty: commentFull}">
+      <div class="moves-n-variations" ng-class="{empty: commentFull}" ng-if="!hideMoveList">
         <div class="move-list"
              ng-class="{full: variations.length <= 1 && !editMode}"
              auto-scroll-to="currentLineIndex">
@@ -77,7 +68,7 @@
         </div>
       </div>
 
-      <div class="commentContainer" ng-class="{full: commentFull}" ng-hide="hideComment">
+      <div class="commentContainer" ng-class="{full: commentFull}" ng-if="!hideComment">
         <div class="resize-button">
            <span class="glyphicon glyphicon-chevron-left"
                  ng-hide="commentFull"
@@ -96,7 +87,7 @@
 
       <div class="clear"></div>
 
-      <div class="board-control-panel">
+      <div class="board-control-panel" ng-if="!hideControls">
         <button class="btn btn-sm btn-default"
                 ng-click="goFirst()"
                 tabindex="10">
@@ -143,6 +134,16 @@
                 ng-click="studyPosition()"
                 ng-hide="hideStudyBtn"
                 tabindex="18"><span class="shortcut-key">T</span>hẩ</span>m</button>
+
+        <shortcut keycode="37" handler="goPrevious()"></shortcut>
+        <shortcut keycode="39" handler="goNext()"></shortcut>
+
+        <shortcut keycode="68" handler="goFirst()"></shortcut>
+        <shortcut keycode="83" handler="goNext()"></shortcut>
+        <shortcut keycode="67" handler="goLast()"></shortcut>
+
+        <shortcut keycode="70" handler="showFen()"></shortcut>
+        <shortcut keycode="84" handler="studyPosition()"></shortcut>
       </div>
 
     </div>
