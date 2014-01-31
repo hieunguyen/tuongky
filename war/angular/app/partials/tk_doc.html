@@ -1,0 +1,151 @@
+<div class="doc-container">
+
+  <div class="row move-input-container" ng-show="editMode && !hideMoveText">
+    <div class="col-md-12">
+      <div ng-show="invalidMove" class="error">
+        "{{invalidMove}}" không phải nước đi hợp lệ.
+      </div>
+      <input type="text"
+             class="move-input"
+             ng-model="$parent.moveString"
+             placeholder="Nhập một dãy nước đi và gõ enter"
+             move-input
+             stop-propagation="true"
+             on-enter="pressEnter(value)"
+             on-space="pressSpace(value)">
+     </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 tk-doc">
+      <div class="board-n-controls">
+        <div class="board">
+          <div class="top-player-turn" ng-show="turn == 2"></div>
+          <div class="bottom-player-turn" ng-show="turn == 1"></div>
+          <div tk-board
+               data="board"
+               highlights="highlights"
+               api="boardApi"
+               drop-on="dropIt(dragId, row, col)"
+               select-piece="selectPiece(row, col)"></div>
+        </div>
+
+      </div>
+
+      <div class="moves-n-variations" ng-class="{empty: commentFull}" ng-if="!hideMoveList">
+        <div class="move-list"
+             ng-class="{full: variations.length <= 1 && !editMode}"
+             auto-scroll-to="currentLineIndex">
+          <table>
+            <tr ng-repeat="move in moveTable"
+                ng-class="{selected: $index == currentLineIndex}"
+                ng-click="selectMove($index)">
+              <td class="first" align="right">{{move.first}}</td>
+              <td class="second">
+                {{move.second}}
+                {{extractMoveQualityFromComment($index, line[$index].nodeData.comment)}}
+                <span ng-show="line[$index].nodeData.comment && line[$index].nodeData.comment.length > 2">*</span>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="variationContainer" ng-show="(editMode || variations.length > 1) && !hideVariations">
+          <div class="variation" ng-class="{full: !editMode}">
+            <ul>
+              <li ng-repeat="node in variations"
+                  ng-class="{selected: $index == currentVariationIndex}"
+                  ng-click="selectVariation($index)">
+                {{$index + 1}}. {{node.nodeData.humanMove}}
+              </li>
+            </ul>
+          </div>
+          <div class="actions" ng-show="editMode">
+            <span class="glyphicon glyphicon-arrow-up" ng-click="moveVariationUp()"></span>
+            <span class="glyphicon glyphicon-arrow-down" ng-click="moveVariationDown()"></span>
+            <span class="glyphicon glyphicon-remove" ng-click="deleteVariation()"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="commentContainer" ng-class="{full: commentFull}" ng-if="!hideComment">
+        <div class="resize-button">
+           <span class="glyphicon glyphicon-chevron-left"
+                 ng-hide="commentFull"
+                 ng-click="toggleFullCommentMode()"></span>
+           <span class="glyphicon glyphicon-chevron-right"
+                 ng-show="commentFull"
+                 ng-click="toggleFullCommentMode()"></span>
+        </div>
+        <div class="title">Bình luận</div>
+        <textarea ng-model="line[currentLineIndex].nodeData.comment"
+                  class="comment"
+                  ng-show="true"
+                  stop-propagation="true"
+                  ng-readonly="!editMode"></textarea>
+      </div>
+
+      <div class="clear"></div>
+
+      <div class="board-control-panel" ng-if="!hideControls">
+        <button class="btn btn-sm btn-default"
+                ng-click="goFirst()"
+                tabindex="10">
+          <span class="glyphicon glyphicon-fast-backward"></span>
+        </button>
+        <button class="btn btn-sm btn-default"
+                ng-click="goPrevious()"
+                tabindex="11">
+          <span class="glyphicon glyphicon-backward"></span>
+        </button>
+        <button class="btn btn-sm btn-default"
+                ng-click="autoPlay()"
+                ng-hide="autoMode"
+                tabindex="12">
+          <span class="glyphicon glyphicon-play"></span>
+        </button>
+        <button class="btn btn-sm btn-default"
+                ng-click="manualPlay()"
+                ng-show="autoMode"
+                tabindex="13">
+          <span class="glyphicon glyphicon-stop"></span>
+        </button>
+        <button class="btn btn-sm btn-default"
+                ng-click="goNext()"
+                tabindex="14">
+          <span class="glyphicon glyphicon-forward"></span>
+        </button>
+        <button class="btn btn-sm btn-default"
+                ng-click="goLast()"
+                tabindex="15">
+          <span class="glyphicon glyphicon-fast-forward"></span>
+        </button>
+        <button class="btn btn-sm btn-default"
+                ng-click="turnBoard()"
+                ng-hide="true"
+                tabindex="16">
+          <span class="glyphicon glyphicon-sort"></span>
+        </button>
+
+        <button class="btn btn-sm btn-success"
+                ng-click="showFen()"
+                tabindex="17"><span class="shortcut-key">F</span>EN</button>
+        <button class="btn btn-sm btn-primary"
+                ng-click="studyPosition()"
+                ng-hide="hideStudyBtn"
+                tabindex="18"><span class="shortcut-key">T</span>hẩ</span>m</button>
+
+        <shortcut keycode="37" handler="goPrevious()"></shortcut>
+        <shortcut keycode="39" handler="goNext()"></shortcut>
+
+        <shortcut keycode="68" handler="goFirst()"></shortcut>
+        <shortcut keycode="83" handler="goNext()"></shortcut>
+        <shortcut keycode="67" handler="goLast()"></shortcut>
+
+        <shortcut keycode="70" handler="showFen()"></shortcut>
+        <shortcut keycode="84" handler="studyPosition()"></shortcut>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<br/>
+<table class="table">
+  <tr>
+    <th>Tiêu đề</th>
+    <th>Số người giải được</th>
+    <th></td>
+  </tr>
+
+  <tr ng-repeat="problem in problems">
+    <td><a href="#/practice/{{problem.id}}">Bài {{problem.id}}{{problem.title && ': ' + problem.title || ''}}</a></td>
+    <td><a href="">{{problem.solvedBy}}</a></td>
+    <td><span ng-if="problem.solved">Xong</span></th>
+  </tr>
+</table>

@@ -1,0 +1,119 @@
+@media only screen and (min-width : 300px) and (max-width : 619px) {
+  .doc-container .tk-doc {
+    width: 290px;
+  }
+
+  .board-n-controls {
+    width: 288px;
+  }
+
+  .moves-n-variations {
+    display: none;
+  }
+
+  .commentContainer {
+    display: none;
+  }
+
+  .board-control-panel button {
+    width: 50px;
+  }
+}
+
+@media only screen and (min-width : 620px) and (max-width : 929px) {
+  .doc-container .tk-doc {
+    width: 610px;
+  }
+
+  .board-n-controls {
+    width: 450px;
+  }
+
+  .move-list {
+    height: 398px;
+  }
+
+  .move-list.full {
+    height: 498px;
+  }
+
+  .commentContainer {
+    display: none;
+  }
+}
+
+@media only screen and (min-width : 930px) {
+
+  .doc-container .tk-doc {
+    width: 920px;
+  }
+
+  .board-n-controls {
+    width: 450px;
+  }
+
+  .move-list {
+    height: 398px;
+  }
+
+  .move-list.full {
+    height: 498px;
+  }
+
+  .moves-n-variations.empty {
+    width: 0px;
+  }
+
+  .moves-n-variations.empty-add {
+    width: 150px;
+    transition: width 0.3s;
+    -webkit-transition: width 0.3s;
+    -moz-transition: width 0.3s;
+    -o-transition: width 0.3s;
+  }
+
+  .moves-n-variations.empty-add-active {
+    width: 0px;
+  }
+
+  .moves-n-variations.empty-remove {
+    width: 0px;
+    transition: width 0.5s;
+    -webkit-transition: width 0.5s;
+    -moz-transition: width 0.5s;
+    -o-transition: width 0.5s;
+  }
+
+  .moves-n-variations.empty-remove-active {
+    width: 150px;
+  }
+
+  .commentContainer {
+    width: 300px;
+    height: 498px;
+    margin-left: 620px;
+  }
+
+  .commentContainer.full-add {
+    transition: margin-left 0.5s, width 0.5s;
+    -webkit-transition: margin-left 0.5s, width 0.5s;
+    -moz-transition: margin-left 0.5s, width 0.5s;
+    -o-transition: margin-left 0.5s, width 0.5s;
+  }
+
+  .commentContainer.full, .commentContainer.full-add-active {
+    margin-left: 460px;
+    width: 460px;
+  }
+
+  .commentContainer.full-remove {
+    transition: margin-left 0.5s, width 0.5s;
+    -webkit-transition: margin-left 0.5s, width 0.5s;
+    -moz-transition: margin-left 0.5s, width 0.5s;
+    -o-transition: margin-left 0.5s, width 0.5s;
+  }
+
+  .comment {
+    height: 465px;
+  }
+}

@@ -1,0 +1,63 @@
+<div class="row create-game-form-edit" ng-show="editMode">
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+    <form name="form">
+      <div class="form-group">
+        <input type="text"
+               class="form-control"
+               ng-model="game.title"
+               name="gameTitle"
+               tk-focus="titleFocused"
+               stop-propagation="true"
+               placeholder="Tiêu đề"
+               required>
+        <span class="help-block error" ng-show="form.gameTitle.$error.required && form.gameTitle.$dirty">
+          Mời bạn nhập tiêu đề.
+        </span>
+      </div>
+      <div class="form-group">
+        <select ng-model="game.category" class="game-category form-control" stop-propagation="true">
+          <option value="1">{{CATEGORIES[1]}}</option>
+          <option value="2">{{CATEGORIES[2]}}</option>
+          <option value="3">{{CATEGORIES[3]}}</option>
+          <option value="4">{{CATEGORIES[4]}}</option>
+          <option value="5">{{CATEGORIES[5]}}</option>
+        </select>
+        <input type="text"
+               ng-model="game.book"
+               typeahead="book.name for book in books | bookMatch:$viewValue:8"
+               name="gameBook"
+               stop-propagation="true"
+               class="game-book form-control"
+               placeholder="Sách / Giải đấu">
+      </div>
+      <div class="form-group action-buttons">
+        <button class="btn btn-sm btn-primary left-button" ng-click="saveGame()" ng-disabled="form.$invalid">
+          {{game.id && 'Lưu thay đổi' || 'Lưu tài liệu'}}
+        </button>
+        <button class="btn btn-sm btn-danger" ng-click="cancelChanges()" ng-show="game.id">Hủy thay đổi</button>
+      </div>
+    </form>
+  </div>
+  <div class="col-md-3"></div>
+</div>
+
+<div class="row create-game-form-read" ng-hide="editMode">
+  <div class="col-md-12">
+    <div class="game-title">{{game.title}}</div>
+    <div class="game-book">
+      <a href="#/search/q={{game.book}}" ng-if="!embed">{{game.book}}</a>
+      <span ng-if="embed">{{game.book}}</span>
+    </div>
+    <div class="game-category-username" ng-hide="embed">{{CATEGORIES[game.category]}} được tạo bởi
+      <a href="#/search/q={{game.username}}">{{game.username}}</a></div>
+    <div ng-show="game.username == user.username">
+      <button class="btn btn-sm btn-primary" ng-click="editGame()">Cập nhật</button>
+      <button class="btn btn-sm btn-danger" ng-click="deleteGame()">Xóa tài liệu</button>
+    </div>
+  </div>
+</div>
+
+<tk-doc fen="fen"
+        edit-mode="editMode"
+        hide-move-text="true"></tk-doc>

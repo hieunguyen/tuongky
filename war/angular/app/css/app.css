@@ -1,0 +1,563 @@
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+.clear {
+  clear: both;
+}
+
+.shortcut-key {
+	text-decoration: underline;
+}
+
+.error {
+	color: #b94a48;
+}
+
+.header {
+	border-bottom: 1px solid rgba(237, 237, 237, 0.8);
+	padding-bottom: 5px;
+}
+
+.notification-bar {
+	height: 15px;
+	text-align: center;
+}
+
+.notification-bar .alert {
+	display: inline-block;
+	margin: 0;
+	padding: 3px 30px;
+	position: relative;
+	top: -14px;
+}
+
+.notification-bar .alert .close {
+	margin-top: -2px;
+}
+
+.user-bar {
+	margin-top: 10px;
+	text-align: right;
+}
+
+.user-bar a {
+	cursor: pointer;
+	margin: 5px;
+}
+
+.user-bar .separator {
+	color: rgb(218, 207, 207);
+}
+
+.view-container.embed {
+	margin-top: 10px;
+}
+
+.doc-container .tk-doc {
+	margin: 0 auto;
+	padding: 0;
+}
+
+.doc-container .move-input-container {
+	margin-bottom: 15px;
+}
+
+.doc-container .move-input-container .error {
+	margin-bottom: 5px;
+}
+
+.doc-container .move-input {
+	border: 1px solid gray;
+	font-size: 16px;
+	height: 30px;
+	padding: 2px 5px;
+	width: 100%;
+}
+
+.board-n-controls, .moves-n-variations {
+	float: left;
+}
+
+.create-fen .board {
+	width: 450px;
+	float: left;
+}
+
+.board {
+	margin: 0 auto;
+  position: relative;
+}
+
+.board .top-player-turn {
+	background-color: black;
+	margin-top: -7px;
+	height: 5px;
+	width: 120px;
+	position: absolute;
+  left: 50%;
+  top: 0;
+  margin-left: -60px;
+}
+
+.board .bottom-player-turn {
+	background-color: red;
+	margin-bottom: -7px;
+	height: 5px;
+	width: 120px;
+	left: 50%;
+  position: absolute;
+  bottom: 0;
+  margin-left: -60px;
+}
+
+.board-control-panel {
+	margin: 0;
+}
+
+.board-control-panel button {
+	width: 60px;
+	margin: 15px 5px 0 0;
+}
+
+.drag {
+	opacity: 0.7;
+}
+
+.move-list {
+	height: 477px;
+	width: 150px;
+	margin-left: 10px;
+	border: 1px solid #C9C1C1;
+	overflow-y: scroll;
+}
+
+.move-list table {
+	width: 100%;
+}
+
+.move-list table td {
+	cursor: pointer;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-webkit-user-select: none;
+}
+
+.move-list tr.selected {
+	background-color: rgb(43, 120, 172);
+	color: white;
+}
+
+.move-list .first {
+	width: 44px;
+	float: left;
+	padding-right: 4px;
+}
+
+.move-list .second {
+	width: 100%;
+}
+
+.commentContainer {
+	border: 1px solid #C9C1C1;
+	position: relative;
+}
+
+.commentContainer .resize-button {
+	font-size: 17px;
+	position: absolute;
+	top: 4px;
+	left: 2px;
+	color: rgb(148, 30, 30);
+
+	cursor: pointer;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-webkit-user-select: none;
+}
+
+.variationContainer {
+	height: 90px;
+	width: 150px;
+	margin-top: 10px;
+	margin-left: 10px;
+}
+
+.comment, .variation {
+	overflow-y: scroll;
+	width: 100%;
+}
+
+.comment {
+	border: 0;
+	font-size: 16px;
+	resize: none;
+	padding: 0 5px;
+}
+
+.variation {
+	height: 90px;
+	padding: 2px 0;
+	width: 110px;
+	display: inline-block;
+	border: 1px solid #C9C1C1;
+	float: left;
+}
+
+.variation.full {
+	width: 100%;
+}
+
+.variation ul {
+	margin: 0;
+	padding: 0;
+}
+
+.variation li {
+	cursor: pointer;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-webkit-user-select: none;
+}
+
+.variation li {
+	list-style-type: none;
+	padding: 1px 10px;
+}
+
+.variation li.selected {
+	background-color: rgb(43, 120, 172);
+	color: white;
+}
+
+.variationContainer .actions {
+	height: 90px;
+	width: 40px;
+	border-top: 1px solid #C9C1C1;
+	text-align: center;
+  border-right: 1px solid #C9C1C1;
+  border-bottom: 1px solid #C9C1C1;
+  margin-left: 110px;
+}
+
+.variationContainer .actions span {
+	display: block;
+	height: 30px;
+	vertical-align: center;
+	line-height: 30px;
+	text-align: center;
+	color: rgb(148, 30, 30);
+	font-size: 16px;
+}
+
+.variationContainer .actions .glyphicon-arrow-down {
+	margin-left: 3px;
+}
+
+.variationContainer .actions .glyphicon-remove {
+	margin-left: 2px;
+	margin-top: -3px;
+}
+
+.title {
+	background-color: rgb(144, 211, 255);
+	width: 100%;
+	border-bottom: 1px solid;
+	text-align: center;
+	padding: 5px;
+	font-size: 14px;
+	font-weight: bold;
+	height: 31px;
+}
+
+.box {
+	background-color: rgb(232, 210, 142);
+	border: 2px solid;
+	height: 498px;
+	width: 232px;
+	margin-left: 10px;
+	float: left;
+}
+
+.piece-container {
+	height: 57px;
+	width: 57px;
+	float: left;
+	border: 1px solid;
+}
+
+.piece-container img {
+	height: 50px;
+	width: 50px;
+	margin: 4px 0 0 4px;
+}
+
+.box-separator {
+	border: 1px solid;
+	height: 38px;
+	width: 228px;
+  float: left;
+  text-align: center;
+}
+
+.box-separator .arrow {
+	font-size: 27px;
+	top: 5px;
+	-webkit-user-select: none;
+}
+
+.box-separator .arrow-left {
+	margin-right: 60px;
+}
+
+.fen {
+	font-size: 17px;
+	margin-bottom: 10px;
+	margin-left: 120px;
+}
+
+.sandbox-form input {
+	width: 600px;
+}
+
+.sandbox-form select {
+	width: 150px;
+}
+
+.sandbox-actions button {
+	width: 150px;
+	margin-right: 10px;
+}
+
+.sandbox-results {
+	margin-top: 20px;
+}
+
+.no-search-results {
+	font-size: 18px;
+}
+
+.no-search-results table {
+	margin-top: 20px;
+}
+
+.search-results em {
+	font-weight: bold;
+	font-style: normal;
+}
+
+.search-results .search-stats {
+	color: #999;
+	font-size: 14px;
+	margin-bottom: 10px;
+}
+
+.search-results table {
+	border: 1px solid #ddd;
+	font-size: 15px;
+}
+
+.search-results .categoryColumn {
+	width: 10%;
+}
+
+.search-results .titleColumn {
+	width: 45%;
+}
+
+.search-results .bookColumn {
+	width: 25%;
+}
+
+.search-results .usernameColumn {
+	width: 10%;
+}
+
+.search-results .viewsColumn {
+	width: 10%;
+}
+
+.search-bar {
+	height: 72px;
+}
+
+.search-bar .search-box {
+	margin-top: 20px;
+	padding: 2px 5px;
+	height: 30px;
+	font-size: 16px;
+	vertical-align: middle;
+	display: table-cell;
+	width: 400px;
+	border: 1px solid gray;
+}
+
+.search-bar .search-box:focus {
+	border-color: rgb(92, 184, 92);
+}
+
+.search-bar .search-button {
+	margin-top: 20px;
+	margin-left: 10px;
+	height: 30px;
+	width: 80px;
+}
+
+.pagination {
+	cursor: pointer;
+	margin-top: 0;
+}
+
+.pagination li {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.pagination-container {
+	text-align: center;
+}
+
+.create-game-dropdown {
+	display: inline-block;
+}
+
+.create-game-dropdown .dropdown-menu {
+	left: 9px;
+}
+
+.create-game-form-read, .create-game-form-edit {
+	margin: 0;
+}
+
+.create-game-form-read {
+	text-align: center;
+	margin-bottom: 10px;
+}
+
+.create-game-form-read button {
+	margin: 10px 5px 0 0;
+}
+
+.create-game-form-read .game-title {
+	font-size: 20px;
+}
+
+.create-game-form-read .game-book {
+	font-size: 17px;
+}
+
+.create-game-form-read .game-category-username {
+	font-size: 15px;
+}
+
+.create-game-form-edit .form-group {
+	margin-bottom: 10px;
+}
+
+.create-game-form-edit .game-category {
+	display: inline-block;
+	width: 130px;
+}
+
+.create-game-form-edit .game-book {
+	display: inline-block;
+	margin-left: 6px;
+	width: 400px;
+}
+
+.create-game-form-edit .form-group.action-buttons {
+	text-align: center;
+	margin-bottom: 15px;
+}
+
+.create-game-form-edit .action-buttons .left-button {
+	margin-right: 5px;
+}
+
+.loading {
+	text-align: center;
+}
+
+.table.player-types td {
+	border-top: 0;
+}
+
+.sandbox {
+	width: 288px;
+}
+
+.tk-board-container {
+	position: relative;
+}
+
+.tk-board-container .tk-board-img {
+  width: 100%;
+}
+
+.tk-board {
+	width: 100%;
+	position: absolute;
+	top: -1px;
+	left: 0px;
+}
+
+.tk-board-row {
+	display: table;
+	table-layout: fixed;
+	width: 100%;
+}
+
+.tk-board-cell {
+	display: table-cell;
+	text-align: center;
+}
+
+.tk-board-cell.highlighted {
+	border: 2px solid #800000;
+}
+
+.tk-board-cell img {
+	width: 100%;
+	position: relative;
+}
+
+.main-menu {
+	border: 1px solid rgb(185, 185, 185);
+	height: 3.0em;
+	line-height: 3.0em;
+	border-radius: 5px;
+}
+
+.main-menu li {
+	font-family: 'Cuprum', sans-serif !important;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	float: left;
+	list-style: none;
+	margin-right: 1.5em;
+	padding: 0 0 1px 0;
+	position: relative;
+}
+
+.main-menu li.current {
+	border-bottom: 2px solid #3B5998;
+}
+
+.main-menu a {
+	font-weight: normal;
+	font-size: 15px;
+	text-decoration: none;
+	color: #000;
+	outline: none;
+	text-align: center;
+	text-transform: uppercase;
+	letter-spacing: 0;
+	display: block;
+	float: left;
+	height: 20px;
+	overflow: hidden;
+	margin: auto 2px;
+	margin: 0;
+	line-height: 22px;
+}

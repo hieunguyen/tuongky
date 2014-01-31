@@ -1,0 +1,17 @@
+<div class="tk-board-container">
+  <img class="tk-board-img" src="/img/xq2/board.jpg">
+  <div class="tk-board">
+    <div ng-repeat="row in board track by $index" class="tk-board-row">
+      <span ng-repeat="cell in row track by $index"
+            class="tk-board-cell"
+            ng-class="{highlighted: isHighlighted($parent.$index, $index)}"
+            droppable
+            drop="dropIt(dragId, $parent.$index, $index)">
+        <img ng-src="/img/xq2/{{getImageName(cell)}}"
+             id="sq_{{$parent.$index}}_{{$index}}"
+             draggable
+             ng-click="select($parent.$index, $index)">
+      </span>
+    </div>
+  </div>
+</div>
