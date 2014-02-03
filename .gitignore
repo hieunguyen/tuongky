@@ -8,3 +8,6 @@ bin/
 war/WEB-INF/appengine-generated
 war/WEB-INF/classes
 war/WEB-INF/lib
+.idea/
+out/
+tuongky.iml
