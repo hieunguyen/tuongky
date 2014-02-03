@@ -1,11 +1,12 @@
-<div>Đỏ đi trước thắng</div>
-<tk-doc fen="fen"
-        edit-mode="editMode"
-        hide-comment="true"
-        hide-move-list="true"
-        hide-move-text="true"
-        hide-controls="true"
-        hide-study-btn="true"></tk-doc>
+<div>{{problem.description}}</div>
+<div class="problem-viewer">
+  <div tk-board
+       data="board"
+       highlights="highlights"
+       api="boardApi"
+       drop-on="dropIt(dragId, row, col)"
+       select-piece="selectPiece(row, col)"></div>
+</div>
 
 <div ng-show="problem.solved">
   Facebook comment goes here.

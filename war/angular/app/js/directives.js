@@ -280,3 +280,8 @@ tkDirectives.directive('tkBoard', function($q) {
     }
   };
 });
+
+
+tkDirectives.directive('tkPlayingBoard', function() {
+
+});

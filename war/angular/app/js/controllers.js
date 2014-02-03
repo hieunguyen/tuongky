@@ -71,6 +71,8 @@ tkControllers.controller('StudyCtrl', function(
 tkControllers.controller('AppCtrl', function(
     $scope, $location, notificationService, authService, userService) {
 
+  $scope.mainNav = {tab: ''};
+
   $scope.CATEGORIES =
       ['', 'Ván đấu', 'Khai cuộc', 'Trung cuộc', 'Tàn cuộc', 'Cờ thế'];
   $scope.CATEGORY_KEYWORDS =
@@ -513,6 +515,8 @@ tkControllers.controller('SearchBarCtrl', function(
 tkControllers.controller('SearchCtrl', function(
     $scope, $routeParams, $location, $timeout, $sce,
     dbService, annotateService) {
+
+  $scope.mainNav.tab = 'document';
 
   $scope.ITEMS_PER_PAGE = 10;
 
@@ -1050,6 +1054,8 @@ tkControllers.controller('InviteCtrl', function($scope, inviteService) {
 
 
 tkControllers.controller('ProblemSetCtrl', function($scope, problemService) {
+  $scope.mainNav.tab = 'practice';
+
   problemService.getProblems().then(function(problems) {
     $scope.problems = problems;
   });
@@ -1057,12 +1063,20 @@ tkControllers.controller('ProblemSetCtrl', function($scope, problemService) {
 
 
 tkControllers.controller('ProblemCtrl', function($scope, $timeout, $routeParams,
-  problemService, gameService, treeService, fenService, engineService) {
+  problemService, gameService, fenService, engineService) {
+
+  $scope.mainNav.tab = 'practice';
+
+  $scope.boardApi = {};
+
+  $scope.highlights = [{}, {}];
+
+  $scope.playerTypes = [0, HUMAN, COMPUTER];
+
   var problemId = $routeParams.problemId;
   problemService.getProblem(problemId).then(function(problem) {
     $scope.problem = problem;
-    $scope.fen = problem.fen;
-    var pos = fenService.fen2pos($scope.fen);
+    var pos = fenService.fen2pos(problem.fen);
 
     if (pos) {
       gameService.init(pos.board, pos.turn);
@@ -1070,12 +1084,33 @@ tkControllers.controller('ProblemCtrl', function($scope, $timeout, $routeParams,
       alert('FEN không hợp lệ.');
       gameService.init();
     }
-    treeService.init();
-
+    $scope.board = gameService.getBoard();
   });
 
-  $scope.editMode = true;
-  $scope.playerTypes = [0, HUMAN, COMPUTER];
+  $scope.dropIt = function(dragId, row, col) {
+    var x = Number(dragId.split('_')[1]);
+    var y = Number(dragId.split('_')[2]);
+    if (x === row && y === col) return;
+    maybeMakeMove(x, y, row, col);
+  };
+
+  function maybeMakeMove(x, y, u, v) {
+    if (gameService.isValidMove(x, y, u, v)) {
+      makeMove(x, y, u, v);
+      return true;
+    }
+    return false;
+  }
+
+  function makeMove(x, y, u, v) {
+    gameService.makeMove(x, y, u, v);
+    $scope.turn = gameService.getTurn();
+    $timeout(function() {
+      if (gameService.isCheckmated()) {
+        alert($scope.turn === BLACK ? 'Đỏ thắng.' : 'Đen thắng.');
+      }
+    });
+  }
 
   function computerPlay() {
     var fen = $scope.fen;
@@ -1087,6 +1122,24 @@ tkControllers.controller('ProblemCtrl', function($scope, $timeout, $routeParams,
     }).join(' ');
     return engineService.think(fen, moves);
   }
+
+  $scope.$on('new_move', function(e, move) {
+
+    function row(c) {
+      return c.charCodeAt() - '0'.charCodeAt();
+    }
+
+    function col(c) {
+      return c.charCodeAt() - 'a'.charCodeAt();
+    }
+
+    var x = ROWS - 1 - row(move[1]);
+    var y = col(move[0]);
+    var u = ROWS - 1 - row(move[3]);
+    var v = col(move[2]);
+
+    maybeMakeMove(x, y, u, v);
+  });
 
   function maybeComputerPlay(inTurn) {
     if (Number(inTurn) === COMPUTER) {
@@ -1114,4 +1167,29 @@ tkControllers.controller('ProblemCtrl', function($scope, $timeout, $routeParams,
   $scope.won = function() {
     alert('I won.');
   };
+});
+
+
+tkControllers.controller('SolvedByCtrl', function($scope, $routeParams,
+    solutionService) {
+  $scope.mainNav.tab = 'practice';
+
+  var problemId = $routeParams.problemId;
+  solutionService.getSolutionsForProblem(problemId).then(function(data) {
+    $scope.solutions = data;
+  });
+});
+
+
+tkControllers.controller('RankCtrl', function($scope, rankService) {
+  $scope.mainNav.tab = 'rank';
+
+  rankService.getRanks().then(function(data) {
+    $scope.ranks = data;
+  });
+});
+
+
+tkControllers.controller('ProfileCtrl', function($scope) {
+  $scope.mainNav.tab = 'profile';
 });

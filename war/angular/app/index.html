@@ -56,17 +56,19 @@
         </div>
       </div>
     </div>
-    <div class="row" ng-hide="embed">
-      <div class="col-md-12 loading">
-        <img src="img/load_lg.gif" ng-show="data.loading" ng-cloak>
-      </div>
-    </div>
     <div class="row main-menu">
       <div class="col-md-12">
         <ul>
-          <li class="current"><a href="#/practice">Luyện công</a></li>
-          <li><a href="#/">Nghiên cứu</a></li>
+          <li ng-class="{current: mainNav.tab == 'practice'}"><a href="#/practice">Luyện công</a></li>
+          <li ng-class="{current: mainNav.tab == 'profile'}"><a href="#/profile">Tài khoản</a></li>
+          <li ng-class="{current: mainNav.tab == 'rank'}"><a href="#/rank">Thứ hạng</a></li>
+          <li ng-class="{current: mainNav.tab == 'document'}"><a href="#/">Tài liệu</a></li>
         </ul>
+      </div>
+    </div>
+    <div class="row" ng-hide="embed">
+      <div class="col-md-12 loading">
+        <img src="img/load_lg.gif" ng-show="data.loading" ng-cloak>
       </div>
     </div>
     <div class="clear"></div>

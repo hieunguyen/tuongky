@@ -92,6 +92,21 @@ tkApp.config(['$routeProvider', function($routeProvider) {
         templateUrl: 'partials/problem.html',
         controller: 'ProblemCtrl'
       })
+  .when('/solvedby/:problemId',
+      {
+        templateUrl: 'partials/solvedby.html',
+        controller: 'SolvedByCtrl'
+      })
+  .when('/rank',
+      {
+        templateUrl: 'partials/rank.html',
+        controller: 'RankCtrl'
+      })
+  .when('/profile',
+      {
+        templateUrl: 'partials/profile.html',
+        controller: 'ProfileCtrl'
+      })
   .when('/sandbox',
       {
         templateUrl: 'partials/sandbox.html',
