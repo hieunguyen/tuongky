@@ -1,15 +1,19 @@
 <div>{{problem.description}}</div>
 <div class="problem-viewer">
-  <div tk-board
-       data="board"
-       highlights="highlights"
-       api="boardApi"
-       drop-on="dropIt(dragId, row, col)"
-       select-piece="selectPiece(row, col)"></div>
+  <div class="board">
+    <div class="top-player-turn" ng-show="turn == 2"></div>
+    <div class="bottom-player-turn" ng-show="turn == 1"></div>
+    <div tk-board
+         data="board"
+         highlights="highlights"
+         api="boardApi"
+         drop-on="dropIt(dragId, row, col)"
+         select-piece="selectPiece(row, col)"></div>
+  </div>
 </div>
 
 <div ng-show="problem.solved">
   Facebook comment goes here.
 </div>
 
-<button class="btn btn-primary" ng-click="won()">Claim victory</button>
+<button class="btn btn-primary" ng-click="test()">Do something</button>

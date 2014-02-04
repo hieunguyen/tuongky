@@ -1068,15 +1068,18 @@ tkControllers.controller('ProblemCtrl', function($scope, $timeout, $routeParams,
   $scope.mainNav.tab = 'practice';
 
   $scope.boardApi = {};
-
   $scope.highlights = [{}, {}];
 
   $scope.playerTypes = [0, HUMAN, COMPUTER];
+
+  var selectedRow, selectedCol;
+  var fen;
 
   var problemId = $routeParams.problemId;
   problemService.getProblem(problemId).then(function(problem) {
     $scope.problem = problem;
     var pos = fenService.fen2pos(problem.fen);
+    fen = problem.fen;
 
     if (pos) {
       gameService.init(pos.board, pos.turn);
@@ -1085,6 +1088,7 @@ tkControllers.controller('ProblemCtrl', function($scope, $timeout, $routeParams,
       gameService.init();
     }
     $scope.board = gameService.getBoard();
+    $scope.turn = gameService.getTurn();
   });
 
   $scope.dropIt = function(dragId, row, col) {
@@ -1112,8 +1116,58 @@ tkControllers.controller('ProblemCtrl', function($scope, $timeout, $routeParams,
     });
   }
 
+  function maybeMakeAnimatedMove(x, y, u, v) {
+    if (!gameService.isValidMove(x, y, u, v)) {
+      return;
+    }
+    forgetSelectedPiece();
+    $scope.boardApi.animateMove(x, y, u, v).then(function() {
+      makeMove(x, y, u, v);
+    });
+  }
+
+  function forgetSelectedPiece() {
+    selectedRow = undefined;
+    selectedCol = undefined;
+    updateSelectedPieces();
+  }
+
+  function updateSelectedPieces() {
+    $scope.highlights[0].x = selectedRow;
+    $scope.highlights[0].y = selectedCol;
+  }
+
+  function pieceToTurn(p) {
+    if (!p) {
+      return EMPTY;
+    }
+    return p > 0 ? RED : BLACK;
+  }
+
+  $scope.selectPiece = function(row, col) {
+    if ($scope.turn !== pieceToTurn($scope.board[row][col])) {
+      if (selectedRow !== undefined) {
+        $scope.selectBoardCell(row, col);
+      }
+      return;
+    }
+
+    if (selectedRow === row && selectedCol === col) {
+      forgetSelectedPiece();
+    } else {
+      selectedRow = row;
+      selectedCol = col;
+      updateSelectedPieces();
+    }
+  };
+
+  $scope.selectBoardCell = function(row, col) {
+    if (selectedRow === undefined || selectedCol === undefined) return;
+    if (selectedRow === row && selectedCol === col) return;
+    maybeMakeAnimatedMove(selectedRow, selectedCol, row, col);
+  };
+
   function computerPlay() {
-    var fen = $scope.fen;
     var moves = _.map(gameService.getMoves(), function(move) {
       function where(x, y) {
         return String.fromCharCode(97 + y) + (ROWS - 1 - x);
@@ -1123,8 +1177,7 @@ tkControllers.controller('ProblemCtrl', function($scope, $timeout, $routeParams,
     return engineService.think(fen, moves);
   }
 
-  $scope.$on('new_move', function(e, move) {
-
+  function handleComputerMove(move) {
     function row(c) {
       return c.charCodeAt() - '0'.charCodeAt();
     }
@@ -1138,24 +1191,20 @@ tkControllers.controller('ProblemCtrl', function($scope, $timeout, $routeParams,
     var u = ROWS - 1 - row(move[3]);
     var v = col(move[2]);
 
-    maybeMakeMove(x, y, u, v);
-  });
+    maybeMakeAnimatedMove(x, y, u, v);
+  }
 
   function maybeComputerPlay(inTurn) {
     if (Number(inTurn) === COMPUTER) {
       if (gameService.isCheckmated()) {
         return;
       }
-      $timeout(function() {
-        computerPlay().then(function(move) {
-          $scope.$broadcast('new_move', move);
-        });
-      });
+      computerPlay().then(handleComputerMove);
     }
   }
 
   $scope.$watch(function() {
-    return gameService.getTurn();
+    return $scope.turn;
   }, function(turn) {
     maybeComputerPlay($scope.playerTypes[turn]);
   });
@@ -1164,8 +1213,8 @@ tkControllers.controller('ProblemCtrl', function($scope, $timeout, $routeParams,
     return $scope.playerTypes[gameService.getTurn()];
   }, maybeComputerPlay);
 
-  $scope.won = function() {
-    alert('I won.');
+  $scope.test = function() {
+    console.log(gameService.getMoves());
   };
 });
 
