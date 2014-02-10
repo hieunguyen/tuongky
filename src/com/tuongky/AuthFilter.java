@@ -41,8 +41,6 @@ public class AuthFilter implements Filter {
       Session session = sessionDao.getById(sid);
       if (session != null) {
         servletRequest.setAttribute(Constants.SESSION_ATTRIBUTE, session);
-        servletRequest.setAttribute(Constants.USERNAME_ATTRIBUTE, session.getUsername());
-        servletRequest.setAttribute(Constants.USERID_ATTRIBUTE, session.getUserId());
       }
     }
     filterChain.doFilter(servletRequest, servletResponse);

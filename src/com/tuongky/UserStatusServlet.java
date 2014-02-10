@@ -1,12 +1,17 @@
 package com.tuongky;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.tuongky.util.JsonUtils;
+import com.google.gson.Gson;
+import com.tuongky.backend.UserDao;
+import com.tuongky.model.datastore.Session;
+import com.tuongky.model.datastore.User;
 
 @SuppressWarnings("serial")
 public class UserStatusServlet extends HttpServlet {
@@ -14,11 +19,18 @@ public class UserStatusServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws IOException {
-    String username = (String) req.getAttribute(Constants.USERNAME_ATTRIBUTE);
-    if (username == null) {
-      username = "";
+    Session session = (Session) req.getAttribute(Constants.SESSION_ATTRIBUTE);
+    User user = null;
+    if (session != null) {
+      user = new UserDao().getById(session.getUserId());
+    }
+    Map<String, Object> data = new HashMap<>();
+    if (user != null) {
+      data.put("fbId", user.getFbId());
+      data.put("fbName", user.getFbName());
+      data.put("roleId", user.getRoleIndex());
     }
     resp.setContentType(Constants.CT_JSON);
-    resp.getWriter().println(JsonUtils.toJson("username", username));
+    resp.getWriter().println(new Gson().toJson(data));
   }
 }

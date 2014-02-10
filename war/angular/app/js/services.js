@@ -798,41 +798,42 @@ tkServices.factory('authService', function(cookieService) {
   var service = {};
 
   var user = {
-    username: '',
-    authenticated: false,
-    isAdmin: false
+    fbId: '',
+    fbName: '',
+    role: Roles.ANONYMOUS
   };
 
   service.getUser = function() {
     return user;
   };
 
-  service.signIn = function(username) {
-    user.username = username;
-    user.authenticated = true;
-    user.isAdmin = _.contains(ADMIN_USERS, username);
+  service.signIn = function(fbId, fbName, role) {
+    user.fbId = fbId;
+    user.fbName = fbName;
+    user.role = role;
   };
 
   service.signOut = function() {
-    user.username = '';
-    user.authenticated = false;
-    user.isAdmin = false;
-    cookieService.delete('sid');
+    user.fbId = '';
+    user.fbName = '';
+    user.role = Roles.ANONYMOUS;
+    cookieService.delete(SESSION_ID);
   };
 
   service.isAuthenticated = function() {
-    return user.authenticated;
+    return !!user.fbId;
   };
 
   service.isAdmin = function() {
-    return user.isAdmin;
+    return user.role === Roles.ADMIN;
   };
 
   return service;
 });
 
 
-tkServices.factory('userService', function($q, $http, notificationService) {
+tkServices.factory('userService', function(
+    $q, $http, $facebook, cookieService, notificationService) {
   var service = {};
 
   service.signIn = function(username, password) {
@@ -890,11 +891,39 @@ tkServices.factory('userService', function($q, $http, notificationService) {
 
   service.getStatus = function() {
     var defer = $q.defer();
-    $http.get('/user_status')
-    .success(function(response) {
-      defer.resolve(response.username);
-    }).error(function() {
-      defer.reject();
+
+    var sid = cookieService.get(SESSION_ID);
+
+    console.log('sid = ' + sid);
+
+    if (sid) {
+      $http.get('/user_status')
+      .success(function(response) {
+        defer.resolve(response);
+      }).error(function() {
+        defer.reject();
+      });
+      return defer.promise;
+    }
+
+    $facebook.getLoginStatus().then(function(response) {
+      var authResp = response.authResponse;
+      if (authResp) {
+        console.log(authResp);
+        $http.post('/fb_signin', {
+          access_token: authResp.accessToken
+        }).success(function(response) {
+          console.log('response:');
+          console.log(response);
+          cookieService.set(SESSION_ID, response.sid);
+          defer.resolve(response);
+        }).error(function() {
+          console.log('Invalid Facebook access token.');
+          defer.reject();
+        });
+      } else {
+        defer.resolve({});
+      }
     });
     return defer.promise;
   };
