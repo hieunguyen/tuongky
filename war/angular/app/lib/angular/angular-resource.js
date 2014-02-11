@@ -33,7 +33,7 @@
  *
  *        angular.module('app', ['ngResource']);
  *
- * and you are ready to get started!
+ * and you are ready to getById started!
  *
  * @param {string} url A parameterized URL template with parameters prefixed by `:` as in
  *   `/user/:username`. If you are using a URL with a port number (e.g. 
@@ -72,7 +72,7 @@
  * @returns {Object} A resource "class" object with methods for the default set of resource actions
  *   optionally extended with custom `actions`. The default set contains these actions:
  *
- *       { 'get':    {method:'GET'},
+ *       { 'getById':    {method:'GET'},
  *         'save':   {method:'POST'},
  *         'query':  {method:'GET', isArray:true},
  *         'remove': {method:'DELETE'},
@@ -85,7 +85,7 @@
  *   read, update, delete) on server-side data like this:
  *   <pre>
         var User = $resource('/user/:userId', {userId:'@id'});
-        var user = User.get({userId:123}, function() {
+        var user = User.getById({userId:123}, function() {
           user.abc = true;
           user.$save();
         });
@@ -156,19 +156,19 @@
 
    <pre>
      var User = $resource('/user/:userId', {userId:'@id'});
-     var user = User.get({userId:123}, function() {
+     var user = User.getById({userId:123}, function() {
        user.abc = true;
        user.$save();
      });
    </pre>
  *
- * It's worth noting that the success callback for `get`, `query` and other method gets passed
+ * It's worth noting that the success callback for `getById`, `query` and other method gets passed
  * in the response that came from the server as well as $http header getter function, so one
- * could rewrite the above example and get access to http headers as:
+ * could rewrite the above example and getById access to http headers as:
  *
    <pre>
      var User = $resource('/user/:userId', {userId:'@id'});
-     User.get({userId:123}, function(u, getResponseHeaders){
+     User.getById({userId:123}, function(u, getResponseHeaders){
        u.abc = true;
        u.$save(function(u, putResponseHeaders) {
          //u => saved user object
@@ -188,13 +188,13 @@
            this.Activity = $resource(
              'https://www.googleapis.com/buzz/v1/activities/:userId/:visibility/:activityId/:comments',
              {alt:'json', callback:'JSON_CALLBACK'},
-             {get:{method:'JSONP', params:{visibility:'@self'}}, replies: {method:'JSONP', params:{visibility:'@self', comments:'@comments'}}}
+             {getById:{method:'JSONP', params:{visibility:'@self'}}, replies: {method:'JSONP', params:{visibility:'@self', comments:'@comments'}}}
            );
          }
 
          BuzzController.prototype = {
            fetch: function() {
-             this.activities = this.Activity.get({userId:this.userId});
+             this.activities = this.Activity.getById({userId:this.userId});
            },
            expandReplies: function(activity) {
              activity.replies = this.Activity.replies({userId:this.userId, activityId:activity.id});

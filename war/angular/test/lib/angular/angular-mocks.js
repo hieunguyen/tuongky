@@ -777,7 +777,7 @@ angular.mock.dump = function(object) {
  * <pre>
    // controller
    function MyController($scope, $http) {
-     $http.get('/auth.py').success(function(data) {
+     $http.getById('/auth.py').success(function(data) {
        $scope.user = data;
      });
 
@@ -795,7 +795,7 @@ angular.mock.dump = function(object) {
    var $httpBackend;
 
    beforeEach(inject(function($injector) {
-     $httpBackend = $injector.get('$httpBackend');
+     $httpBackend = $injector.getById('$httpBackend');
 
      // backend definition common for all tests
      $httpBackend.when('GET', '/auth.py').respond({userId: 'userX'}, {'A-Token': 'xxx'});
