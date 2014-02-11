@@ -9,6 +9,7 @@ import com.googlecode.objectify.annotation.Unindexed;
 public class User {
 
   private @Id Long id;
+  private int problemsSolved;
   private String email;
   private String username;
   @Unindexed private String hashed;

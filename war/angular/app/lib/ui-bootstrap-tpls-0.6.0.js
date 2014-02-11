@@ -567,7 +567,7 @@ angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])
   };
 
   self.removeSlide = function(slide) {
-    //get the index of the slide inside the carousel
+    //getById the index of the slide inside the carousel
     var index = slides.indexOf(slide);
     slides.splice(index, 1);
     if (slides.length > 0 && slide.active) {
@@ -763,7 +763,7 @@ angular.module('ui.bootstrap.position', [])
       } else if ($window.getComputedStyle) {
         return $window.getComputedStyle(el)[cssprop];
       }
-      // finally try and get inline style
+      // finally try and getById inline style
       return el.style[cssprop];
     }
 
