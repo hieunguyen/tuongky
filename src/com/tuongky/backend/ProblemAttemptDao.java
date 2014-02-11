@@ -1,13 +1,12 @@
 package com.tuongky.backend;
 
+import java.util.List;
+import java.util.logging.Logger;
+
 import com.google.appengine.labs.repackaged.com.google.common.collect.Lists;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
-import com.tuongky.model.datastore.GameMetadata;
 import com.tuongky.model.datastore.ProblemAttempt;
-
-import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Created by sngo on 2/3/14.
@@ -33,7 +32,7 @@ public class ProblemAttemptDao {
 
     ProblemAttempt attempt = Utils.newProblemAttempt(actorId, problemId, isSuccess);
 
-    Key<ProblemAttempt> key = new ObjectifyService().begin().put(attempt);
+    Key<ProblemAttempt> key = ObjectifyService.begin().put(attempt);
 
     if (ProblemDao.instance.addAttempter(problemId) == -1) {
       log.severe("Fail to add attempter to problem " + problemId);

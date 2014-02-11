@@ -1,12 +1,9 @@
 package com.tuongky.backend;
 
-import com.tuongky.model.datastore.Problem;
+import java.util.logging.Logger;
+
 import com.tuongky.model.datastore.ProblemAttempt;
 import com.tuongky.model.datastore.Solution;
-import com.tuongky.model.datastore.User;
-
-import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Created by sngo on 2/10/14.

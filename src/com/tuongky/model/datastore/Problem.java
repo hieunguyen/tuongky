@@ -2,7 +2,6 @@ package com.tuongky.model.datastore;
 
 import javax.jdo.annotations.Index;
 import javax.persistence.Id;
-import javax.print.DocFlavor;
 
 /**
  * Represent a chess problem to be solved, together with requirement.

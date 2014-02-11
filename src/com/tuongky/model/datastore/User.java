@@ -11,7 +11,6 @@ import com.tuongky.model.UserRole;
 public class User {
 
   private @Id Long id;
-  private int problemsSolved;
   private String email;
   private String username;
   @Unindexed private String hashed;

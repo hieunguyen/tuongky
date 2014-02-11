@@ -2,8 +2,6 @@ package com.tuongky.backend;
 
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
-import com.tuongky.model.datastore.GameMetadata;
-import com.tuongky.model.datastore.User;
 import com.tuongky.model.datastore.UserMetadata;
 
 /**
@@ -41,7 +39,7 @@ public class UserMetadataDao {
   }
 
   public UserMetadata get(long userId) {
-    return new ObjectifyService().begin().find(UserMetadata.class, userId);
+    return ObjectifyService.begin().find(UserMetadata.class, userId);
 
   }
 }

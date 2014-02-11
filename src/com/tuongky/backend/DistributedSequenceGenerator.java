@@ -1,7 +1,5 @@
 package com.tuongky.backend;
 
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Transaction;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
@@ -14,7 +12,7 @@ public class DistributedSequenceGenerator {
 
   // This method returns the next number in the sequence atomically
   public static int increaseAndGet(String key) {
-    Objectify ofy = new ObjectifyService().beginTransaction();
+    Objectify ofy = ObjectifyService.beginTransaction();
 
     Transaction txn = ofy.getTxn();
 

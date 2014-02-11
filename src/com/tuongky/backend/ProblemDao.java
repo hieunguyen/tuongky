@@ -1,19 +1,14 @@
 package com.tuongky.backend;
 
-import com.google.appengine.api.datastore.Cursor;
-import com.google.appengine.api.datastore.QueryResultIterator;
+import java.util.List;
+
 import com.google.appengine.api.datastore.Transaction;
 import com.google.appengine.labs.repackaged.com.google.common.collect.Lists;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
 import com.googlecode.objectify.util.DAOBase;
-import com.tuongky.model.datastore.GameMetadata;
 import com.tuongky.model.datastore.Problem;
-import javafx.util.Pair;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by sngo on 2/3/14.
@@ -24,7 +19,7 @@ public class ProblemDao extends DAOBase {
     ObjectifyService.register(Problem.class);
   }
 
-  private String COUNTER_STORE = "problemCounter";
+  private final String COUNTER_STORE = "problemCounter";
   public static ProblemDao instance = new ProblemDao();
 
   private static int PAGE_SIZE_DEFAULT = 20;
@@ -72,10 +67,7 @@ public class ProblemDao extends DAOBase {
 
     int startIndex = pageNum * pageSize;
 
-    int count = pageSize;
-    if (pageSize == null) {
-      count = PAGE_SIZE_DEFAULT;
-    }
+    int count = pageSize == null ? PAGE_SIZE_DEFAULT : pageSize;
 
     Query<Problem> query = ofy.query(Problem.class).order(Problem.ID_FIELD).limit(startIndex).offset(count);
     List<Problem> list = Lists.newArrayList(query.iterator());
@@ -85,7 +77,7 @@ public class ProblemDao extends DAOBase {
 
   // return -1 if problemId is not found
   public int addSolver(long problemId) {
-    Objectify ofy = new ObjectifyService().beginTransaction();
+    Objectify ofy = ObjectifyService.beginTransaction();
 
     Transaction txn = ofy.getTxn();
 
@@ -105,7 +97,7 @@ public class ProblemDao extends DAOBase {
 
   // return -1 if problemId is not found
   public int addAttempter(long problemId) {
-    Objectify ofy = new ObjectifyService().beginTransaction();
+    Objectify ofy = ObjectifyService.beginTransaction();
 
     Transaction txn = ofy.getTxn();
 
