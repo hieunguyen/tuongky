@@ -1157,3 +1157,33 @@ tkServices.factory('problemService', function($q, $http) {
 
   return service;
 });
+
+
+tkServices.factory('solutionService', function($q, $http) {
+  var service = {};
+
+  service.getSolutionsForProblem = function(problemId) {
+    var defer = $q.defer();
+    $http.get('json/solutions.json').success(function(data) {
+      defer.resolve(data);
+    });
+    return defer.promise;
+  };
+
+  return service;
+});
+
+
+tkServices.factory('rankService', function($q, $http) {
+  var service = {};
+
+  service.getRanks = function() {
+    var defer = $q.defer();
+    $http.get('json/ranks.json').success(function(data) {
+      defer.resolve(data);
+    });
+    return defer.promise;
+  };
+
+  return service;
+});

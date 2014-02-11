@@ -1,0 +1,29 @@
+<br/>
+
+<p>Bai 2 - Khoá Hải Chinh Đông</p>
+
+<table class="table">
+  <tr>
+    <th>ID</th>
+    <th>Nguoi giai</th>
+    <th>Thoi diem</td>
+    <th>Thoi gian</td>
+    <th>So nuoc</td>
+  </tr>
+
+  <tr ng-repeat="solution in solutions">
+    <td><a ng-href="#/practice/{{problem.id}}">{{solution.id}}</a></td>
+    <td><a ng-href="#/solvedby/{{problem.id}}">{{solution.user}}</a></td>
+    <td>{{solution.solvedAt}}</th>
+    <td>12 phut 20 giay</th>
+    <td>64</th>
+  </tr>
+</table>
+
+<pagination total-items="solutions.length"
+            items-per-page="1"
+            page="1"
+            max-size="10"
+            previous-text="Trước"
+            next-text="Sau"
+            on-select-page="selectPage(page)"></pagination>

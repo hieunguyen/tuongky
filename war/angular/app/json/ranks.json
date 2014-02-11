@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "user": "messi",
+    "solved": 100,
+    "level": 25,
+    "treasure": "Ỷ Thiên Kiếm"
+  },
+  {
+    "id": 2,
+    "user": "ronaldo",
+    "solved": 85,
+    "level": 22,
+    "treasure": "Đồ Long Đao"
+  },
+  {
+    "id": 3,
+    "user": "kaka",
+    "solved": 58,
+    "level": 15,
+    "treasure": "Cửu Âm Chân Kinh"
+  },
+  {
+    "id": 4,
+    "user": "figo",
+    "solved": 15,
+    "level": 3,
+    "treasure": "Đả Cẩu Bổng"
+  }
+]

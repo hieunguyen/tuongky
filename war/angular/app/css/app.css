@@ -546,7 +546,7 @@
 
 .main-menu a {
 	font-weight: normal;
-	font-size: 15px;
+	font-size: 13px;
 	text-decoration: none;
 	color: #000;
 	outline: none;
@@ -560,4 +560,8 @@
 	margin: auto 2px;
 	margin: 0;
 	line-height: 22px;
+}
+
+.problem-viewer .board {
+	width: 360px;
 }

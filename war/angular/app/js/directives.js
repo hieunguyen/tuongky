@@ -222,7 +222,7 @@ tkDirectives.directive('moveInput', function($parse, $timeout) {
 });
 
 
-tkDirectives.directive('tkBoard', function($q) {
+tkDirectives.directive('tkBoard', function($q, $timeout) {
 
   var PIECE_IMAGE_NAME_MAP = {};
   PIECE_IMAGE_NAME_MAP[K] = 'k';
@@ -266,14 +266,25 @@ tkDirectives.directive('tkBoard', function($q) {
     },
     link: function(scope, elem, attrs) {
       scope.api = scope.api || {};
-      scope.api.go = function(x, y, u, v) {
+      var inTransition = false;
+      scope.api.animateMove = function(x, y, u, v, opt_time) {
         var deferred = $q.defer();
+        if (inTransition) {
+          deferred.reject();
+          return deferred.promise;
+        }
+        inTransition = true;
+        var time = opt_time || 200;
         var imgs = $('.tk-board-cell img', elem);
         var img = imgs.eq(x * 9 + y);
         var w = img.height();
         var h = img.width();
-        $(img).animate({left: (v - y) * w, top: (u - x) * h}, 200, function() {
-          deferred.resolve(true);
+        img.animate({left: (v - y) * w, top: (u - x) * h}, time, function() {
+          inTransition = false;
+          deferred.resolve();
+          $timeout(function() {
+            img.css('left', 0).css('top', 0);
+          }, 10);
         });
         return deferred.promise;
       };

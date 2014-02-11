@@ -1,0 +1,26 @@
+<br/>
+<table class="table">
+  <tr>
+    <th>ID</th>
+    <th>Ten</th>
+    <th>So bai</td>
+    <th>Trinh do</td>
+    <th>Bau vat</td>
+  </tr>
+
+  <tr ng-repeat="rank in ranks">
+    <td><a ng-href="">{{rank.id}}</a></td>
+    <td><a ng-href="">{{rank.user}}</a></td>
+    <td>{{rank.solved}}</th>
+    <td>{{rank.level}}</th>
+    <td>{{rank.treasure}}</th>
+  </tr>
+</table>
+
+<pagination total-items="ranks.length"
+            items-per-page="1"
+            page="1"
+            max-size="10"
+            previous-text="Trước"
+            next-text="Sau"
+            on-select-page="selectPage(page)"></pagination>
