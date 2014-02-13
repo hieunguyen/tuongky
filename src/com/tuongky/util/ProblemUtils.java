@@ -1,19 +1,18 @@
-package com.tuongky.backend;
+package com.tuongky.util;
 
-import com.tuongky.model.datastore.Problem;
+import com.tuongky.backend.ProblemDao;
+import com.tuongky.backend.UserDao;
 import com.tuongky.model.datastore.ProblemAttempt;
 import com.tuongky.model.datastore.Solution;
-import com.tuongky.model.datastore.User;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 /**
  * Created by sngo on 2/10/14.
  */
-public class Utils {
+public class ProblemUtils {
 
-  public static Logger log = Logger.getLogger(Utils.class.getName());
+  public static Logger log = Logger.getLogger(ProblemUtils.class.getName());
 
   public static String MINUS = "-";
 

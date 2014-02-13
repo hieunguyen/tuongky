@@ -48,4 +48,10 @@ public class GameInitServlet extends HttpServlet {
     resp.setContentType(Constants.CT_JSON);
     resp.getWriter().println(JsonUtils.toJson("status", "ok"));
   }
+
+  /**
+   * Created by sngo on 2/12/14.
+   */
+  public static class MemberDashboardServlet {
+  }
 }

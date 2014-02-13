@@ -10,6 +10,10 @@ public class UserMetadata {
   private int solves = 0;
   private int attempts = 0;
 
+  private UserMetadata(){
+    // unused
+  }
+
   public int getSolves() {
     return solves;
   }

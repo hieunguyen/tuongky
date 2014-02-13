@@ -30,4 +30,5 @@ public class GameDeleteServlet extends HttpServlet {
     resp.setContentType(Constants.CT_JSON);
     resp.getWriter().println(JsonUtils.toJson("status", "ok"));
   }
+
 }

@@ -3,8 +3,9 @@ package com.tuongky.backend;
 import com.google.appengine.labs.repackaged.com.google.common.collect.Lists;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
-import com.tuongky.model.datastore.GameMetadata;
+import com.googlecode.objectify.util.DAOBase;
 import com.tuongky.model.datastore.ProblemAttempt;
+import com.tuongky.util.ProblemUtils;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -12,28 +13,29 @@ import java.util.logging.Logger;
 /**
  * Created by sngo on 2/3/14.
  */
-public class ProblemAttemptDao {
+public class ProblemAttemptDao extends DAOBase{
+
+  static {
+    ObjectifyRegister.register();
+  }
 
   public static ProblemAttemptDao instance = new ProblemAttemptDao();
 
   private static final Logger log = Logger.getLogger(ProblemAttemptDao.class.getName());
 
-  static {
-    ObjectifyService.register(ProblemAttempt.class);
-  }
   /**
    * Save the outcome of an attempt made by a user, either success or fail
    *
    * @param actorId
    * @param problemId
    * @param isSuccess
-   * @return
+   * @return id
    */
   public long save(long actorId, long problemId, boolean isSuccess) {
 
-    ProblemAttempt attempt = Utils.newProblemAttempt(actorId, problemId, isSuccess);
+    ProblemAttempt attempt = ProblemUtils.newProblemAttempt(actorId, problemId, isSuccess);
 
-    Key<ProblemAttempt> key = new ObjectifyService().begin().put(attempt);
+    Key<ProblemAttempt> key = ObjectifyService.begin().put(attempt);
 
     if (ProblemDao.instance.addAttempter(problemId) == -1) {
       log.severe("Fail to add attempter to problem " + problemId);
@@ -65,7 +67,7 @@ public class ProblemAttemptDao {
     Iterable<ProblemAttempt> problemAttempts;
     if (isSuccess == null) {
       problemAttempts = ObjectifyService.begin().query(ProblemAttempt.class).
-              filter(ProblemAttempt.ACTOR_ID_FIELD, actorId).order(Utils.MINUS + ProblemAttempt.CREATED_DATE).offset(startIndex).limit(count);
+              filter(ProblemAttempt.ACTOR_ID_FIELD, actorId).order(ProblemUtils.MINUS + ProblemAttempt.CREATED_DATE).offset(startIndex).limit(count);
     } else {
       problemAttempts = ObjectifyService.begin().query(ProblemAttempt.class).
               filter(ProblemAttempt.ACTOR_ID_FIELD, actorId).filter(ProblemAttempt.SUCCESS_FIELD, isSuccess).
@@ -93,7 +95,7 @@ public class ProblemAttemptDao {
     Iterable<ProblemAttempt> problemAttempts;
     if (isSuccess == null) {
       problemAttempts = ObjectifyService.begin().query(ProblemAttempt.class).
-              filter(ProblemAttempt.PROBLEM_ID_FIELD, problemId).order(Utils.MINUS + ProblemAttempt.CREATED_DATE).offset(startIndex).limit(count);
+              filter(ProblemAttempt.PROBLEM_ID_FIELD, problemId).order(ProblemUtils.MINUS + ProblemAttempt.CREATED_DATE).offset(startIndex).limit(count);
     } else {
       problemAttempts = ObjectifyService.begin().query(ProblemAttempt.class).
               filter(ProblemAttempt.PROBLEM_ID_FIELD, problemId).filter(ProblemAttempt.SUCCESS_FIELD, isSuccess).

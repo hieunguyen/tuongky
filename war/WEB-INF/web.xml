@@ -99,6 +99,15 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>Problem</servlet-name>
+    <servlet-class>com.tuongky.ProblemServlet</servlet-class>
+    </servlet>
+  <servlet-mapping>
+    <servlet-name>Problem</servlet-name>
+    <url-pattern>/problem/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>GameShow</servlet-name>
     <servlet-class>com.tuongky.GameShowServlet</servlet-class>
   </servlet>

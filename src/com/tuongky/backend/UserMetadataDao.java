@@ -2,17 +2,16 @@ package com.tuongky.backend;
 
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
-import com.tuongky.model.datastore.GameMetadata;
-import com.tuongky.model.datastore.User;
+import com.googlecode.objectify.util.DAOBase;
 import com.tuongky.model.datastore.UserMetadata;
 
 /**
  * Created by sngo on 2/10/14.
  */
-public class UserMetadataDao {
+public class UserMetadataDao extends DAOBase{
 
   static {
-    ObjectifyService.register(UserMetadata.class);
+    ObjectifyRegister.register();
   }
 
   public static UserMetadataDao instance = new UserMetadataDao();
@@ -41,7 +40,7 @@ public class UserMetadataDao {
   }
 
   public UserMetadata get(long userId) {
-    return new ObjectifyService().begin().find(UserMetadata.class, userId);
+    return ObjectifyService.begin().find(UserMetadata.class, userId);
 
   }
 }

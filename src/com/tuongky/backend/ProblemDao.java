@@ -1,18 +1,13 @@
 package com.tuongky.backend;
 
-import com.google.appengine.api.datastore.Cursor;
-import com.google.appengine.api.datastore.QueryResultIterator;
 import com.google.appengine.api.datastore.Transaction;
 import com.google.appengine.labs.repackaged.com.google.common.collect.Lists;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
 import com.googlecode.objectify.util.DAOBase;
-import com.tuongky.model.datastore.GameMetadata;
 import com.tuongky.model.datastore.Problem;
-import javafx.util.Pair;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +16,7 @@ import java.util.List;
 public class ProblemDao extends DAOBase {
 
   static {
-    ObjectifyService.register(Problem.class);
+    ObjectifyRegister.register();
   }
 
   private String COUNTER_STORE = "problemCounter";
@@ -29,24 +24,20 @@ public class ProblemDao extends DAOBase {
 
   private static int PAGE_SIZE_DEFAULT = 20;
 
-  static {
-    ObjectifyService.register(Problem.class);
-  }
-
   public Problem getById(long problemId) {
     return ObjectifyService.begin().get(Problem.class, problemId);
   }
 
-  public long save(String fen, String title, String description, String requirement) {
+  public long create(String fen, String title, String description, String requirement, Long creatorId) {
     long id = DistributedSequenceGenerator.increaseAndGet(COUNTER_STORE);
 
-    Problem problem = new Problem(id, title, fen, description, requirement);
+    Problem problem = new Problem(id, title, fen, description, requirement, creatorId);
     ObjectifyService.begin().put(problem);
 
     return id;
   }
 
-  public void delete(String problemId) {
+  public void delete(long problemId) {
     ObjectifyService.begin().delete(problemId);
   }
 
@@ -85,7 +76,7 @@ public class ProblemDao extends DAOBase {
 
   // return -1 if problemId is not found
   public int addSolver(long problemId) {
-    Objectify ofy = new ObjectifyService().beginTransaction();
+    Objectify ofy = ObjectifyService.beginTransaction();
 
     Transaction txn = ofy.getTxn();
 
@@ -105,7 +96,7 @@ public class ProblemDao extends DAOBase {
 
   // return -1 if problemId is not found
   public int addAttempter(long problemId) {
-    Objectify ofy = new ObjectifyService().beginTransaction();
+    Objectify ofy = ObjectifyService.beginTransaction();
 
     Transaction txn = ofy.getTxn();
 
