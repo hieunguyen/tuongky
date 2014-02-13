@@ -35,8 +35,7 @@ public class SigninServlet extends HttpServlet {
     Map<String, Object> data = Maps.newHashMap();
     data.put("code", code);
     if (code == 0) {
-      SessionDao sessionDao = new SessionDao();
-      Session session = sessionDao.save(user.getId(), user.getUsername());
+      Session session = new SessionDao().save(user.getId());
       data.put("sid", session.getId());
     }
     resp.setContentType(Constants.CT_JSON);

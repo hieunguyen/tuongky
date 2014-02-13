@@ -13,11 +13,24 @@ public class UserDao extends DAOBase {
     ObjectifyRegister.register();
   }
 
+<<<<<<< HEAD
   public static UserDao instance = new UserDao();
+=======
+  public User save(User user) {
+    ObjectifyService.begin().put(user);
+    return user;
+  }
+>>>>>>> 2ac6c54723e2e8f413b146c0412fe1e28dc022c8
 
   public User save(String email, String username, String password) {
     String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
     User user = new User(email, username, hashed);
+    ObjectifyService.begin().put(user);
+    return user;
+  }
+
+  public User save(String fbId, String fbName) {
+    User user = User.createFbUser(fbId, fbName);
     ObjectifyService.begin().put(user);
     return user;
   }
@@ -35,9 +48,19 @@ public class UserDao extends DAOBase {
   }
 
   public User getByEmail(String email, Objectify ofy) {
-    return ofy.query(User.class).
-        filter("email", email).
-        get();
+    return ofy.query(User.class)
+        .filter("email", email)
+        .get();
+  }
+
+  public User getByFbId(String fbId) {
+    return getByFbId(fbId, ObjectifyService.begin());
+  }
+
+  public User getByFbId(String fbId, Objectify ofy) {
+    return ofy.query(User.class)
+        .filter("fbId", fbId)
+        .get();
   }
 
   public User getByUsername(String username) {
@@ -45,8 +68,8 @@ public class UserDao extends DAOBase {
   }
 
   public User getByUsername(String username, Objectify ofy) {
-    return ofy.query(User.class).
-        filter("username", username).
-        get();
+    return ofy.query(User.class)
+        .filter("username", username)
+        .get();
   }
 }

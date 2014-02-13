@@ -45,6 +45,15 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>FacebookSignin</servlet-name>
+    <servlet-class>com.tuongky.FacebookSigninServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FacebookSignin</servlet-name>
+    <url-pattern>/fb_signin</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>Signin</servlet-name>
     <servlet-class>com.tuongky.SigninServlet</servlet-class>
   </servlet>

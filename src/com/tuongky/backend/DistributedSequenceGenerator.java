@@ -15,6 +15,7 @@ public class DistributedSequenceGenerator {
   }
 
   // This method returns the next number in the sequence atomically
+
   public static long increaseAndGet(String key) {
     Objectify ofy = ObjectifyService.beginTransaction();
 

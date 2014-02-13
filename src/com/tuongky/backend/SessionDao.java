@@ -12,8 +12,8 @@ public class SessionDao {
     ObjectifyRegister.register();
   }
 
-  public Session save(long userId, String username) {
-    Session session = new Session(userId, username);
+  public Session save(long userId) {
+    Session session = new Session(userId);
     ObjectifyService.begin().put(session);
     return session;
   }
