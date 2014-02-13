@@ -1,4 +1,4 @@
-package com.tuongky;
+package com.tuongky.servlet;
 
 public final class Settings {
 

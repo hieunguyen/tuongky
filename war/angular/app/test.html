@@ -1,0 +1,39 @@
+Get Problem
+<form action="problem" method="get">
+    <input type="text" name="id" value="id" />
+    <input type="submit" value="get" />
+</form>
+
+Create Problem
+<form action="problem" method="post">
+    <input type="text" name="title" value="title" />
+    <input type="text" name="fen" value="fen" />
+    <input type="text" name="description" value="description" />
+    <input type="creator" name="creatorId" value="creatorId" />
+    <input type="text" name="requirement" value="requirement" />
+
+    <input type="submit" value="create" />
+</form>
+
+Delete Problem
+<form action="problem/delete" method="post">
+    <input type="text" name="id" value="id" />
+    <input type="submit" value="delete" />
+</form>
+
+Search Problem
+<form action="problem/search" method="get">
+    <input type="text" name="pageNum" value="pageNum" />
+    <input type="text" name="pageSize" value="pageSize" />
+    <input type="submit" value="get" />
+</form>
+
+Solve Problem
+<form action="problem/solve" method="post">
+    <input type="text" name="actorId" value="actorId" />
+    <input type="text" name="problemId" value="problemId" />
+    isSuccess
+    <input type="checkbox" name="isSuccess">
+    <input type="submit" value="solve" />
+</form>
+

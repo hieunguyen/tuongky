@@ -17170,7 +17170,7 @@ function $RootScopeProvider(){
        * - The `listener` is called only when the value from the current `watchExpression` and the
        *   previous call to `watchExpression` are not equal (with the exception of the initial run,
        *   see below). The inequality is determined according to
-       *   {@link angular.equals} function. To save the value of the object for later comparison, the
+       *   {@link angular.equals} function. To attempt the value of the object for later comparison, the
        *   {@link angular.copy} function is used. It also means that watching complex options will
        *   have adverse memory and performance implications.
        * - The watch `listener` may change the model, which may trigger other `listener`s to fire. This
@@ -19886,7 +19886,7 @@ function ngDirective(directive) {
  *
  * The reasoning for this change is to allow easy creation of action links with `ngClick` directive
  * without changing the location or causing page reloads, e.g.:
- * `<a href="" ng-click="model.$save()">Save</a>`
+ * `<a href="" ng-click="model.$attempt()">Save</a>`
  */
 var htmlAnchorDirective = valueFn({
   restrict: 'E',

@@ -10,7 +10,7 @@ import com.tuongky.model.datastore.Game;
 public class GameDao extends DAOBase {
 
   static {
-    ObjectifyService.register(Game.class);
+    ObjectifyRegister.register();
   }
 
   public Game save(String username,

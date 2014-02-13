@@ -1,4 +1,4 @@
-package com.tuongky;
+package com.tuongky.servlet;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -24,7 +24,7 @@ public class UserStatusServlet extends HttpServlet {
     if (session != null) {
       user = new UserDao().getById(session.getUserId());
     }
-    Map<String, Object> data = new HashMap<>();
+    Map<String, Object> data = new HashMap();
     if (user != null) {
       data.put("fbId", user.getFbId());
       data.put("fbName", user.getFbName());

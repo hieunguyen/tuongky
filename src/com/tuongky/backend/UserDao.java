@@ -9,12 +9,11 @@ import com.tuongky.model.datastore.User;
 
 public class UserDao extends DAOBase {
 
-  public static UserDao instance = new UserDao();
-
   static {
-    ObjectifyService.register(User.class);
+    ObjectifyRegister.register();
   }
 
+  public static UserDao instance = new UserDao();
   public User save(User user) {
     ObjectifyService.begin().put(user);
     return user;

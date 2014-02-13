@@ -1,4 +1,4 @@
-package com.tuongky;
+package com.tuongky.servlet;
 
 import java.io.BufferedReader;
 import java.io.IOException;

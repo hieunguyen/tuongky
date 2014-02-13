@@ -15,7 +15,7 @@ import com.google.appengine.api.search.SearchServiceFactory;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.tuongky.Settings;
+import com.tuongky.servlet.Settings;
 import com.tuongky.model.GameCategory;
 import com.tuongky.model.GameQuery;
 import com.tuongky.model.GameSearchResult;

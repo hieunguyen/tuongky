@@ -1,4 +1,4 @@
-package com.tuongky;
+package com.tuongky.servlet;
 
 import java.io.IOException;
 
@@ -30,4 +30,5 @@ public class GameDeleteServlet extends HttpServlet {
     resp.setContentType(Constants.CT_JSON);
     resp.getWriter().println(JsonUtils.toJson("status", "ok"));
   }
+
 }

@@ -10,7 +10,7 @@ import com.tuongky.model.datastore.Invite;
 public class InviteDao extends DAOBase {
 
   static {
-    ObjectifyService.register(Invite.class);
+    ObjectifyRegister.register();
   }
 
   public Invite save() {

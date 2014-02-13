@@ -635,7 +635,7 @@ tkServices.factory('dbService', function(
   service.saveGame = function(game, username) {
     var defer = $q.defer();
     notificationService.show('Đang lưu tài liệu...');
-    $http.post('/game/save', {
+    $http.post('/game/attempt', {
       id: game.id,
       username: username,
       category: game.category,

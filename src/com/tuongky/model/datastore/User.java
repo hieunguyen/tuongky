@@ -5,7 +5,7 @@ import javax.persistence.Id;
 import org.mindrot.BCrypt;
 
 import com.googlecode.objectify.annotation.Unindexed;
-import com.tuongky.Constants;
+import com.tuongky.servlet.Constants;
 import com.tuongky.model.UserRole;
 
 public class User {
