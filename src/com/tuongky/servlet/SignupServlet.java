@@ -1,4 +1,4 @@
-package com.tuongky;
+package com.tuongky.servlet;
 
 import java.io.IOException;
 import java.util.Map;

@@ -38,7 +38,7 @@ public class ProblemDao extends DAOBase {
   }
 
   public void delete(long problemId) {
-    ObjectifyService.begin().delete(problemId);
+    ObjectifyService.begin().delete(Problem.class, problemId);
   }
 
   public List<Problem> findByCreator(long creatorId) {

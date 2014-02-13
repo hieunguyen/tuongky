@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?><web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 	<servlet>
 		<servlet-name>ShardedCounter</servlet-name>
-		<servlet-class>com.tuongky.ShardedCounterServlet</servlet-class>
+		<servlet-class>com.tuongky.servlet.ShardedCounterServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>ShardedCounter</servlet-name>
@@ -10,7 +10,7 @@
 	
 	<filter>
 	 <filter-name>AuthFilter</filter-name>
-	 <filter-class>com.tuongky.AuthFilter</filter-class>
+	 <filter-class>com.tuongky.servlet.AuthFilter</filter-class>
 	</filter>
 	<filter-mapping>
 	 <filter-name>AuthFilter</filter-name>
@@ -19,7 +19,7 @@
 	
   <servlet>
     <servlet-name>BookList</servlet-name>
-    <servlet-class>com.tuongky.BookListServlet</servlet-class>
+    <servlet-class>com.tuongky.servlet.BookListServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>BookList</servlet-name>
@@ -28,7 +28,7 @@
 
   <servlet>
     <servlet-name>UserStatus</servlet-name>
-    <servlet-class>com.tuongky.UserStatusServlet</servlet-class>
+    <servlet-class>com.tuongky.servlet.UserStatusServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>UserStatus</servlet-name>
@@ -37,7 +37,7 @@
 
   <servlet>
     <servlet-name>InviteCreate</servlet-name>
-    <servlet-class>com.tuongky.InviteCreateServlet</servlet-class>
+    <servlet-class>com.tuongky.servlet.InviteCreateServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>InviteCreate</servlet-name>
@@ -46,7 +46,7 @@
 
   <servlet>
     <servlet-name>FacebookSignin</servlet-name>
-    <servlet-class>com.tuongky.FacebookSigninServlet</servlet-class>
+    <servlet-class>com.tuongky.servlet.FacebookSigninServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>FacebookSignin</servlet-name>
@@ -55,7 +55,7 @@
 
   <servlet>
     <servlet-name>Signin</servlet-name>
-    <servlet-class>com.tuongky.SigninServlet</servlet-class>
+    <servlet-class>com.tuongky.servlet.SigninServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>Signin</servlet-name>
@@ -64,7 +64,7 @@
 
   <servlet>
     <servlet-name>Signup</servlet-name>
-    <servlet-class>com.tuongky.SignupServlet</servlet-class>
+    <servlet-class>com.tuongky.servlet.SignupServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>Signup</servlet-name>
@@ -73,7 +73,7 @@
 
   <servlet>
     <servlet-name>GameInit</servlet-name>
-    <servlet-class>com.tuongky.GameInitServlet</servlet-class>
+    <servlet-class>com.tuongky.servlet.GameInitServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>GameInit</servlet-name>
@@ -82,7 +82,7 @@
 
   <servlet>
     <servlet-name>GameCreate</servlet-name>
-    <servlet-class>com.tuongky.GameCreateServlet</servlet-class>
+    <servlet-class>com.tuongky.servlet.GameCreateServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>GameCreate</servlet-name>
@@ -91,7 +91,7 @@
 
   <servlet>
     <servlet-name>GameSave</servlet-name>
-    <servlet-class>com.tuongky.GameSaveServlet</servlet-class>
+    <servlet-class>com.tuongky.servlet.GameSaveServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>GameSave</servlet-name>
@@ -100,7 +100,7 @@
 
   <servlet>
     <servlet-name>GameDelete</servlet-name>
-    <servlet-class>com.tuongky.GameDeleteServlet</servlet-class>
+    <servlet-class>com.tuongky.servlet.GameDeleteServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>GameDelete</servlet-name>
@@ -108,17 +108,8 @@
   </servlet-mapping>
 
   <servlet>
-    <servlet-name>Problem</servlet-name>
-    <servlet-class>com.tuongky.ProblemServlet</servlet-class>
-    </servlet>
-  <servlet-mapping>
-    <servlet-name>Problem</servlet-name>
-    <url-pattern>/problem/*</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
     <servlet-name>GameShow</servlet-name>
-    <servlet-class>com.tuongky.GameShowServlet</servlet-class>
+    <servlet-class>com.tuongky.servlet.GameShowServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>GameShow</servlet-name>
@@ -127,7 +118,7 @@
 
   <servlet>
     <servlet-name>GameSearch</servlet-name>
-    <servlet-class>com.tuongky.GameSearchServlet</servlet-class>
+    <servlet-class>com.tuongky.servlet.GameSearchServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>GameSearch</servlet-name>
@@ -149,4 +140,23 @@
   <servlet-name>SystemServiceServlet</servlet-name>
   <url-pattern>/_ah/spi/*</url-pattern>
  </servlet-mapping>
+
+ <servlet>
+    <servlet-name>Problem</servlet-name>
+    <servlet-class>com.tuongky.servlet.problem.ProblemServlet</servlet-class>
+    </servlet>
+ <servlet-mapping>
+    <servlet-name>Problem</servlet-name>
+    <url-pattern>/problem/*</url-pattern>
+ </servlet-mapping>
+
+ <servlet>
+    <servlet-name>ProblemDelete</servlet-name>
+    <servlet-class>com.tuongky.servlet.problem.ProblemDeleteServlet</servlet-class>
+ </servlet>
+ <servlet-mapping>
+    <servlet-name>ProblemDelete</servlet-name>
+    <url-pattern>/problem/delete</url-pattern>
+ </servlet-mapping>
+
 </web-app>

@@ -1,4 +1,4 @@
-package com.tuongky;
+package com.tuongky.servlet.problem;
 
 import com.tuongky.backend.ProblemDao;
 import com.tuongky.model.datastore.Problem;
@@ -14,12 +14,12 @@ public class ProblemServlet extends HttpServlet {
 
   private static final Logger log = Logger.getLogger(ProblemServlet.class.getName());
 
-  private static final String FEN_FIELD = "fen";
-  private static final String DESCRIPTION_FIELD = "description";
-  private static final String TITLE_FIELD = "title";
-  private static final String ID_FIELD = "id";
-  private static final String REQUIREMENT_FIELD = "requirement";
-  private static final String CREATOR_ID_FIELD = "creatorId";
+  public static final String FEN_FIELD = "fen";
+  public static final String DESCRIPTION_FIELD = "description";
+  public static final String TITLE_FIELD = "title";
+  public static final String ID_FIELD = "id";
+  public static final String REQUIREMENT_FIELD = "requirement";
+  public static final String CREATOR_ID_FIELD = "creatorId";
   private static final String ROOT_KEY = "problem";
 
   public void doGet(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp)
@@ -51,18 +51,6 @@ public class ProblemServlet extends HttpServlet {
     }
 
     ProblemDao.instance.create(fen, title, description, requirement, creatorLong);
-
-    resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, "ok"));
-  }
-
-  public void doDelete(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp)
-          throws javax.servlet.ServletException, java.io.IOException {
-
-    String id = req.getParameter(ID_FIELD);
-
-    long idLong = Long.parseLong(id);
-
-    ProblemDao.instance.delete(idLong);
 
     resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, "ok"));
   }
