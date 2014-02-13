@@ -1,18 +1,11 @@
 package com.tuongky.util;
 
-<<<<<<< HEAD:src/com/tuongky/util/ProblemUtils.java
 import com.tuongky.backend.ProblemDao;
 import com.tuongky.backend.UserDao;
 import com.tuongky.model.datastore.ProblemAttempt;
 import com.tuongky.model.datastore.Solution;
 
 import java.util.logging.Logger;
-=======
-import java.util.logging.Logger;
-
-import com.tuongky.model.datastore.ProblemAttempt;
-import com.tuongky.model.datastore.Solution;
->>>>>>> 2ac6c54723e2e8f413b146c0412fe1e28dc022c8:src/com/tuongky/backend/Utils.java
 
 /**
  * Created by sngo on 2/10/14.

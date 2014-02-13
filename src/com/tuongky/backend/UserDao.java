@@ -13,14 +13,11 @@ public class UserDao extends DAOBase {
     ObjectifyRegister.register();
   }
 
-<<<<<<< HEAD
   public static UserDao instance = new UserDao();
-=======
   public User save(User user) {
     ObjectifyService.begin().put(user);
     return user;
   }
->>>>>>> 2ac6c54723e2e8f413b146c0412fe1e28dc022c8
 
   public User save(String email, String username, String password) {
     String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
