@@ -73,21 +73,21 @@
  *   optionally extended with custom `actions`. The default set contains these actions:
  *
  *       { 'getById':    {method:'GET'},
- *         'save':   {method:'POST'},
+ *         'attempt':   {method:'POST'},
  *         'query':  {method:'GET', isArray:true},
  *         'remove': {method:'DELETE'},
  *         'delete': {method:'DELETE'} };
  *
  *   Calling these methods invoke an {@link ng.$http} with the specified http method,
  *   destination and parameters. When the data is returned from the server then the object is an
- *   instance of the resource class. The actions `save`, `remove` and `delete` are available on it
+ *   instance of the resource class. The actions `attempt`, `remove` and `delete` are available on it
  *   as  methods with the `$` prefix. This allows you to easily perform CRUD operations (create,
  *   read, update, delete) on server-side data like this:
  *   <pre>
         var User = $resource('/user/:userId', {userId:'@id'});
         var user = User.getById({userId:123}, function() {
           user.abc = true;
-          user.$save();
+          user.$attempt();
         });
      </pre>
  *
@@ -128,7 +128,7 @@
        expect(card instanceof CreditCard).toEqual(true);
        card.name = "J. Smith";
        // non GET methods are mapped onto the instances
-       card.$save();
+       card.$attempt();
        // POST: /user/123/card/456 {id:456, number:'1234', name:'J. Smith'}
        // server returns: {id:456, number:'1234', name: 'J. Smith'};
 
@@ -140,7 +140,7 @@
      // we can create an instance as well
      var newCard = new CreditCard({number:'0123'});
      newCard.name = "Mike Smith";
-     newCard.$save();
+     newCard.$attempt();
      // POST: /user/123/card {number:'0123', name:'Mike Smith'}
      // server returns: {id:789, number:'01234', name: 'Mike Smith'};
      expect(newCard.id).toEqual(789);
@@ -158,7 +158,7 @@
      var User = $resource('/user/:userId', {userId:'@id'});
      var user = User.getById({userId:123}, function() {
        user.abc = true;
-       user.$save();
+       user.$attempt();
      });
    </pre>
  *
@@ -170,7 +170,7 @@
      var User = $resource('/user/:userId', {userId:'@id'});
      User.getById({userId:123}, function(u, getResponseHeaders){
        u.abc = true;
-       u.$save(function(u, putResponseHeaders) {
+       u.$attempt(function(u, putResponseHeaders) {
          //u => saved user object
          //putResponseHeaders => $http header getter
        });

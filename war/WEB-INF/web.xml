@@ -159,13 +159,22 @@
     <url-pattern>/problem/delete</url-pattern>
  </servlet-mapping>
 
+ <servlet>
+    <servlet-name>ProblemSearch</servlet-name>
+    <servlet-class>com.tuongky.servlet.problem.ProblemSearchServlet</servlet-class>
+ </servlet>
+ <servlet-mapping>
+    <servlet-name>ProblemSearch</servlet-name>
+    <url-pattern>/problem/search</url-pattern>
+ </servlet-mapping>
+
     <servlet>
-        <servlet-name>ProblemSearch</servlet-name>
-        <servlet-class>com.tuongky.servlet.problem.ProblemSearchServlet</servlet-class>
+        <servlet-name>ProblemSolve</servlet-name>
+        <servlet-class>com.tuongky.servlet.problem.ProblemSolveServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>ProblemSearch</servlet-name>
-        <url-pattern>/problem/search</url-pattern>
+        <servlet-name>ProblemSolve</servlet-name>
+        <url-pattern>/problem/solve</url-pattern>
     </servlet-mapping>
 
 </web-app>

@@ -1,6 +1,5 @@
 package com.tuongky.backend;
 
-import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
 import com.googlecode.objectify.util.DAOBase;
@@ -18,28 +17,31 @@ public class SolutionDao extends DAOBase{
     ObjectifyRegister.register();
   }
 
+  public static final SolutionDao instance = new SolutionDao();
   private static final Logger log = Logger.getLogger(Solution.class.getName());
 
-  // transactional
+  private boolean doesSolutionExist(Solution solution) {
+    Query<Solution> result = ObjectifyService.begin().query(Solution.class).filter(Solution.ID_FIELD, solution.getId());
+    return result != null && result.get() != null;
+  }
+
+  // TODO
+  // There might be double count.
+  // To be 100% precise, this method should be atomic. However the chance that the same user solves the same problem at
+  // the same time is extremely rare. So we don't have to optimize for that edge case.
   public String solve(long actorId, long problemId) {
 
     Solution solution = (Solution) ProblemUtils.newProblemAttempt(actorId, problemId, null);
 
-    Objectify ofy = ObjectifyService.beginTransaction();
-
-    Query<Solution> result = ofy.query(Solution.class).filter(Solution.ID_FIELD, solution.getId());
-
-    if (result == null) {
+    if (!doesSolutionExist(solution)) {
       if (ProblemDao.instance.addSolver(problemId) == -1) {
-        log.warning("Fail to add attempter to problem " + problemId);
+        log.warning("Fail to add solver to problem " + problemId);
       }
+      UserMetadataDao.instance.solve(actorId);
     }
 
-    ofy.put(solution);
+    ObjectifyService.begin().put(solution);
 
-    UserMetadataDao.instance.solve(actorId, ofy);
-
-    ofy.getTxn().commit();
     return solution.getId();
   }
 }

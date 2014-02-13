@@ -60,12 +60,12 @@ public class ProblemDao extends DAOBase {
     Objectify ofy = ObjectifyService.begin();
 
     Query<Problem> query = ofy.query(Problem.class).order(Problem.ID_FIELD).limit(limit).offset(offset);
-    List<Problem> list = Lists.newArrayList(query.iterator());
 
-    return list;
+    return query.list();
   }
 
   // return -1 if problemId is not found
+  //transactional
   public int addSolver(long problemId) {
     Objectify ofy = ObjectifyService.beginTransaction();
 
@@ -86,6 +86,7 @@ public class ProblemDao extends DAOBase {
   }
 
   // return -1 if problemId is not found
+  //transactional
   public int addAttempter(long problemId) {
     Objectify ofy = ObjectifyService.beginTransaction();
 

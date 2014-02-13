@@ -31,7 +31,7 @@ public class ProblemAttemptDao extends DAOBase{
    * @param isSuccess
    * @return id
    */
-  public long save(long actorId, long problemId, boolean isSuccess) {
+  public long attempt(long actorId, long problemId, boolean isSuccess) {
 
     ProblemAttempt attempt = ProblemUtils.newProblemAttempt(actorId, problemId, isSuccess);
 

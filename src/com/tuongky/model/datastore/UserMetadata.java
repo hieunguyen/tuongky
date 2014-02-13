@@ -13,6 +13,9 @@ public class UserMetadata {
   private UserMetadata(){
     // unused
   }
+  public UserMetadata(long id){
+    this.id = id;
+  }
 
   public int getSolves() {
     return solves;

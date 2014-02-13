@@ -50,9 +50,9 @@ public class ProblemServlet extends HttpServlet {
       log.severe("CreatorId is of wrong format: " + creatorId);
     }
 
-    ProblemDao.instance.create(fen, title, description, requirement, creatorLong);
+    long problemId = ProblemDao.instance.create(fen, title, description, requirement, creatorLong);
 
-    resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, "ok"));
+    resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, problemId));
   }
 
 }
