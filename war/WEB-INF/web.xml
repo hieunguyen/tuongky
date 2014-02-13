@@ -159,4 +159,13 @@
     <url-pattern>/problem/delete</url-pattern>
  </servlet-mapping>
 
+    <servlet>
+        <servlet-name>ProblemSearch</servlet-name>
+        <servlet-class>com.tuongky.servlet.problem.ProblemSearchServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProblemSearch</servlet-name>
+        <url-pattern>/problem/search</url-pattern>
+    </servlet-mapping>
+
 </web-app>

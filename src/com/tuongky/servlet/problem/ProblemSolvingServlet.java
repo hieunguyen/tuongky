@@ -1,4 +1,4 @@
-package com.tuongky.servlet;
+package com.tuongky.servlet.problem;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

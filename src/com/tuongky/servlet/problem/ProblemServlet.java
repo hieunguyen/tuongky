@@ -14,12 +14,12 @@ public class ProblemServlet extends HttpServlet {
 
   private static final Logger log = Logger.getLogger(ProblemServlet.class.getName());
 
-  public static final String FEN_FIELD = "fen";
-  public static final String DESCRIPTION_FIELD = "description";
-  public static final String TITLE_FIELD = "title";
-  public static final String ID_FIELD = "id";
-  public static final String REQUIREMENT_FIELD = "requirement";
-  public static final String CREATOR_ID_FIELD = "creatorId";
+  private static final String FEN_FIELD = "fen";
+  private static final String DESCRIPTION_FIELD = "description";
+  private static final String TITLE_FIELD = "title";
+  private static final String ID_FIELD = "id";
+  private static final String REQUIREMENT_FIELD = "requirement";
+  private static final String CREATOR_ID_FIELD = "creatorId";
   private static final String ROOT_KEY = "problem";
 
   public void doGet(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp)

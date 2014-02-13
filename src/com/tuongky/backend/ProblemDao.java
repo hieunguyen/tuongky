@@ -22,8 +22,6 @@ public class ProblemDao extends DAOBase {
   private final String COUNTER_STORE = "problemCounter";
   public static ProblemDao instance = new ProblemDao();
 
-  private static int PAGE_SIZE_DEFAULT = 20;
-
   public Problem getById(long problemId) {
     return ObjectifyService.begin().get(Problem.class, problemId);
   }
@@ -58,14 +56,10 @@ public class ProblemDao extends DAOBase {
 
   // Index starts from 0
   // if pageSize == null, getById default value
-  public List<Problem> search(Integer pageSize, int pageNum) {
+  public List<Problem> search(int offset, int limit) {
     Objectify ofy = ObjectifyService.begin();
 
-    int startIndex = pageNum * pageSize;
-
-    int count = pageSize == null ? PAGE_SIZE_DEFAULT : pageSize;
-
-    Query<Problem> query = ofy.query(Problem.class).order(Problem.ID_FIELD).limit(startIndex).offset(count);
+    Query<Problem> query = ofy.query(Problem.class).order(Problem.ID_FIELD).limit(limit).offset(offset);
     List<Problem> list = Lists.newArrayList(query.iterator());
 
     return list;

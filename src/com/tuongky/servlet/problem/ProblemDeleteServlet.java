@@ -10,12 +10,13 @@ import javax.servlet.http.HttpServlet;
  */
 public class ProblemDeleteServlet extends HttpServlet {
 
+  private static final String ID_FIELD = "id";
   private static final String ROOT_KEY = "problemDelete";
 
   public void doPost(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp)
           throws javax.servlet.ServletException, java.io.IOException {
 
-    String id = req.getParameter(ProblemServlet.ID_FIELD);
+    String id = req.getParameter(ID_FIELD);
 
     long idLong = Long.parseLong(id);
 
