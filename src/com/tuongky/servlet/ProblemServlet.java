@@ -1,15 +1,17 @@
-package com.tuongky.servlet.problem;
+package com.tuongky.servlet;
 
 import com.tuongky.backend.ProblemDao;
 import com.tuongky.model.datastore.Problem;
 import com.tuongky.util.JsonUtils;
 
 import javax.servlet.http.HttpServlet;
+
 import java.util.logging.Logger;
 
 /**
  * Created by sngo on 2/12/14.
  */
+@SuppressWarnings("serial")
 public class ProblemServlet extends HttpServlet {
 
   private static final Logger log = Logger.getLogger(ProblemServlet.class.getName());
@@ -22,6 +24,7 @@ public class ProblemServlet extends HttpServlet {
   private static final String CREATOR_ID_FIELD = "creatorId";
   private static final String ROOT_KEY = "problem";
 
+  @Override
   public void doGet(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp)
           throws javax.servlet.ServletException, java.io.IOException {
     String id = req.getParameter(ID_FIELD);
@@ -32,6 +35,7 @@ public class ProblemServlet extends HttpServlet {
     resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, problem));
   }
 
+  @Override
   public void doPost(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp)
           throws javax.servlet.ServletException, java.io.IOException {
     String fen = req.getParameter(FEN_FIELD);

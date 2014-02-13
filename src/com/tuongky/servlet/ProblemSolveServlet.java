@@ -1,4 +1,4 @@
-package com.tuongky.servlet.problem;
+package com.tuongky.servlet;
 
 import com.tuongky.backend.ProblemAttemptDao;
 import com.tuongky.backend.SolutionDao;
@@ -7,11 +7,13 @@ import com.tuongky.util.JsonUtils;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
 /**
  * Created by sngo on 2/10/14.
  */
+@SuppressWarnings("serial")
 public class ProblemSolveServlet extends HttpServlet {
 
   private static final String ACTOR_ID_FIELD = "actorId";

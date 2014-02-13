@@ -1,8 +1,17 @@
 package com.tuongky.backend;
 
-import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
-import com.tuongky.model.datastore.*;
+import com.tuongky.model.datastore.Book;
+import com.tuongky.model.datastore.Game;
+import com.tuongky.model.datastore.GameMetadata;
+import com.tuongky.model.datastore.Invite;
+import com.tuongky.model.datastore.Problem;
+import com.tuongky.model.datastore.ProblemAttempt;
+import com.tuongky.model.datastore.Session;
+import com.tuongky.model.datastore.SimpleCounter;
+import com.tuongky.model.datastore.Solution;
+import com.tuongky.model.datastore.User;
+import com.tuongky.model.datastore.UserMetadata;
 
 /**
  * Created by sngo on 2/12/14.

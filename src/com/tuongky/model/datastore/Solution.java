@@ -9,9 +9,11 @@ public class Solution extends ProblemAttempt {
 
   private static String UNIQUE_DELIMINATOR = "#";
 
-  private Solution(){
+  @SuppressWarnings("unused") // Used by Objectify.
+  private Solution() {
     super();
   }
+
   public Solution(long actorId, long problemId, String actorName, String problemTitle) {
     super(actorId, problemId, actorName, problemTitle, true);
     setId(getId(actorId, problemId));

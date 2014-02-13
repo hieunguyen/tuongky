@@ -10,8 +10,9 @@ public class UserMetadata {
   private int solves = 0;
   private int attempts = 0;
 
+  @SuppressWarnings("unused")
   private UserMetadata(){
-    // unused
+    // Used by Objectify.
   }
   public UserMetadata(long id){
     this.id = id;

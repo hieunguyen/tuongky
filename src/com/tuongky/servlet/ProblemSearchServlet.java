@@ -1,15 +1,17 @@
-package com.tuongky.servlet.problem;
+package com.tuongky.servlet;
 
 import com.tuongky.backend.ProblemDao;
 import com.tuongky.model.datastore.Problem;
 import com.tuongky.util.JsonUtils;
 
 import javax.servlet.http.HttpServlet;
+
 import java.util.List;
 
 /**
  * Created by sngo on 2/12/14.
  */
+@SuppressWarnings("serial")
 public class ProblemSearchServlet extends HttpServlet{
 
   private static final String PAGE_NUM_FIELD = "pageNum";
@@ -19,6 +21,7 @@ public class ProblemSearchServlet extends HttpServlet{
 
   private static int PAGE_SIZE_DEFAULT = 10;
 
+  @Override
   public void doGet(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp)
           throws javax.servlet.ServletException, java.io.IOException {
     String pageNum = req.getParameter(PAGE_NUM_FIELD);
