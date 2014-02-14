@@ -181,4 +181,13 @@
 		<url-pattern>/problem/solve</url-pattern>
 	</servlet-mapping>
 
+  <servlet>
+    <servlet-name>CanonicalProblem</servlet-name>
+    <servlet-class>com.tuongky.servlet.CanonicalProblemServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CanonicalProblem</servlet-name>
+    <url-pattern>/problem/2</url-pattern>
+  </servlet-mapping>
+
 </web-app>

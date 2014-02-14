@@ -4,10 +4,11 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class UserDaoTest {
+public class ProblemAttemptDaoTest {
 
   @Test
   public void test() {
-    fail("Not implemented.");
+    fail("Not yet implemented");
   }
+
 }
