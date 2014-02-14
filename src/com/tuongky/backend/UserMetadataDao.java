@@ -5,6 +5,8 @@ import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.DAOBase;
 import com.tuongky.model.datastore.UserMetadata;
 
+import java.util.List;
+
 /**
  * Created by sngo on 2/10/14.
  */
@@ -52,5 +54,9 @@ public class UserMetadataDao extends DAOBase{
   public UserMetadata get(long userId) {
     return ObjectifyService.begin().find(UserMetadata.class, userId);
 
+  }
+
+  public List<UserMetadata> search(int offset, int limit){
+    return ObjectifyService.begin().query(UserMetadata.class).offset(offset).limit(limit).order(UserMetadata.SOLVES_FIELD).list();
   }
 }

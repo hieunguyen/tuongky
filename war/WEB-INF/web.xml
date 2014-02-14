@@ -142,13 +142,22 @@
  </servlet-mapping>
 
  <servlet>
-    <servlet-name>Problem</servlet-name>
-    <servlet-class>com.tuongky.servlet.problem.ProblemServlet</servlet-class>
+    <servlet-name>ProblemCreate</servlet-name>
+    <servlet-class>com.tuongky.servlet.problem.ProblemCreateServlet</servlet-class>
     </servlet>
  <servlet-mapping>
-    <servlet-name>Problem</servlet-name>
-    <url-pattern>/problem/*</url-pattern>
+    <servlet-name>ProblemCreate</servlet-name>
+    <url-pattern>/problem/create</url-pattern>
  </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ProblemGet</servlet-name>
+        <servlet-class>com.tuongky.servlet.problem.ProblemGetServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProblemGet</servlet-name>
+        <url-pattern>/problem/get</url-pattern>
+    </servlet-mapping>
 
  <servlet>
     <servlet-name>ProblemDelete</servlet-name>
@@ -161,7 +170,7 @@
 
  <servlet>
     <servlet-name>ProblemSearch</servlet-name>
-    <servlet-class>com.tuongky.servlet.problem.ProblemSearchServlet</servlet-class>
+    <servlet-class>com.tuongky.servlet.problem.ProblemsFindServlet</servlet-class>
  </servlet>
  <servlet-mapping>
     <servlet-name>ProblemSearch</servlet-name>
@@ -175,6 +184,33 @@
     <servlet-mapping>
         <servlet-name>ProblemSolve</servlet-name>
         <url-pattern>/problem/solve</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UsersRank</servlet-name>
+        <servlet-class>com.tuongky.servlet.user.UsersRankServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UsersRank</servlet-name>
+        <url-pattern>/users/rank</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UserGet</servlet-name>
+        <servlet-class>com.tuongky.servlet.user.UserGetServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserGet</servlet-name>
+        <url-pattern>/user/get</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LastAttempts</servlet-name>
+        <servlet-class>com.tuongky.servlet.problem.LastAttemptsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LastAttempts</servlet-name>
+        <url-pattern>/problem/lastAttempts</url-pattern>
     </servlet-mapping>
 
 </web-app>

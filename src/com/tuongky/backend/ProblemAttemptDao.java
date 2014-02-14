@@ -5,10 +5,12 @@ import java.util.logging.Logger;
 
 import com.google.appengine.labs.repackaged.com.google.common.collect.Lists;
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.DAOBase;
 import com.tuongky.model.datastore.ProblemAttempt;
 import com.tuongky.util.ProblemUtils;
+import org.jcp.xml.dsig.internal.dom.Utils;
 
 /**
  * Created by sngo on 2/3/14.
@@ -49,7 +51,7 @@ public class ProblemAttemptDao extends DAOBase{
   private static int PAGE_SIZE_DEFAULT = 20;
 
   /**
-   * Given actorId, return problems solved by this actor, sorted by createdDate.
+   * Given actorId, return problems attempted by this actor, sorted by createdDate.
    *
    * @param actorId
    * @param isSuccess
@@ -103,5 +105,10 @@ public class ProblemAttemptDao extends DAOBase{
     }
 
     return Lists.newArrayList(problemAttempts);
+  }
+
+  public List<ProblemAttempt> find(int offSet, int limit) {
+    return ObjectifyService.begin().query(ProblemAttempt.class).order(ProblemUtils.MINUS + ProblemAttempt.CREATED_DATE)
+            .offset(offSet).limit(limit).list();
   }
 }

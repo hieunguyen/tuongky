@@ -23,7 +23,7 @@ public class ProblemDao extends DAOBase {
   public static ProblemDao instance = new ProblemDao();
 
   public Problem getById(long problemId) {
-    return ObjectifyService.begin().get(Problem.class, problemId);
+    return ObjectifyService.begin().find(Problem.class, problemId);
   }
 
   public long create(String fen, String title, String description, String requirement, Long creatorId) {
@@ -56,10 +56,10 @@ public class ProblemDao extends DAOBase {
 
   // Index starts from 0
   // if pageSize == null, getById default value
-  public List<Problem> search(int offset, int limit) {
+  public List<Problem> search(int offset, int limit, String order) {
     Objectify ofy = ObjectifyService.begin();
 
-    Query<Problem> query = ofy.query(Problem.class).order(Problem.ID_FIELD).limit(limit).offset(offset);
+    Query<Problem> query = ofy.query(Problem.class).order(order).limit(limit).offset(offset);
 
     return query.list();
   }
