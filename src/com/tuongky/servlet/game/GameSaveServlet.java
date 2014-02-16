@@ -1,4 +1,4 @@
-package com.tuongky.servlet;
+package com.tuongky.servlet.game;
 
 import java.io.IOException;
 
@@ -13,10 +13,11 @@ import com.tuongky.backend.GameDao;
 import com.tuongky.model.GameCategory;
 import com.tuongky.model.datastore.Game;
 import com.tuongky.service.SearchService;
+import com.tuongky.servlet.Constants;
 import com.tuongky.util.JsonUtils;
 
 @SuppressWarnings("serial")
-public class GameCreateServlet extends HttpServlet {
+public class GameSaveServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -24,6 +25,7 @@ public class GameCreateServlet extends HttpServlet {
     int categoryIndex = Integer.parseInt(req.getParameter("category"));
     GameCategory category = GameCategory.fromValue(categoryIndex);
     Preconditions.checkState(!category.isUnKnown(), "Unknown game category.");
+    String id = req.getParameter("id");
     String username = req.getParameter("username");
     String title = req.getParameter("title");
     String nTitle = req.getParameter("n_title");
@@ -38,9 +40,9 @@ public class GameCreateServlet extends HttpServlet {
     }
 
     GameDao gameDao = new GameDao();
-    Game gameData = gameDao.save(username, category, title, nTitle, book, nBook, data);
+    Game gameData = gameDao.save(id, username, category, title, nTitle, book, nBook, data);
     SearchService.indexGame(gameData);
     resp.setContentType(Constants.CT_JSON);
-    resp.getWriter().println(JsonUtils.toJson("gameId", gameData.getId()));
+    resp.getWriter().println(JsonUtils.toJson("status", "ok"));
   }
 }

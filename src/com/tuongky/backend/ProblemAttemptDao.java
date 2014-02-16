@@ -49,7 +49,7 @@ public class ProblemAttemptDao extends DAOBase{
   private static int PAGE_SIZE_DEFAULT = 20;
 
   /**
-   * Given actorId, return problems solved by this actor, sorted by createdDate.
+   * Given actorId, return problems attempted by this actor, sorted by createdDate.
    *
    * @param actorId
    * @param isSuccess
@@ -103,5 +103,10 @@ public class ProblemAttemptDao extends DAOBase{
     }
 
     return Lists.newArrayList(problemAttempts);
+  }
+
+  public List<ProblemAttempt> find(int offSet, int limit) {
+    return ObjectifyService.begin().query(ProblemAttempt.class).order(ProblemUtils.MINUS + ProblemAttempt.CREATED_DATE)
+            .offset(offSet).limit(limit).list();
   }
 }

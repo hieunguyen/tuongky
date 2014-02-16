@@ -1,4 +1,4 @@
-package com.tuongky.servlet;
+package com.tuongky.servlet.problem;
 
 import com.tuongky.backend.ProblemAttemptDao;
 import com.tuongky.backend.SolutionDao;

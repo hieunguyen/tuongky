@@ -1,4 +1,4 @@
-package com.tuongky.servlet;
+package com.tuongky.servlet.problem;
 
 import com.tuongky.backend.ProblemDao;
 import com.tuongky.util.JsonUtils;

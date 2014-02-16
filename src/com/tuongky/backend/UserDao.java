@@ -7,13 +7,17 @@ import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.DAOBase;
 import com.tuongky.model.datastore.User;
 
+import java.util.Map;
+import java.util.Set;
+
 public class UserDao extends DAOBase {
 
   static {
     ObjectifyRegister.register();
   }
 
-  public static UserDao instance = new UserDao();
+  public static final UserDao instance = new UserDao();
+
   public User save(User user) {
     ObjectifyService.begin().put(user);
     return user;
@@ -68,5 +72,9 @@ public class UserDao extends DAOBase {
     return ofy.query(User.class)
         .filter("username", username)
         .get();
+  }
+
+  public Map<Long, User> batchGetBuyId(Set<Long> ids){
+    return ObjectifyService.begin().get(User.class, ids);
   }
 }

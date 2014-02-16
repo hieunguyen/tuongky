@@ -1,4 +1,4 @@
-package com.tuongky.servlet;
+package com.tuongky.servlet.problem;
 
 import com.tuongky.backend.ProblemDao;
 import com.tuongky.model.datastore.Problem;
@@ -12,10 +12,11 @@ import java.util.List;
  * Created by sngo on 2/12/14.
  */
 @SuppressWarnings("serial")
-public class ProblemSearchServlet extends HttpServlet{
+public class ProblemsFindServlet extends HttpServlet{
 
   private static final String PAGE_NUM_FIELD = "pageNum";
   private static final String PAGE_SIZE_FIELD = "pageSize";
+  private static final String ORDER_FIELD = "order";
 
   private static final String ROOT_KEY = "problemSearch";
 
@@ -26,6 +27,7 @@ public class ProblemSearchServlet extends HttpServlet{
           throws javax.servlet.ServletException, java.io.IOException {
     String pageNum = req.getParameter(PAGE_NUM_FIELD);
     String pageSize = req.getParameter(PAGE_SIZE_FIELD);
+    String order = req.getParameter(ORDER_FIELD);
 
     try{
       int page = Integer.parseInt(pageNum);
@@ -43,7 +45,7 @@ public class ProblemSearchServlet extends HttpServlet{
 
       int startIndex = page * size;
 
-      List<Problem> list = ProblemDao.instance.search(startIndex, size);
+      List<Problem> list = ProblemDao.instance.search(startIndex, size, order);
 
       resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, list));
     } catch (NumberFormatException e){

@@ -1,4 +1,4 @@
-package com.tuongky.servlet;
+package com.tuongky.servlet.game;
 
 import java.io.IOException;
 
@@ -11,6 +11,7 @@ import com.tuongky.backend.GameDao;
 import com.tuongky.backend.GameMetadataDao;
 import com.tuongky.model.datastore.Game;
 import com.tuongky.model.datastore.GameMetadata;
+import com.tuongky.servlet.Constants;
 import com.tuongky.util.JsonUtils;
 
 @SuppressWarnings("serial")

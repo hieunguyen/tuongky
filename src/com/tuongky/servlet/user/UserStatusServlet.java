@@ -1,4 +1,4 @@
-package com.tuongky.servlet;
+package com.tuongky.servlet.user;
 
 import java.io.IOException;
 import java.util.Map;
@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import com.tuongky.backend.UserDao;
 import com.tuongky.model.datastore.Session;
 import com.tuongky.model.datastore.User;
+import com.tuongky.servlet.Constants;
 
 @SuppressWarnings("serial")
 public class UserStatusServlet extends HttpServlet {
