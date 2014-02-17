@@ -6,12 +6,14 @@ import com.tuongky.backend.*;
 import com.tuongky.model.datastore.*;
 
 import javax.servlet.http.HttpServlet;
+
 import java.util.List;
 import java.util.Map;
 
 /**
  * Created by sngo on 2/13/14.
  */
+@SuppressWarnings("serial")
 public class UserGetServlet extends HttpServlet {
   private static final String ID_FIELD = "id";
   private static final String SOLVE_INCLUDED = "solveIncluded";

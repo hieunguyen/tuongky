@@ -2,13 +2,13 @@ package com.tuongky.servlet.problem;
 
 import com.tuongky.backend.ProblemAttemptDao;
 import com.tuongky.backend.SolutionDao;
-import com.tuongky.model.datastore.Problem;
 import com.tuongky.model.datastore.ProblemAttempt;
 import com.tuongky.util.JsonUtils;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
 /**
@@ -16,6 +16,7 @@ import java.io.IOException;
  *
  * Created by sngo on 2/10/14.
  */
+@SuppressWarnings("serial")
 public class ProblemSolveServlet extends HttpServlet {
 
   private static final String ATTEMPT_ID_FIELD = "attemptId";

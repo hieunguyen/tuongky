@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
+import com.tuongky.Settings;
 import com.tuongky.backend.InviteDao;
 import com.tuongky.backend.SessionDao;
 import com.tuongky.backend.UserDao;

@@ -17,8 +17,9 @@ public class UserMetadata {
   public static final String SOLVES_FIELD = "solves";
   public static final String ATTEMPTS_FIELD = "attempts";
 
+  @SuppressWarnings("unused")
   private UserMetadata(){
-    // unused
+    // Used by Objectify.
   }
   public UserMetadata(long id){
     this.id = id;

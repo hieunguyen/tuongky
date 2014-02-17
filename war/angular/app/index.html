@@ -1,8 +1,14 @@
 <!doctype html>
 <html lang="en" ng-app="tkApp">
 <head>
-  <meta charset=utf-8 />
+  <meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta property="og:image" content="http://tuongky.ngrok.com/img/test6.png"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Bài 2 - Khoá Hải Chinh Đông"/>
+  <meta property="og:url" content="http://tuongky.ngrok.com/problem/2"/>
+
   <title>Tuong Ky</title>
   <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
 	<!-- <link href="lib/cdn/bootstrap.min.css" rel="stylesheet"> -->
@@ -10,16 +16,6 @@
   <link rel="stylesheet" href="css/responsive.css"/>
 </head>
 <body>
-
-  <div id="fb-root"></div>
-  <script>(function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=1447546642129595";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));</script>
-
   <div class="container" ng-controller="AppCtrl">
     <div class="row header" ng-hide="embed">
       <div class="col-md-2">
@@ -65,7 +61,7 @@
     <div class="row main-menu">
       <div class="col-md-12">
         <ul>
-          <li ng-class="{current: mainNav.tab == 'practice'}"><a href="#/practice">Luyện công</a></li>
+          <li ng-class="{current: mainNav.tab == 'practice'}"><a href="#/problems">Luyện công</a></li>
           <li ng-class="{current: mainNav.tab == 'profile'}"><a href="#/profile">Tài khoản</a></li>
           <li ng-class="{current: mainNav.tab == 'rank'}"><a href="#/rank">Thứ hạng</a></li>
           <li ng-class="{current: mainNav.tab == 'document'}"><a href="#/">Tài liệu</a></li>
@@ -81,6 +77,8 @@
     <div class="clear"></div>
     <div ng-view class="view-container" ng-class="{embed: !!embed}" ng-hide="data.loading"></div>
   </div>
+
+  <div id="fb-root"></div>
 
   <script src="lib/cdn/jquery.min.js"></script>
 

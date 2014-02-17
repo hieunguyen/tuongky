@@ -10,12 +10,14 @@ import com.tuongky.model.datastore.ProblemAttempt;
 import com.tuongky.model.datastore.Solution;
 
 import javax.servlet.http.HttpServlet;
+
 import java.util.List;
 import java.util.Map;
 
 /**
  * Created by sngo on 2/13/14.
  */
+@SuppressWarnings("serial")
 public class ProblemGetServlet extends HttpServlet {
   private static final String ID_FIELD = "id";
   private static final String SOLVE_INCLUDED = "solveIncluded";
@@ -26,6 +28,7 @@ public class ProblemGetServlet extends HttpServlet {
   private static final String ATTEMPT = "attempt";
   private static final String IS_ON = "on";
 
+  @Override
   public void doGet(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp)
           throws javax.servlet.ServletException, java.io.IOException {
     String id = req.getParameter(ID_FIELD);

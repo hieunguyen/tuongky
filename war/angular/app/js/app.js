@@ -88,12 +88,12 @@ tkApp.config(['$routeProvider', function($routeProvider) {
         templateUrl: 'partials/study.html',
         controller: 'StudyCtrl'
       })
-  .when('/practice',
+  .when('/problems',
       {
-        templateUrl: 'partials/practice.html',
+        templateUrl: 'partials/problems.html',
         controller: 'ProblemSetCtrl'
       })
-  .when('/practice/:problemId',
+  .when('/problem/:problemId',
       {
         templateUrl: 'partials/problem.html',
         controller: 'ProblemCtrl'

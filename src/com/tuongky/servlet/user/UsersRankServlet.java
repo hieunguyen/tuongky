@@ -1,15 +1,17 @@
 package com.tuongky.servlet.user;
 
-import com.google.appengine.labs.repackaged.com.google.common.collect.Lists;
-import com.google.appengine.labs.repackaged.com.google.common.collect.Sets;
-import com.google.appengine.repackaged.com.google.common.base.Pair;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.tuongky.backend.CounterDao;
 import com.tuongky.backend.UserDao;
 import com.tuongky.backend.UserMetadataDao;
+import com.tuongky.model.UserData;
 import com.tuongky.model.datastore.User;
 import com.tuongky.model.datastore.UserMetadata;
 import com.tuongky.util.JsonUtils;
 
 import javax.servlet.http.HttpServlet;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -19,12 +21,14 @@ import java.util.Set;
  *
  * Find a list of users sort by #problemsSolved
  */
+@SuppressWarnings("serial")
 public class UsersRankServlet extends HttpServlet {
 
   private static final String PAGE_NUM_FIELD = "pageNum";
   private static final String PAGE_SIZE_FIELD = "pageSize";
 
   private static final String ROOT_KEY = "usersRank";
+  private static final String TOTAL_RESULT = "total";
 
   private static int PAGE_SIZE_DEFAULT = 10;
 
@@ -37,17 +41,18 @@ public class UsersRankServlet extends HttpServlet {
     return ids;
   }
 
-  private List<Pair<User, UserMetadata>> prepareResults(List<UserMetadata> users, Map<Long, User> userMap){
-    List<Pair<User, UserMetadata>> ret = Lists.newArrayList();
+  private List<UserData> prepareResults(List<UserMetadata> users, Map<Long, User> userMap){
+    List<UserData> ret = Lists.newArrayList();
 
     for (UserMetadata userMetadata : users){
       User user = userMap.get(userMetadata.getId());
-      ret.add(new Pair<User, UserMetadata>(user, userMetadata));
+      ret.add(new UserData(user, userMetadata));
     }
 
     return ret;
   }
   // order can be any field in UserMetadata.
+  @Override
   public void doGet(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp)
           throws javax.servlet.ServletException, java.io.IOException {
     String pageNum = req.getParameter(PAGE_NUM_FIELD);
@@ -74,7 +79,10 @@ public class UsersRankServlet extends HttpServlet {
 
       Map<Long, User> userMap = UserDao.instance.batchGetBuyId(userIds);
 
-      resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, prepareResults(list, userMap)));
+      long totalPages = (long)Math.ceil((double)CounterDao.getUsersCount()/size);
+
+      resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, prepareResults(list, userMap),
+              TOTAL_RESULT, totalPages));
 
     } catch (NumberFormatException e){
       resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, "NumberFormatException"));

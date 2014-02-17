@@ -4,11 +4,13 @@ import com.tuongky.backend.ProblemDao;
 import com.tuongky.util.JsonUtils;
 
 import javax.servlet.http.HttpServlet;
+
 import java.util.logging.Logger;
 
 /**
  * Created by sngo on 2/12/14.
  */
+@SuppressWarnings("serial")
 public class ProblemCreateServlet extends HttpServlet {
 
   private static final Logger log = Logger.getLogger(ProblemCreateServlet.class.getName());
@@ -20,6 +22,7 @@ public class ProblemCreateServlet extends HttpServlet {
   private static final String CREATOR_ID_FIELD = "creatorId";
   private static final String ROOT_KEY = "problem";
 
+  @Override
   public void doPost(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp)
           throws javax.servlet.ServletException, java.io.IOException {
     String fen = req.getParameter(FEN_FIELD);

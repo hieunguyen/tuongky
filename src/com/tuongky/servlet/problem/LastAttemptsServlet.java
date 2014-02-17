@@ -1,15 +1,17 @@
 package com.tuongky.servlet.problem;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServlet;
+
 import com.tuongky.backend.ProblemAttemptDao;
 import com.tuongky.model.datastore.ProblemAttempt;
 import com.tuongky.util.JsonUtils;
 
-import javax.servlet.http.HttpServlet;
-import java.util.List;
-
 /**
  * Created by sngo on 2/13/14.
  */
+@SuppressWarnings("serial")
 public class LastAttemptsServlet extends HttpServlet{
   private static final String PAGE_SIZE_FIELD = "pageSize";
 
@@ -17,6 +19,7 @@ public class LastAttemptsServlet extends HttpServlet{
 
   private static int PAGE_SIZE_DEFAULT = 20;
 
+  @Override
   public void doGet(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp)
           throws javax.servlet.ServletException, java.io.IOException {
     String pageSize = req.getParameter(PAGE_SIZE_FIELD);

@@ -9,8 +9,9 @@ public class SimpleCounter {
   private long counter = 0;
   private @Id String id;
 
+  @SuppressWarnings("unused")
   private SimpleCounter(){
-    // unused
+    // Used by Objectify.
   }
   public SimpleCounter(String id){
     this.id = id;

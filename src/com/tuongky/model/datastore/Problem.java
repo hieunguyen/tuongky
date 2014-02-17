@@ -32,8 +32,9 @@ public class Problem {
   public static String ID_FIELD = "id";
   public static String CREATED_DATE_FIELD = "createdDate";
 
+  @SuppressWarnings("unused")
   private Problem(){
-    // unused
+    // Used by Objectify.
   }
 
   public Problem(long id, String title, String fen, String description, String requirement, Long creatorId) {

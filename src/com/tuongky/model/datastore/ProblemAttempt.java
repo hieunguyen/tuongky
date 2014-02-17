@@ -22,7 +22,7 @@ public class ProblemAttempt {
   private boolean isSuccessful;
   private long createdDate;
 
-  protected ProblemAttempt(){
+  protected ProblemAttempt() {
     // unused
   }
   public ProblemAttempt(long actorId, long problemId, String actorName, String problemTitle, boolean isSuccessful) {
