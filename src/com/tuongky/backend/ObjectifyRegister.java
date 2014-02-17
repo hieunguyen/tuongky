@@ -23,6 +23,7 @@ public class ObjectifyRegister {
     ObjectifyService.register(User.class);
     ObjectifyService.register(UserMetadata.class);
     ObjectifyService.register(SimpleCounter.class);
+    ObjectifyService.register(Ranker.class);
   }
 
   public static ObjectifyRegister register(){

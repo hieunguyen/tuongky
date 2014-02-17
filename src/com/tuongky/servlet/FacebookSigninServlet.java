@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tuongky.backend.SessionDao;
 import com.tuongky.backend.UserDao;
+import com.tuongky.backend.UserMetadataDao;
 import com.tuongky.model.datastore.Session;
 import com.tuongky.model.datastore.User;
 

@@ -10,7 +10,6 @@ import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.DAOBase;
 import com.tuongky.model.datastore.ProblemAttempt;
 import com.tuongky.util.ProblemUtils;
-import org.jcp.xml.dsig.internal.dom.Utils;
 
 /**
  * Created by sngo on 2/3/14.
@@ -25,6 +24,17 @@ public class ProblemAttemptDao extends DAOBase{
 
   private static final Logger log = Logger.getLogger(ProblemAttemptDao.class.getName());
 
+  public ProblemAttempt getById(String id){
+    return ObjectifyService.begin().find(ProblemAttempt.class, id);
+  }
+
+  public void setAttemptStatus(String id, boolean isSuccess){
+    ProblemAttempt attempt = ObjectifyService.begin().find(ProblemAttempt.class, id);
+    if (attempt != null){
+      attempt.setSuccessful(isSuccess);
+      ObjectifyService.begin().put(attempt);
+    }
+  }
   /**
    * Save the outcome of an attempt made by a user, either success or fail
    *
@@ -33,7 +43,7 @@ public class ProblemAttemptDao extends DAOBase{
    * @param isSuccess
    * @return id
    */
-  public long attempt(long actorId, long problemId, boolean isSuccess) {
+  public String attempt(long actorId, long problemId, boolean isSuccess) {
 
     ProblemAttempt attempt = ProblemUtils.newProblemAttempt(actorId, problemId, isSuccess);
 
@@ -45,7 +55,7 @@ public class ProblemAttemptDao extends DAOBase{
 
     UserMetadataDao.instance.attempt(actorId);
 
-    return key.getId();
+    return attempt.getId();
   }
 
   private static int PAGE_SIZE_DEFAULT = 20;

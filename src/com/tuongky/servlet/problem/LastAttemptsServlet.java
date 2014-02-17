@@ -1,8 +1,6 @@
 package com.tuongky.servlet.problem;
 
 import com.tuongky.backend.ProblemAttemptDao;
-import com.tuongky.backend.ProblemDao;
-import com.tuongky.model.datastore.Problem;
 import com.tuongky.model.datastore.ProblemAttempt;
 import com.tuongky.util.JsonUtils;
 

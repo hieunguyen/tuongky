@@ -27,12 +27,18 @@ public class UserDao extends DAOBase {
     String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
     User user = new User(email, username, hashed);
     ObjectifyService.begin().put(user);
+
+    // create a new userMetadata
+    UserMetadataDao.instance.create(user.getId());
     return user;
   }
 
   public User save(String fbId, String fbName) {
     User user = User.createFbUser(fbId, fbName);
     ObjectifyService.begin().put(user);
+
+    // create a new userMetadata
+    UserMetadataDao.instance.create(user.getId());
     return user;
   }
 

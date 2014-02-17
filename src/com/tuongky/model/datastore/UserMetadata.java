@@ -1,6 +1,9 @@
 package com.tuongky.model.datastore;
 
+import com.google.appengine.datanucleus.annotations.Unindexed;
+
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 /**
  * Created by sngo on 2/10/14.
@@ -12,6 +15,7 @@ public class UserMetadata {
   private int attempts = 0;
 
   public static final String SOLVES_FIELD = "solves";
+  public static final String ATTEMPTS_FIELD = "attempts";
 
   private UserMetadata(){
     // unused

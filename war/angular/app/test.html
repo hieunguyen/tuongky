@@ -33,12 +33,16 @@ Search Problem
     <input type="submit" value="get" />
 </form>
 
-Solve Problem
-<form action="problem/solve" method="post">
+Attemp Problem
+<form action="problem/attempt" method="post">
     <input type="text" name="actorId" value="actorId" />
     <input type="text" name="problemId" value="problemId" />
-    isSuccess
-    <input type="checkbox" name="isSuccess">
+    <input type="submit" value="attempt" />
+</form>
+
+Solve Problem
+<form action="problem/solve" method="post">
+    <input type="text" name="attemptId" value="attemptId" />
     <input type="submit" value="solve" />
 </form>
 
@@ -62,4 +66,9 @@ Get User
 Last attempts
 <form action="problem/lastAttempts" method="get">
     <input type="submit" value="get" />
+</form>
+
+Ranker recompute
+<form action="user/ranker" method="post">
+    <input type="submit" value="post" />
 </form>
