@@ -22,7 +22,7 @@ public class CanonicalProblemServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     if (!isFacebookBot(req)) {
-      resp.sendRedirect("/#/practice/2");
+      resp.sendRedirect("/#/problem/2");
     }
     HashMap<String, Object> scopes = Maps.newHashMap();
     scopes.put("name", "Mustache");
