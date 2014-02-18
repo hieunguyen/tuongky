@@ -8,7 +8,6 @@ import com.tuongky.model.datastore.Session;
 public class SessionDao {
 
   static {
-//    ObjectifyService.register(Session.class);
     ObjectifyRegister.register();
   }
 

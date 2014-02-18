@@ -21,6 +21,9 @@ public class SimpleCounter {
     counter++;
   }
 
+  public void decrease(){
+    counter--;
+  }
   public long getCounter() {
     return counter;
   }

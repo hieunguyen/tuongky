@@ -2,6 +2,7 @@ package com.tuongky.servlet.user;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.tuongky.backend.CounterDao;
 import com.tuongky.backend.UserDao;
 import com.tuongky.backend.UserMetadataDao;
 import com.tuongky.model.UserData;
@@ -27,6 +28,7 @@ public class UsersRankServlet extends HttpServlet {
   private static final String PAGE_SIZE_FIELD = "pageSize";
 
   private static final String ROOT_KEY = "usersRank";
+  private static final String TOTAL_RESULT = "total";
 
   private static int PAGE_SIZE_DEFAULT = 10;
 
@@ -77,7 +79,10 @@ public class UsersRankServlet extends HttpServlet {
 
       Map<Long, User> userMap = UserDao.instance.batchGetBuyId(userIds);
 
-      resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, prepareResults(list, userMap)));
+      long totalPages = (long)Math.ceil((double)CounterDao.getUsersCount()/size);
+
+      resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, prepareResults(list, userMap),
+              TOTAL_RESULT, totalPages));
 
     } catch (NumberFormatException e){
       resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, "NumberFormatException"));

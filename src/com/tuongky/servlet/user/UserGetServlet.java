@@ -25,7 +25,19 @@ public class UserGetServlet extends HttpServlet {
   private static final String ATTEMPT_KEY = "attempt";
   private static final String IS_ON = "on";
 
-  @Override
+  private RankInfo getRankInfo(UserMetadata userMetadata){
+    if (userMetadata != null && userMetadata.getSolves() > 0)
+    {
+      int more = UserRankerDao.instance.getRank(userMetadata.getSolves() + 1);
+      int same = UserRankerDao.instance.getRank(userMetadata.getSolves());
+      int total = UserRankerDao.instance.getRank(1);
+
+      return new RankInfo(more + 1, same - more, total);
+    }
+
+    return null;
+  }
+
   public void doGet(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp)
           throws javax.servlet.ServletException, java.io.IOException {
     String id = req.getParameter(ID_FIELD);
@@ -53,6 +65,8 @@ public class UserGetServlet extends HttpServlet {
       List<ProblemAttempt> attempts = ProblemAttemptDao.instance.searchByActor(idLong, false, Integer.MAX_VALUE, 0);
       ret.put(ATTEMPT_KEY, attempts);
     }
+
+    ret.put("rankInfo", getRankInfo(metadata));
 
     resp.getWriter().println(new Gson().toJson(ret));
 
