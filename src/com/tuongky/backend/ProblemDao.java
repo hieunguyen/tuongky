@@ -19,7 +19,6 @@ public class ProblemDao extends DAOBase {
     ObjectifyRegister.register();
   }
 
-  private final String COUNTER_STORE = "problemCounter";
   public static ProblemDao instance = new ProblemDao();
 
   public Problem getById(long problemId) {
@@ -27,16 +26,18 @@ public class ProblemDao extends DAOBase {
   }
 
   public long create(String fen, String title, String description, String requirement, Long creatorId) {
-    long id = DistributedSequenceGenerator.increaseAndGet(COUNTER_STORE);
+    long id = CounterDao.getNextAvailableProblemId();
 
     Problem problem = new Problem(id, title, fen, description, requirement, creatorId);
     ObjectifyService.begin().put(problem);
 
+    CounterDao.addProblem();
     return id;
   }
 
   public void delete(long problemId) {
     ObjectifyService.begin().delete(Problem.class, problemId);
+    CounterDao.subtractProblem();
   }
 
   public List<Problem> findByCreator(long creatorId) {

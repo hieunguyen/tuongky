@@ -1,5 +1,6 @@
 package com.tuongky.servlet.problem;
 
+import com.tuongky.backend.CounterDao;
 import com.tuongky.backend.ProblemDao;
 import com.tuongky.model.datastore.Problem;
 import com.tuongky.util.JsonUtils;
@@ -19,6 +20,7 @@ public class ProblemsFindServlet extends HttpServlet{
   private static final String ORDER_FIELD = "order";
 
   private static final String ROOT_KEY = "problemSearch";
+  private static final String TOTAL_RESULT = "total";
 
   private static int PAGE_SIZE_DEFAULT = 10;
 
@@ -44,10 +46,11 @@ public class ProblemsFindServlet extends HttpServlet{
       }
 
       int startIndex = page * size;
+      long totalPages = (long)Math.ceil((double)CounterDao.getProblemsCount()/size);
 
       List<Problem> list = ProblemDao.instance.search(startIndex, size, order);
 
-      resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, list));
+      resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, list, TOTAL_RESULT, totalPages));
     } catch (NumberFormatException e){
       resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, "NumberFormatException"));
     }
