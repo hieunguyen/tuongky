@@ -1,5 +1,7 @@
 package com.tuongky.servlet;
 
+import static com.tuongky.logic.Constants.*;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +18,8 @@ import com.google.appengine.api.images.Image;
 import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.common.collect.Lists;
+import com.tuongky.logic.Fen;
+import com.tuongky.logic.FenParser;
 
 // Red: 帅 仕 相 车 炮 马 兵
 // Black: 将 士 象 车 炮 马 卒
@@ -23,21 +27,11 @@ import com.google.common.collect.Lists;
 @SuppressWarnings("serial")
 public class FenImageGenerateServlet extends HttpServlet {
 
-  private static final int K = 1;
-  private static final int A = 2;
-  private static final int E = 3;
-  private static final int R = 4;
-  private static final int C = 5;
-  private static final int H = 6;
-  private static final int P = 7;
-
   private static final String IMG_DIR = "/angular/app/img/xq3/";
-
   private static final String PIECE_CHARS = ".kaerchp";
 
   private byte[] inputStreamToBytes(InputStream inputStream) throws IOException {
-    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
-        1024);
+    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(1024);
     byte[] buffer = new byte[1024];
     int length;
     while ((length = inputStream.read(buffer)) >= 0) {
@@ -91,48 +85,27 @@ public class FenImageGenerateServlet extends HttpServlet {
     Composite boardComposite =
         ImagesServiceFactory.makeComposite(boardImage, 308, 0, 1.0f, Anchor.TOP_LEFT);
 
+    String fenString = req.getParameter("fen");
+
+    Fen fen = null;
+    if (fenString != null) {
+      fen = FenParser.parse(fenString);
+    }
+
+    if (fenString == null || fen == null) {
+      fen = FenParser.parse(STARTING_FEN);
+    }
+
     List<Composite> composites = Lists.newArrayList(boardComposite);
 
-    // BLACK
-    composites.add(makeCompositeAt(0, 0, -R));
-    composites.add(makeCompositeAt(0, 1, -H));
-    composites.add(makeCompositeAt(0, 2, -E));
-    composites.add(makeCompositeAt(0, 3, -A));
-    composites.add(makeCompositeAt(0, 4, -K));
-    composites.add(makeCompositeAt(0, 5, -A));
-    composites.add(makeCompositeAt(0, 6, -E));
-    composites.add(makeCompositeAt(0, 7, -H));
-    composites.add(makeCompositeAt(0, 8, -R));
-
-    composites.add(makeCompositeAt(2, 1, -C));
-    composites.add(makeCompositeAt(2, 7, -C));
-
-    composites.add(makeCompositeAt(3, 0, -P));
-    composites.add(makeCompositeAt(3, 2, -P));
-    composites.add(makeCompositeAt(3, 4, -P));
-    composites.add(makeCompositeAt(3, 6, -P));
-    composites.add(makeCompositeAt(3, 8, -P));
-
-    // RED
-    composites.add(makeCompositeAt(9, 0, R));
-    composites.add(makeCompositeAt(9, 1, H));
-    composites.add(makeCompositeAt(9, 2, E));
-    composites.add(makeCompositeAt(9, 3, A));
-    composites.add(makeCompositeAt(9, 4, K));
-    composites.add(makeCompositeAt(9, 5, A));
-    composites.add(makeCompositeAt(9, 6, E));
-    composites.add(makeCompositeAt(9, 7, H));
-    composites.add(makeCompositeAt(9, 8, R));
-
-    composites.add(makeCompositeAt(7, 1, C));
-    composites.add(makeCompositeAt(7, 7, C));
-
-    composites.add(makeCompositeAt(6, 0, P));
-    composites.add(makeCompositeAt(6, 2, P));
-    composites.add(makeCompositeAt(6, 4, P));
-    composites.add(makeCompositeAt(6, 6, P));
-    composites.add(makeCompositeAt(6, 8, P));
-
+    int[][] board = fen.getBoard();
+    for (int i = 0; i < ROWS; i++) {
+      for (int j = 0; j < COLS; j++) {
+        if (board[i][j] != EMPTY) {
+          composites.add(makeCompositeAt(i, j, board[i][j]));
+        }
+      }
+    }
     Image result = createImageFromComposites(composites);
 
     resp.setContentType("image/png");
