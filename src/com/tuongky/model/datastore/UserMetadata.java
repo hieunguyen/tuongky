@@ -1,9 +1,6 @@
 package com.tuongky.model.datastore;
 
-import com.google.appengine.datanucleus.annotations.Unindexed;
-
 import javax.persistence.Id;
-import javax.persistence.Transient;
 
 /**
  * Created by sngo on 2/10/14.

@@ -1,13 +1,13 @@
 package com.tuongky.servlet.problem;
 
-import com.tuongky.backend.ProblemAttemptDao;
-import com.tuongky.backend.SolutionDao;
-import com.tuongky.util.JsonUtils;
+import java.io.IOException;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
+import com.tuongky.backend.ProblemAttemptDao;
+import com.tuongky.util.JsonUtils;
 
 /**
  * This servlet is called when user starts solving a problem.
@@ -15,6 +15,7 @@ import java.io.IOException;
  *
  * Created by sngo on 2/14/14.
  */
+@SuppressWarnings("serial")
 public class ProblemAttemptServlet extends HttpServlet {
   private static final String ACTOR_ID_FIELD = "actorId";
   private static final String PROBLEM_ID_FIELD = "problemId";

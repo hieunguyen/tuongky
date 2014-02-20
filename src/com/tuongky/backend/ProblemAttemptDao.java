@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.google.appengine.labs.repackaged.com.google.common.collect.Lists;
-import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.DAOBase;
 import com.tuongky.model.datastore.ProblemAttempt;
@@ -45,8 +44,6 @@ public class ProblemAttemptDao extends DAOBase{
   public String attempt(long actorId, long problemId, boolean isSuccess) {
 
     ProblemAttempt attempt = ProblemUtils.newProblemAttempt(actorId, problemId, isSuccess);
-
-    Key<ProblemAttempt> key = ObjectifyService.begin().put(attempt);
 
     if (ProblemDao.instance.addAttempter(problemId) == -1) {
       log.severe("Fail to add attempter to problem " + problemId);

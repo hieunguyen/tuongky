@@ -1,20 +1,17 @@
 package com.tuongky.backend;
 
+import java.util.List;
+
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.DAOBase;
 import com.tuongky.model.datastore.UserMetadata;
 import com.tuongky.util.ProblemUtils;
 
-import java.util.List;
-import java.util.logging.Logger;
-
 /**
  * Created by sngo on 2/10/14.
  */
 public class UserMetadataDao extends DAOBase{
-
-  private static final Logger log = Logger.getLogger(UserMetadataDao.class.getName());
 
   static {
     ObjectifyRegister.register();

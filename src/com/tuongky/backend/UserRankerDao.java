@@ -1,13 +1,14 @@
 package com.tuongky.backend;
 
+import java.util.List;
+
+import javax.jdo.annotations.Transactional;
+
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.DAOBase;
-import com.tuongky.model.datastore.*;
-
-import javax.jdo.annotations.Transactional;
-import java.util.List;
-import java.util.logging.Logger;
+import com.tuongky.model.datastore.Ranker;
+import com.tuongky.model.datastore.UserMetadata;
 
 /**
  * Created by sngo on 2/16/14.
@@ -19,7 +20,6 @@ public class UserRankerDao extends DAOBase{
   }
 
   public static final UserRankerDao instance = new UserRankerDao();
-  private static final Logger log = Logger.getLogger(UserRankerDao.class.getName());
 
   // How many users who solves at least [solves] problems.
   // Note that if solves=0, it will return 0 since there is no instance with id=0 in the datastore
