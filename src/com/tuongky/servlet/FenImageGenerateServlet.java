@@ -87,6 +87,8 @@ public class FenImageGenerateServlet extends HttpServlet {
 
     String fenString = req.getParameter("fen");
 
+    fenString = "6P2/2H2h3/3a1kC2/5C3/4P4/9/7cR/5c3/4p2r1/5K3 w - - - 1";
+
     Fen fen = null;
     if (fenString != null) {
       fen = FenParser.parse(fenString);

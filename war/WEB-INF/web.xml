@@ -19,7 +19,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>FenImageGenerate</servlet-name>
-    <url-pattern>/fen_img</url-pattern>
+    <url-pattern>/fen_img/*</url-pattern>
   </servlet-mapping>
 
 	<servlet>
@@ -190,7 +190,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>CanonicalProblem</servlet-name>
-		<url-pattern>/problem/2</url-pattern>
+		<url-pattern>/problem/*</url-pattern>
 	</servlet-mapping>
 
   <servlet>
