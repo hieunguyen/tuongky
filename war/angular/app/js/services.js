@@ -1170,7 +1170,7 @@ tkServices.factory('problemService', function($q, $http) {
 
   service.getProblems = function() {
     var defer = $q.defer();
-    $http.get('json/problems.json').success(function(data) {
+    $http.get('/problem/search?pageNum=0&pageSize=10&order=id').success(function(data) {
       defer.resolve(data);
     });
     return defer.promise;
@@ -1178,10 +1178,14 @@ tkServices.factory('problemService', function($q, $http) {
 
   service.getProblem = function(problemId) {
     var defer = $q.defer();
-    $http.get('json/problem.json').success(function(data) {
+    $http.get('/problem/get?id=' + problemId).success(function(data) {
       defer.resolve(data);
     });
     return defer.promise;
+  };
+
+  service.solvedIt = function(problemId) {
+
   };
 
   return service;

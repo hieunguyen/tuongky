@@ -1,5 +1,5 @@
 <br/>
-<table class="table">
+<table class="table problem-list">
   <tr>
     <th>Tiêu đề</th>
     <th>Số người giải được</th>
@@ -8,8 +8,8 @@
 
   <tr ng-repeat="problem in problems">
     <td><a ng-href="#/problem/{{problem.id}}">Bài {{problem.id}}{{problem.title && ' - ' + problem.title || ''}}</a></td>
-    <td><a ng-href="#/solvedby/{{problem.id}}">{{problem.solvedBy}}</a></td>
-    <td><span ng-if="problem.solved">Xong</span></th>
+    <td><a ng-href="#/solvedby/{{problem.id}}">{{problem.solvers}}</a></td>
+    <td><span ng-if="problem.solved"><img src="/img/checkmark.png" class="done"></span></th>
   </tr>
 </table>
 

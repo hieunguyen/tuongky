@@ -21,10 +21,16 @@ public class CanonicalProblemServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    String problemId = extractProblemId(req);
+    if (problemId == null) {
+      resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Problem not found.");
+      return;
+    }
     if (!isFacebookBot(req)) {
-      resp.sendRedirect("/#/problem/2");
+      resp.sendRedirect("/#/problem/" + problemId);
     }
     HashMap<String, Object> scopes = Maps.newHashMap();
+    scopes.put("problemId", problemId);
     scopes.put("name", "Mustache");
     scopes.put("version", "1.0");
     MustacheFactory mf = new DefaultMustacheFactory();
@@ -33,6 +39,19 @@ public class CanonicalProblemServlet extends HttpServlet {
     PrintWriter writer = resp.getWriter();
     mustache.execute(writer, scopes);
     writer.flush();
+  }
+
+  private String extractProblemId(HttpServletRequest req) {
+    String pathInfo = req.getPathInfo();
+    if (pathInfo == null || pathInfo.length() < 2) {
+      return null;
+    }
+    try {
+      int problemId = Integer.parseInt(pathInfo.substring(1));
+      return String.valueOf(problemId);
+    } catch(NumberFormatException e) {
+      return null;
+    }
   }
 
   private boolean isFacebookBot(HttpServletRequest req) {

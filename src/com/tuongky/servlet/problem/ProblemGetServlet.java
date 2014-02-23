@@ -7,7 +7,9 @@ import com.tuongky.backend.ProblemDao;
 import com.tuongky.backend.SolutionDao;
 import com.tuongky.model.datastore.Problem;
 import com.tuongky.model.datastore.ProblemAttempt;
+import com.tuongky.model.datastore.Session;
 import com.tuongky.model.datastore.Solution;
+import com.tuongky.servlet.Constants;
 
 import javax.servlet.http.HttpServlet;
 
@@ -26,6 +28,7 @@ public class ProblemGetServlet extends HttpServlet {
   private static final String ROOT_KEY = "problem";
   private static final String SOLVE = "solve";
   private static final String ATTEMPT = "attempt";
+  private static final String SOLVED = "solved";
   private static final String IS_ON = "on";
 
   @Override
@@ -55,6 +58,13 @@ public class ProblemGetServlet extends HttpServlet {
       ret.put(ATTEMPT, attempts);
     }
 
+    Session session = (Session) req.getAttribute(Constants.SESSION_ATTRIBUTE);
+    if (session != null) {
+      boolean solved = SolutionDao.instance.solvedByProblem(session.getUserId(), problem);
+      ret.put(SOLVED, solved);
+    }
+
+    resp.setContentType(Constants.CT_JSON_UTF8);
     resp.getWriter().println(new Gson().toJson(ret));
   }
 

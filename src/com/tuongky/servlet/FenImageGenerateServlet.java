@@ -18,8 +18,10 @@ import com.google.appengine.api.images.Image;
 import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.common.collect.Lists;
+import com.tuongky.backend.ProblemDao;
 import com.tuongky.logic.Fen;
 import com.tuongky.logic.FenParser;
+import com.tuongky.model.datastore.Problem;
 
 // Red: 帅 仕 相 车 炮 马 兵
 // Black: 将 士 象 车 炮 马 卒
@@ -78,16 +80,36 @@ public class FenImageGenerateServlet extends HttpServlet {
     return image;
   }
 
+  private String extractProblemId(HttpServletRequest req) {
+    String pathInfo = req.getPathInfo();
+    if (pathInfo == null || pathInfo.length() < 2) {
+      return null;
+    }
+    try {
+      int problemId = Integer.parseInt(pathInfo.substring(1));
+      return String.valueOf(problemId);
+    } catch(NumberFormatException e) {
+      return null;
+    }
+  }
+
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws IOException {
+    String problemId = extractProblemId(req);
+    if (problemId == null) {
+      resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Problem not found.");
+      return;
+    }
+
+    Problem problem = ProblemDao.instance.getById(Long.parseLong(problemId));
+    String fenString = problem.getFen();
+
     Image boardImage = makeImageFromFile(IMG_DIR + "board.png");
     Composite boardComposite =
         ImagesServiceFactory.makeComposite(boardImage, 308, 0, 1.0f, Anchor.TOP_LEFT);
 
-    String fenString = req.getParameter("fen");
-
-    fenString = "6P2/2H2h3/3a1kC2/5C3/4P4/9/7cR/5c3/4p2r1/5K3 w - - - 1";
+//    fenString = "6P2/2H2h3/3a1kC2/5C3/4P4/9/7cR/5c3/4p2r1/5K3 w - - - 1";
 
     Fen fen = null;
     if (fenString != null) {

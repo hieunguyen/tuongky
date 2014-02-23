@@ -1081,14 +1081,26 @@ tkControllers.controller('InviteCtrl', function($scope, inviteService) {
 tkControllers.controller('ProblemSetCtrl', function($scope, problemService) {
   $scope.mainNav.tab = 'practice';
 
-  problemService.getProblems().then(function(problems) {
-    $scope.problems = problems;
+  problemService.getProblems().then(function(response) {
+    $scope.total = response.total;
+    $scope.problems = response.problemSearch;
+    _.each($scope.problems, function(problem, index) {
+      problem.solved = !!response.solved[index];
+    });
   });
 });
 
 
-tkControllers.controller('ProblemCtrl', function($scope, $timeout, $routeParams,
+tkControllers.controller('ProblemCtrl', function(
+  $scope, $timeout, $routeParams, $sce,
   problemService, gameService, fenService, engineService) {
+
+  $scope.getShareUrl = function(problemId) {
+    var url = 'http://www.facebook.com/plugins/like.php?href=' +
+        'http%3A%2F%2Ftuongky.ngrok.com%2Fproblem%2F' + problemId +
+        '&width&layout=button&action=like&show_faces=true&share=true&height=80&appId=' + FB_APP_ID;
+    return $sce.trustAsResourceUrl(url);
+  };
 
   $scope.mainNav.tab = 'practice';
 
@@ -1101,7 +1113,10 @@ tkControllers.controller('ProblemCtrl', function($scope, $timeout, $routeParams,
   var fen;
 
   var problemId = $routeParams.problemId;
-  problemService.getProblem(problemId).then(function(problem) {
+  problemService.getProblem(problemId).then(function(response) {
+    var problem = response.problem;
+    problem.solved = response.solved;
+    console.log(problem);
     $scope.problem = problem;
     var pos = fenService.fen2pos(problem.fen);
     fen = problem.fen;
@@ -1240,6 +1255,10 @@ tkControllers.controller('ProblemCtrl', function($scope, $timeout, $routeParams,
 
   $scope.test = function() {
     console.log(gameService.getMoves());
+  };
+
+  $scope.attempt = function() {
+    alert('attempt');
   };
 });
 

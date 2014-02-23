@@ -1,11 +1,16 @@
 package com.tuongky.backend;
 
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
 import com.googlecode.objectify.util.DAOBase;
+import com.tuongky.model.datastore.Problem;
 import com.tuongky.model.datastore.Solution;
 import com.tuongky.util.ProblemUtils;
 
@@ -86,4 +91,38 @@ public class SolutionDao extends DAOBase{
             order(ProblemUtils.MINUS + Solution.CREATED_DATE).offset(startIndex).limit(count).list();
   }
 
+  /**
+   * Finds out which problems in the list have been solved by an user.
+   * @param userId The userId.
+   * @param problemIds A list of problemIds.
+   * @return
+   */
+  public List<Boolean> solvedByIds(long userId, List<Long> problemIds) {
+    List<Key<Solution>> keys = Lists.newArrayList();
+    for (long problemId : problemIds) {
+      String solutionId = Solution.createId(userId, problemId);
+      keys.add(Key.create(Solution.class, solutionId));
+    }
+    Set<Long> foundSet = Sets.newHashSet();
+    for (Key<Solution> key : ObjectifyService.begin().get(keys).keySet()) {
+      foundSet.add(key.getId());
+    }
+    List<Boolean> result = Lists.newArrayList();
+    for (long problemId : problemIds) {
+      result.add(foundSet.contains(problemId));
+    }
+    return result;
+  }
+
+  public List<Boolean> solvedByProblems(long userId, List<Problem> problems) {
+    List<Long> problemIds = Lists.newArrayList();
+    for (Problem problem : problems) {
+      problemIds.add(problem.getId());
+    }
+    return solvedByIds(userId, problemIds);
+  }
+
+  public boolean solvedByProblem(long userId, Problem problem) {
+    return solvedByProblems(userId, Lists.newArrayList(problem)).get(0);
+  }
 }

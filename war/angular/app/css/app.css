@@ -584,3 +584,8 @@ button.fb-login:hover {
 .fb-signin-form .fb-login {
 	margin-top: 30px;
 }
+
+.problem-list .done {
+	height: 24px;
+	width: 24px;
+}

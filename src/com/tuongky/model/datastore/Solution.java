@@ -16,11 +16,10 @@ public class Solution extends ProblemAttempt {
 
   public Solution(long actorId, long problemId, String actorName, String problemTitle) {
     super(actorId, problemId, actorName, problemTitle, true);
-    setId(getId(actorId, problemId));
+    setId(createId(actorId, problemId));
   }
 
-  public String getId (long actorId, long problemId) {
+  public static String createId (long actorId, long problemId) {
     return Long.toString(actorId) + UNIQUE_DELIMINATOR + Long.toString(problemId);
   }
-
 }
