@@ -23,8 +23,8 @@ import com.tuongky.util.JsonUtils;
 @SuppressWarnings("serial")
 public class ProblemsFindServlet extends HttpServlet{
 
-  private static final String PAGE_NUM_FIELD = "pageNum";
-  private static final String PAGE_SIZE_FIELD = "pageSize";
+  private static final String PAGE_NUM_FIELD = "page_num";
+  private static final String PAGE_SIZE_FIELD = "page_size";
   private static final String ORDER_FIELD = "order";
 
   private static final String ROOT_KEY = "problemSearch";
@@ -64,11 +64,14 @@ public class ProblemsFindServlet extends HttpServlet{
       }
 
       int startIndex = page * size;
-      long totalPages = (long)Math.ceil((double)CounterDao.getProblemsCount()/size);
+      long totalResults = CounterDao.getProblemsCount();
 
       List<Problem> problems = ProblemDao.instance.search(startIndex, size, order);
 
       Map<String, Object> data = Maps.newHashMap();
+
+      data.put(ROOT_KEY, problems);
+      data.put(TOTAL_RESULT, totalResults);
 
       Session session = (Session) req.getAttribute(Constants.SESSION_ATTRIBUTE);
 

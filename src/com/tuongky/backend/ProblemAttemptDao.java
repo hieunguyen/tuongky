@@ -48,6 +48,8 @@ public class ProblemAttemptDao extends DAOBase{
 
     ProblemAttempt attempt = ProblemUtils.newProblemAttempt(actorId, problemId, isSuccess);
 
+    ObjectifyService.begin().put(attempt);
+
     if (ProblemDao.instance.addAttempter(problemId) == -1) {
       log.severe("Fail to add attempter to problem " + problemId);
     }

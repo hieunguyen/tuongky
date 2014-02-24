@@ -10,8 +10,12 @@ import com.tuongky.model.datastore.User;
 import com.tuongky.model.datastore.UserMetadata;
 import com.tuongky.util.JsonUtils;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -51,10 +55,11 @@ public class UsersRankServlet extends HttpServlet {
 
     return ret;
   }
+
   // order can be any field in UserMetadata.
   @Override
-  public void doGet(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp)
-          throws javax.servlet.ServletException, java.io.IOException {
+  public void doGet(HttpServletRequest req, HttpServletResponse resp)
+      throws ServletException, IOException {
     String pageNum = req.getParameter(PAGE_NUM_FIELD);
     String pageSize = req.getParameter(PAGE_SIZE_FIELD);
 
@@ -79,14 +84,13 @@ public class UsersRankServlet extends HttpServlet {
 
       Map<Long, User> userMap = UserDao.instance.batchGetBuyId(userIds);
 
-      long totalPages = (long)Math.ceil((double)CounterDao.getUsersCount()/size);
+      long totalResults = CounterDao.getUsersCount();
 
       resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, prepareResults(list, userMap),
-              TOTAL_RESULT, totalPages));
+              TOTAL_RESULT, totalResults));
 
     } catch (NumberFormatException e){
       resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, "NumberFormatException"));
     }
   }
-
 }

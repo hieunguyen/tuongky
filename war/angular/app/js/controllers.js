@@ -1078,16 +1078,31 @@ tkControllers.controller('InviteCtrl', function($scope, inviteService) {
 });
 
 
-tkControllers.controller('ProblemSetCtrl', function($scope, problemService) {
+tkControllers.controller('ProblemSetCtrl', function(
+    $scope, $location, problemService) {
   $scope.mainNav.tab = 'practice';
 
-  problemService.getProblems().then(function(response) {
-    $scope.total = response.total;
+  $scope.ITEMS_PER_PAGE = 2;
+
+  var params = $location.search();
+
+  var start = params.start || 0;
+
+  $scope.currentPage = Math.floor(start / $scope.ITEMS_PER_PAGE) + 1;
+
+  problemService.getProblems(
+      $scope.currentPage - 1, $scope.ITEMS_PER_PAGE, 'id').then(function(response) {
+    $scope.totalItems = response.total;
     $scope.problems = response.problemSearch;
     _.each($scope.problems, function(problem, index) {
       problem.solved = !!response.solved[index];
     });
   });
+
+  $scope.selectPage = function(page) {
+    var start = (page - 1) * $scope.ITEMS_PER_PAGE;
+    $location.search({start: start});
+  };
 });
 
 
@@ -1146,12 +1161,19 @@ tkControllers.controller('ProblemCtrl', function(
     return false;
   }
 
+  function solveIt() {
+    problemService.solve($scope.attemptId).then(function(response) {
+      $scope.problem.solved = true;
+    });
+  };
+
   function makeMove(x, y, u, v) {
     gameService.makeMove(x, y, u, v);
     $scope.turn = gameService.getTurn();
     $timeout(function() {
       if (gameService.isCheckmated()) {
         alert($scope.turn === BLACK ? 'Đỏ thắng.' : 'Đen thắng.');
+        solveIt();
       }
     });
   }
@@ -1258,7 +1280,10 @@ tkControllers.controller('ProblemCtrl', function(
   };
 
   $scope.attempt = function() {
-    alert('attempt');
+    problemService.attempt($scope.problem.id).then(function(response) {
+      $scope.attemptId = response.attemptId;
+      console.log($scope.attemptId);
+    });
   };
 });
 
