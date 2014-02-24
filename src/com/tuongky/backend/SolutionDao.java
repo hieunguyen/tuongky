@@ -104,9 +104,11 @@ public class SolutionDao extends DAOBase{
       keys.add(Key.create(Solution.class, solutionId));
     }
     Set<Long> foundSet = Sets.newHashSet();
+
     for (Key<Solution> key : ObjectifyService.begin().get(keys).keySet()) {
       foundSet.add(key.getId());
     }
+
     List<Boolean> result = Lists.newArrayList();
     for (long problemId : problemIds) {
       result.add(foundSet.contains(problemId));

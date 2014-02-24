@@ -1,17 +1,7 @@
 package com.tuongky.backend;
 
 import com.googlecode.objectify.ObjectifyService;
-import com.tuongky.model.datastore.Book;
-import com.tuongky.model.datastore.Game;
-import com.tuongky.model.datastore.GameMetadata;
-import com.tuongky.model.datastore.Invite;
-import com.tuongky.model.datastore.Problem;
-import com.tuongky.model.datastore.ProblemAttempt;
-import com.tuongky.model.datastore.Session;
-import com.tuongky.model.datastore.SimpleCounter;
-import com.tuongky.model.datastore.Solution;
-import com.tuongky.model.datastore.User;
-import com.tuongky.model.datastore.UserMetadata;
+import com.tuongky.model.datastore.*;
 
 /**
  * Created by sngo on 2/12/14.
@@ -32,6 +22,7 @@ public class ObjectifyRegister {
     ObjectifyService.register(User.class);
     ObjectifyService.register(UserMetadata.class);
     ObjectifyService.register(SimpleCounter.class);
+    ObjectifyService.register(ProblemUserMetadata.class);
   }
 
   public static ObjectifyRegister register(){

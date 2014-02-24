@@ -1,20 +1,19 @@
 package com.tuongky.servlet.problem;
 
+import com.google.appengine.api.search.query.QueryParser;
 import com.google.appengine.labs.repackaged.com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.tuongky.backend.ProblemAttemptDao;
 import com.tuongky.backend.ProblemDao;
+import com.tuongky.backend.ProblemUserMetadataDao;
 import com.tuongky.backend.SolutionDao;
-import com.tuongky.model.datastore.Problem;
-import com.tuongky.model.datastore.ProblemAttempt;
-import com.tuongky.model.datastore.Session;
-import com.tuongky.model.datastore.Solution;
+import com.tuongky.model.datastore.*;
 import com.tuongky.servlet.Constants;
 
 import javax.servlet.http.HttpServlet;
+import javax.xml.ws.Response;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by sngo on 2/13/14.
@@ -31,6 +30,15 @@ public class ProblemGetServlet extends HttpServlet {
   private static final String SOLVED = "solved";
   private static final String IS_ON = "on";
 
+  private Set<Long> getUserIdSet(List<Solution> solutions){
+    Set<Long> ret = new HashSet<>();
+    for (Solution solution : solutions){
+      ret.add(solution.getActorId());
+    }
+
+    return ret;
+  }
+
   @Override
   public void doGet(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp)
           throws javax.servlet.ServletException, java.io.IOException {
@@ -41,20 +49,33 @@ public class ProblemGetServlet extends HttpServlet {
     boolean solveIncluded = IS_ON.equals(solvers);
     boolean attemptIncluded = IS_ON.equals(attempters);
 
-    long idLong = Long.parseLong(id);
-    Problem problem = ProblemDao.instance.getById(idLong);
+    long problemIdLong = Long.parseLong(id);
+    Problem problem = ProblemDao.instance.getById(problemIdLong);
 
     Map<String, Object> ret = Maps.newHashMap();
 
     ret.put(ROOT_KEY, problem);
 
     if (solveIncluded){
-      List<Solution> solutionList = SolutionDao.instance.searchByProblem(idLong, Integer.MAX_VALUE, 0);
-      ret.put(SOLVE, solutionList);
+      List<Solution> solutionList = SolutionDao.instance.searchByProblem(problemIdLong, Integer.MAX_VALUE, 0);
+
+      Set<Long> userIdSet = getUserIdSet(solutionList);
+      Map<Long, Integer> userMap = ProblemUserMetadataDao.instance.findAttemptsByProblem(problemIdLong, userIdSet);
+
+      List<ResponseObject> responseObjects = new ArrayList<>();
+      for (Solution solution :solutionList){
+        if (userMap.containsKey(solution.getActorId())) {
+          responseObjects.add(new ResponseObject(solution, userMap.get(solution.getActorId())));
+        }else {
+          responseObjects.add(new ResponseObject(solution, 1));
+        }
+      }
+
+      ret.put(SOLVE, responseObjects);
     }
 
     if (attemptIncluded){
-      List<ProblemAttempt> attempts = ProblemAttemptDao.instance.searchByProblem(idLong, false, Integer.MAX_VALUE, 0);
+      List<ProblemAttempt> attempts = ProblemAttemptDao.instance.searchByProblem(problemIdLong, false, Integer.MAX_VALUE, 0);
       ret.put(ATTEMPT, attempts);
     }
 
@@ -68,4 +89,13 @@ public class ProblemGetServlet extends HttpServlet {
     resp.getWriter().println(new Gson().toJson(ret));
   }
 
+  public class ResponseObject{
+    private Solution solution;
+    private int attempts;
+
+    public ResponseObject(Solution solution, int attempts){
+      this.solution = solution;
+      this.attempts = attempts;
+    }
+  }
 }
