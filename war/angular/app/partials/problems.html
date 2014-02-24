@@ -13,10 +13,13 @@
   </tr>
 </table>
 
-<pagination total-items="problems.length"
-            items-per-page="1"
-            page="1"
-            max-size="10"
-            previous-text="Trước"
-            next-text="Sau"
-            on-select-page="selectPage(page)"></pagination>
+<div class="pagination-container"ng-if="totalItems > ITEMS_PER_PAGE">
+  <pagination total-items="totalItems"
+              items-per-page="ITEMS_PER_PAGE"
+              page="currentPage"
+              max-size="10"
+              previous-text="Trước"
+              next-text="Sau"
+              on-select-page="selectPage(page)"
+              ></pagination>
+</div>

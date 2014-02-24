@@ -7,6 +7,7 @@ import com.tuongky.model.datastore.GameMetadata;
 import com.tuongky.model.datastore.Invite;
 import com.tuongky.model.datastore.Problem;
 import com.tuongky.model.datastore.ProblemAttempt;
+import com.tuongky.model.datastore.Ranker;
 import com.tuongky.model.datastore.Session;
 import com.tuongky.model.datastore.SimpleCounter;
 import com.tuongky.model.datastore.Solution;
@@ -27,6 +28,7 @@ public class ObjectifyRegister {
     ObjectifyService.register(Invite.class);
     ObjectifyService.register(ProblemAttempt.class);
     ObjectifyService.register(Problem.class);
+    ObjectifyService.register(Ranker.class);
     ObjectifyService.register(Session.class);
     ObjectifyService.register(Solution.class);
     ObjectifyService.register(User.class);

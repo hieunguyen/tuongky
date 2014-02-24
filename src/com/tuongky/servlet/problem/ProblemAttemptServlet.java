@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.tuongky.backend.ProblemAttemptDao;
+import com.tuongky.model.datastore.Session;
+import com.tuongky.servlet.Constants;
 import com.tuongky.util.JsonUtils;
 
 /**
@@ -17,20 +19,21 @@ import com.tuongky.util.JsonUtils;
  */
 @SuppressWarnings("serial")
 public class ProblemAttemptServlet extends HttpServlet {
-  private static final String ACTOR_ID_FIELD = "actorId";
-  private static final String PROBLEM_ID_FIELD = "problemId";
-  private static final String ROOT_KEY = "attempt";
+  private static final String PROBLEM_ID_FIELD = "problem_id";
+  private static final String ROOT_KEY = "attemptId";
 
   @Override
   public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-    String actorId = req.getParameter(ACTOR_ID_FIELD);
+    Session session = (Session) req.getAttribute(Constants.SESSION_ATTRIBUTE);
+    if (session == null) {
+      resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+      return;
+    }
+
+    long userId = session.getUserId();
     String problemId = req.getParameter(PROBLEM_ID_FIELD);
-
-    long actor = Long.parseLong(actorId);
     long problem = Long.parseLong(problemId);
-
-    String attemptId = ProblemAttemptDao.instance.attempt(actor, problem, false);
-
+    String attemptId = ProblemAttemptDao.instance.attempt(userId, problem, false);
     resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, attemptId));
   }
 }

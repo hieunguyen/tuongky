@@ -635,7 +635,7 @@ tkServices.factory('dbService', function(
   service.saveGame = function(game, username) {
     var defer = $q.defer();
     notificationService.show('Đang lưu tài liệu...');
-    $http.post('/game/attempt', {
+    $http.post('/game/save', {
       id: game.id,
       username: username,
       category: game.category,
@@ -1168,9 +1168,15 @@ tkServices.factory('engineService', function($q, $http, notificationService) {
 tkServices.factory('problemService', function($q, $http) {
   var service = {};
 
-  service.getProblems = function() {
+  service.getProblems = function(pageNum, pageSize, order) {
     var defer = $q.defer();
-    $http.get('/problem/search?pageNum=0&pageSize=10&order=id').success(function(data) {
+    $http.get('/problem/search', {
+      params: {
+        page_num: pageNum,
+        page_size: pageSize,
+        order: order
+      }
+    }).success(function(data) {
       defer.resolve(data);
     });
     return defer.promise;
@@ -1184,8 +1190,25 @@ tkServices.factory('problemService', function($q, $http) {
     return defer.promise;
   };
 
-  service.solvedIt = function(problemId) {
+  service.attempt = function(problemId) {
+    var defer = $q.defer();
+    $http.post('/problem/attempt', {
+      problem_id : problemId
+    }).success(function(response) {
+      defer.resolve(response);
+    });
+    return defer.promise;
+  };
 
+  service.solve = function(attemptId) {
+    console.log('attemptId = ' + attemptId);
+    var defer = $q.defer();
+    $http.post('/problem/solve', {
+      attempt_id: attemptId
+    }).success(function(response) {
+      defer.resolve(response);
+    });
+    return defer.promise;
   };
 
   return service;
