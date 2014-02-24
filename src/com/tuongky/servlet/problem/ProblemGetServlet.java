@@ -21,12 +21,13 @@ import java.util.*;
 @SuppressWarnings("serial")
 public class ProblemGetServlet extends HttpServlet {
   private static final String ID_FIELD = "id";
-  private static final String SOLVE_INCLUDED = "solveIncluded";
-  private static final String ATTEMPT_INCLUDED = "attemptIncluded";
+  private static final String SOLVE_INCLUDED = "solve_included";
+  private static final String ATTEMPT_INCLUDED = "attempt_included";
 
   private static final String ROOT_KEY = "problem";
   private static final String SOLVE = "solve";
   private static final String ATTEMPT = "attempt";
+  private static final String ATTEMPT_COUNT = "attempt_count";
   private static final String SOLVED = "solved";
   private static final String IS_ON = "on";
 
@@ -80,9 +81,12 @@ public class ProblemGetServlet extends HttpServlet {
     }
 
     Session session = (Session) req.getAttribute(Constants.SESSION_ATTRIBUTE);
+
     if (session != null) {
       boolean solved = SolutionDao.instance.solvedByProblem(session.getUserId(), problem);
       ret.put(SOLVED, solved);
+      ProblemUserMetadata metadata = ProblemUserMetadataDao.instance.get(session.getUserId(), problemIdLong);
+      ret.put(ATTEMPT_COUNT, metadata == null ? 0 : metadata.getAttempts());
     }
 
     resp.setContentType(Constants.CT_JSON_UTF8);

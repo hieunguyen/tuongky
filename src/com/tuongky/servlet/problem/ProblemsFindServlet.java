@@ -27,7 +27,7 @@ public class ProblemsFindServlet extends HttpServlet{
   private static final String PAGE_SIZE_FIELD = "page_size";
   private static final String ORDER_FIELD = "order";
 
-  private static final String ROOT_KEY = "problemSearch";
+  private static final String ROOT_KEY = "problem_search";
   private static final String TOTAL_RESULT = "total";
   private static final String SOLVED = "solved";
 
@@ -97,7 +97,7 @@ public class ProblemsFindServlet extends HttpServlet{
       }
 
       data.put(ROOT_KEY, responseObjects);
-      data.put(TOTAL_RESULT, totalPages);
+      data.put(TOTAL_RESULT, totalResults);
 
       resp.getWriter().println(new Gson().toJson(data));
     } catch (NumberFormatException e){

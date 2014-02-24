@@ -90,4 +90,7 @@ public class ProblemUserMetadataDao {
     return ret;
   }
 
+  public ProblemUserMetadata get(long actorId, long problemId){
+    return ObjectifyService.begin().find(ProblemUserMetadata.class, ProblemUserMetadata.createId(actorId, problemId));
+  }
 }

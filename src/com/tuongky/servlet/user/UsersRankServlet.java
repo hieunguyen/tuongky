@@ -28,8 +28,8 @@ import java.util.Set;
 @SuppressWarnings("serial")
 public class UsersRankServlet extends HttpServlet {
 
-  private static final String PAGE_NUM_FIELD = "pageNum";
-  private static final String PAGE_SIZE_FIELD = "pageSize";
+  private static final String PAGE_NUM_FIELD = "page_num";
+  private static final String PAGE_SIZE_FIELD = "page_size";
 
   private static final String ROOT_KEY = "usersRank";
   private static final String TOTAL_RESULT = "total";
