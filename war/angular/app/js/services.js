@@ -798,41 +798,42 @@ tkServices.factory('authService', function(cookieService) {
   var service = {};
 
   var user = {
-    username: '',
-    authenticated: false,
-    isAdmin: false
+    fbId: '',
+    fbName: '',
+    role: Roles.ANONYMOUS
   };
 
   service.getUser = function() {
     return user;
   };
 
-  service.signIn = function(username) {
-    user.username = username;
-    user.authenticated = true;
-    user.isAdmin = _.contains(ADMIN_USERS, username);
+  service.signIn = function(fbId, fbName, role) {
+    user.fbId = fbId;
+    user.fbName = fbName;
+    user.role = role;
   };
 
   service.signOut = function() {
-    user.username = '';
-    user.authenticated = false;
-    user.isAdmin = false;
-    cookieService.delete('sid');
+    user.fbId = '';
+    user.fbName = '';
+    user.role = Roles.ANONYMOUS;
+    cookieService.delete(SESSION_ID);
   };
 
   service.isAuthenticated = function() {
-    return user.authenticated;
+    return !!user.fbId;
   };
 
   service.isAdmin = function() {
-    return user.isAdmin;
+    return user.role === Roles.ADMIN;
   };
 
   return service;
 });
 
 
-tkServices.factory('userService', function($q, $http, notificationService) {
+tkServices.factory('userService', function(
+    $q, $http, $facebook, cookieService, notificationService) {
   var service = {};
 
   service.signIn = function(username, password) {
@@ -890,11 +891,39 @@ tkServices.factory('userService', function($q, $http, notificationService) {
 
   service.getStatus = function() {
     var defer = $q.defer();
-    $http.get('/user_status')
-    .success(function(response) {
-      defer.resolve(response.username);
-    }).error(function() {
-      defer.reject();
+
+    var sid = cookieService.get(SESSION_ID);
+
+    console.log('sid = ' + sid);
+
+    if (sid) {
+      $http.get('/user_status')
+      .success(function(response) {
+        defer.resolve(response);
+      }).error(function() {
+        defer.reject();
+      });
+      return defer.promise;
+    }
+
+    $facebook.getLoginStatus().then(function(response) {
+      var authResp = response.authResponse;
+      if (authResp) {
+        console.log(authResp);
+        $http.post('/fb_signin', {
+          access_token: authResp.accessToken
+        }).success(function(response) {
+          console.log('response:');
+          console.log(response);
+          cookieService.set(SESSION_ID, response.sid);
+          defer.resolve(response);
+        }).error(function() {
+          console.log('Invalid Facebook access token.');
+          defer.reject();
+        });
+      } else {
+        defer.resolve({});
+      }
     });
     return defer.promise;
   };
@@ -1139,9 +1168,15 @@ tkServices.factory('engineService', function($q, $http, notificationService) {
 tkServices.factory('problemService', function($q, $http) {
   var service = {};
 
-  service.getProblems = function() {
+  service.getProblems = function(pageNum, pageSize, order) {
     var defer = $q.defer();
-    $http.get('json/problems.json').success(function(data) {
+    $http.get('/problem/search', {
+      params: {
+        page_num: pageNum,
+        page_size: pageSize,
+        order: order
+      }
+    }).success(function(data) {
       defer.resolve(data);
     });
     return defer.promise;
@@ -1149,8 +1184,29 @@ tkServices.factory('problemService', function($q, $http) {
 
   service.getProblem = function(problemId) {
     var defer = $q.defer();
-    $http.get('json/problem.json').success(function(data) {
+    $http.get('/problem/get?id=' + problemId).success(function(data) {
       defer.resolve(data);
+    });
+    return defer.promise;
+  };
+
+  service.attempt = function(problemId) {
+    var defer = $q.defer();
+    $http.post('/problem/attempt', {
+      problem_id : problemId
+    }).success(function(response) {
+      defer.resolve(response);
+    });
+    return defer.promise;
+  };
+
+  service.solve = function(attemptId) {
+    console.log('attemptId = ' + attemptId);
+    var defer = $q.defer();
+    $http.post('/problem/solve', {
+      attempt_id: attemptId
+    }).success(function(response) {
+      defer.resolve(response);
     });
     return defer.promise;
   };
@@ -1177,7 +1233,19 @@ tkServices.factory('solutionService', function($q, $http) {
 tkServices.factory('rankService', function($q, $http) {
   var service = {};
 
-  service.getRanks = function() {
+  service.getRanks = function(pageNum, pageSize) {
+    var defer = $q.defer();
+    $http.get('/users/rank', {
+      params: {
+        page_num: pageNum,
+        page_size: pageSize
+      }
+    }).success(function(data) {
+      defer.resolve(data);
+    });
+    return defer.promise;
+
+
     var defer = $q.defer();
     $http.get('json/ranks.json').success(function(data) {
       defer.resolve(data);

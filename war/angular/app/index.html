@@ -1,8 +1,14 @@
 <!doctype html>
 <html lang="en" ng-app="tkApp">
 <head>
-  <meta charset=utf-8 />
+  <meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta property="og:image" content="http://tuongky.ngrok.com/img/test6.png"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Bài 2 - Khoá Hải Chinh Đông"/>
+  <meta property="og:url" content="http://tuongky.ngrok.com/problem/2"/>
+
   <title>Tuong Ky</title>
   <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
 	<!-- <link href="lib/cdn/bootstrap.min.css" rel="stylesheet"> -->
@@ -34,15 +40,11 @@
         </div>
       </div>
       <div class="col-md-3 user-bar" ng-controller="AuthController">
-        <div ng-hide="user.authenticated" ng-cloak>
-          <a ng-click="signIn()">Đăng nhập</a> <span class="separator" ng-hide="true">|</span>
-          <a ng-click="signUp()" ng-hide="true">Đăng ký</a>
+        <div ng-hide="user.fbId" ng-cloak>
+          <button class="btn btn-sm fb-login" ng-click="signInWithFb()">Đăng nhập với Facebook</button>
         </div>
-        <div ng-show="user.authenticated" ng-cloak>
-          Chào <a href="#/search/q={{user.username}}">{{user.username}}</a> <span class="separator">|</span>
-          <span ng-show="user.isAdmin">
-            <a ng-click="invite()">Mời đăng ký</a> <span class="separator">|</span>
-          </span>
+        <div ng-show="user.fbId" ng-cloak>
+          Chào <a href="#/search/q={{user.fbName}}">{{user.fbName}}</a> <span class="separator">|</span>
           <a ng-click="signOut()">Thoát</a>
         </div>
       </div>
@@ -59,10 +61,11 @@
     <div class="row main-menu">
       <div class="col-md-12">
         <ul>
-          <li ng-class="{current: mainNav.tab == 'practice'}"><a href="#/practice">Luyện công</a></li>
+          <li ng-class="{current: mainNav.tab == 'practice'}"><a href="#/problems">Luyện công</a></li>
           <li ng-class="{current: mainNav.tab == 'profile'}"><a href="#/profile">Tài khoản</a></li>
           <li ng-class="{current: mainNav.tab == 'rank'}"><a href="#/rank">Thứ hạng</a></li>
           <li ng-class="{current: mainNav.tab == 'document'}"><a href="#/">Tài liệu</a></li>
+          <li ng-class="{current: mainNav.tab == 'sandbox'}"><a href="#/sandbox">Sandbox</a></li>
         </ul>
       </div>
     </div>
@@ -75,11 +78,15 @@
     <div ng-view class="view-container" ng-class="{embed: !!embed}" ng-hide="data.loading"></div>
   </div>
 
+  <div id="fb-root"></div>
+
   <script src="lib/cdn/jquery.min.js"></script>
 
   <script src="lib/angular/1.2.9/angular.min.js"></script>
   <script src="lib/angular/1.2.9/angular-route.min.js"></script>
   <script src="lib/angular/1.2.9/angular-animate.min.js"></script>
+
+  <script src="lib/ngFacebook.js"></script>
 
   <script src="lib/underscore-min.js"></script>
   <script src="lib/jquery.cookie.js"></script>

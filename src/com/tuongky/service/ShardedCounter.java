@@ -57,8 +57,8 @@ public class ShardedCounter implements Serializable {
     Random generator = new Random();
     int shardNum = generator.nextInt(counter.numShards);
 
-    // get the shard from the datastore, increment its value by 'add' and
-    // persist it if the shard was modified in the datastore between the get
+    // getById the shard from the datastore, increment its value by 'add' and
+    // persist it if the shard was modified in the datastore between the getById
     // and the persist, retry the operation
     Objectify trans = of.beginTransaction();
     int triesLeft = 3;

@@ -823,7 +823,7 @@ jQuery.extend({
 		return proxy;
 	},
 
-	// Mutifunctional method to get and set values to a collection
+	// Mutifunctional method to getById and set values to a collection
 	// The value/s can optionally be executed if it's a function
 	access: function( elems, fn, key, value, chainable, emptyGet, pass ) {
 		var exec,
@@ -840,7 +840,7 @@ jQuery.extend({
 
 		// Sets one value
 		} else if ( value !== undefined ) {
-			// Optionally, function values get executed if exec is true
+			// Optionally, function values getById executed if exec is true
 			exec = pass === undefined && jQuery.isFunction( value );
 
 			if ( bulk ) {
@@ -1382,7 +1382,7 @@ jQuery.support = (function() {
 	all = div.getElementsByTagName( "*" );
 	a = div.getElementsByTagName( "a" )[ 0 ];
 
-	// Can't get basic test support
+	// Can't getById basic test support
 	if ( !all || !all.length || !a ) {
 		return {};
 	}
@@ -1400,7 +1400,7 @@ jQuery.support = (function() {
 		// IE will insert them into empty tables
 		tbody: !div.getElementsByTagName("tbody").length,
 
-		// Make sure that link elements get serialized correctly by innerHTML
+		// Make sure that link elements getById serialized correctly by innerHTML
 		// This requires a wrapper element in IE
 		htmlSerialize: !!div.getElementsByTagName("link").length,
 
@@ -1430,7 +1430,7 @@ jQuery.support = (function() {
 		// (WebKit defaults to false instead of true, IE too, if it's in an optgroup)
 		optSelected: opt.selected,
 
-		// Test setAttribute on camelCase class. If it works, we need attrFixes when doing get/setAttribute (ie6/7)
+		// Test setAttribute on camelCase class. If it works, we need attrFixes when doing getById/setAttribute (ie6/7)
 		getSetAttribute: div.className !== "t",
 
 		// Tests for enctype support on a form(#6743)
@@ -1713,7 +1713,7 @@ jQuery.extend({
 			id = isNode ? elem[ internalKey ] : elem[ internalKey ] && internalKey,
 			isEvents = name === "events";
 
-		// Avoid doing any more work than we need to when trying to get data on an
+		// Avoid doing any more work than we need to when trying to getById data on an
 		// object that has no data at all
 		if ( (!id || !cache[id] || (!isEvents && !pvt && !cache[id].data)) && getByName && data === undefined ) {
 			return;
@@ -1845,7 +1845,7 @@ jQuery.extend({
 				}
 
 				// If there is no data left in the cache, we want to continue
-				// and let the cache object itself get destroyed
+				// and let the cache object itself getById destroyed
 				if ( !( pvt ? isEmptyDataObject : jQuery.isEmptyObject )( thisCache ) ) {
 					return;
 				}
@@ -2513,7 +2513,7 @@ jQuery.extend({
 		var ret, hooks, notxml,
 			nType = elem.nodeType;
 
-		// don't get/set attributes on text, comment and attribute nodes
+		// don't getById/set attributes on text, comment and attribute nodes
 		if ( !elem || nType === 3 || nType === 8 || nType === 2 ) {
 			return;
 		}
@@ -2654,7 +2654,7 @@ jQuery.extend({
 		var ret, hooks, notxml,
 			nType = elem.nodeType;
 
-		// don't get/set properties on text, comment and attribute nodes
+		// don't getById/set properties on text, comment and attribute nodes
 		if ( !elem || nType === 3 || nType === 8 || nType === 2 ) {
 			return;
 		}
@@ -2736,7 +2736,7 @@ boolHook = {
 	}
 };
 
-// IE6/7 do not support getting/setting some attributes with get/setAttribute
+// IE6/7 do not support getting/setting some attributes with getById/setAttribute
 if ( !getSetAttribute ) {
 
 	fixSpecified = {
@@ -6161,7 +6161,7 @@ function cloneFixAttributes( src, dest ) {
 			dest.defaultChecked = dest.checked = src.checked;
 		}
 
-		// IE6-7 get confused and end up setting the value of a cloned
+		// IE6-7 getById confused and end up setting the value of a cloned
 		// checkbox/radio button to an empty string instead of "on"
 		if ( dest.value !== src.value ) {
 			dest.value = src.value;
@@ -6293,7 +6293,7 @@ function findInputs( elem ) {
 	var nodeName = ( elem.nodeName || "" ).toLowerCase();
 	if ( nodeName === "input" ) {
 		fixDefaultChecked( elem );
-	// Skip scripts, get other children
+	// Skip scripts, getById other children
 	} else if ( nodeName !== "script" && typeof elem.getElementsByTagName !== "undefined" ) {
 		jQuery.grep( elem.getElementsByTagName("input"), fixDefaultChecked );
 	}
@@ -6322,7 +6322,7 @@ jQuery.extend({
 				(elem.nodeType === 1 || elem.nodeType === 11) && !jQuery.isXMLDoc(elem) ) {
 			// IE copies events bound via attachEvent when using cloneNode.
 			// Calling detachEvent on the clone will also remove the events
-			// from the original. In order to get around this, we use some
+			// from the original. In order to getById around this, we use some
 			// proprietary methods to clear the events. Thanks to MooTools
 			// guys for this hotness.
 
@@ -6586,7 +6586,7 @@ jQuery.extend({
 		opacity: {
 			get: function( elem, computed ) {
 				if ( computed ) {
-					// We should always get a number back from opacity
+					// We should always getById a number back from opacity
 					var ret = curCSS( elem, "opacity" );
 					return ret === "" ? "1" : ret;
 
@@ -6660,12 +6660,12 @@ jQuery.extend({
 			}
 
 		} else {
-			// If a hook was provided get the non-computed value from there
+			// If a hook was provided getById the non-computed value from there
 			if ( hooks && "get" in hooks && (ret = hooks.get( elem, false, extra )) !== undefined ) {
 				return ret;
 			}
 
-			// Otherwise just get the value from the style object
+			// Otherwise just getById the value from the style object
 			return style[ name ];
 		}
 	},
@@ -6683,17 +6683,17 @@ jQuery.extend({
 			name = "float";
 		}
 
-		// If a hook was provided get the computed value from there
+		// If a hook was provided getById the computed value from there
 		if ( hooks && "get" in hooks && (ret = hooks.get( elem, true, extra )) !== undefined ) {
 			return ret;
 
-		// Otherwise, if a way to get the computed value exists, use that
+		// Otherwise, if a way to getById the computed value exists, use that
 		} else if ( curCSS ) {
 			return curCSS( elem, name );
 		}
 	},
 
-	// A method for quickly swapping in/out CSS properties to get correct calculations
+	// A method for quickly swapping in/out CSS properties to getById correct calculations
 	swap: function( elem, options, callback ) {
 		var old = {},
 			ret, name;
@@ -6771,7 +6771,7 @@ if ( document.documentElement.currentStyle ) {
 			left = style.left;
 			rsLeft = elem.runtimeStyle && elem.runtimeStyle.left;
 
-			// Put in the new values to get a computed value out
+			// Put in the new values to getById a computed value out
 			if ( rsLeft ) {
 				elem.runtimeStyle.left = elem.currentStyle.left;
 			}
@@ -7834,7 +7834,7 @@ function ajaxHandleResponses( s, jqXHR, responses ) {
 		}
 	}
 
-	// Remove auto dataType and get content-type in the process
+	// Remove auto dataType and getById content-type in the process
 	while( dataTypes[ 0 ] === "*" ) {
 		dataTypes.shift();
 		if ( ct === undefined ) {
@@ -8304,7 +8304,7 @@ if ( jQuery.support.ajax ) {
 									// Filter status for non standard behaviors
 
 									// If the request is local and we have data: assume a success
-									// (success with no data won't get notified, that's the best we
+									// (success with no data won't getById notified, that's the best we
 									// can do given current implementations)
 									if ( !status && s.isLocal && !s.crossDomain ) {
 										status = responses.text ? 200 : 404;
@@ -9023,7 +9023,7 @@ function defaultDisplay( nodeName ) {
 		elem.remove();
 
 		// If the simple way fails,
-		// get element's real default display by attaching it to a temp iframe
+		// getById element's real default display by attaching it to a temp iframe
 		if ( display === "none" || display === "" ) {
 			// No iframe to use yet, so create it
 			if ( !iframe ) {
@@ -10615,7 +10615,7 @@ function setupModuleLoader(window) {
            * @param {string} name constant name
            * @param {*} object Constant value.
            * @description
-           * Because the constant are fixed, they get applied before other provide methods.
+           * Because the constant are fixed, they getById applied before other provide methods.
            * See {@link AUTO.$provide#constant $provide.constant()}.
            */
           constant: invokeLater('$provide', 'constant', 'unshift'),
@@ -11186,7 +11186,7 @@ var JQLitePrototype = JQLite.prototype = {
 //////////////////////////////////////////
 // Functions iterating getter/setters.
 // these functions return self on setter and
-// value on get.
+// value on getById.
 //////////////////////////////////////////
 var BOOLEAN_ATTR = {};
 forEach('multiple,selected,checked,disabled,readOnly,required'.split(','), function(value) {
@@ -11270,8 +11270,8 @@ forEach({
     } else if (isDefined(value)) {
       element.setAttribute(name, value);
     } else if (element.getAttribute) {
-      // the extra argument "2" is to get the right thing for a.href in IE, see jQuery code
-      // some elements (e.g. Document) don't have get attribute, so return undefined
+      // the extra argument "2" is to getById the right thing for a.href in IE, see jQuery code
+      // some elements (e.g. Document) don't have getById attribute, so return undefined
       var ret = element.getAttribute(name, 2);
       // normalize non-existing attributes to undefined (as jQuery)
       return ret === null ? undefined : ret;
@@ -11815,7 +11815,7 @@ function annotate(fn) {
  *
  * <pre>
  *   var $injector = angular.injector();
- *   expect($injector.get('$injector')).toBe($injector);
+ *   expect($injector.getById('$injector')).toBe($injector);
  *   expect($injector.invoke(function($injector){
  *     return $injector;
  *   }).toBe($injector);
@@ -11854,7 +11854,7 @@ function annotate(fn) {
 
 /**
  * @ngdoc method
- * @name AUTO.$injector#get
+ * @name AUTO.$injector#getById
  * @methodOf AUTO.$injector
  *
  * @description
@@ -11984,7 +11984,7 @@ function annotate(fn) {
  * Use `$provide` to register new providers with the `$injector`. The providers are the factories for the instance.
  * The providers share the same name as the instance they create with `Provider` suffixed to them.
  *
- * A provider is an object with a `$get()` method. The injector calls the `$get` method to create a new instance of
+ * A provider is an object with a `$getById()` method. The injector calls the `$getById` method to create a new instance of
  * a service. The Provider can have additional methods which would allow for configuration of the provider.
  *
  * <pre>
@@ -11995,7 +11995,7 @@ function annotate(fn) {
  *       salutation = text;
  *     };
  *
- *     this.$get = function() {
+ *     this.$getById = function() {
  *       return function (name) {
  *         return salutation + ' ' + name + '!';
  *       };
@@ -12034,7 +12034,7 @@ function annotate(fn) {
  * @param {string} name The name of the instance. NOTE: the provider will be available under `name + 'Provider'` key.
  * @param {(Object|function())} provider If the provider is:
  *
- *   - `Object`: then it should have a `$get` method. The `$get` method will be invoked using
+ *   - `Object`: then it should have a `$getById` method. The `$getById` method will be invoked using
  *               {@link AUTO.$injector#invoke $injector.invoke()} when an instance needs to be created.
  *   - `Constructor`: a new instance of the provider will be created using
  *               {@link AUTO.$injector#instantiate $injector.instantiate()}, then treated as `object`.
@@ -12048,11 +12048,11 @@ function annotate(fn) {
  * @methodOf AUTO.$provide
  * @description
  *
- * A short hand for configuring services if only `$get` method is required.
+ * A short hand for configuring services if only `$getById` method is required.
  *
  * @param {string} name The name of the instance.
  * @param {function()} $getFn The $getFn for the instance creation. Internally this is a short hand for
- * `$provide.provider(name, {$get: $getFn})`.
+ * `$provide.provider(name, {$getById: $getFn})`.
  * @returns {Object} registered provider instance
  */
 
@@ -12077,7 +12077,7 @@ function annotate(fn) {
  * @methodOf AUTO.$provide
  * @description
  *
- * A short hand for configuring services if the `$get` method is a constant.
+ * A short hand for configuring services if the `$getById` method is a constant.
  *
  * @param {string} name The name of the instance.
  * @param {*} value The value.
@@ -12170,7 +12170,7 @@ function createInjector(modulesToLoad) {
       provider_ = providerInjector.instantiate(provider_);
     }
     if (!provider_.$get) {
-      throw Error('Provider ' + name + ' must define $get factory method.');
+      throw Error('Provider ' + name + ' must define $getById factory method.');
     }
     return providerCache[name + providerSuffix] = provider_;
   }
@@ -12357,7 +12357,7 @@ function $AnchorScrollProvider() {
   this.$get = ['$window', '$location', '$rootScope', function($window, $location, $rootScope) {
     var document = $window.document;
 
-    // helper function to get first anchor from a NodeList
+    // helper function to getById first anchor from a NodeList
     // can't use filter.filter, as it accepts only instances of Array
     // and IE can't convert NodeList to an array using [].slice
     // TODO(vojta): use filter if we change it to accept lists as well
@@ -12783,7 +12783,7 @@ function $BrowserProvider(){
  *
  * - `{object}` `info()` — Returns id, size, and options of cache.
  * - `{void}` `put({string} key, {*} value)` — Puts a new key-value pair into the cache.
- * - `{{*}}` `get({string} key)` — Returns cached value for `key` or undefined for cache miss.
+ * - `{{*}}` `getById({string} key)` — Returns cached value for `key` or undefined for cache miss.
  * - `{void}` `remove({string} key)` — Removes a key-value pair from the cache.
  * - `{void}` `removeAll()` — Removes all cached values.
  * - `{void}` `destroy()` — Removes references to this cache from $cacheFactory.
@@ -12999,7 +12999,7 @@ var NON_ASSIGNABLE_MODEL_EXPRESSION = 'Non-assignable model expression: ';
                 // compile the new DOM and link it to the current
                 // scope.
                 // NOTE: we only compile .childNodes so that
-                // we don't get into infinite loop compiling ourselves
+                // we don't getById into infinite loop compiling ourselves
                 $compile(element.contents())(scope);
               }
             );
@@ -16115,7 +16115,7 @@ function $ParseProvider() {
  * A new promise instance is created when a deferred instance is created and can be retrieved by
  * calling `deferred.promise`.
  *
- * The purpose of the promise object is to allow for interested parties to get access to the result
+ * The purpose of the promise object is to allow for interested parties to getById access to the result
  * of the deferred task when it completes.
  *
  * **Methods**
@@ -16173,7 +16173,7 @@ function $ParseProvider() {
  * 
  *      // Simulate resolving of promise
  *      deferred.resolve(123);
- *      // Note that the 'then' function does not get called synchronously.
+ *      // Note that the 'then' function does not getById called synchronously.
  *      // This is because we want the promise API to always be async, whether or not
  *      // it got called synchronously or asynchronously.
  *      expect(resolvedValue).toBeUndefined();
@@ -16591,7 +16591,7 @@ function $RouteProvider(){
        URL, and the `ngView` pulls in the partial.
 
        Note that this example is using {@link ng.directive:script inlined templates}
-       to get it working on jsfiddle as well.
+       to getById it working on jsfiddle as well.
 
      <example module="ngView">
        <file name="index.html">
@@ -16644,7 +16644,7 @@ function $RouteProvider(){
              controller: ChapterCntl
            });
 
-           // configure html5 to get links working on jsfiddle
+           // configure html5 to getById links working on jsfiddle
            $locationProvider.html5Mode(true);
          });
 
@@ -17170,7 +17170,7 @@ function $RootScopeProvider(){
        * - The `listener` is called only when the value from the current `watchExpression` and the
        *   previous call to `watchExpression` are not equal (with the exception of the initial run,
        *   see below). The inequality is determined according to
-       *   {@link angular.equals} function. To save the value of the object for later comparison, the
+       *   {@link angular.equals} function. To attempt the value of the object for later comparison, the
        *   {@link angular.copy} function is used. It also means that watching complex options will
        *   have adverse memory and performance implications.
        * - The watch `listener` may change the model, which may trigger other `listener`s to fire. This
@@ -17268,7 +17268,7 @@ function $RootScopeProvider(){
        * Processes all of the {@link ng.$rootScope.Scope#$watch watchers} of the current scope and its children.
        * Because a {@link ng.$rootScope.Scope#$watch watcher}'s listener can change the model, the
        * `$digest()` keeps calling the {@link ng.$rootScope.Scope#$watch watchers} until no more listeners are
-       * firing. This means that it is possible to get into an infinite loop. This function will throw
+       * firing. This means that it is possible to getById into an infinite loop. This function will throw
        * `'Maximum iteration limit exceeded.'` if the number of iterations exceeds 10.
        *
        * Usually you don't call `$digest()` directly in
@@ -17603,7 +17603,7 @@ function $RootScopeProvider(){
        * registered {@link ng.$rootScope.Scope#$on} listeners.
        *
        * The event life cycle starts at the scope on which `$emit` was called. All
-       * {@link ng.$rootScope.Scope#$on listeners} listening for `name` event on this scope get notified.
+       * {@link ng.$rootScope.Scope#$on listeners} listening for `name` event on this scope getById notified.
        * Afterwards, the event traverses upwards toward the root scope and calls all registered
        * listeners along the way. The event will stop propagating if one of the listeners cancels it.
        *
@@ -17669,7 +17669,7 @@ function $RootScopeProvider(){
        * registered {@link ng.$rootScope.Scope#$on} listeners.
        *
        * The event life cycle starts at the scope on which `$broadcast` was called. All
-       * {@link ng.$rootScope.Scope#$on listeners} listening for `name` event on this scope get notified.
+       * {@link ng.$rootScope.Scope#$on listeners} listening for `name` event on this scope getById notified.
        * Afterwards, the event propagates to all direct and indirect scopes of the current scope and
        * calls all registered listeners along the way. The event cannot be canceled.
        *
@@ -18039,13 +18039,13 @@ function $HttpProvider() {
      * were created:
      *
      * <pre>
-     *   $http.get('/someUrl').success(successCallback);
+     *   $http.getById('/someUrl').success(successCallback);
      *   $http.post('/someUrl', data).success(successCallback);
      * </pre>
      *
      * Complete list of shortcut methods:
      *
-     * - {@link ng.$http#get $http.get}
+     * - {@link ng.$http#get $http.getById}
      * - {@link ng.$http#head $http.head}
      * - {@link ng.$http#post $http.post}
      * - {@link ng.$http#put $http.put}
@@ -18070,7 +18070,7 @@ function $HttpProvider() {
      * To add or overwrite these defaults, simply add or remove a property from these configuration
      * objects. To add headers for an HTTP method other than POST or PUT, simply add a new object
      * with the lowercased HTTP method name as the key, e.g.
-     * `$httpProvider.defaults.headers.get['My-Header']='value'`.
+     * `$httpProvider.defaults.headers.getById['My-Header']='value'`.
      *
      * Additionally, the defaults can be set at runtime via the `$http.defaults` object in the same
      * fashion.
@@ -18382,7 +18382,7 @@ function $HttpProvider() {
 
     /**
      * @ngdoc method
-     * @name ng.$http#get
+     * @name ng.$http#getById
      * @methodOf ng.$http
      *
      * @description
@@ -19886,7 +19886,7 @@ function ngDirective(directive) {
  *
  * The reasoning for this change is to allow easy creation of action links with `ngClick` directive
  * without changing the location or causing page reloads, e.g.:
- * `<a href="" ng-click="model.$save()">Save</a>`
+ * `<a href="" ng-click="model.$attempt()">Save</a>`
  */
 var htmlAnchorDirective = valueFn({
   restrict: 'E',
@@ -21359,7 +21359,7 @@ var VALID_CLASS = 'ng-valid',
         directive('contenteditable', function() {
           return {
             restrict: 'A', // only activate on element attribute
-            require: '?ngModel', // get a hold of NgModelController
+            require: '?ngModel', // getById a hold of NgModelController
             link: function(scope, element, attrs, ngModel) {
               if(!ngModel) return; // do nothing if no ng-model
 
@@ -21467,7 +21467,7 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
    *
    * @param {string} validationErrorKey Name of the validator. the `validationErrorKey` will assign
    *        to `$error[validationErrorKey]=isValid` so that it is available for data-binding.
-   *        The `validationErrorKey` should be in camelCase and will get converted into dash-case
+   *        The `validationErrorKey` should be in camelCase and will getById converted into dash-case
    *        for class name. Example: `myError` will result in `ng-valid-my-error` and `ng-invalid-my-error`
    *        class and can be bound to as  `{{someForm.someControl.$error.myError}}` .
    * @param {boolean} isValid Whether the current state is valid (true) or invalid (false).
@@ -23512,7 +23512,7 @@ var ngTranscludeDirective = ngDirective({
             controller: ChapterCntl
           });
 
-          // configure html5 to get links working on jsfiddle
+          // configure html5 to getById links working on jsfiddle
           $locationProvider.html5Mode(true);
         });
 
@@ -24514,7 +24514,7 @@ function browserTrigger(element, type, keys) {
     // puts the element in consistent state.
     element.style.posLeft;
 
-    // TODO(vojta): create event objects with pressed keys to get it working on IE<9
+    // TODO(vojta): create event objects with pressed keys to getById it working on IE<9
     var ret = element.fireEvent('on' + type);
     if (lowercase(element.type) == 'submit') {
       while(element) {
@@ -25148,7 +25148,7 @@ angular.scenario.ObjectModel.prototype.getDefinitionPath = function(spec) {
 /**
  * Gets a spec by id.
  *
- * @param {string} The id of the spec to get the object for.
+ * @param {string} The id of the spec to getById the object for.
  * @return {Object} the Spec instance
  */
 angular.scenario.ObjectModel.prototype.getSpec = function(id) {
@@ -25922,7 +25922,7 @@ angular.scenario.dsl('select', function() {
 
 /**
  * Usage:
- *    element(selector, label).count() get the number of elements that match selector
+ *    element(selector, label).count() getById the number of elements that match selector
  *    element(selector, label).click() clicks an element
  *    element(selector, label).query(fn) executes fn(selectedElements, done)
  *    element(selector, label).{method}() gets the value (as defined by jQuery, ex. val)
@@ -25974,7 +25974,7 @@ angular.scenario.dsl('element', function() {
     chain[methodName] = function(name, value) {
       var args = arguments,
           futureName = (args.length == 1)
-              ? "element '" + this.label + "' get " + methodName + " '" + name + "'"
+              ? "element '" + this.label + "' getById " + methodName + " '" + name + "'"
               : "element '" + this.label + "' set " + methodName + " '" + name + "' to " + "'" + value + "'";
 
       return this.addFutureAction(futureName, function($window, $document, done) {

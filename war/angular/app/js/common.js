@@ -23,7 +23,12 @@ var P = 7; // Pawn
 var Roles = {
   ANONYMOUS: 0,
   USER: 1,
-  ADMIN: 2
+  MODERATOR: 2,
+  ADMIN: 3
 };
 
 var ADMIN_USERS = ['admin', 'hieu']; // TODO(): remove this.
+
+var SESSION_ID = 'sid';
+
+var FB_APP_ID = '1447546642129595';

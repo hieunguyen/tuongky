@@ -135,7 +135,7 @@ angular.module('ngCookies', ['ng']).
       return {
         /**
          * @ngdoc method
-         * @name ngCookies.$cookieStore#get
+         * @name ngCookies.$cookieStore#getById
          * @methodOf ngCookies.$cookieStore
          *
          * @description

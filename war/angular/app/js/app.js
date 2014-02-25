@@ -6,7 +6,8 @@ var tkApp = angular.module('tkApp',
      'tkApp.filters',
      'tkApp.services',
      'tkApp.directives',
-     'tkApp.controllers']);
+     'tkApp.controllers',
+     'facebook']);
 
 tkApp.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/fen/create',
@@ -46,6 +47,11 @@ tkApp.config(['$routeProvider', function($routeProvider) {
         templateUrl: 'partials/search.html',
         controller: 'SearchCtrl'
       })
+  .when('/fb_signin',
+      {
+        templateUrl: 'partials/fb_signin.html',
+        controller: 'FbSigninCtrl'
+      })
   .when('/signin',
       {
         templateUrl: 'partials/signin.html',
@@ -82,12 +88,12 @@ tkApp.config(['$routeProvider', function($routeProvider) {
         templateUrl: 'partials/study.html',
         controller: 'StudyCtrl'
       })
-  .when('/practice',
+  .when('/problems',
       {
-        templateUrl: 'partials/practice.html',
+        templateUrl: 'partials/problems.html',
         controller: 'ProblemSetCtrl'
       })
-  .when('/practice/:problemId',
+  .when('/problem/:problemId',
       {
         templateUrl: 'partials/problem.html',
         controller: 'ProblemCtrl'
@@ -127,6 +133,13 @@ tkApp.config(['$httpProvider', function($httpProvider) {
   }];
 
   delete $httpProvider.defaults.headers.common["X-Requested-With"];
+}]);
+
+tkApp.config(['$facebookProvider', function($facebookProvider) {
+  $facebookProvider.init({
+    appId: FB_APP_ID,
+    channel: ''
+  });
 }]);
 
 var UnsavedGameResolve = {

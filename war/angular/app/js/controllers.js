@@ -5,7 +5,99 @@
 var tkControllers = angular.module('tkApp.controllers', []);
 
 
-tkControllers.controller('SandboxCtrl', function($scope, $location) {
+tkControllers.controller('AppCtrl', function(
+    $scope, $location, $route, $facebook,
+    notificationService, authService, userService) {
+
+  $scope.mainNav = {tab: ''};
+
+  $scope.CATEGORIES =
+      ['', 'Ván đấu', 'Khai cuộc', 'Trung cuộc', 'Tàn cuộc', 'Cờ thế'];
+  $scope.CATEGORY_KEYWORDS =
+      ['', 'vandau', 'khaicuoc', 'trungcuoc', 'tancuoc', 'cothe'];
+
+  $scope.alert = notificationService.getAlert();
+  $scope.user = authService.getUser();
+  $scope.data = {loading: false};
+  $scope.searchData = {
+    queryString: '',
+    searchBoxFocused: false
+  };
+
+  $scope.$watch(function() {
+    return $location.search()['embed'];
+  }, function(embed) {
+    $scope.embed = embed;
+  });
+
+  $scope.$on('$routeChangeStart', function(event, next) {
+
+    if (next.accessLevel > Roles.ANONYMOUS && !authService.isAuthenticated()) {
+      $location.path('/fb_signin');
+      return;
+    }
+    if (next.accessLevel === Roles.ADMIN && !authService.isAdmin()) {
+      $location.path('/accessdenied');
+    }
+  });
+
+  $scope.data.loading = 1;
+  userService.getStatus().then(function(status) {
+    $scope.data.loading--;
+    if (status.fbId) {
+      authService.signIn(status.fbId, status.fbName, status.roleId);
+    }
+  });
+
+  $scope.$on('facebook.auth.authResponseChange', function(e, response) {
+    if (authService.isAuthenticated()) return;
+    if (!response.authResponse) {
+      $route.reload();
+      return;
+    }
+    $scope.data.loading = 1;
+    userService.getStatus().then(function(status) {
+      $scope.data.loading--;
+      if (status.fbId) {
+        authService.signIn(status.fbId, status.fbName, status.roleId);
+        $route.reload();
+      }
+    });
+  });
+});
+
+
+tkControllers.controller('AuthController', function(
+    $scope, $location, $facebook, userService, authService) {
+
+  $scope.signInWithFb = function() {
+    $facebook.login();
+  };
+
+  $scope.signUp = function() {
+    $location.path('/signup');
+  };
+
+  $scope.signOut = function() {
+    authService.signOut();
+    $facebook.logout();
+    $location.path('/');
+  };
+
+  $scope.invite = function() {
+    $location.path('/invite');
+  };
+});
+
+
+tkControllers.controller('SandboxCtrl', function(
+    $scope, $facebook, authService) {
+
+  $scope.mainNav.tab = 'sandbox';
+
+  $scope.doIt = function() {
+    alert('Name: ' + authService.getUser().username);
+  };
 });
 
 
@@ -65,73 +157,6 @@ tkControllers.controller('StudyCtrl', function(
   $scope.$watch(function() {
     return $scope.playerTypes[gameService.getTurn()];
   }, maybeComputerPlay);
-});
-
-
-tkControllers.controller('AppCtrl', function(
-    $scope, $location, notificationService, authService, userService) {
-
-  $scope.mainNav = {tab: ''};
-
-  $scope.CATEGORIES =
-      ['', 'Ván đấu', 'Khai cuộc', 'Trung cuộc', 'Tàn cuộc', 'Cờ thế'];
-  $scope.CATEGORY_KEYWORDS =
-      ['', 'vandau', 'khaicuoc', 'trungcuoc', 'tancuoc', 'cothe'];
-
-  $scope.alert = notificationService.getAlert();
-  $scope.user = authService.getUser();
-  $scope.data = {loading: false};
-  $scope.searchData = {
-    queryString: '',
-    searchBoxFocused: false
-  };
-
-  $scope.$watch(function() {
-    return $location.search()['embed'];
-  }, function(embed) {
-    $scope.embed = embed;
-  });
-
-  $scope.$on('$routeChangeStart', function(event, next) {
-
-    if (next.accessLevel > Roles.ANONYMOUS && !authService.isAuthenticated()) {
-      $location.path('/signin');
-      return;
-    }
-    if (next.accessLevel === Roles.ADMIN && !authService.isAdmin()) {
-      $location.path('/accessdenied');
-    }
-  });
-
-  $scope.data.loading = 1;
-  userService.getStatus().then(function(username) {
-    $scope.data.loading--;
-    if (username) {
-      authService.signIn(username);
-    }
-  });
-});
-
-
-tkControllers.controller('AuthController', function(
-    $scope, $location, authService) {
-
-  $scope.signIn = function() {
-    $location.path('/signin');
-  };
-
-  $scope.signUp = function() {
-    $location.path('/signup');
-  };
-
-  $scope.signOut = function() {
-    authService.signOut();
-    $location.path('/');
-  };
-
-  $scope.invite = function() {
-    $location.path('/invite');
-  };
 });
 
 
@@ -999,7 +1024,7 @@ tkControllers.controller('SigninCtrl', function(
   $scope.signIn = function() {
     userService.signIn($scope.username, $scope.password)
         .then(function(response) {
-          cookieService.set('sid', response.sid);
+          cookieService.set(SESSION_ID, response.sid);
           authService.signIn($scope.username);
           $location.path('/');
         });
@@ -1028,7 +1053,7 @@ tkControllers.controller('SignupCtrl', function(
     userService.signUp(
         $scope.email, $scope.username, $scope.password, inviteCode)
         .then(function(response) {
-          cookieService.set('sid', response.sid);
+          cookieService.set(SESSION_ID, response.sid);
           authService.signIn($scope.username);
           $location.path('/');
         });
@@ -1053,17 +1078,44 @@ tkControllers.controller('InviteCtrl', function($scope, inviteService) {
 });
 
 
-tkControllers.controller('ProblemSetCtrl', function($scope, problemService) {
+tkControllers.controller('ProblemSetCtrl', function(
+    $scope, $location, problemService) {
   $scope.mainNav.tab = 'practice';
 
-  problemService.getProblems().then(function(problems) {
-    $scope.problems = problems;
+  $scope.ITEMS_PER_PAGE = 10;
+
+  var params = $location.search();
+
+  var start = params.start || 0;
+
+  $scope.currentPage = Math.floor(start / $scope.ITEMS_PER_PAGE) + 1;
+
+  problemService.getProblems(
+      $scope.currentPage - 1, $scope.ITEMS_PER_PAGE, 'id').then(function(response) {
+    $scope.totalItems = response.total;
+    $scope.problems = response.problemSearch;
+    _.each($scope.problems, function(problem, index) {
+      problem.solved = !!response.solved[index];
+    });
   });
+
+  $scope.selectPage = function(page) {
+    var start = (page - 1) * $scope.ITEMS_PER_PAGE;
+    $location.search({start: start});
+  };
 });
 
 
-tkControllers.controller('ProblemCtrl', function($scope, $timeout, $routeParams,
+tkControllers.controller('ProblemCtrl', function(
+  $scope, $timeout, $routeParams, $sce,
   problemService, gameService, fenService, engineService) {
+
+  $scope.getShareUrl = function(problemId) {
+    var url = 'http://www.facebook.com/plugins/like.php?href=' +
+        'http%3A%2F%2Ftuongky.ngrok.com%2Fproblem%2F' + problemId +
+        '&width&layout=button&action=like&show_faces=true&share=true&height=80&appId=' + FB_APP_ID;
+    return $sce.trustAsResourceUrl(url);
+  };
 
   $scope.mainNav.tab = 'practice';
 
@@ -1076,7 +1128,10 @@ tkControllers.controller('ProblemCtrl', function($scope, $timeout, $routeParams,
   var fen;
 
   var problemId = $routeParams.problemId;
-  problemService.getProblem(problemId).then(function(problem) {
+  problemService.getProblem(problemId).then(function(response) {
+    var problem = response.problem;
+    problem.solved = response.solved;
+    console.log(problem);
     $scope.problem = problem;
     var pos = fenService.fen2pos(problem.fen);
     fen = problem.fen;
@@ -1106,12 +1161,23 @@ tkControllers.controller('ProblemCtrl', function($scope, $timeout, $routeParams,
     return false;
   }
 
+  function solveIt() {
+    problemService.solve($scope.attemptId).then(function(response) {
+      $scope.problem.solved = true;
+    });
+  };
+
   function makeMove(x, y, u, v) {
     gameService.makeMove(x, y, u, v);
     $scope.turn = gameService.getTurn();
     $timeout(function() {
       if (gameService.isCheckmated()) {
-        alert($scope.turn === BLACK ? 'Đỏ thắng.' : 'Đen thắng.');
+        if ($scope.turn === BLACK) {
+          alert('Đỏ thắng. Xin chức mừng, bạn đã vượt qua thử thách này!');
+          solveIt();
+        } else {
+          alert('Đen thắng.');
+        }
       }
     });
   }
@@ -1216,6 +1282,14 @@ tkControllers.controller('ProblemCtrl', function($scope, $timeout, $routeParams,
   $scope.test = function() {
     console.log(gameService.getMoves());
   };
+
+  $scope.attempt = function() {
+    alert('Chuẩn bị giải thế, số lần thử tăng lên 1.');
+    problemService.attempt($scope.problem.id).then(function(response) {
+      $scope.attemptId = response.attemptId;
+      console.log($scope.attemptId);
+    });
+  };
 });
 
 
@@ -1230,15 +1304,39 @@ tkControllers.controller('SolvedByCtrl', function($scope, $routeParams,
 });
 
 
-tkControllers.controller('RankCtrl', function($scope, rankService) {
+tkControllers.controller('RankCtrl', function($scope, $location, rankService) {
   $scope.mainNav.tab = 'rank';
 
-  rankService.getRanks().then(function(data) {
-    $scope.ranks = data;
+  $scope.ITEMS_PER_PAGE = 10;
+
+  var params = $location.search();
+
+  var start = params.start || 0;
+
+  $scope.currentPage = Math.floor(start / $scope.ITEMS_PER_PAGE) + 1;
+
+  rankService.getRanks(
+      $scope.currentPage - 1, $scope.ITEMS_PER_PAGE).then(function(response) {
+    // $scope.totalItems = response.total;
+    $scope.totalItems = 4;
+    $scope.ranks = response.usersRank;
   });
+
+  $scope.selectPage = function(page) {
+    var start = (page - 1) * $scope.ITEMS_PER_PAGE;
+    $location.search({start: start});
+  };
 });
 
 
 tkControllers.controller('ProfileCtrl', function($scope) {
   $scope.mainNav.tab = 'profile';
+});
+
+
+tkControllers.controller('FbSigninCtrl', function($scope, $facebook) {
+
+  $scope.signInWithFb = function() {
+    $facebook.login();
+  };
 });

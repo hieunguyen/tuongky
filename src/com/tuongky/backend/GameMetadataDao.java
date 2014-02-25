@@ -11,7 +11,7 @@ import com.tuongky.model.datastore.GameMetadata;
 public class GameMetadataDao extends DAOBase {
 
   static {
-    ObjectifyService.register(GameMetadata.class);
+    ObjectifyRegister.register();
   }
 
   public GameMetadata save(GameMetadata gameMetadata) {
