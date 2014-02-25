@@ -16,8 +16,8 @@ import java.util.Map;
 @SuppressWarnings("serial")
 public class UserGetServlet extends HttpServlet {
   private static final String ID_FIELD = "id";
-  private static final String SOLVE_INCLUDED = "solveIncluded";
-  private static final String ATTEMPT_INCLUDED = "attemptIncluded";
+  private static final String SOLVE_INCLUDED = "solve_included";
+  private static final String ATTEMPT_INCLUDED = "attempt_included";
 
   private static final String USER_KEY = "user";
   private static final String METADATA_KEY = "metadata";

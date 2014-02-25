@@ -1,6 +1,7 @@
 package com.tuongky.backend;
 
 import com.googlecode.objectify.ObjectifyService;
+import com.tuongky.model.datastore.*;
 import com.tuongky.model.datastore.Book;
 import com.tuongky.model.datastore.Game;
 import com.tuongky.model.datastore.GameMetadata;
@@ -34,6 +35,7 @@ public class ObjectifyRegister {
     ObjectifyService.register(User.class);
     ObjectifyService.register(UserMetadata.class);
     ObjectifyService.register(SimpleCounter.class);
+    ObjectifyService.register(ProblemUserMetadata.class);
   }
 
   public static ObjectifyRegister register(){

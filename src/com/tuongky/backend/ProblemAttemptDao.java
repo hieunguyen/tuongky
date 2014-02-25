@@ -1,12 +1,15 @@
 package com.tuongky.backend;
 
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 import com.google.appengine.labs.repackaged.com.google.common.collect.Lists;
 import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.Query;
 import com.googlecode.objectify.util.DAOBase;
 import com.tuongky.model.datastore.ProblemAttempt;
+import com.tuongky.model.datastore.ProblemUserMetadata;
+import com.tuongky.model.datastore.Solution;
 import com.tuongky.util.ProblemUtils;
 
 /**
@@ -52,6 +55,7 @@ public class ProblemAttemptDao extends DAOBase{
     }
 
     UserMetadataDao.instance.attempt(actorId);
+    ProblemUserMetadataDao.instance.increaseAttempt(actorId, problemId);
 
     return attempt.getId();
   }
@@ -119,4 +123,5 @@ public class ProblemAttemptDao extends DAOBase{
     return ObjectifyService.begin().query(ProblemAttempt.class).order(ProblemUtils.MINUS + ProblemAttempt.CREATED_DATE)
             .offset(offSet).limit(limit).list();
   }
+
 }

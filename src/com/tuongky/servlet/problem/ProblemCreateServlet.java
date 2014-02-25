@@ -19,7 +19,7 @@ public class ProblemCreateServlet extends HttpServlet {
   private static final String DESCRIPTION_FIELD = "description";
   private static final String TITLE_FIELD = "title";
   private static final String REQUIREMENT_FIELD = "requirement";
-  private static final String CREATOR_ID_FIELD = "creatorId";
+  private static final String CREATOR_ID_FIELD = "creator_id";
   private static final String ROOT_KEY = "problem";
 
   @Override
