@@ -1082,7 +1082,7 @@ tkControllers.controller('ProblemSetCtrl', function(
     $scope, $location, problemService) {
   $scope.mainNav.tab = 'practice';
 
-  $scope.ITEMS_PER_PAGE = 2;
+  $scope.ITEMS_PER_PAGE = 10;
 
   var params = $location.search();
 
@@ -1172,8 +1172,12 @@ tkControllers.controller('ProblemCtrl', function(
     $scope.turn = gameService.getTurn();
     $timeout(function() {
       if (gameService.isCheckmated()) {
-        alert($scope.turn === BLACK ? 'Đỏ thắng.' : 'Đen thắng.');
-        solveIt();
+        if ($scope.turn === BLACK) {
+          alert('Đỏ thắng. Xin chức mừng, bạn đã vượt qua thử thách này!');
+          solveIt();
+        } else {
+          alert('Đen thắng.');
+        }
       }
     });
   }
@@ -1280,6 +1284,7 @@ tkControllers.controller('ProblemCtrl', function(
   };
 
   $scope.attempt = function() {
+    alert('Chuẩn bị giải thế, số lần thử tăng lên 1.');
     problemService.attempt($scope.problem.id).then(function(response) {
       $scope.attemptId = response.attemptId;
       console.log($scope.attemptId);
@@ -1299,12 +1304,28 @@ tkControllers.controller('SolvedByCtrl', function($scope, $routeParams,
 });
 
 
-tkControllers.controller('RankCtrl', function($scope, rankService) {
+tkControllers.controller('RankCtrl', function($scope, $location, rankService) {
   $scope.mainNav.tab = 'rank';
 
-  rankService.getRanks().then(function(data) {
-    $scope.ranks = data;
+  $scope.ITEMS_PER_PAGE = 10;
+
+  var params = $location.search();
+
+  var start = params.start || 0;
+
+  $scope.currentPage = Math.floor(start / $scope.ITEMS_PER_PAGE) + 1;
+
+  rankService.getRanks(
+      $scope.currentPage - 1, $scope.ITEMS_PER_PAGE).then(function(response) {
+    // $scope.totalItems = response.total;
+    $scope.totalItems = 4;
+    $scope.ranks = response.usersRank;
   });
+
+  $scope.selectPage = function(page) {
+    var start = (page - 1) * $scope.ITEMS_PER_PAGE;
+    $location.search({start: start});
+  };
 });
 
 

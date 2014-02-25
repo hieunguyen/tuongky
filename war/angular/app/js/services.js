@@ -1233,7 +1233,19 @@ tkServices.factory('solutionService', function($q, $http) {
 tkServices.factory('rankService', function($q, $http) {
   var service = {};
 
-  service.getRanks = function() {
+  service.getRanks = function(pageNum, pageSize) {
+    var defer = $q.defer();
+    $http.get('/users/rank', {
+      params: {
+        page_num: pageNum,
+        page_size: pageSize
+      }
+    }).success(function(data) {
+      defer.resolve(data);
+    });
+    return defer.promise;
+
+
     var defer = $q.defer();
     $http.get('json/ranks.json').success(function(data) {
       defer.resolve(data);
