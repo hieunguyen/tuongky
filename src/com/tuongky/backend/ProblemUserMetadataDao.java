@@ -1,12 +1,13 @@
 package com.tuongky.backend;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
-import com.googlecode.objectify.Query;
-import com.tuongky.model.datastore.ProblemAttempt;
 import com.tuongky.model.datastore.ProblemUserMetadata;
-
-import java.util.*;
 
 /**
  * Created by sngo on 2/23/14.

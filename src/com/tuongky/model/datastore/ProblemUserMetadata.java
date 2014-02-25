@@ -17,9 +17,8 @@ public class ProblemUserMetadata {
 
   private static String UNIQUE_DELIMINATOR = "#";
 
-  private ProblemUserMetadata(){
-
-  }
+  @SuppressWarnings("unused") // Used by Objectify.
+  private ProblemUserMetadata(){}
 
   public static String createId (long actorId, long problemId) {
     return Long.toString(actorId) + UNIQUE_DELIMINATOR + Long.toString(problemId);
