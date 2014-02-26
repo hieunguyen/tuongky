@@ -29,7 +29,7 @@ public class ProblemDao extends DAOBase {
     long id = CounterDao.getNextAvailableProblemId();
 
     Problem problem = new Problem(id, title, fen, description, requirement, creatorId);
-    ObjectifyService.begin().put(problem);
+    ObjectifyService.begin(). put(problem);
 
     CounterDao.addProblem();
     return id;
