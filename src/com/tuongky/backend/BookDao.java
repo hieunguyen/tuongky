@@ -10,7 +10,7 @@ import com.tuongky.model.datastore.Book;
 public class BookDao extends DAOBase {
 
   static {
-    ObjectifyService.register(Book.class);
+    ObjectifyRegister.register();
   }
 
   public Book save(String username, String name) {

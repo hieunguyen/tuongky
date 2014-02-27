@@ -1,0 +1,25 @@
+<br/>
+<table class="table problem-list">
+  <tr>
+    <th>Tiêu đề</th>
+    <th>Số người giải được</th>
+    <th></td>
+  </tr>
+
+  <tr ng-repeat="problem in problems">
+    <td><a ng-href="#/problem/{{problem.id}}">Bài {{problem.id}}{{problem.title && ' - ' + problem.title || ''}}</a></td>
+    <td><a ng-href="#/solvedby/{{problem.id}}">{{problem.solvers}}</a></td>
+    <td><span ng-if="problem.solved"><img src="/img/checkmark.png" class="done"></span></th>
+  </tr>
+</table>
+
+<div class="pagination-container"ng-if="totalItems > ITEMS_PER_PAGE">
+  <pagination total-items="totalItems"
+              items-per-page="ITEMS_PER_PAGE"
+              page="currentPage"
+              max-size="10"
+              previous-text="Trước"
+              next-text="Sau"
+              on-select-page="selectPage(page)"
+              ></pagination>
+</div>

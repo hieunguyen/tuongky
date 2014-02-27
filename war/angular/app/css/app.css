@@ -565,3 +565,27 @@
 .problem-viewer .board {
 	width: 360px;
 }
+
+button.fb-login {
+	background-color: #4063b3;
+	color: white;
+}
+
+button.fb-login:hover {
+	color: white;
+}
+
+.fb-signin-form {
+	margin: 0 auto;
+	text-align: center;
+	width: 100%;
+}
+
+.fb-signin-form .fb-login {
+	margin-top: 30px;
+}
+
+.problem-list .done {
+	height: 24px;
+	width: 24px;
+}
