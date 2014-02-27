@@ -48,7 +48,6 @@ public class TestProblemAttempt extends BasedProblemTest {
 
     assertEquals(list.get(1).getActorId(), userId_1);
     assertEquals(list.get(1).getProblemId(), problemId_1);
-
   }
 
 }
