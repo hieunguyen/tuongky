@@ -1,4 +1,7 @@
-<h1>{{profile.user.fbName}}</h1>
+<h1>
+  <img ng-src="http://graph.facebook.com/{{profile.user.fbId}}/picture?type=square">
+  {{profile.user.fbName}}
+</h1>
 <div>Xếp hạng: {{profile.rankInfo.rank}}</div>
 <div>Trình độ: {{LEVEL_DESCS[profile.level]}}</div>
 <div>Thử thách đã vượt qua: {{profile.metadata.solves}}</div>
