@@ -928,6 +928,17 @@ tkServices.factory('userService', function(
     return defer.promise;
   };
 
+  service.getProfile = function(fbId) {
+    var defer = $q.defer();
+    $http.get('/user/profile?fb_id=' + fbId)
+    .success(function(response) {
+      defer.resolve(response);
+    }).error(function() {
+      defer.reject();
+    });
+    return defer.promise;
+  };
+
   return service;
 });
 

@@ -113,6 +113,11 @@ tkApp.config(['$routeProvider', function($routeProvider) {
         templateUrl: 'partials/profile.html',
         controller: 'ProfileCtrl'
       })
+  .when('/profile/:fbId',
+      {
+        templateUrl: 'partials/profile.html',
+        controller: 'ProfileCtrl'
+      })
   .when('/sandbox',
       {
         templateUrl: 'partials/sandbox.html',

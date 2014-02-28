@@ -1347,8 +1347,45 @@ tkControllers.controller('RankCtrl', function($scope, $location, rankService) {
 });
 
 
-tkControllers.controller('ProfileCtrl', function($scope) {
+tkControllers.controller('ProfileCtrl', function(
+    $scope, $routeParams, $location, authService, userService) {
   $scope.mainNav.tab = 'profile';
+
+  var fbId = $routeParams.fbId;
+
+  if (!fbId) {
+    if (!authService.isAuthenticated()) {
+      $location.path('/accessdenied');
+      return;
+    }
+    fbId = authService.getUser().fbId;
+  }
+
+  $scope.LEVEL_DESCS = [
+    'Lính Mới',
+    'Bập Bõm',
+    'Biết Chơi Cờ',
+    'Giỏi Nhất Nhà',
+    'Cao Thủ Xóm',
+    'Cao Thủ Phường',
+    'Cao Thủ Quận',
+    'Cao Thủ Huyện',
+    'Cao Thủ Quốc Gia',
+    'Cao Thủ Quốc Tế',
+    'Đánh Đâu Thắng Đó',
+    'Độc Cô Cầu Bại',
+    'Vô Địch Thiên Hạ'
+  ];
+
+  function computeLevel(solved, problemCount) {
+    return Math.floor(solved * 12 / problemCount);
+  }
+
+  userService.getProfile(fbId).then(function(response) {
+    $scope.profile = response;
+    $scope.profile.level = computeLevel(
+        $scope.profile.metadata.solves, response.problemCount);
+  });
 });
 
 
