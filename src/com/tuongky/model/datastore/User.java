@@ -32,9 +32,9 @@ public class User {
     user.fbId = fbId;
     user.fbName = fbName;
     if (Constants.ADMIN_FB_IDS.contains(fbId)) {
-      user.roleIndex = UserRole.ADMIN.getValue();
+      user.setUserRole(UserRole.ADMIN);
     } else {
-      user.roleIndex = UserRole.USER.getValue();
+      user.setUserRole(UserRole.USER);
     }
     return user;
   }
@@ -73,6 +73,10 @@ public class User {
 
   public int getRoleIndex() {
     return roleIndex;
+  }
+
+  public void setUserRole(UserRole userRole) {
+    this.roleIndex = userRole.getValue();
   }
 
   public UserRole getUserRole() {

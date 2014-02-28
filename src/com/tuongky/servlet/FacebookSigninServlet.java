@@ -90,7 +90,7 @@ public class FacebookSigninServlet extends HttpServlet {
       user.setFbName(fbAuth.fbName);
       user = userDao.save(user);
     }
-    Session session = new SessionDao().save(user.getId());
+    Session session = new SessionDao().save(user.getId(), user.getUserRole());
     Map<String, Object> data = new HashMap<>();
     data.put(Constants.SESSION_COOKIE, session.getId());
     data.put("fbId", user.getFbId());

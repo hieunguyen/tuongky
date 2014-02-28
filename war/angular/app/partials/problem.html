@@ -1,7 +1,7 @@
 <h2>
   Bài {{problem.id}}{{problem.title && ' - ' + problem.title || ''}}
   <img src="/img/checkmark.png" ng-if="problem.solved">
-  <button class="btn btn-link" ng-click="attempt()">Giải thế</button>
+  <button class="btn btn-link" ng-click="attempt()">Giải thế ({{problem.attempts}})</button>
 </h2>
 <h4>Đỏ đi trước thắng.</h4>
 

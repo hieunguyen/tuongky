@@ -1165,8 +1165,26 @@ tkServices.factory('engineService', function($q, $http, notificationService) {
 });
 
 
-tkServices.factory('problemService', function($q, $http) {
+tkServices.factory('problemService', function($q, $http, notificationService) {
   var service = {};
+
+  service.createProblem = function(fen, title, description, requirement) {
+    var defer = $q.defer();
+    notificationService.show('Đang tạo bài...');
+    $http.post('/problem/create', {
+      fen: fen,
+      title: title,
+      description: description,
+      requirement: requirement
+    }).success(function(response) {
+      notificationService.show('Tạo bài thành công. ID = ' + response.problem);
+      defer.resolve(response);
+    }).error(function() {
+      notificationService.showError('Gặp lỗi, không tạo được bài.');
+      defer.reject();
+    });
+    return defer.promise;
+  };
 
   service.getProblems = function(pageNum, pageSize, order) {
     var defer = $q.defer();
