@@ -1123,13 +1123,16 @@ tkControllers.controller('ProblemSetCtrl', function(
 
 
 tkControllers.controller('ProblemCtrl', function(
-  $scope, $timeout, $routeParams, $sce,
-  problemService, gameService, fenService, engineService) {
+  $scope, $timeout, $routeParams, $sce, $facebook,
+  authService, problemService, gameService, fenService, engineService) {
+
+  $scope.attempting = false;
+  $scope.authenticated = authService.isAuthenticated();
 
   $scope.getShareUrl = function(problemId) {
     var url = 'http://www.facebook.com/plugins/like.php?href=' +
         'http%3A%2F%2Ftuongky.ngrok.com%2Fproblem%2F' + problemId +
-        '&width&layout=button&action=like&show_faces=true&share=true&height=80&appId=' + FB_APP_ID;
+        '&width&layout=button_count&action=like&show_faces=true&share=true&appId=' + FB_APP_ID;
     return $sce.trustAsResourceUrl(url);
   };
 
@@ -1181,6 +1184,7 @@ tkControllers.controller('ProblemCtrl', function(
   function solveIt() {
     problemService.solve($scope.attemptId).then(function(response) {
       $scope.problem.solved = true;
+      $scope.attempting = false;
     });
   };
 
@@ -1301,12 +1305,20 @@ tkControllers.controller('ProblemCtrl', function(
   };
 
   $scope.attempt = function() {
-    alert('Chuẩn bị giải thế, số lần thử tăng lên 1.');
     problemService.attempt($scope.problem.id).then(function(response) {
+      $scope.attempting = true;
       $scope.attemptId = response.attemptId;
       console.log($scope.attemptId);
       $scope.problem.attempts++;
     });
+  };
+
+  $scope.retry = function() {
+    alert('retry');
+  };
+
+  $scope.signInWithFacebook = function() {
+    $facebook.login();
   };
 });
 

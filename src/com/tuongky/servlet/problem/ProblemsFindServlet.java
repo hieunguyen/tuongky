@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServlet;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.tuongky.backend.CounterDao;
@@ -79,9 +80,17 @@ public class ProblemsFindServlet extends HttpServlet{
 
       Session session = (Session) req.getAttribute(Constants.SESSION_ATTRIBUTE);
 
-      List<Boolean> solved = SolutionDao.instance.solvedByProblems(session.getUserId(), problems);
+      List<Boolean> solved = Lists.newArrayList();
+      Map<Long, Integer> problemMap = Maps.newHashMap();
 
-      Map<Long, Integer> problemMap = ProblemUserMetadataDao.instance.findAttemptsByUser(session.getUserId(), getProblemIds(problems));
+      if (session != null) {
+        solved = SolutionDao.instance.solvedByProblems(session.getUserId(), problems);
+        problemMap = ProblemUserMetadataDao.instance.findAttemptsByUser(session.getUserId(), getProblemIds(problems));
+      } else {
+        for (int i = 0; i < problems.size(); i++) {
+          solved.add(false);
+        }
+      }
 
       List<ResponseObject> responseObjects = new ArrayList<>();
 

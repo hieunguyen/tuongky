@@ -562,6 +562,49 @@
 	line-height: 22px;
 }
 
+.problem-viewer {
+	border: 0px solid;
+	text-align: center;
+}
+
+.problem-viewer h2 {
+	padding: 0;
+	margin: 0;
+}
+
+.problem-viewer .buttons-container {
+	border: 0px solid;
+	float: right;
+	height: 398px;
+	width: 360px;
+	position: relative;
+}
+
+.problem-viewer.not_attempting .board {
+	opacity: 0.5;
+}
+
+.problem-viewer .buttons-container .attempt-or-retry-btn {
+	display: block;
+	vertical-align: center;
+	position: absolute;
+	top: 50%;
+	margin-top: -22px;
+}
+
+.problem-viewer .buttons-container iframe {
+	margin: 0;
+	height: 20px;
+	width: 200px;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+}
+
+.problem-viewer img.tick {
+	height: 32px;
+}
+
 .problem-viewer .board {
 	width: 360px;
 }
