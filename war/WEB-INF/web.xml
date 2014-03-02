@@ -220,6 +220,15 @@
 		<url-pattern>/user/get</url-pattern>
 	</servlet-mapping>
 
+  <servlet>
+    <servlet-name>UserProfile</servlet-name>
+    <servlet-class>com.tuongky.servlet.user.UserProfileServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UserProfile</servlet-name>
+    <url-pattern>/user/profile</url-pattern>
+  </servlet-mapping>
+
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>

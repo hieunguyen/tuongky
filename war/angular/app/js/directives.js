@@ -94,7 +94,8 @@ tkDirectives.directive('tkDoc', function() {
       hideComment: '=',
       hideControls: '=',
       hideMoveText: '=',
-      hideStudyBtn: '='
+      hideStudyBtn: '=',
+      hideCreateProblemBtn: '='
     },
     replace: true,
     templateUrl: 'partials/tk_doc.html',

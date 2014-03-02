@@ -1,11 +1,8 @@
-<div>Hứa Ngân Xuyên</div>
-<div>Thu hang: 13/12345</div>
-<div>Trinh do: Ho Phong Hoan Vu</div>
-<div>Giai xong: 25</div>
-<div>Dang giai: 53</div>
-<div>Chua xem: 372</div>
-<div>Báu vật đang giữ:</div>
-<ul>
-  <li>Ỷ Thiên Kiếm</li>
-  <li>Cửu Âm Chân Kinh</li>
-</ul>
+<h1>
+  <img ng-src="http://graph.facebook.com/{{profile.user.fbId}}/picture?type=square">
+  {{profile.user.fbName}}
+</h1>
+<div>Xếp hạng: {{profile.rankInfo.rank}}</div>
+<div>Trình độ: {{LEVEL_DESCS[profile.level]}}</div>
+<div>Thử thách đã vượt qua: {{profile.metadata.solves}}</div>
+<div>Số lần thử: {{profile.metadata.attempts}}</div>

@@ -7,7 +7,11 @@ var tkControllers = angular.module('tkApp.controllers', []);
 
 tkControllers.controller('AppCtrl', function(
     $scope, $location, $route, $facebook,
-    notificationService, authService, userService) {
+    notificationService, authService, userService, cookieService) {
+
+  $scope.isAdmin = function() {
+    return authService.isAdmin();
+  };
 
   $scope.mainNav = {tab: ''};
 
@@ -46,6 +50,8 @@ tkControllers.controller('AppCtrl', function(
     $scope.data.loading--;
     if (status.fbId) {
       authService.signIn(status.fbId, status.fbName, status.roleId);
+    } else {
+      cookieService.delete(SESSION_ID);
     }
   });
 
@@ -162,8 +168,12 @@ tkControllers.controller('StudyCtrl', function(
 
 tkControllers.controller('CreateGameCtrl', function(
     $scope, $routeParams, $location, $timeout,
-    gameService, treeService, fenService, dbService, game,
+    authService, gameService, treeService, fenService, dbService, game,
     vnService, bookService) {
+
+  $scope.isAdmin = function() {
+    return authService.isAdmin();
+  };
 
   var fen = fenService.getStartingFen();
 
@@ -606,7 +616,8 @@ tkControllers.controller('ShowGameCtrl', function(
 
 
 tkControllers.controller('DocCtrl', function(
-    $scope, $location, $timeout, gameService, treeService, fenService) {
+    $scope, $location, $timeout,
+    gameService, treeService, fenService, problemService) {
 
   $scope.boardApi = {};
 
@@ -969,6 +980,10 @@ tkControllers.controller('DocCtrl', function(
     $location.path(nextToken);
   };
 
+  $scope.createProblem = function() {
+    problemService.createProblem(produceFen(), '', '' ,'');
+  };
+
   $scope.pressEnter = function(value) {
     processHumanMoves(value);
   };
@@ -1093,9 +1108,10 @@ tkControllers.controller('ProblemSetCtrl', function(
   problemService.getProblems(
       $scope.currentPage - 1, $scope.ITEMS_PER_PAGE, 'id').then(function(response) {
     $scope.totalItems = response.total;
-    $scope.problems = response.problemSearch;
-    _.each($scope.problems, function(problem, index) {
-      problem.solved = !!response.solved[index];
+    $scope.problems = _.map(response.problem_search, function(result) {
+      var problem = result.problem;
+      problem.solved = result.isSolved;
+      return problem;
     });
   });
 
@@ -1131,6 +1147,7 @@ tkControllers.controller('ProblemCtrl', function(
   problemService.getProblem(problemId).then(function(response) {
     var problem = response.problem;
     problem.solved = response.solved;
+    problem.attempts = response.attempt_count;
     console.log(problem);
     $scope.problem = problem;
     var pos = fenService.fen2pos(problem.fen);
@@ -1288,6 +1305,7 @@ tkControllers.controller('ProblemCtrl', function(
     problemService.attempt($scope.problem.id).then(function(response) {
       $scope.attemptId = response.attemptId;
       console.log($scope.attemptId);
+      $scope.problem.attempts++;
     });
   };
 });
@@ -1329,8 +1347,45 @@ tkControllers.controller('RankCtrl', function($scope, $location, rankService) {
 });
 
 
-tkControllers.controller('ProfileCtrl', function($scope) {
+tkControllers.controller('ProfileCtrl', function(
+    $scope, $routeParams, $location, authService, userService) {
   $scope.mainNav.tab = 'profile';
+
+  var fbId = $routeParams.fbId;
+
+  if (!fbId) {
+    if (!authService.isAuthenticated()) {
+      $location.path('/accessdenied');
+      return;
+    }
+    fbId = authService.getUser().fbId;
+  }
+
+  $scope.LEVEL_DESCS = [
+    'Lính Mới',
+    'Bập Bõm',
+    'Biết Chơi Cờ',
+    'Giỏi Nhất Nhà',
+    'Cao Thủ Xóm',
+    'Cao Thủ Phường',
+    'Cao Thủ Quận',
+    'Cao Thủ Huyện',
+    'Cao Thủ Quốc Gia',
+    'Cao Thủ Quốc Tế',
+    'Đánh Đâu Thắng Đó',
+    'Độc Cô Cầu Bại',
+    'Vô Địch Thiên Hạ'
+  ];
+
+  function computeLevel(solved, problemCount) {
+    return Math.floor(solved * 12 / problemCount);
+  }
+
+  userService.getProfile(fbId).then(function(response) {
+    $scope.profile = response;
+    $scope.profile.level = computeLevel(
+        $scope.profile.metadata.solves, response.problemCount);
+  });
 });
 
 

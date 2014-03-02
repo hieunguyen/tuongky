@@ -76,7 +76,7 @@ public class SignupServlet extends HttpServlet {
     if (code == 0) {
       user = userDao.save(email, username, password);
       data.put("username", username);
-      Session session = new SessionDao().save(user.getId());
+      Session session = new SessionDao().save(user);
       data.put("sid", session.getId());
     }
     resp.setContentType(Constants.CT_JSON);

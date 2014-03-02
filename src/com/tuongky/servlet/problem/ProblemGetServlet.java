@@ -1,19 +1,25 @@
 package com.tuongky.servlet.problem;
 
-import com.google.appengine.api.search.query.QueryParser;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServlet;
+
 import com.google.appengine.labs.repackaged.com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.tuongky.backend.ProblemAttemptDao;
 import com.tuongky.backend.ProblemDao;
 import com.tuongky.backend.ProblemUserMetadataDao;
 import com.tuongky.backend.SolutionDao;
-import com.tuongky.model.datastore.*;
+import com.tuongky.model.datastore.Problem;
+import com.tuongky.model.datastore.ProblemAttempt;
+import com.tuongky.model.datastore.ProblemUserMetadata;
+import com.tuongky.model.datastore.Session;
+import com.tuongky.model.datastore.Solution;
 import com.tuongky.servlet.Constants;
-
-import javax.servlet.http.HttpServlet;
-import javax.xml.ws.Response;
-
-import java.util.*;
 
 /**
  * Created by sngo on 2/13/14.
@@ -93,9 +99,10 @@ public class ProblemGetServlet extends HttpServlet {
     resp.getWriter().println(new Gson().toJson(ret));
   }
 
-  public class ResponseObject{
-    private Solution solution;
-    private int attempts;
+  @SuppressWarnings("unused") // Used by Gson.
+  private static class ResponseObject{
+    private final Solution solution;
+    private final int attempts;
 
     public ResponseObject(Solution solution, int attempts){
       this.solution = solution;

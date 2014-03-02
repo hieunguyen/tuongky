@@ -64,4 +64,8 @@ public class FenParser {
 
     return new Fen(board, turn, halfMoveClock, fullMove);
   }
+
+  public static boolean isValidFen(String fen) {
+    return fen != null && parse(fen) != null;
+  }
 }

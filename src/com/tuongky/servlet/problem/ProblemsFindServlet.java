@@ -1,6 +1,11 @@
 package com.tuongky.servlet.problem;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServlet;
 
@@ -29,7 +34,6 @@ public class ProblemsFindServlet extends HttpServlet{
 
   private static final String ROOT_KEY = "problem_search";
   private static final String TOTAL_RESULT = "total";
-  private static final String SOLVED = "solved";
 
   private static int PAGE_SIZE_DEFAULT = 10;
 
@@ -105,10 +109,11 @@ public class ProblemsFindServlet extends HttpServlet{
     }
   }
 
-  public class ResponseObject{
-    private Problem problem;
-    private boolean isSolved;
-    private int attempts;
+  @SuppressWarnings("unused") // Used by Gson.
+  private static class ResponseObject{
+    private final Problem problem;
+    private final boolean isSolved;
+    private final int attempts;
 
     public ResponseObject(Problem problem, boolean isSolved, int attempts){
       this.problem = problem;

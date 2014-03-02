@@ -1,15 +1,18 @@
 <br/>
 <table class="table">
   <tr>
-    <th>ID</th>
-    <th>Ten</th>
-    <th>So bai</td>
-    <th>So lan thu</td>
+    <th>Thứ hạng</th>
+    <th>Tên</th>
+    <th>Số bài</td>
+    <th>Số lần thử</td>
   </tr>
 
   <tr ng-repeat="rank in ranks">
-    <td><a ng-href="">{{rank.user.id}}</a></td>
-    <td><a ng-href="">{{rank.user.fbName}}</a></td>
+    <td><a ng-href="">{{(currentPage - 1) * ITEMS_PER_PAGE + $index + 1}}</a></td>
+    <td>
+      <img ng-src="http://graph.facebook.com/{{rank.user.fbId}}/picture?type=square">
+      <a ng-href="#/profile/{{rank.user.fbId}}">{{rank.user.fbName}}</a>
+    </td>
     <td>{{rank.userMetadata.solves}}</th>
     <td>{{rank.userMetadata.attempts}}</th>
   </tr>

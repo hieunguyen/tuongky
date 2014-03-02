@@ -1,15 +1,12 @@
 package com.tuongky.backend;
 
-import java.util.*;
+import java.util.List;
 import java.util.logging.Logger;
 
 import com.google.appengine.labs.repackaged.com.google.common.collect.Lists;
 import com.googlecode.objectify.ObjectifyService;
-import com.googlecode.objectify.Query;
 import com.googlecode.objectify.util.DAOBase;
 import com.tuongky.model.datastore.ProblemAttempt;
-import com.tuongky.model.datastore.ProblemUserMetadata;
-import com.tuongky.model.datastore.Solution;
 import com.tuongky.util.ProblemUtils;
 
 /**
