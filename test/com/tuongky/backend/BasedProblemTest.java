@@ -1,4 +1,4 @@
-package test;
+package com.tuongky.backend;
 
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;

@@ -1,4 +1,4 @@
-package test;
+package com.tuongky.backend;
 
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 /**
  * Created by sngo on 2/26/14.
  */
-public class TestCounter {
+public class CounterDaoTest {
 
   private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
