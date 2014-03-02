@@ -119,4 +119,12 @@ public class Problem {
   public void setCreatorId(Long creatorId) {
     this.creatorId = creatorId;
   }
+
+  public int getAttempters() {
+    return attempters;
+  }
+
+  public void setAttempters(int attempters) {
+    this.attempters = attempters;
+  }
 }

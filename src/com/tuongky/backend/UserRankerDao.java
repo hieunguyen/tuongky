@@ -23,7 +23,7 @@ public class UserRankerDao extends DAOBase{
 
   // How many users who solves at least [solves] problems.
   // Note that if solves=0, it will return 0 since there is no instance with id=0 in the datastore
-  public Integer getRank(int solves){
+  public int getRank(int solves){
     Ranker ranker = ObjectifyService.begin().find(Ranker.class, solves);
     if (ranker == null){
       return 0;
