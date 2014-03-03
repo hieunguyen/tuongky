@@ -25,7 +25,7 @@ public class UserGetServlet extends HttpServlet {
   private static final String ATTEMPT_KEY = "attempt";
   private static final String IS_ON = "on";
 
-  private RankInfo getRankInfo(UserMetadata userMetadata){
+  public static RankInfo getRankInfo(UserMetadata userMetadata){
     if (userMetadata != null && userMetadata.getSolves() > 0)
     {
       int more = UserRankerDao.instance.getRank(userMetadata.getSolves() + 1);
