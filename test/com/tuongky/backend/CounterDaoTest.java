@@ -1,15 +1,13 @@
 package com.tuongky.backend;
 
-import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
-import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
-import com.tuongky.backend.CounterDao;
-import com.tuongky.backend.ProblemDao;
-import com.tuongky.backend.UserDao;
-import com.tuongky.model.datastore.User;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
 /**
  * Created by sngo on 2/26/14.

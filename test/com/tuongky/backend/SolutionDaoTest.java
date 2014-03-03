@@ -15,7 +15,7 @@ public class SolutionDaoTest extends BasedProblemTest{
 
   @Test
   public void testSolve(){
-    String attemptId = ProblemAttemptDao.instance.attempt(userId_1, problemId_2, true);
+    ProblemAttemptDao.instance.attempt(userId_1, problemId_2, true);
     SolutionDao.instance.solve(userId_1, problemId_2);
 
     List<Solution> solution = SolutionDao.instance.searchByProblem(problemId_2, null, 0);
