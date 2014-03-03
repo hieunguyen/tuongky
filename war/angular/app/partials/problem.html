@@ -1,26 +1,46 @@
 <div class="problem-viewer" ng-class="{not_attempting: !attempting}">
-  <h2>
-    Bài {{problem.id}}{{problem.title && ' - ' + problem.title || ''}}
-    <img src="/img/checkmark.png" ng-if="problem.solved" class="tick">
-  </h2>
-  <h4>Đỏ đi trước thắng.</h4>
+  <div class="right-pane">
+    <div class="problem-info">
+      <div class="problem-title">Bài {{problem.id}}{{problem.title && ' - ' + problem.title || ''}}</div>
+      <img src="/img/checkmark.png" ng-if="problem.solved" class="tick" title="Da xong">
+      <div class="requirement">Đỏ đi trước thắng.</div>
+      <div class="attempts" ng-if="authenticated">
+        <span ng-if="attempting">Lần thử thứ <b>{{problem.attempts}}</b>.</span>
+        <span ng-if="!attempting && !!problem.attempts">
+          Đã thử <strong>{{problem.attempts}}</strong> lần.
+        </span>
+        <span ng-if="!attempting && !problem.attempts">
+          Bạn chưa thử giải thế lần nào.
+        </span>
+      </div>
+    </div>
 
-  <div class="buttons-container">
-    <button class="btn btn-lg attempt-or-retry-btn fb-login"
-            ng-click="signInWithFacebook()"
-            ng-hide="authenticated">Đăng nhập để giải thế</button>
-    <button class="btn btn-lg btn-success attempt-or-retry-btn"
-            ng-click="attempt()"
-            ng-hide="!authenticated || attempting">Giải thế</button>
-    <button class="btn btn-lg btn-default attempt-or-retry-btn"
-            ng-click="retry()"
-            ng-show="authenticated && attempting">Thử lại</button>
+    <div class="buttons-container">
+      <button class="btn btn-lg action-btn fb-login"
+              ng-click="signInWithFacebook()"
+              ng-hide="authenticated">Đăng nhập để giải thế</button>
+      <button class="btn btn-lg btn-default action-btn attempt-btn"
+              ng-click="attempt()"
+              ng-hide="!authenticated || attempting">
+        <span class="glyphicon glyphicon-play"></span>
+        Giải thế
+      </button>
+      <button class="btn btn-lg btn-default action-btn retry-btn"
+              ng-click="retry()"
+              ng-show="authenticated && attempting"
+              ng-disabled="hasNotMoved()">
+        <span class="glyphicon glyphicon-repeat"></span>
+        Thử lại
+      </button>
+    </div>
 
-    <iframe ng-src="{{getShareUrl(problem.id)}}"
-            scrolling="no"
-            frameborder="0"
-            style="border:none; overflow:hidden"
-            allowTransparency="true"></iframe>
+    <div class="fb-buttons">
+      <iframe ng-src="{{getShareUrl(problem.id)}}"
+              scrolling="no"
+              frameborder="0"
+              style="border:none; overflow:hidden"
+              allowTransparency="true"></iframe>
+    </div>
   </div>
 
   <div class="board">

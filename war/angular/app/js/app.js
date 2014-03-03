@@ -123,7 +123,7 @@ tkApp.config(['$routeProvider', function($routeProvider) {
         templateUrl: 'partials/sandbox.html',
         controller: 'SandboxCtrl'
       })
-  .otherwise({redirectTo: '/search/q='});
+  .otherwise({redirectTo: '/problems'});
 }]);
 
 tkApp.config(['$httpProvider', function($httpProvider) {

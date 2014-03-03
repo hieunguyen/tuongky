@@ -527,7 +527,7 @@
 	border: 1px solid rgb(185, 185, 185);
 	height: 3.0em;
 	line-height: 3.0em;
-	border-radius: 5px;
+	border-radius: 3px;
 }
 
 .main-menu li {
@@ -563,50 +563,70 @@
 }
 
 .problem-viewer {
-	border: 0px solid;
-	text-align: center;
+	margin-top: 15px;
 }
 
-.problem-viewer h2 {
-	padding: 0;
-	margin: 0;
-}
-
-.problem-viewer .buttons-container {
-	border: 0px solid;
-	float: right;
-	height: 398px;
+.problem-viewer .board {
 	width: 360px;
-	position: relative;
 }
 
 .problem-viewer.not_attempting .board {
 	opacity: 0.5;
 }
 
-.problem-viewer .buttons-container .attempt-or-retry-btn {
+.problem-viewer .right-pane {
+	float: right;
+	position: relative;
+	height: 398px;
+	width: 370px;
+}
+
+.problem-viewer .problem-info {
+	top: 0;
+	position: relative;
+	width: 80%;
+	height: 160px;
+	border: 1px solid #ccc;
+	padding: 7px;
+  border-radius: 3px;
+  font-size: 120%;
+}
+
+.problem-viewer .problem-info .problem-title {
+	font-size: 150%;
+	text-decoration: underline;
+	display: inline;
+}
+
+.problem-viewer .problem-info .tick {
+	height: 24px;
+	margin-top: -8px;
+	margin-left: 5px;
+}
+
+.problem-viewer .right-pane .buttons-container {
+	position: absolute;
+  top: 50%;
+  margin-top: -22px;
+}
+
+.problem-viewer .buttons-container .action-btn {
 	display: block;
 	vertical-align: center;
 	position: absolute;
-	top: 50%;
-	margin-top: -22px;
 }
 
-.problem-viewer .buttons-container iframe {
+.problem-viewer .buttons-container .retry-btn .glyphicon-repeat{
+	top: 2px;
+}
+
+.problem-viewer .right-pane .fb-buttons {
 	margin: 0;
 	height: 20px;
 	width: 200px;
 	position: absolute;
 	left: 0;
 	bottom: 0;
-}
-
-.problem-viewer img.tick {
-	height: 32px;
-}
-
-.problem-viewer .board {
-	width: 360px;
 }
 
 button.fb-login {

@@ -1146,16 +1146,8 @@ tkControllers.controller('ProblemCtrl', function(
   var selectedRow, selectedCol;
   var fen;
 
-  var problemId = $routeParams.problemId;
-  problemService.getProblem(problemId).then(function(response) {
-    var problem = response.problem;
-    problem.solved = response.solved;
-    problem.attempts = response.attempt_count;
-    console.log(problem);
-    $scope.problem = problem;
+  function init(problem) {
     var pos = fenService.fen2pos(problem.fen);
-    fen = problem.fen;
-
     if (pos) {
       gameService.init(pos.board, pos.turn);
     } else {
@@ -1164,9 +1156,23 @@ tkControllers.controller('ProblemCtrl', function(
     }
     $scope.board = gameService.getBoard();
     $scope.turn = gameService.getTurn();
+  }
+
+  var problemId = $routeParams.problemId;
+  problemService.getProblem(problemId).then(function(response) {
+    var problem = response.problem;
+    problem.solved = response.solved;
+    problem.attempts = response.attempt_count;
+    console.log(problem);
+    $scope.problem = problem;
+    fen = problem.fen;
+    init(problem);
   });
 
   $scope.dropIt = function(dragId, row, col) {
+    if (!$scope.attempting) {
+      return;
+    }
     var x = Number(dragId.split('_')[1]);
     var y = Number(dragId.split('_')[2]);
     if (x === row && y === col) return;
@@ -1198,6 +1204,8 @@ tkControllers.controller('ProblemCtrl', function(
           solveIt();
         } else {
           alert('Đen thắng.');
+          init($scope.problem);
+          $scope.attempting = false;
         }
       }
     });
@@ -1231,7 +1239,14 @@ tkControllers.controller('ProblemCtrl', function(
     return p > 0 ? RED : BLACK;
   }
 
+  $scope.hasNotMoved = function() {
+    return !gameService.getMoves() || !gameService.getMoves().length;
+  };
+
   $scope.selectPiece = function(row, col) {
+    if (!$scope.attempting) {
+      return;
+    }
     if ($scope.turn !== pieceToTurn($scope.board[row][col])) {
       if (selectedRow !== undefined) {
         $scope.selectBoardCell(row, col);
@@ -1305,16 +1320,29 @@ tkControllers.controller('ProblemCtrl', function(
   };
 
   $scope.attempt = function() {
+    if ($scope.problem.solved) {
+      if (!confirm('Bạn đã vượt qua thử thách này rồi. Bạn có thực sự muốn thử lại không?')) {
+        return;
+      }
+    }
+
     problemService.attempt($scope.problem.id).then(function(response) {
       $scope.attempting = true;
       $scope.attemptId = response.attemptId;
       console.log($scope.attemptId);
       $scope.problem.attempts++;
+      init($scope.problem);
     });
   };
 
   $scope.retry = function() {
-    alert('retry');
+    problemService.attempt($scope.problem.id).then(function(response) {
+      $scope.attempting = true;
+      $scope.attemptId = response.attemptId;
+      console.log($scope.attemptId);
+      $scope.problem.attempts++;
+      init($scope.problem);
+    });
   };
 
   $scope.signInWithFacebook = function() {
@@ -1373,21 +1401,7 @@ tkControllers.controller('ProfileCtrl', function(
     fbId = authService.getUser().fbId;
   }
 
-  $scope.LEVEL_DESCS = [
-    'Lính Mới',
-    'Bập Bõm',
-    'Biết Chơi Cờ',
-    'Giỏi Nhất Nhà',
-    'Cao Thủ Xóm',
-    'Cao Thủ Phường',
-    'Cao Thủ Quận',
-    'Cao Thủ Huyện',
-    'Cao Thủ Quốc Gia',
-    'Cao Thủ Quốc Tế',
-    'Đánh Đâu Thắng Đó',
-    'Độc Cô Cầu Bại',
-    'Vô Địch Thiên Hạ'
-  ];
+  $scope.LEVEL_DESCS = LEVEL_DESCRIPTIONS;
 
   function computeLevel(solved, problemCount) {
     return Math.floor(solved * 12 / problemCount);
