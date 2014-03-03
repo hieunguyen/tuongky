@@ -1,29 +1,28 @@
-<br/>
-
-<p>Bai 2 - Khoá Hải Chinh Đông</p>
+<h3 style="text-align:center">Bài {{problem.id}}{{problem.title && ' - ' + problem.title || ''}}</h3>
 
 <table class="table">
   <tr>
     <th>ID</th>
-    <th>Nguoi giai</th>
-    <th>Thoi diem</td>
-    <th>Thoi gian</td>
-    <th>So nuoc</td>
+    <th>Kỳ thủ</th>
+    <th>Thời điểm</th>
   </tr>
 
-  <tr ng-repeat="solution in solutions">
-    <td><a ng-href="#/practice/{{problem.id}}">{{solution.id}}</a></td>
-    <td><a ng-href="#/solvedby/{{problem.id}}">{{solution.user}}</a></td>
-    <td>{{solution.solvedAt}}</th>
-    <td>12 phut 20 giay</th>
-    <td>64</th>
+  <tr ng-repeat="item in items">
+    <td>{{(currentPage - 1) * ITEMS_PER_PAGE + $index + 1}}</td>
+    <td>
+      <img ng-src="http://graph.facebook.com/{{item.user.fbId}}/picture?type=square">
+      <a ng-href="#/profile/{{item.user.fbId}}">{{item.user.fbName}}</a>
+    </td>
+    <td>{{item.solution.createdDate | date:'medium'}}</td>
   </tr>
 </table>
 
-<pagination total-items="solutions.length"
-            items-per-page="1"
-            page="1"
-            max-size="10"
-            previous-text="Trước"
-            next-text="Sau"
-            on-select-page="selectPage(page)"></pagination>
+<div class="pagination-container" ng-if="totalItems > ITEMS_PER_PAGE">
+  <pagination total-items="totalItems"
+              items-per-page="ITEMS_PER_PAGE"
+              page="currentPage"
+              max-size="10"
+              previous-text="Trước"
+              next-text="Sau"
+              on-select-page="selectPage(page)"></pagination>
+</div>

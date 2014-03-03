@@ -34,7 +34,7 @@ public class CanonicalProblemServlet extends HttpServlet {
     scopes.put("name", "Mustache");
     scopes.put("version", "1.0");
     MustacheFactory mf = new DefaultMustacheFactory();
-    Mustache mustache = mf.compile("templates/test.html");
+    Mustache mustache = mf.compile("templates/canonical_problem.html");
     resp.setContentType(Constants.CT_HTML_UTF8);
     PrintWriter writer = resp.getWriter();
     mustache.execute(writer, scopes);

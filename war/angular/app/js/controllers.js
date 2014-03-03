@@ -1351,14 +1351,34 @@ tkControllers.controller('ProblemCtrl', function(
 });
 
 
-tkControllers.controller('SolvedByCtrl', function($scope, $routeParams,
-    solutionService) {
+tkControllers.controller('SolvedByCtrl', function(
+    $scope, $routeParams, $location, solutionService) {
   $scope.mainNav.tab = 'practice';
 
   var problemId = $routeParams.problemId;
-  solutionService.getSolutionsForProblem(problemId).then(function(data) {
-    $scope.solutions = data;
-  });
+
+  $scope.ITEMS_PER_PAGE = 10;
+
+  var params = $location.search();
+
+  var start = params.start || 0;
+
+  $scope.currentPage = Math.floor(start / $scope.ITEMS_PER_PAGE) + 1;
+
+  solutionService.getSolutionsForProblem(
+    problemId, $scope.currentPage - 1, $scope.ITEMS_PER_PAGE)
+    .then(function(response) {
+      console.log(response);
+      $scope.problem = response.problem;
+      $scope.totalItems = $scope.problem.solvers;
+      $scope.items = response.items;
+    });
+
+
+  $scope.selectPage = function(page) {
+    var start = (page - 1) * $scope.ITEMS_PER_PAGE;
+    $location.search({start: start});
+  };
 });
 
 
@@ -1375,8 +1395,7 @@ tkControllers.controller('RankCtrl', function($scope, $location, rankService) {
 
   rankService.getRanks(
       $scope.currentPage - 1, $scope.ITEMS_PER_PAGE).then(function(response) {
-    // $scope.totalItems = response.total;
-    $scope.totalItems = 4;
+    $scope.totalItems = response.total;
     $scope.ranks = response.usersRank;
   });
 

@@ -1244,13 +1244,22 @@ tkServices.factory('problemService', function($q, $http, notificationService) {
 });
 
 
-tkServices.factory('solutionService', function($q, $http) {
+tkServices.factory('solutionService', function($q, $http, notificationService) {
   var service = {};
 
-  service.getSolutionsForProblem = function(problemId) {
+  service.getSolutionsForProblem = function(problemId, pageNum, pageSize) {
     var defer = $q.defer();
-    $http.get('json/solutions.json').success(function(data) {
+    $http.get('/problem/solutions', {
+      params: {
+        id: problemId,
+        page_num: pageNum,
+        page_size: pageSize
+      }
+    }).success(function(data) {
       defer.resolve(data);
+    }).error(function() {
+      notificationService.showError('Server gặp sự cố, mong bạn thử lại sau.');
+      defer.reject();
     });
     return defer.promise;
   };
@@ -1261,7 +1270,6 @@ tkServices.factory('solutionService', function($q, $http) {
 
 tkServices.factory('rankService', function($q, $http) {
   var service = {};
-
   service.getRanks = function(pageNum, pageSize) {
     var defer = $q.defer();
     $http.get('/users/rank', {
@@ -1273,14 +1281,6 @@ tkServices.factory('rankService', function($q, $http) {
       defer.resolve(data);
     });
     return defer.promise;
-
-
-    var defer = $q.defer();
-    $http.get('json/ranks.json').success(function(data) {
-      defer.resolve(data);
-    });
-    return defer.promise;
   };
-
   return service;
 });

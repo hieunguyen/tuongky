@@ -190,8 +190,17 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>CanonicalProblem</servlet-name>
-		<url-pattern>/problem/*</url-pattern>
+		<url-pattern>/problem/id/*</url-pattern>
 	</servlet-mapping>
+
+  <servlet>
+    <servlet-name>SolutionsForProblem</servlet-name>
+    <servlet-class>com.tuongky.servlet.problem.SolutionsForProblemServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SolutionsForProblem</servlet-name>
+    <url-pattern>/problem/solutions</url-pattern>
+  </servlet-mapping>
 
   <servlet>
     <servlet-name>UserStatus</servlet-name>

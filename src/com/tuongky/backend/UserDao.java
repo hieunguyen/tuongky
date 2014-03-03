@@ -1,14 +1,13 @@
 package com.tuongky.backend;
 
+import java.util.Map;
+
 import org.mindrot.BCrypt;
 
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.DAOBase;
 import com.tuongky.model.datastore.User;
-
-import java.util.Map;
-import java.util.Set;
 
 public class UserDao extends DAOBase {
 
@@ -80,7 +79,7 @@ public class UserDao extends DAOBase {
         .get();
   }
 
-  public Map<Long, User> batchGetBuyId(Set<Long> ids){
+  public Map<Long, User> batchGetBuyId(Iterable<Long> ids){
     return ObjectifyService.begin().get(User.class, ids);
   }
 }
