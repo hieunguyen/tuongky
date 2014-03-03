@@ -96,14 +96,7 @@ tkControllers.controller('AuthController', function(
 });
 
 
-tkControllers.controller('SandboxCtrl', function(
-    $scope, $facebook, authService) {
-
-  $scope.mainNav.tab = 'sandbox';
-
-  $scope.doIt = function() {
-    alert('Name: ' + authService.getUser().username);
-  };
+tkControllers.controller('SandboxCtrl', function() {
 });
 
 
@@ -1382,7 +1375,8 @@ tkControllers.controller('SolvedByCtrl', function(
 });
 
 
-tkControllers.controller('RankCtrl', function($scope, $location, rankService) {
+tkControllers.controller('RankCtrl', function(
+    $scope, $location, rankService, levelService) {
   $scope.mainNav.tab = 'rank';
 
   $scope.ITEMS_PER_PAGE = 10;
@@ -1397,6 +1391,10 @@ tkControllers.controller('RankCtrl', function($scope, $location, rankService) {
       $scope.currentPage - 1, $scope.ITEMS_PER_PAGE).then(function(response) {
     $scope.totalItems = response.total;
     $scope.ranks = response.usersRank;
+    _.each($scope.ranks, function(rank) {
+      rank.levelDesc = levelService.getLevelDesc(
+          rank.userMetadata.solves, response.problemCount);
+    });
   });
 
   $scope.selectPage = function(page) {
@@ -1407,7 +1405,7 @@ tkControllers.controller('RankCtrl', function($scope, $location, rankService) {
 
 
 tkControllers.controller('ProfileCtrl', function(
-    $scope, $routeParams, $location, authService, userService) {
+    $scope, $routeParams, $location, authService, userService, levelService) {
   $scope.mainNav.tab = 'profile';
 
   var fbId = $routeParams.fbId;
@@ -1420,15 +1418,9 @@ tkControllers.controller('ProfileCtrl', function(
     fbId = authService.getUser().fbId;
   }
 
-  $scope.LEVEL_DESCS = LEVEL_DESCRIPTIONS;
-
-  function computeLevel(solved, problemCount) {
-    return Math.floor(solved * 12 / problemCount);
-  }
-
   userService.getProfile(fbId).then(function(response) {
     $scope.profile = response;
-    $scope.profile.level = computeLevel(
+    $scope.profile.levelDesc = levelService.getLevelDesc(
         $scope.profile.metadata.solves, response.problemCount);
   });
 });

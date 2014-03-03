@@ -1,8 +1,8 @@
-<h1>
+<h2>
   <img ng-src="http://graph.facebook.com/{{profile.user.fbId}}/picture?type=square">
   {{profile.user.fbName}}
-</h1>
-<div>Xếp hạng: {{profile.rankInfo.rank}}</div>
-<div>Trình độ: {{LEVEL_DESCS[profile.level]}}</div>
-<div>Thử thách đã vượt qua: {{profile.metadata.solves}}</div>
+</h2>
+<div>Xếp hạng: {{profile.rankInfo.rank}} - {{profile.rankInfo.rank + profile.rankInfo.ties - 1}}</div>
+<div>Trình độ: {{profile.levelDesc}}</div>
+<div>Số bài tập đã giải được: {{profile.metadata.solves}}</div>
 <div>Số lần thử: {{profile.metadata.attempts}}</div>

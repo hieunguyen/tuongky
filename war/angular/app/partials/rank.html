@@ -1,9 +1,10 @@
 <h3 style="text-align:center">Bảng Xếp Hạng</h3>
 
-<table class="table">
+<table class="table table-striped table-bordered">
   <tr>
     <th>Thứ hạng</th>
-    <th>Kỳ thủ</th>
+    <th>Tên kỳ thủ</th>
+    <th>Trình độ</th>
     <th>Số bài</td>
     <th>Số lần thử</td>
   </tr>
@@ -14,6 +15,7 @@
       <img ng-src="http://graph.facebook.com/{{rank.user.fbId}}/picture?type=square">
       <a ng-href="#/profile/{{rank.user.fbId}}">{{rank.user.fbName}}</a>
     </td>
+    <td>{{rank.levelDesc}}</td>
     <td>{{rank.userMetadata.solves}}</th>
     <td>{{rank.userMetadata.attempts}}</th>
   </tr>

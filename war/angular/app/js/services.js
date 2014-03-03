@@ -1284,3 +1284,18 @@ tkServices.factory('rankService', function($q, $http) {
   };
   return service;
 });
+
+
+tkServices.factory('levelService', function() {
+  var service = {};
+
+  service.getLevel = function(solved, total) {
+    return Math.floor(solved * 12 / total);
+  };
+
+  service.getLevelDesc = function(solved, total) {
+    return LEVEL_DESCRIPTIONS[service.getLevel(solved, total)];
+  };
+
+  return service;
+});

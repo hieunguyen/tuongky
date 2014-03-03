@@ -33,6 +33,7 @@ public class UsersRankServlet extends HttpServlet {
 
   private static final String ROOT_KEY = "usersRank";
   private static final String TOTAL_RESULT = "total";
+  private static final String PROBLEM_COUNT = "problemCount";
 
   private static int PAGE_SIZE_DEFAULT = 10;
 
@@ -85,9 +86,10 @@ public class UsersRankServlet extends HttpServlet {
       Map<Long, User> userMap = UserDao.instance.batchGetBuyId(userIds);
 
       long totalResults = CounterDao.getUsersCount();
+      long problemCount = CounterDao.getProblemsCount();
 
       resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, prepareResults(list, userMap),
-              TOTAL_RESULT, totalResults));
+              TOTAL_RESULT, totalResults, PROBLEM_COUNT, problemCount));
 
     } catch (NumberFormatException e){
       resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, "NumberFormatException"));
