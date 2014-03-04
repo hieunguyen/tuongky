@@ -44,7 +44,7 @@
           <button class="btn btn-sm fb-login" ng-click="signInWithFb()">Đăng nhập dùng Facebook</button>
         </div>
         <div ng-show="user.fbId" ng-cloak>
-          Chào <a href="#/search/q={{user.fbName}}">{{user.fbName}}</a> <span class="separator">|</span>
+          Chào <a href="#/profile">{{user.fbName}}</a> <span class="separator">|</span>
           <a ng-click="signOut()">Thoát</a>
         </div>
       </div>

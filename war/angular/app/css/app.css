@@ -334,11 +334,16 @@
 }
 
 .no-search-results {
+	margin-top: 10px;
 	font-size: 18px;
 }
 
 .no-search-results table {
 	margin-top: 20px;
+}
+
+.search-results {
+	margin-top: 10px;
 }
 
 .search-results em {
@@ -348,13 +353,14 @@
 
 .search-results .search-stats {
 	color: #999;
-	font-size: 14px;
-	margin-bottom: 10px;
+}
+
+.search-results h3 {
+	margin-top: 0;
 }
 
 .search-results table {
 	border: 1px solid #ddd;
-	font-size: 15px;
 }
 
 .search-results .categoryColumn {

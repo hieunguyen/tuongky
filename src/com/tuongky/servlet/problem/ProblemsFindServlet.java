@@ -85,7 +85,8 @@ public class ProblemsFindServlet extends HttpServlet{
 
       if (session != null) {
         solved = SolutionDao.instance.solvedByProblems(session.getUserId(), problems);
-        problemMap = ProblemUserMetadataDao.instance.findAttemptsByUser(session.getUserId(), getProblemIds(problems));
+        problemMap = ProblemUserMetadataDao.instance.findAttemptsByUser(
+            session.getUserId(), getProblemIds(problems));
       } else {
         for (int i = 0; i < problems.size(); i++) {
           solved.add(false);
@@ -101,7 +102,10 @@ public class ProblemsFindServlet extends HttpServlet{
         ResponseObject object;
 
         if (session != null) {
-          object = new ResponseObject(problem, solvedIterator.next(), problemMap.containsKey(problem.getId()) ? problemMap.get(problem.getId()) : 0);
+          object = new ResponseObject(
+              problem,
+              solvedIterator.next(),
+              problemMap.containsKey(problem.getId()) ? problemMap.get(problem.getId()) : 0);
         } else {
           object = new ResponseObject(problem, solvedIterator.next(), 0);
         }
