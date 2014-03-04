@@ -56,7 +56,6 @@ public class ProblemDao extends DAOBase {
   }
 
   // Index starts from 0
-  // if pageSize == null, getById default value
   public List<Problem> search(int offset, int limit, String order) {
     Objectify ofy = ObjectifyService.begin();
 
@@ -106,4 +105,26 @@ public class ProblemDao extends DAOBase {
 
     return attempters;
   }
+
+  public Problem getNextUnsolved(long userId, long problemId) {
+    long probNum = CounterDao.getProblemsCount();
+    long next = problemId + 1;
+
+    while (next != problemId) {
+      if (next > probNum) {
+        next = 1;
+      }
+
+      if (!SolutionDao.instance.hasSolved(userId, next)) {
+        Problem problem = getById(next);
+        if (problem != null) {
+          return problem;
+        }
+      }
+      next++;
+    }
+
+    return null;
+  }
+
 }
