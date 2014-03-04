@@ -684,7 +684,8 @@ tkServices.factory('dbService', function(
 
   service.initGames = function() {
     var defer = $q.defer();
-    $http.post('/game/init', {}).success(function(response) {
+    $http.post('/game/init', {})
+    .success(function(response) {
       defer.resolve(response);
     }).error(function() {
       defer.reject();
@@ -913,8 +914,6 @@ tkServices.factory('userService', function(
         $http.post('/fb_signin', {
           access_token: authResp.accessToken
         }).success(function(response) {
-          console.log('response:');
-          console.log(response);
           cookieService.set(SESSION_ID, response.sid);
           defer.resolve(response);
         }).error(function() {
@@ -1162,7 +1161,8 @@ tkServices.factory('engineService', function($q, $http, notificationService) {
     // var url = 'http://localhost:1234/go?' + $.param(params);
     var url = 'http://8.34.217.129:1234/go?' + $.param(params);
     notificationService.show('Máy đang nghĩ...');
-    $http.get(url).success(function(response) {
+    $http.get(url)
+    .success(function(response) {
       notificationService.hide();
       defer.resolve(response);
     }).error(function() {
@@ -1207,6 +1207,8 @@ tkServices.factory('problemService', function($q, $http, notificationService) {
       }
     }).success(function(data) {
       defer.resolve(data);
+    }).error(function() {
+      defer.reject();
     });
     return defer.promise;
   };
@@ -1215,6 +1217,8 @@ tkServices.factory('problemService', function($q, $http, notificationService) {
     var defer = $q.defer();
     $http.get('/problem/get?id=' + problemId).success(function(data) {
       defer.resolve(data);
+    }).error(function() {
+      defer.reject();
     });
     return defer.promise;
   };
@@ -1225,6 +1229,8 @@ tkServices.factory('problemService', function($q, $http, notificationService) {
       problem_id : problemId
     }).success(function(response) {
       defer.resolve(response);
+    }).error(function() {
+      defer.reject();
     });
     return defer.promise;
   };
@@ -1236,6 +1242,8 @@ tkServices.factory('problemService', function($q, $http, notificationService) {
       attempt_id: attemptId
     }).success(function(response) {
       defer.resolve(response);
+    }).error(function() {
+      defer.reject();
     });
     return defer.promise;
   };

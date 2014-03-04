@@ -1159,6 +1159,8 @@ tkControllers.controller('ProblemCtrl', function(
     $scope.problem = problem;
     fen = problem.fen;
     init(problem);
+  }, function() {
+    alert('Bài không tồn tại.');
   });
 
   $scope.dropIt = function(dragId, row, col) {
