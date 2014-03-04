@@ -8,7 +8,9 @@
   </tr>
 
   <tr ng-repeat="problem in problems">
-    <td><a ng-href="#/problem/{{problem.id}}">Bài {{problem.id}}{{problem.title && ' - ' + problem.title || ''}}</a></td>
+    <td>
+      <problem-link problem-id="problem.id" problem-title="problem.title" />
+    </td>
     <td><span ng-if="problem.solved"><img src="/img/checkmark.png" class="done"></span></th>
     <td><a ng-href="#/solvedby/{{problem.id}}">{{problem.solvers}}</a></td>
   </tr>

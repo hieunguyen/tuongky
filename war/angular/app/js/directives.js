@@ -292,3 +292,27 @@ tkDirectives.directive('tkBoard', function($q, $timeout) {
     }
   };
 });
+
+
+tkDirectives.directive('problemName', function() {
+  return {
+    restrict: 'E',
+    scope: {
+      problemId: '=',
+      problemTitle: '='
+    },
+    templateUrl: 'partials/problem_name.html'
+  };
+});
+
+
+tkDirectives.directive('problemLink', function() {
+  return {
+    restrict: 'E',
+    scope: {
+      problemId: '=',
+      problemTitle: '='
+    },
+    templateUrl: 'partials/problem_link.html'
+  };
+});

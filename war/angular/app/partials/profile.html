@@ -38,9 +38,7 @@
       </tr>
       <tr ng-repeat="failedAttempt in profile.failedAttempts">
         <td>
-          <a ng-href="#/problem/{{failedAttempt.problemId}}">
-            Bài {{failedAttempt.problemId}}{{failedAttempt.problemTitle && ' - ' + failedAttempt.problemTitle || ''}}
-          </a>
+          <problem-link problem-id="failedAttempt.problemId" problem-title="failedAttempt.problemTitle" />
         </td>
         <td>{{failedAttempt.createdDate | date:'dd/MM/yyyy - HH:mm'}}</td>
       </tr>

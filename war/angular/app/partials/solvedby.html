@@ -1,5 +1,7 @@
 <h4 style="text-align:center">Những kỳ thủ đã giải được</h4>
-<h3 style="text-align:center">Bài {{problem.id}}{{problem.title && ' - ' + problem.title || ''}}</h3>
+<h3 style="text-align:center">
+  <problem-link problem-id="problem.id" problem-title="problem.title" />
+</h3>
 
 <table class="table table-striped table-bordered">
   <tr>

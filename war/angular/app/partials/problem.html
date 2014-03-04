@@ -1,7 +1,9 @@
 <div class="problem-viewer" ng-class="{not_attempting: !attempting}">
   <div class="right-pane">
     <div class="problem-info">
-      <div class="problem-title">Bài {{problem.id}}{{problem.title && ' - ' + problem.title || ''}}</div>
+      <div class="problem-title">
+        <problem-name problem-id="problem.id" problem-title="problem.title" />
+      </div>
       <img src="/img/checkmark.png" ng-if="problem.solved" class="tick" title="Da xong">
       <div class="requirement">Đỏ đi trước thắng.</div>
       <div class="attempts" ng-if="authenticated">
