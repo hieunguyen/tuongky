@@ -652,3 +652,9 @@ button.fb-login:hover {
 	height: 24px;
 	width: 24px;
 }
+
+.profile table {
+	margin: 0 auto;
+  margin-top: 20px;
+  width: 50%;
+}

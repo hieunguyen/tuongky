@@ -1156,7 +1156,6 @@ tkControllers.controller('ProblemCtrl', function(
     var problem = response.problem;
     problem.solved = response.solved;
     problem.attempts = response.attempt_count;
-    console.log(problem);
     $scope.problem = problem;
     fen = problem.fen;
     init(problem);
@@ -1308,10 +1307,6 @@ tkControllers.controller('ProblemCtrl', function(
     return $scope.playerTypes[gameService.getTurn()];
   }, maybeComputerPlay);
 
-  $scope.test = function() {
-    console.log(gameService.getMoves());
-  };
-
   $scope.attempt = function() {
     if ($scope.problem.solved) {
       if (!confirm('Bạn đã vượt qua thử thách này rồi. Bạn có thực sự muốn thử lại không?')) {
@@ -1322,7 +1317,6 @@ tkControllers.controller('ProblemCtrl', function(
     problemService.attempt($scope.problem.id).then(function(response) {
       $scope.attempting = true;
       $scope.attemptId = response.attemptId;
-      console.log($scope.attemptId);
       $scope.problem.attempts++;
       init($scope.problem);
     });
@@ -1332,7 +1326,6 @@ tkControllers.controller('ProblemCtrl', function(
     problemService.attempt($scope.problem.id).then(function(response) {
       $scope.attempting = true;
       $scope.attemptId = response.attemptId;
-      console.log($scope.attemptId);
       $scope.problem.attempts++;
       init($scope.problem);
     });
@@ -1361,7 +1354,6 @@ tkControllers.controller('SolvedByCtrl', function(
   solutionService.getSolutionsForProblem(
     problemId, $scope.currentPage - 1, $scope.ITEMS_PER_PAGE)
     .then(function(response) {
-      console.log(response);
       $scope.problem = response.problem;
       $scope.totalItems = $scope.problem.solvers;
       $scope.items = response.items;

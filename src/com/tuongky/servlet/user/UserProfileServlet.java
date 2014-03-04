@@ -18,9 +18,11 @@ import com.tuongky.backend.UserDao;
 import com.tuongky.backend.UserMetadataDao;
 import com.tuongky.backend.UserRankerDao;
 import com.tuongky.model.datastore.ProblemAttempt;
+import com.tuongky.model.datastore.Session;
 import com.tuongky.model.datastore.Solution;
 import com.tuongky.model.datastore.User;
 import com.tuongky.model.datastore.UserMetadata;
+import com.tuongky.util.AuthUtils;
 
 @SuppressWarnings("serial")
 public class UserProfileServlet extends HttpServlet {
@@ -76,6 +78,13 @@ public class UserProfileServlet extends HttpServlet {
     ret.put("rankInfo", getRankInfo(metadata));
 
     ret.put("problemCount", CounterDao.getProblemsCount());
+
+    Session session = AuthUtils.getSession(req);
+    if (session != null && session.getUserId() == user.getId()) {
+      List<ProblemAttempt> lastFailedAttempts =
+          ProblemAttemptDao.instance.findLastFailedAttempts(user.getId());
+      ret.put("failedAttempts", lastFailedAttempts);
+    }
 
     resp.getWriter().println(new Gson().toJson(ret));
   }

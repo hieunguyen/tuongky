@@ -1,8 +1,49 @@
-<h2>
-  <img ng-src="http://graph.facebook.com/{{profile.user.fbId}}/picture?type=square">
-  {{profile.user.fbName}}
-</h2>
-<div>Xếp hạng: {{profile.rankInfo.rank}} - {{profile.rankInfo.rank + profile.rankInfo.ties - 1}}</div>
-<div>Trình độ: {{profile.levelDesc}}</div>
-<div>Số bài tập đã giải được: {{profile.metadata.solves}}</div>
-<div>Số lần thử: {{profile.metadata.attempts}}</div>
+<div class="profile">
+  <h2 style="text-align:center">
+    <img ng-src="http://graph.facebook.com/{{profile.user.fbId}}/picture?type=square">
+    {{profile.user.fbName}}
+  </h2>
+  <table class="table table-bordered">
+    <tr>
+      <td>Xếp hạng:</td>
+      <td>
+        <span ng-if="profile.rankInfo.ties == 1">{{profile.rankInfo.rank}}</span>
+        <span ng-if="profile.rankInfo.ties > 1">
+          khoảng từ hạng {{profile.rankInfo.rank}} đến hạng {{profile.rankInfo.rank + profile.rankInfo.ties - 1}}
+        </span>
+      </td>
+    </tr>
+    <tr>
+      <td>Trình độ:</td>
+      <td>{{profile.levelDesc}}</td>
+    </tr>
+    <tr>
+      <td>Số bài đã giải được:</td>
+      <td>{{profile.metadata.solves}}</td>
+    </tr>
+    <tr>
+      <td>Số lần thử:</td>
+      <td>{{profile.metadata.attempts}}</td>
+    </tr>
+  </table>
+
+  <div class="failed-attempts" ng-if="profile.failedAttempts">
+    <h4 style="text-align:center">
+      {{profile.failedAttempts.length}} bài chưa giải được gần đây nhất
+    </h4>
+    <table class="table table-striped table-bordered">
+      <tr>
+        <th>Tên bài</th>
+        <th>Thời điểm thử thất bại</th>
+      </tr>
+      <tr ng-repeat="failedAttempt in profile.failedAttempts">
+        <td>
+          <a ng-href="#/problem/{{failedAttempt.problemId}}">
+            Bài {{failedAttempt.problemId}}{{failedAttempt.problemTitle && ' - ' + failedAttempt.problemTitle || ''}}
+          </a>
+        </td>
+        <td>{{failedAttempt.createdDate | date:'dd/MM/yyyy - HH:mm'}}</td>
+      </tr>
+    </table>
+  </div>
+</div>

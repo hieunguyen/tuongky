@@ -121,4 +121,22 @@ public class ProblemAttemptDao extends DAOBase{
             .offset(offSet).limit(limit).list();
   }
 
+  public List<ProblemAttempt> findLastFailedAttempts(long actorId) {
+    List<ProblemAttempt> attempts = searchByActor(actorId, null, 100, 0);
+    List<ProblemAttempt> failedAttempts = Lists.newArrayList();
+    for (int i = 0; i < attempts.size(); i++)
+    if (!attempts.get(i).isSuccessful()) {
+      boolean interesting = true;
+      for (int j = 0; j < i; j++) {
+        if (attempts.get(i).getProblemId() == attempts.get(j).getProblemId()) {
+          interesting = false;
+          break;
+        }
+      }
+      if (interesting) {
+        failedAttempts.add(attempts.get(i));
+      }
+    }
+    return failedAttempts;
+  }
 }

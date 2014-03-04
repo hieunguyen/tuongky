@@ -3,7 +3,7 @@
 
 <table class="table table-striped table-bordered">
   <tr>
-    <th>ID</th>
+    <th>Thứ tự</th>
     <th>Tên kỳ thủ</th>
     <th>Thời điểm</th>
   </tr>
@@ -14,7 +14,7 @@
       <img ng-src="http://graph.facebook.com/{{item.user.fbId}}/picture?type=square">
       <a ng-href="#/profile/{{item.user.fbId}}">{{item.user.fbName}}</a>
     </td>
-    <td>{{item.solution.createdDate | date:'medium'}}</td>
+    <td>{{item.solution.createdDate | date:'dd/MM/yyyy - HH:mm'}}</td>
   </tr>
 </table>
 
