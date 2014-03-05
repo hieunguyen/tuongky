@@ -79,6 +79,14 @@
 
   <div id="fb-root"></div>
 
+  <script>
+    if (!window.location.origin) {
+      window.location.origin = window.location.protocol + "//" +
+          window.location.hostname +
+          (window.location.port ? ':' + window.location.port: '');
+    }
+  </script>
+
   <script src="lib/cdn/jquery.min.js"></script>
 
   <script src="lib/angular/1.2.9/angular.min.js"></script>

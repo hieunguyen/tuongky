@@ -1122,10 +1122,17 @@ tkControllers.controller('ProblemCtrl', function(
   $scope.attempting = false;
   $scope.authenticated = authService.isAuthenticated();
 
+  function getBaseUrl() {
+    // return window.location.origin;
+    return 'http://tuongky.ngrok.com';
+  }
+
   $scope.getShareUrl = function(problemId) {
+    var canonicalProblemUrl =
+        getBaseUrl() + '/problem/id/' + problemId;
     var url = 'http://www.facebook.com/plugins/like.php?href=' +
-        'http%3A%2F%2Ftuongky.ngrok.com%2Fproblem%2F' + problemId +
-        '&width&layout=button_count&action=like&show_faces=true&share=true&appId=' + FB_APP_ID;
+        canonicalProblemUrl +
+        '&width&layout=button_count&action=like&share=true&appId=' + FB_APP_ID;
     return $sce.trustAsResourceUrl(url);
   };
 
