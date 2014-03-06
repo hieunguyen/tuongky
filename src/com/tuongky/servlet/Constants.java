@@ -1,9 +1,7 @@
 package com.tuongky.servlet;
 
-import java.util.List;
 import java.util.Map;
 
-import com.google.appengine.labs.repackaged.com.google.common.collect.ImmutableList;
 import com.google.appengine.labs.repackaged.com.google.common.collect.ImmutableMap;
 import com.tuongky.model.UserRole;
 

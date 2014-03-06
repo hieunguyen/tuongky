@@ -64,7 +64,7 @@ public class UserDao extends DAOBase {
 
   public User getByEmail(String email, Objectify ofy) {
     return ofy.query(User.class)
-        .filter("mail", email)
+        .filter("email", email)
         .get();
   }
 

@@ -42,7 +42,7 @@ public class SignupServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws IOException {
-    String email = req.getParameter("mail");
+    String email = req.getParameter("email");
     String username = req.getParameter("username");
     String password = req.getParameter("password");
 
