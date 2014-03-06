@@ -1,6 +1,8 @@
 package com.tuongky.backend;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.google.appengine.api.datastore.Transaction;
 import com.google.appengine.labs.repackaged.com.google.common.collect.Lists;
@@ -9,6 +11,7 @@ import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
 import com.googlecode.objectify.util.DAOBase;
 import com.tuongky.model.datastore.Problem;
+import com.tuongky.model.datastore.Solution;
 
 /**
  * Created by sngo on 2/3/14.
@@ -56,7 +59,6 @@ public class ProblemDao extends DAOBase {
   }
 
   // Index starts from 0
-  // if pageSize == null, getById default value
   public List<Problem> search(int offset, int limit, String order) {
     Objectify ofy = ObjectifyService.begin();
 
@@ -106,4 +108,35 @@ public class ProblemDao extends DAOBase {
 
     return attempters;
   }
+
+  // brute-force, since #problems is small.
+  public Problem getNextUnsolved(long userId, long problemId) {
+    long probNum = CounterDao.getProblemsCount();
+    long next = problemId + 1;
+
+    List<Solution> solutions = SolutionDao.instance.searchByActor(userId, Integer.MAX_VALUE, 0);
+    Set<Long> solvedProblemSet = new HashSet<>();
+    for (Solution solution : solutions) {
+      solvedProblemSet.add(solution.getProblemId());
+    }
+
+    int cnt = 0;
+    Problem problem = null;
+    while (next != problemId && cnt < 1000) {
+      if (next >= probNum) {
+        next = 1;
+      }
+      if (!solvedProblemSet.contains(next)) {
+        problem = ProblemDao.instance.getById(next);
+        if (problem != null) {
+          return problem;
+        }
+      }
+
+      next++;
+      cnt++;
+    }
+    return problem;
+  }
+
 }

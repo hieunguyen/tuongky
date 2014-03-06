@@ -27,15 +27,11 @@ public class User {
     this.hashed = hashed;
   }
 
-  public static User createFbUser(String fbId, String fbName) {
+  public static User createFbUser(String fbId, String fbName, UserRole role) {
     User user = new User();
     user.fbId = fbId;
     user.fbName = fbName;
-    if (Constants.ADMIN_FB_IDS.contains(fbId)) {
-      user.setUserRole(UserRole.ADMIN);
-    } else {
-      user.setUserRole(UserRole.USER);
-    }
+    user.setUserRole(role);
     return user;
   }
 

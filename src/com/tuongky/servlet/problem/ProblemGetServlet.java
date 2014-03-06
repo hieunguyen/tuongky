@@ -37,6 +37,7 @@ public class ProblemGetServlet extends HttpServlet {
   private static final String ATTEMPT = "attempt";
   private static final String ATTEMPT_COUNT = "attempt_count";
   private static final String SOLVED = "solved";
+  private static final String NEXT_PROBLEM = "next_problem";
   private static final String IS_ON = "on";
 
   private Set<Long> getUserIdSet(List<Solution> solutions){
@@ -105,6 +106,8 @@ public class ProblemGetServlet extends HttpServlet {
       ProblemUserMetadata metadata = ProblemUserMetadataDao.instance.get(session.getUserId(), problemId);
       ret.put(ATTEMPT_COUNT, metadata == null ? 0 : metadata.getAttempts());
     }
+
+    ret.put(NEXT_PROBLEM, ProblemDao.instance.getNextUnsolved(session.getUserId(), problemId));
 
     resp.setContentType(Constants.CT_JSON_UTF8);
     resp.getWriter().println(new Gson().toJson(ret));

@@ -4,6 +4,7 @@ import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestC
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.tuongky.backend.ProblemDao;
 import com.tuongky.backend.UserDao;
+import com.tuongky.model.UserRole;
 import com.tuongky.model.datastore.User;
 import org.junit.After;
 import org.junit.Before;
@@ -33,9 +34,9 @@ public class BasedProblemTest {
     problemId_1 = ProblemDao.instance.create(fen, title, desc, requirement, null);
     problemId_2 = ProblemDao.instance.create(fen, title, desc, requirement, null);
 
-    User user = UserDao.instance.save("fb", "fb");
+    User user = UserDao.instance.save("fb", "fb", UserRole.USER);
     userId_1 = user.getId();
-    user = UserDao.instance.save("fb1", "fb2");
+    user = UserDao.instance.save("fb1", "fb2", UserRole.USER);
     userId_2 = user.getId();
   }
 
