@@ -1248,6 +1248,10 @@ tkServices.factory('problemService', function($q, $http, notificationService) {
     return defer.promise;
   };
 
+  service.getNextProblemId = function(problemId) {
+    return Number(problemId) + 1;
+  };
+
   return service;
 });
 

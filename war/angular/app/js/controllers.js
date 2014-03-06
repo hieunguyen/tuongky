@@ -1116,7 +1116,7 @@ tkControllers.controller('ProblemSetCtrl', function(
 
 
 tkControllers.controller('ProblemCtrl', function(
-  $scope, $timeout, $routeParams, $sce, $facebook,
+  $scope, $timeout, $routeParams, $sce, $location, $facebook,
   authService, problemService, gameService, fenService, engineService) {
 
   $scope.attempting = false;
@@ -1342,6 +1342,11 @@ tkControllers.controller('ProblemCtrl', function(
 
   $scope.signInWithFacebook = function() {
     $facebook.login();
+  };
+
+  $scope.goToNextProblem = function() {
+    var nextProblemId = problemService.getNextProblemId(problemId);
+    $location.path('/problem/' + nextProblemId);
   };
 });
 

@@ -655,8 +655,18 @@ html, body {
 	position: absolute;
 }
 
-.problem-viewer .buttons-container .retry-btn .glyphicon-repeat{
+.problem-viewer .buttons-container .retry-btn .glyphicon-repeat {
 	top: 2px;
+}
+
+.problem-viewer .buttons-container .next-btn {
+	vertical-align: center;
+	position: absolute;
+	margin-top: 90px;
+}
+
+.problem-viewer .buttons-container .next-btn .glyphicon-forward {
+	top: 1px;
 }
 
 .problem-viewer .right-pane .fb-buttons {
