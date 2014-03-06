@@ -26,7 +26,7 @@ public class ProblemAttemptDao extends DAOBase{
     return ObjectifyService.begin().find(ProblemAttempt.class, id);
   }
 
-  public void setAttemptStatus(String id, boolean isSuccess){
+  public void setAttemptStatus(String id, boolean isSuccess) {
     ProblemAttempt attempt = ObjectifyService.begin().find(ProblemAttempt.class, id);
     if (attempt != null){
       attempt.setSuccessful(isSuccess);

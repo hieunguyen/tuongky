@@ -430,7 +430,7 @@ angular.module('ngSanitize').directive('ngBindHtml', ['$sanitize', function($san
  *
  * @description
  *   Finds links in text input and turns them into html links. Supports http/https/ftp/mailto and
- *   plain email address links.
+ *   plain mail address links.
  *
  * @param {string} text Input text.
  * @returns {string} Html-linkified text.

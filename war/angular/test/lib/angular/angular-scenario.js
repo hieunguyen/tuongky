@@ -20255,7 +20255,7 @@ var nullFormCtrl = {
  * @property {Object} $error Is an object hash, containing references to all invalid controls or
  *  forms, where:
  *
- *  - keys are validation tokens (error names) — such as `required`, `url` or `email`),
+ *  - keys are validation tokens (error names) — such as `required`, `url` or `mail`),
  *  - values are arrays of controls or forms that are invalid with given error.
  *
  * @description
@@ -20739,10 +20739,10 @@ var inputType = {
 
   /**
    * @ngdoc inputType
-   * @name ng.directive:input.email
+   * @name ng.directive:input.mail
    *
    * @description
-   * Text input with email validation. Sets the `email` validation error key if not a valid email
+   * Text input with mail validation. Sets the `mail` validation error key if not a valid mail
    * address.
    *
    * @param {string} ngModel Assignable angular expression to data-bind to.
@@ -20768,17 +20768,17 @@ var inputType = {
            }
          </script>
            <form name="myForm" ng-controller="Ctrl">
-             Email: <input type="email" name="input" ng-model="text" required>
+             Email: <input type="mail" name="input" ng-model="text" required>
              <span class="error" ng-show="myForm.input.$error.required">
                Required!</span>
-             <span class="error" ng-show="myForm.input.$error.email">
-               Not valid email!</span>
+             <span class="error" ng-show="myForm.input.$error.mail">
+               Not valid mail!</span>
              <tt>text = {{text}}</tt><br/>
              <tt>myForm.input.$valid = {{myForm.input.$valid}}</tt><br/>
              <tt>myForm.input.$error = {{myForm.input.$error}}</tt><br/>
              <tt>myForm.$valid = {{myForm.$valid}}</tt><br/>
              <tt>myForm.$error.required = {{!!myForm.$error.required}}</tt><br/>
-             <tt>myForm.$error.email = {{!!myForm.$error.email}}</tt><br/>
+             <tt>myForm.$error.mail = {{!!myForm.$error.mail}}</tt><br/>
            </form>
         </doc:source>
         <doc:scenario>
@@ -20793,7 +20793,7 @@ var inputType = {
             expect(binding('myForm.input.$valid')).toEqual('false');
           });
 
-          it('should be invalid if not email', function() {
+          it('should be invalid if not mail', function() {
             input('text').enter('xxx');
             expect(binding('myForm.input.$valid')).toEqual('false');
           });
@@ -21581,7 +21581,7 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
  *
  * - binding the view into the model, which other directives such as `input`, `textarea` or `select`
  *   require,
- * - providing validation behavior (i.e. required, number, email, url),
+ * - providing validation behavior (i.e. required, number, mail, url),
  * - keeping state of the control (valid/invalid, dirty/pristine, validation errors),
  * - setting related css class onto the element (`ng-valid`, `ng-invalid`, `ng-dirty`, `ng-pristine`),
  * - register the control with parent {@link ng.directive:form form}.
@@ -21593,7 +21593,7 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
  *    - {@link ng.directive:input.checkbox checkbox}
  *    - {@link ng.directive:input.radio radio}
  *    - {@link ng.directive:input.number number}
- *    - {@link ng.directive:input.email email}
+ *    - {@link ng.directive:input.email mail}
  *    - {@link ng.directive:input.url url}
  *  - {@link ng.directive:select select}
  *  - {@link ng.directive:textarea textarea}
@@ -22239,14 +22239,14 @@ var ngCloakDirective = ngDirective({
           $scope.name = "John Smith";
           $scope.contacts = [
             {type:'phone', value:'408 555 1212'},
-            {type:'email', value:'john.smith@example.org'} ];
+            {type:'mail', value:'john.smith@example.org'} ];
 
           $scope.greet = function() {
            alert(this.name);
           };
 
           $scope.addContact = function() {
-           this.contacts.push({type:'email', value:'yourname@example.org'});
+           this.contacts.push({type:'mail', value:'yourname@example.org'});
           };
 
           $scope.removeContact = function(contactToRemove) {
@@ -22268,7 +22268,7 @@ var ngCloakDirective = ngDirective({
           <li ng-repeat="contact in contacts">
             <select ng-model="contact.type">
                <option>phone</option>
-               <option>email</option>
+               <option>mail</option>
             </select>
             <input type="text" ng-model="contact.value"/>
             [ <a href="" ng-click="clearContact(contact)">clear</a>

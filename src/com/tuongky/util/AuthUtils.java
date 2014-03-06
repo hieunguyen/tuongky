@@ -18,7 +18,7 @@ public final class AuthUtils {
     if (session == null) {
       return userRole == UserRole.ANONYMOUS;
     }
-    return userRole == session.getUserRole();
+    return userRole.getValue() <= session.getUserRole().getValue();
   }
 
   public static boolean isAdmin(HttpServletRequest req) {
