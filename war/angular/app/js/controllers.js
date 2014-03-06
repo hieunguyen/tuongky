@@ -1433,3 +1433,9 @@ tkControllers.controller('FbSigninCtrl', function($scope, $facebook) {
     $facebook.login();
   };
 });
+
+
+tkControllers.controller('StaticContentCtrl', function($scope) {
+  // This should be used for all static-content views.
+  $scope.mainNav.tab = 'static';
+});

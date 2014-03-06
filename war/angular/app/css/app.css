@@ -1,3 +1,36 @@
+/*
+	Sticky Footer by Ryan Fait
+	http://ryanfait.com/
+*/
+
+html, body {
+	height: 100%;
+}
+
+.wrapper {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -80px; /* the bottom margin is the negative value of the footer's height */
+}
+
+.footer, .push {
+	height: 80px; /* .push must be the same height as .footer */
+}
+/*----------------------*/
+
+.footer .row {
+	text-align: center;
+	border-top: 1px solid #eee;
+	height: 40px;
+	margin-top: 30px;
+	padding-top: 15px;
+}
+
+.footer a {
+	margin-left: 15px;
+}
+
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
 }
@@ -15,7 +48,7 @@
 }
 
 .header {
-	border-bottom: 1px solid rgba(237, 237, 237, 0.8);
+	border-bottom: 1px solid #eee;
 	padding-bottom: 5px;
 }
 
@@ -47,7 +80,7 @@
 }
 
 .user-bar .separator {
-	color: rgb(218, 207, 207);
+	color: #ccc;
 }
 
 .view-container.embed {

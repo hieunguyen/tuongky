@@ -123,6 +123,21 @@ tkApp.config(['$routeProvider', function($routeProvider) {
         templateUrl: 'partials/sandbox.html',
         controller: 'SandboxCtrl'
       })
+  .when('/about',
+      {
+        templateUrl: 'partials/about.html',
+        controller: 'StaticContentCtrl'
+      })
+  .when('/help',
+      {
+        templateUrl: 'partials/help.html',
+        controller: 'StaticContentCtrl'
+      })
+  .when('/contact',
+      {
+        templateUrl: 'partials/contact.html',
+        controller: 'StaticContentCtrl'
+      })
   .otherwise({redirectTo: '/problems'});
 }]);
 
