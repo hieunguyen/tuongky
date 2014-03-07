@@ -48,8 +48,14 @@ public class CounterDaoTest {
   @Test
   public void testUser(){
 
+    assertEquals(0, CounterDao.getUsersCount());
+
     UserDao.instance.save("fb", "fb", UserRole.ADMIN);
     UserDao.instance.save("fb", "fb", UserRole.USER).getId();
+
+    assertEquals(1, CounterDao.getUsersCount());
+
+    UserDao.instance.save("fb2", "fb2", UserRole.USER).getId();
 
     assertEquals(2, CounterDao.getUsersCount());
   }

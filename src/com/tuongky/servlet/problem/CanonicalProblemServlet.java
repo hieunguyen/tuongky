@@ -3,6 +3,7 @@ package com.tuongky.servlet.problem;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -47,7 +48,7 @@ public class CanonicalProblemServlet extends HttpServlet {
       return;
     }
 
-    HashMap<String, Object> scopes = Maps.newHashMap();
+    Map<String, Object> scopes = Maps.newHashMap();
     scopes.put("baseUrl", getBaseUrl(req));
     scopes.put("problemId", problemId);
     scopes.put("problemName", createProblemName(problem));
