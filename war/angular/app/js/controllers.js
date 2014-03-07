@@ -77,7 +77,7 @@ tkControllers.controller('AuthController', function(
     $scope, $location, $facebook, userService, authService) {
 
   $scope.signInWithFb = function() {
-    $facebook.login();
+    $facebook.login({scope: 'email'});
   };
 
   $scope.signUp = function() {
