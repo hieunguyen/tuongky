@@ -273,4 +273,13 @@
         <url-pattern>/user/ranker</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>SendMail</servlet-name>
+        <servlet-class>com.tuongky.servlet.mail.MailHandlerServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SendMail</servlet-name>
+        <url-pattern>/mail/send</url-pattern>
+    </servlet-mapping>
+
 </web-app>

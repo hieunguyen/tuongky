@@ -10,6 +10,8 @@ import org.junit.Test;
 
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+import com.tuongky.backend.*;
+import com.tuongky.model.UserRole;
 import com.tuongky.model.datastore.ProblemUserMetadata;
 import com.tuongky.model.datastore.User;
 import com.tuongky.model.datastore.UserMetadata;
@@ -45,9 +47,9 @@ public class UserDaoTest {
     problemId_2 = ProblemDao.instance.create(fen, title, desc, requirement, null);
     problemId_3 = ProblemDao.instance.create(fen, title, desc, requirement, null);
 
-    userId_1 = UserDao.instance.save(fbId, fbName).getId();
-    userId_2 = UserDao.instance.save("fb1", "fb2").getId();
-    userId_3 = UserDao.instance.save("fb1", "fb2").getId();
+    userId_1 = UserDao.instance.save(fbId, fbName, UserRole.USER).getId();
+    userId_2 = UserDao.instance.save("fbId1", "fb2", UserRole.USER).getId();
+    userId_3 = UserDao.instance.save("fbId2", "fb2", UserRole.USER).getId();
   }
 
   @Test
@@ -59,6 +61,9 @@ public class UserDaoTest {
     user = UserDao.instance.getByFbId(fbId);
     assertEquals(userId_1, user.getId().longValue());
 
+    User new_user = UserDao.instance.save(fbId, fbName, UserRole.ADMIN);
+    assertEquals(userId_1, new_user.getId().longValue());
+    assertEquals(UserRole.ADMIN, new_user.getUserRole());
   }
 
   @Test

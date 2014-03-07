@@ -28,9 +28,10 @@ public class SolutionDao extends DAOBase{
 
   private static int PAGE_SIZE_DEFAULT = 20;
 
-  private boolean doesSolutionExist(Solution solution) {
-    Query<Solution> result = ObjectifyService.begin().query(Solution.class).filter(Solution.ID_FIELD, solution.getId());
-    return result != null && result.get() != null;
+  public boolean hasSolved(long actorId, long problemId) {
+    String id = Solution.createId(actorId, problemId);
+    Solution result = ObjectifyService.begin().find(Solution.class, id);
+    return result != null;
   }
 
   // TODO
@@ -41,7 +42,7 @@ public class SolutionDao extends DAOBase{
 
     Solution solution = (Solution) ProblemUtils.newProblemAttempt(actorId, problemId, null);
 
-    if (!doesSolutionExist(solution)) {
+    if (!hasSolved(actorId, problemId)) {
       if (ProblemDao.instance.addSolver(problemId) == -1) {
         log.warning("Fail to add solver to problem " + problemId);
       }

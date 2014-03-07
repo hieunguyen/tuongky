@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tuongky.backend.SessionDao;
 import com.tuongky.backend.UserDao;
+import com.tuongky.model.UserRole;
 import com.tuongky.model.datastore.Session;
 import com.tuongky.model.datastore.User;
 
@@ -82,14 +83,10 @@ public class FacebookSigninServlet extends HttpServlet {
       return;
     }
 
-    UserDao userDao = new UserDao();
-    User user = userDao.getByFbId(fbAuth.fbId);
-    if (user == null) { // New user -> create user.
-      user = userDao.save(fbAuth.fbId, fbAuth.fbName);
-    } else if (!user.getFbName().equals(fbAuth.fbName)) {
-      user.setFbName(fbAuth.fbName);
-      user = userDao.save(user);
-    }
+    UserRole role = Constants.USER_ROLE_MAP.containsKey(fbAuth.fbId) ? Constants.USER_ROLE_MAP.get(fbAuth.fbId)
+            : UserRole.USER;
+    User user = UserDao.instance.save(fbAuth.fbId, fbAuth.fbName, role);
+
     Session session = new SessionDao().save(user.getId(), user.getUserRole());
     Map<String, Object> data = new HashMap<>();
     data.put(Constants.SESSION_COOKIE, session.getId());
