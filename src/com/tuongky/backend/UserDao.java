@@ -2,7 +2,10 @@ package com.tuongky.backend;
 
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import com.tuongky.model.UserRole;
+
 import org.mindrot.BCrypt;
 
 import com.googlecode.objectify.Objectify;
@@ -33,20 +36,26 @@ public class UserDao extends DAOBase {
     return user;
   }
 
-  public User save(String fbId, String fbName, UserRole role) {
+  public User save(String fbId, String fbName, @Nullable String email, UserRole role) {
     User user = getByFbId(fbId);
 
+    boolean newUser = user == null;
+
     if (user == null) {
-      user = User.createFbUser(fbId, fbName, role);
+      user = User.createFbUser(fbId, fbName, email, role);
     } else {
       user.setFbName(fbName);
+      if (email != null) {
+        user.setEmail(email);
+      }
       user.setUserRole(role);
     }
-
     ObjectifyService.begin().put(user);
 
-    // create a new userMetadata
-    UserMetadataDao.instance.create(user.getId());
+    if (newUser) {
+      // create a new userMetadata
+      UserMetadataDao.instance.create(user.getId());
+    }
     return user;
   }
 

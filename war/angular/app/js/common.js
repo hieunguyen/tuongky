@@ -33,6 +33,8 @@ var SESSION_ID = 'sid';
 
 var FB_APP_ID = '1447546642129595';
 
+var FB_SCOPES = 'email';
+
 // should contain exact 13 elements for levels 0 to 12.
 var LEVEL_DESCRIPTIONS = [
   'Lính Mới',

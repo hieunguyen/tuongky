@@ -77,7 +77,7 @@ tkControllers.controller('AuthController', function(
     $scope, $location, $facebook, userService, authService) {
 
   $scope.signInWithFb = function() {
-    $facebook.login({scope: 'email'});
+    $facebook.login({scope: FB_SCOPES});
   };
 
   $scope.signUp = function() {
@@ -1341,7 +1341,7 @@ tkControllers.controller('ProblemCtrl', function(
   };
 
   $scope.signInWithFacebook = function() {
-    $facebook.login();
+    $facebook.login({scope: FB_SCOPES});
   };
 
   $scope.goToNextProblem = function() {
@@ -1435,7 +1435,7 @@ tkControllers.controller('ProfileCtrl', function(
 tkControllers.controller('FbSigninCtrl', function($scope, $facebook) {
 
   $scope.signInWithFb = function() {
-    $facebook.login();
+    $facebook.login({scope: FB_SCOPES});
   };
 });
 

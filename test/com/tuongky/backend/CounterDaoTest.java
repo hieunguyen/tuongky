@@ -2,19 +2,13 @@ package com.tuongky.backend;
 
 import static org.junit.Assert.assertEquals;
 
-import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
-import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
-import com.tuongky.backend.CounterDao;
-import com.tuongky.backend.ProblemDao;
-import com.tuongky.backend.UserDao;
-import com.tuongky.model.UserRole;
-import com.tuongky.model.datastore.User;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+import com.tuongky.model.UserRole;
 
 /**
  * Created by sngo on 2/26/14.
@@ -48,10 +42,10 @@ public class CounterDaoTest {
   @Test
   public void testUser(){
 
-    UserDao.instance.save("fb", "fb", UserRole.ADMIN);
-    UserDao.instance.save("fb", "fb", UserRole.USER).getId();
+    UserDao.instance.save("fb", "fb", null, UserRole.ADMIN);
+    UserDao.instance.save("fb", "fb", null, UserRole.USER).getId();
 
-    assertEquals(2, CounterDao.getUsersCount());
+    assertEquals(1, CounterDao.getUsersCount());
   }
 
 

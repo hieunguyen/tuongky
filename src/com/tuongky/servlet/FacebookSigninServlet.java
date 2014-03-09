@@ -28,6 +28,7 @@ public class FacebookSigninServlet extends HttpServlet {
 
     private String fbId = null;
     private String fbName = null;
+    private String email = null;
 
     FbAuth(String accessToken) {
       String json = makeGraphApiRequest(accessToken);
@@ -39,11 +40,12 @@ public class FacebookSigninServlet extends HttpServlet {
       HashMap<String, Object> map = gson.fromJson(json, fooType);
       fbId = (String) map.get("id");
       fbName = (String) map.get("name");
+      email = (String) map.get("email");
     }
 
     private String makeGraphApiRequest(String accessToken) {
       String requestUrl =
-          "https://graph.facebook.com/me?fields=id,name&access_token=" + accessToken;
+          "https://graph.facebook.com/me?fields=id,name,email&access_token=" + accessToken;
       try {
         URL url = new URL(requestUrl);
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()))) {
@@ -83,9 +85,9 @@ public class FacebookSigninServlet extends HttpServlet {
       return;
     }
 
-    UserRole role = Constants.USER_ROLE_MAP.containsKey(fbAuth.fbId) ? Constants.USER_ROLE_MAP.get(fbAuth.fbId)
-            : UserRole.USER;
-    User user = UserDao.instance.save(fbAuth.fbId, fbAuth.fbName, role);
+    UserRole role = Constants.USER_ROLE_MAP.containsKey(fbAuth.fbId) ?
+        Constants.USER_ROLE_MAP.get(fbAuth.fbId) : UserRole.USER;
+    User user = UserDao.instance.save(fbAuth.fbId, fbAuth.fbName, fbAuth.email, role);
 
     Session session = new SessionDao().save(user.getId(), user.getUserRole());
     Map<String, Object> data = new HashMap<>();
