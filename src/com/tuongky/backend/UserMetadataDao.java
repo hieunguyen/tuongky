@@ -5,7 +5,9 @@ import java.util.List;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.DAOBase;
+import com.tuongky.model.datastore.Problem;
 import com.tuongky.model.datastore.UserMetadata;
+import com.tuongky.service.email.EmailTaskQueueService;
 import com.tuongky.util.ProblemUtils;
 
 /**
@@ -30,6 +32,10 @@ public class UserMetadataDao extends DAOBase{
     return user;
   }
 
+  public int computeLevel(int solves) {
+    return solves/ (int)CounterDao.getProblemsCount();
+  }
+
   //transactional
   public void solve(long userId) {
     Objectify ofy = ObjectifyService.beginTransaction();
@@ -40,6 +46,7 @@ public class UserMetadataDao extends DAOBase{
       userMetadata = create(userId);
     }
 
+    int oldLevel = computeLevel(userMetadata.getSolves());
     userMetadata.incrementSolve();
 
     // update the ranker
@@ -48,6 +55,11 @@ public class UserMetadataDao extends DAOBase{
     ofy.put(userMetadata);
 
     ofy.getTxn().commit();
+
+    int newLevel = computeLevel(userMetadata.getSolves());
+    if (oldLevel != newLevel) {
+      EmailTaskQueueService.instance.pushLevelUpEmail(userId, oldLevel, newLevel);
+    }
   }
 
   //transactional

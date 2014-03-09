@@ -3,6 +3,7 @@ package com.tuongky.backend;
 import java.util.Map;
 
 import com.tuongky.model.UserRole;
+import com.tuongky.service.email.EmailTaskQueueService;
 import org.mindrot.BCrypt;
 
 import com.googlecode.objectify.Objectify;
@@ -41,6 +42,8 @@ public class UserDao extends DAOBase {
       ObjectifyService.begin().put(user);
       // create a new userMetadata
       UserMetadataDao.instance.create(user.getId());
+      // send welcome email
+      EmailTaskQueueService.instance.pushWelcomeEmail(user.getId());
     } else {
       user.setFbName(fbName);
       user.setUserRole(role);

@@ -274,12 +274,21 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>SendMail</servlet-name>
-        <servlet-class>com.tuongky.servlet.mail.MailHandlerServlet</servlet-class>
+        <servlet-name>SendWelcomeEmail</servlet-name>
+        <servlet-class>com.tuongky.servlet.mail.WelcomeEmailServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>SendMail</servlet-name>
-        <url-pattern>/mail/send</url-pattern>
+        <servlet-name>SendWelcomeEmail</servlet-name>
+        <url-pattern>/mail/welcome</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SendLevelupEmail</servlet-name>
+        <servlet-class>com.tuongky.servlet.mail.LevelUpEmailServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SendLevelupEmail</servlet-name>
+        <url-pattern>/mail/levelup</url-pattern>
     </servlet-mapping>
 
 </web-app>
