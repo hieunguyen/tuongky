@@ -39,23 +39,20 @@ public class UserDao extends DAOBase {
   public User save(String fbId, String fbName, @Nullable String email, UserRole role) {
     User user = getByFbId(fbId);
 
-    boolean newUser = user == null;
-
     if (user == null) {
       user = User.createFbUser(fbId, fbName, email, role);
+      ObjectifyService.begin().put(user);
+      // create a new userMetadata
+      UserMetadataDao.instance.create(user.getId());
     } else {
       user.setFbName(fbName);
       if (email != null) {
         user.setEmail(email);
       }
       user.setUserRole(role);
+      ObjectifyService.begin().put(user);
     }
-    ObjectifyService.begin().put(user);
 
-    if (newUser) {
-      // create a new userMetadata
-      UserMetadataDao.instance.create(user.getId());
-    }
     return user;
   }
 
