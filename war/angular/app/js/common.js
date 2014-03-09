@@ -37,17 +37,17 @@ var FB_SCOPES = 'email';
 
 // should contain exact 13 elements for levels 0 to 12.
 var LEVEL_DESCRIPTIONS = [
-  'Lính Mới',
-  'Bập Bõm',
-  'Biết Chơi',
-  'Giỏi Nhất Nhà',
-  'Cao Thủ Xóm',
-  'Cao Thủ Phường',
-  'Cao Thủ Quận',
-  'Cao Thủ Huyện',
-  'Cao Thủ Quốc Gia',
-  'Cao Thủ Quốc Tế',
-  'Đánh Đâu Thắng Đó',
+  'Chưa sạch nước cản',
+  'Bập bõm',
+  'Mới biết chơi',
+  'Giỏi nhất nhà',
+  'Nổi danh khắp xóm',
+  'Vô địch phường',
+  'Vô địch quận',
+  'Vô địch huyện',
+  'Vô địch quốc gia',
+  'Vô địch thế giới',
+  'Đánh đâu thắng đó',
   'Độc Cô Cầu Bại',
-  'Vô Địch Thiên Hạ'
+  'Vô Đối'
 ];

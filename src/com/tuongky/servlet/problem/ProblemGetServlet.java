@@ -105,9 +105,8 @@ public class ProblemGetServlet extends HttpServlet {
       ret.put(SOLVED, solved);
       ProblemUserMetadata metadata = ProblemUserMetadataDao.instance.get(session.getUserId(), problemId);
       ret.put(ATTEMPT_COUNT, metadata == null ? 0 : metadata.getAttempts());
+      ret.put(NEXT_PROBLEM, ProblemDao.instance.getNextUnsolved(session.getUserId(), problemId));
     }
-
-    ret.put(NEXT_PROBLEM, ProblemDao.instance.getNextUnsolved(session.getUserId(), problemId));
 
     resp.setContentType(Constants.CT_JSON_UTF8);
     resp.getWriter().println(new Gson().toJson(ret));

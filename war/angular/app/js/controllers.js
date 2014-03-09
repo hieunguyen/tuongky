@@ -1444,3 +1444,11 @@ tkControllers.controller('StaticContentCtrl', function($scope) {
   // This should be used for all static-content views.
   $scope.mainNav.tab = 'static';
 });
+
+
+tkControllers.controller('HelpCtrl', function($scope) {
+  // This should be used for all static-content views.
+  $scope.mainNav.tab = 'static';
+
+  $scope.levelDescs = LEVEL_DESCRIPTIONS;
+});

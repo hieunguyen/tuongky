@@ -131,7 +131,7 @@ tkApp.config(['$routeProvider', function($routeProvider) {
   .when('/help',
       {
         templateUrl: 'partials/help.html',
-        controller: 'StaticContentCtrl'
+        controller: 'HelpCtrl'
       })
   .when('/contact',
       {
