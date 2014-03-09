@@ -707,3 +707,8 @@ button.fb-login:hover {
   margin-top: 20px;
   width: 50%;
 }
+
+.fb-comments-plugin {
+	margin-top: 30px;
+	text-align: center;
+}

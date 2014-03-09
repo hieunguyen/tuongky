@@ -895,8 +895,6 @@ tkServices.factory('userService', function(
 
     var sid = cookieService.get(SESSION_ID);
 
-    console.log('sid = ' + sid);
-
     if (sid) {
       $http.get('/user_status')
       .success(function(response) {
@@ -1236,7 +1234,6 @@ tkServices.factory('problemService', function($q, $http, notificationService) {
   };
 
   service.solve = function(attemptId) {
-    console.log('attemptId = ' + attemptId);
     var defer = $q.defer();
     $http.post('/problem/solve', {
       attempt_id: attemptId

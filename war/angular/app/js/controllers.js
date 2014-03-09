@@ -1333,7 +1333,7 @@ tkControllers.controller('ProblemCtrl', function(
 
   $scope.retry = function() {
     problemService.attempt($scope.problem.id).then(function(response) {
-      $scope.attempting = true;
+      $scope.attempting = false;
       $scope.attemptId = response.attemptId;
       $scope.problem.attempts++;
       init($scope.problem);
