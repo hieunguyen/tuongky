@@ -1246,7 +1246,21 @@ tkServices.factory('problemService', function($q, $http, notificationService) {
   };
 
   service.getNextProblemId = function(problemId) {
-    return Number(problemId) + 1;
+    var defer = $q.defer();
+    notificationService.show('Tìm bài tiếp theo chưa giải được...');
+    $http.get('/problem/get_next?id=' + problemId)
+    .success(function(response) {
+      if (response.nextId === -1) {
+        notificationService.show('Không còn bài khác mà bạn chưa giải được.');
+      } else {
+        notificationService.hide();
+      }
+      defer.resolve(response.nextId);
+    }).error(function() {
+      notificationService.showError('Gặp lỗi, không tìm được bài tiếp theo.');
+      defer.reject();
+    });
+    return defer.promise;
   };
 
   return service;

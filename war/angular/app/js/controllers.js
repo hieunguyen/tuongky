@@ -1345,8 +1345,11 @@ tkControllers.controller('ProblemCtrl', function(
   };
 
   $scope.goToNextProblem = function() {
-    var nextProblemId = problemService.getNextProblemId(problemId);
-    $location.path('/problem/' + nextProblemId);
+    problemService.getNextProblemId(problemId).then(function(nextProblemId) {
+      if (nextProblemId >= 0) {
+        $location.path('/problem/' + nextProblemId);
+      }
+    });
   };
 });
 

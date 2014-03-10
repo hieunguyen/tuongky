@@ -95,4 +95,10 @@ public class CounterDao {
   public static long getNextAvailableProblemId(){
     return increaseAndGet(PROBLEM_ID_GENERATOR_STORE);
   }
+
+  public static long getLastProblemId() {
+    SimpleCounter counter =
+        ObjectifyService.begin().find(SimpleCounter.class, PROBLEM_ID_GENERATOR_STORE);
+    return counter == null ? 0 : counter.getCounter();
+  }
 }

@@ -148,6 +148,15 @@
 		<url-pattern>/problem/get</url-pattern>
 	</servlet-mapping>
 
+  <servlet>
+    <servlet-name>ProblemGetNext</servlet-name>
+    <servlet-class>com.tuongky.servlet.problem.ProblemGetNextServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ProblemGetNext</servlet-name>
+    <url-pattern>/problem/get_next</url-pattern>
+  </servlet-mapping>
+
 	<servlet>
 		<servlet-name>ProblemDelete</servlet-name>
 		<servlet-class>com.tuongky.servlet.problem.ProblemDeleteServlet</servlet-class>
