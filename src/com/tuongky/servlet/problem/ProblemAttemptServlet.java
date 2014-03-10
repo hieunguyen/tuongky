@@ -34,6 +34,7 @@ public class ProblemAttemptServlet extends HttpServlet {
     String problemId = req.getParameter(PROBLEM_ID_FIELD);
     long problem = Long.parseLong(problemId);
     String attemptId = ProblemAttemptDao.instance.attempt(userId, problem, false);
+    resp.setContentType(Constants.CT_JSON_UTF8);
     resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, attemptId));
   }
 }

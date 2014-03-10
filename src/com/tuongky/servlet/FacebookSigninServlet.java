@@ -95,7 +95,7 @@ public class FacebookSigninServlet extends HttpServlet {
     data.put("fbId", user.getFbId());
     data.put("fbName", user.getFbName());
     data.put("roleId", user.getRoleIndex());
-    resp.setContentType(Constants.CT_JSON);
+    resp.setContentType(Constants.CT_JSON_UTF8);
     resp.getWriter().println(new Gson().toJson(data));
   }
 }

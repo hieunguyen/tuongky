@@ -54,6 +54,8 @@ public class ProblemsFindServlet extends HttpServlet{
     String pageSize = req.getParameter(PAGE_SIZE_FIELD);
     String order = req.getParameter(ORDER_FIELD);
 
+    resp.setContentType(Constants.CT_JSON_UTF8);
+
     try{
       int page = Integer.parseInt(pageNum);
       int size = PAGE_SIZE_DEFAULT;

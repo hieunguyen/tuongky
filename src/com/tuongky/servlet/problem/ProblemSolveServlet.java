@@ -52,6 +52,7 @@ public class ProblemSolveServlet extends HttpServlet {
 
     String id = SolutionDao.instance.solve(attempt.getActorId(), attempt.getProblemId());
     ProblemAttemptDao.instance.setAttemptStatus(attemptId, true);
+    resp.setContentType(Constants.CT_JSON_UTF8);
     resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, id));
   }
 }

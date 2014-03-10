@@ -41,7 +41,7 @@ public class GameCreateServlet extends HttpServlet {
     GameDao gameDao = new GameDao();
     Game gameData = gameDao.save(username, category, title, nTitle, book, nBook, data);
     SearchService.indexGame(gameData);
-    resp.setContentType(Constants.CT_JSON);
+    resp.setContentType(Constants.CT_JSON_UTF8);
     resp.getWriter().println(JsonUtils.toJson("gameId", gameData.getId()));
   }
 }

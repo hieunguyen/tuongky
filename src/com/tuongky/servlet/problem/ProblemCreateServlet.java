@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.tuongky.backend.ProblemDao;
 import com.tuongky.logic.FenParser;
+import com.tuongky.servlet.Constants;
 import com.tuongky.util.AuthUtils;
 import com.tuongky.util.JsonUtils;
 
@@ -41,6 +42,8 @@ public class ProblemCreateServlet extends HttpServlet {
     String requirement = req.getParameter(REQUIREMENT_FIELD);
 
     long problemId = ProblemDao.instance.create(fen, title, description, requirement, creatorId);
+
+    resp.setContentType(Constants.CT_JSON_UTF8);
     resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, problemId));
   }
 }

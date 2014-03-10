@@ -32,7 +32,7 @@ public class ProblemGetNextServlet extends HttpServlet {
     Long userId = session == null ? null : session.getUserId();
     Problem nextProblem = ProblemDao.instance.getNextUnsolved(userId, problemId);
     long nextId = nextProblem == null ? -1 : nextProblem.getId();
-    resp.setContentType(Constants.CT_JSON);
+    resp.setContentType(Constants.CT_JSON_UTF8);
     resp.getWriter().println(JsonUtils.toJson(NEXT_ID_FIELD, nextId));
   }
 }

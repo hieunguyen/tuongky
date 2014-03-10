@@ -908,7 +908,7 @@ tkServices.factory('userService', function(
     $facebook.getLoginStatus().then(function(response) {
       var authResp = response.authResponse;
       if (authResp) {
-        console.log(authResp);
+        // console.log(authResp);
         $http.post('/fb_signin', {
           access_token: authResp.accessToken
         }).success(function(response) {
