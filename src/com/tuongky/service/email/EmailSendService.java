@@ -1,18 +1,12 @@
-package com.tuongky.service;
+package com.tuongky.service.email;
 
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
-import com.github.mustachejava.MustacheFactory;
-import com.google.appengine.api.taskqueue.Queue;
-import com.google.appengine.api.taskqueue.QueueFactory;
-import com.google.appengine.api.taskqueue.TaskHandle;
-import com.google.appengine.api.taskqueue.TaskOptions;
+import com.tuongky.service.MailTemplate;
 
 import javax.mail.Message;
-import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.StringWriter;
@@ -23,16 +17,15 @@ import java.util.logging.Logger;
 /**
  * Created by sngo on 3/2/14.
  */
-public class EmailService {
+public class EmailSendService {
 
-  private static final Logger log = Logger.getLogger(EmailService.class.getName());
-  public static final EmailService instance = new EmailService();
+  private static final Logger log = Logger.getLogger(EmailSendService.class.getName());
+  public static final EmailSendService instance = new EmailSendService();
 
-  private static final String QUEUE_NAME = "email_queue";
+  private static final String ADMIN_EMAIL_ADDRESS = "tuongkydatviet@gmail.com";
+  private static final String ADMIN_EMAIL_PERSONAL = "tuongky.com Admin";
 
-  private static final String ADMIN_EMAIL_ADDRESS = "tuongky@gmail.com";
-
-  private String getMailHtml(String template, Map<String, Object> contentMap) {
+  private String getMailHtml(String template, Map<String, String> contentMap) {
     Mustache mustache = new DefaultMustacheFactory().compile(template);
     StringWriter writer = new StringWriter();
     mustache.execute(writer, contentMap);
@@ -40,16 +33,18 @@ public class EmailService {
     return writer.toString();
   }
 
-  public void send(String address, MailTemplate template, Map<String, Object> contentMap){
+  public void send(String address, String personal, MailTemplate template, Map<String, String> contentMap){
+    log.info("Sending " + template.name() + " to " + address);
+
     Properties props = new Properties();
     Session session = Session.getDefaultInstance(props, null);
 
     try {
       Message msg = new MimeMessage(session);
-      msg.setFrom(new InternetAddress(ADMIN_EMAIL_ADDRESS, "Example.com Admin"));
+      msg.setFrom(new InternetAddress(ADMIN_EMAIL_ADDRESS, ADMIN_EMAIL_PERSONAL));
 
       msg.addRecipient(Message.RecipientType.TO,
-              new InternetAddress(address, "Mr. Son"));
+              new InternetAddress(address, personal));
 
       msg.setSubject(template.subject);
 
@@ -60,5 +55,7 @@ public class EmailService {
     } catch (Exception e) {
       log.severe("Fail to send email to " + address);
     }
+
+    log.info("Successfully sent " + template.name() + " to " + address);
   }
 }

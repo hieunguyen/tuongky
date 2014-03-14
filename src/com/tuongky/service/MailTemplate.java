@@ -6,7 +6,8 @@ package com.tuongky.service;
 public enum MailTemplate {
   FIRST_TIMER("templates/first_timer_email.html", "Chào mừng bạn đến với tuongky.com"),
   LEVEL_DOWN("templates/level_down_email.html", "Có Thêm Bài Mới"),
-  LEVEL_UP("templates/level_up_email.html", "Bạn Đã Được Tăng Level!");
+  LEVEL_UP("templates/level_up_email.html", "Bạn Đã Được Tăng Level!"),
+  SPAM_REMINDER("templates/spam_reminder.html", "Có Thêm Bài Mới");
 
   public String template;
   public String subject;

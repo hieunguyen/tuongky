@@ -5,7 +5,11 @@ import java.util.List;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.DAOBase;
+import com.tuongky.model.datastore.EmailHistory;
+import com.tuongky.model.datastore.Problem;
+import com.tuongky.model.datastore.User;
 import com.tuongky.model.datastore.UserMetadata;
+import com.tuongky.service.email.EmailTaskQueueService;
 import com.tuongky.util.ProblemUtils;
 
 /**
@@ -30,6 +34,24 @@ public class UserMetadataDao extends DAOBase{
     return user;
   }
 
+  public static int computeLevel(int solves) {
+    return (solves * 12) / (int)CounterDao.getProblemsCount();
+  }
+
+  public void setSolves(long userId, int solves) {
+    Objectify ofy = ObjectifyService.beginTransaction();
+
+    UserMetadata userMetadata = ofy.find(UserMetadata.class, userId);
+
+    if (userMetadata != null) {
+      userMetadata.setSolves(solves);
+    }
+
+    ofy.put(userMetadata);
+
+    ofy.getTxn().commit();
+  }
+
   //transactional
   public void solve(long userId) {
     Objectify ofy = ObjectifyService.beginTransaction();
@@ -40,6 +62,7 @@ public class UserMetadataDao extends DAOBase{
       userMetadata = create(userId);
     }
 
+    int oldLevel = computeLevel(userMetadata.getSolves());
     userMetadata.incrementSolve();
 
     // update the ranker
@@ -48,6 +71,12 @@ public class UserMetadataDao extends DAOBase{
     ofy.put(userMetadata);
 
     ofy.getTxn().commit();
+
+    int newLevel = computeLevel(userMetadata.getSolves());
+    if (oldLevel != newLevel) {
+      EmailTaskQueueService.instance.pushLevelUpEmail(userId, oldLevel, newLevel);
+    }
+    EmailHistoryDao.instance.save(newLevel);
   }
 
   //transactional
@@ -75,5 +104,9 @@ public class UserMetadataDao extends DAOBase{
   public List<UserMetadata> search(int offset, int limit){
     return ObjectifyService.begin().query(UserMetadata.class).order(ProblemUtils.MINUS + UserMetadata.SOLVES_FIELD).
             order(UserMetadata.ATTEMPTS_FIELD).offset(offset).limit(limit).list();
+  }
+
+  public List<UserMetadata> getAllUsers() {
+    return ObjectifyService.begin().query(UserMetadata.class).list();
   }
 }

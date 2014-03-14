@@ -36,6 +36,7 @@ public class ObjectifyRegister {
     ObjectifyService.register(UserMetadata.class);
     ObjectifyService.register(SimpleCounter.class);
     ObjectifyService.register(ProblemUserMetadata.class);
+    ObjectifyService.register(EmailHistory.class);
   }
 
   public static ObjectifyRegister register(){

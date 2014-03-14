@@ -53,7 +53,7 @@ public class SolutionsForProblemServlet extends HttpServlet {
     List<Solution> solutions = SolutionDao.instance.searchByProblem(problemId, pageSize, pageNum);
 
     List<Long> ids = extractUserIds(solutions);
-    Map<Long, User> userMap = UserDao.instance.batchGetBuyId(ids);
+    Map<Long, User> userMap = UserDao.instance.batchGetById(ids);
 
     if (userMap.size() != ids.size()) {
       resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.tuongky.backend.EmailHistoryDao;
 import com.tuongky.backend.SessionDao;
 import com.tuongky.backend.UserDao;
 import com.tuongky.model.UserRole;
@@ -97,5 +98,8 @@ public class FacebookSigninServlet extends HttpServlet {
     data.put("roleId", user.getRoleIndex());
     resp.setContentType(Constants.CT_JSON_UTF8);
     resp.getWriter().println(new Gson().toJson(data));
+
+    // reset email reminder
+    EmailHistoryDao.instance.save(user.getId());
   }
 }
