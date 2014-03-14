@@ -401,7 +401,7 @@ html, body {
 }
 
 .search-results .titleColumn {
-	width: 45%;
+	width: 35%;
 }
 
 .search-results .bookColumn {
@@ -409,7 +409,7 @@ html, body {
 }
 
 .search-results .usernameColumn {
-	width: 10%;
+	width: 20%;
 }
 
 .search-results .viewsColumn {

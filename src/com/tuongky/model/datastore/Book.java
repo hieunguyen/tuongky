@@ -10,13 +10,14 @@ public class Book {
 
   private @Id Long id;
   private String username;
+  private String fbId;
   private long createdAt;
   @Unindexed private String name;
 
   @SuppressWarnings("unused")
   private Book() {} // Used by Objectify.
 
-  public Book(String username, String name) {
+  public Book(String username, String fbId, String name) {
     this.username = username;
     this.createdAt = new Date().getTime();
     this.name = name;
@@ -28,6 +29,10 @@ public class Book {
 
   public String getUsername() {
     return username;
+  }
+
+  public String getFbId() {
+    return fbId;
   }
 
   public long getCreatedAt() {

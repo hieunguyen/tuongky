@@ -1123,8 +1123,8 @@ tkControllers.controller('ProblemCtrl', function(
   $scope.authenticated = authService.isAuthenticated();
 
   function getBaseUrl() {
-    // return window.location.origin;
-    return 'http://tuongky.ngrok.com';
+    return window.location.origin;
+    // return 'http://tuongky.ngrok.com';
   }
 
   $scope.getShareUrl = function(problemId) {

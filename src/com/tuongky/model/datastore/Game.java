@@ -15,11 +15,13 @@ public class Game {
   @Unindexed private String nBook;
   @Unindexed private String data;
   @Unindexed private String username;
+  @Unindexed private String fbId;
+  @Unindexed private String fbName;
 
   @SuppressWarnings("unused")
   private Game() {} // Used by Objectify.
 
-  public Game(String id, String username,
+  public Game(String id, String username, String fbId, String fbName,
       GameCategory category, String title, String nTitle, String book, String nBook, String data) {
     this.id = id;
     this.categoryIndex = category.getValue();
@@ -29,16 +31,18 @@ public class Game {
     this.nBook = nBook;
     this.data = data;
     this.username = username;
+    this.fbId = fbId;
+    this.fbName = fbName;
   }
 
-  public Game(String username, GameCategory category,
+  public Game(String username, String fbId, String fbName, GameCategory category,
       String title, String nTitle, String book, String nBook, String data) {
-    this(null, username, category, title, nTitle, book, nBook, data);
+    this(null, username, fbId, fbName, category, title, nTitle, book, nBook, data);
   }
 
-  public Game(String username, GameCategory category,
+  public Game(String username, String fbId, String fbName, GameCategory category,
       String title, String nTitle, String book, String nBook) {
-    this(null, username, category, title, nTitle, book, nBook, null);
+    this(null, username, fbId, fbName, category, title, nTitle, book, nBook, null);
   }
 
   public String getId() {
@@ -79,5 +83,13 @@ public class Game {
 
   public String getUsername() {
     return username;
+  }
+
+  public String getFbId() {
+    return fbId;
+  }
+
+  public String getFbName() {
+    return fbName;
   }
 }

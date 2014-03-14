@@ -32,9 +32,15 @@
 					</a>
 				</td>
 				<td>
-					<a href="#/search/q={{searchResult.username}}">
-						<span ng-bind-html="searchResult.annotated_username"></span>
-					</a>
+					<div ng-if="!searchResult.fbId || !searchResult.fbName && searchResult.userName">
+						<a href="#/search/q={{searchResult.username}}" ng-if="searchResult.userName">
+							<span ng-bind-html="searchResult.annotated_username"></span>
+						</a>
+					</div>
+					<div ng-if="searchResult.fbId && searchResult.fbName">
+						<img ng-src="http://graph.facebook.com/{{searchResult.fbId}}/picture?type=square">
+						<a ng-href="#/profile/{{searchResult.fbId}}">{{searchResult.fbName}}</a>
+					</div>
 				</td>
 				<td>{{searchResult.views}}</td>
 			</tr>
