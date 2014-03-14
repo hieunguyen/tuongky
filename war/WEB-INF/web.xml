@@ -86,15 +86,6 @@
 	</servlet-mapping>
 
 	<servlet>
-		<servlet-name>GameCreate</servlet-name>
-		<servlet-class>com.tuongky.servlet.game.GameCreateServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>GameCreate</servlet-name>
-		<url-pattern>/game/create</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
 		<servlet-name>GameSave</servlet-name>
 		<servlet-class>com.tuongky.servlet.game.GameSaveServlet</servlet-class>
 	</servlet>
@@ -263,32 +254,31 @@
     <url-pattern>/_ah/spi/*</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+      <servlet-name>ProblemAttempt</servlet-name>
+      <servlet-class>com.tuongky.servlet.problem.ProblemAttemptServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>ProblemAttempt</servlet-name>
+      <url-pattern>/problem/attempt</url-pattern>
+  </servlet-mapping>
 
-    <servlet>
-        <servlet-name>ProblemAttempt</servlet-name>
-        <servlet-class>com.tuongky.servlet.problem.ProblemAttemptServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ProblemAttempt</servlet-name>
-        <url-pattern>/problem/attempt</url-pattern>
-    </servlet-mapping>
+  <servlet>
+      <servlet-name>ranker</servlet-name>
+      <servlet-class>com.tuongky.servlet.user.RankerServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>ranker</servlet-name>
+      <url-pattern>/user/ranker</url-pattern>
+  </servlet-mapping>
 
-    <servlet>
-        <servlet-name>ranker</servlet-name>
-        <servlet-class>com.tuongky.servlet.user.RankerServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ranker</servlet-name>
-        <url-pattern>/user/ranker</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>SendMail</servlet-name>
-        <servlet-class>com.tuongky.servlet.mail.MailHandlerServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>SendMail</servlet-name>
-        <url-pattern>/mail/send</url-pattern>
-    </servlet-mapping>
+  <servlet>
+      <servlet-name>SendMail</servlet-name>
+      <servlet-class>com.tuongky.servlet.mail.MailHandlerServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>SendMail</servlet-name>
+      <url-pattern>/mail/send</url-pattern>
+  </servlet-mapping>
 
 </web-app>

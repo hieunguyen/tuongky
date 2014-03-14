@@ -1,5 +1,6 @@
 package com.tuongky.service;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -46,6 +47,14 @@ public final class SearchService {
             Field.newBuilder()
                 .setName("username")
                 .setAtom(game.getUsername()))
+        .addField(
+            Field.newBuilder()
+                .setName("fb_id")
+                .setAtom(game.getFbId()))
+        .addField(
+            Field.newBuilder()
+                .setName("fb_name")
+                .setAtom(game.getFbName()))
         .addField(
             Field.newBuilder()
                 .setName("category")
@@ -124,15 +133,33 @@ public final class SearchService {
     return GameCategory.UNKNOWN;
   }
 
+  private static String getAtom(ScoredDocument scoredDocument, String fieldName) {
+    if (scoredDocument.getFieldCount(fieldName) == 0) {
+      return null;
+    }
+    Iterator<Field> it = scoredDocument.getFields(fieldName).iterator();
+    return it.hasNext() ? it.next().getAtom() : null;
+  }
+
+  private static String getText(ScoredDocument scoredDocument, String fieldName) {
+    if (scoredDocument.getFieldCount(fieldName) == 0) {
+      return null;
+    }
+    Iterator<Field> it = scoredDocument.getFields(fieldName).iterator();
+    return it.hasNext() ? it.next().getText() : null;
+  }
+
   private static Game toGame(ScoredDocument scoredDocument) {
     String id = scoredDocument.getId();
-    String username = scoredDocument.getOnlyField("username").getAtom();
-    String category = scoredDocument.getOnlyField("category").getAtom();
-    String title = scoredDocument.getOnlyField("title").getText();
-    String nTitle = scoredDocument.getOnlyField("n_title").getText();
-    String book = scoredDocument.getOnlyField("book").getText();
-    String nBook = scoredDocument.getOnlyField("n_book").getText();
-    return new Game(id, username, getGameCategoryFromString(category),
+    String username = getAtom(scoredDocument, "username");
+    String fbId = getAtom(scoredDocument, "fb_id");
+    String fbName = getAtom(scoredDocument, "fb_name");
+    String category = getAtom(scoredDocument, "category");
+    String title = getText(scoredDocument, "title");
+    String nTitle = getText(scoredDocument, "n_title");
+    String book = getText(scoredDocument, "book");
+    String nBook = getText(scoredDocument, "n_book");
+    return new Game(id, username, fbId, fbName, getGameCategoryFromString(category),
         title, nTitle, book, nBook, null);
   }
 

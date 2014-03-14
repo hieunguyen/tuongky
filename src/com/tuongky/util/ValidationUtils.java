@@ -11,6 +11,9 @@ public final class ValidationUtils {
 
   public static String mustBeSet(HttpServletRequest req, HttpServletResponse resp, String field)
       throws IOException {
+    if (resp.isCommitted()) {
+      return null;
+    }
     String value = req.getParameter(field);
     if (value == null) {
       resp.sendError(HttpServletResponse.SC_BAD_REQUEST, field + " cannot be null.");
@@ -21,6 +24,9 @@ public final class ValidationUtils {
 
   public static Integer mustBeInt(HttpServletRequest req, HttpServletResponse resp, String field)
       throws IOException {
+    if (resp.isCommitted()) {
+      return null;
+    }
     String value = mustBeSet(req, resp, field);
     if (value == null) {
       return null;
@@ -36,6 +42,9 @@ public final class ValidationUtils {
 
   public static Long mustBeLong(HttpServletRequest req, HttpServletResponse resp, String field)
       throws IOException {
+    if (resp.isCommitted()) {
+      return null;
+    }
     String value = mustBeSet(req, resp, field);
     if (value == null) {
       return null;
@@ -51,6 +60,9 @@ public final class ValidationUtils {
 
   public static Integer mayBeInt(HttpServletRequest req, HttpServletResponse resp,
       String field, int defaultValue) throws IOException {
+    if (resp.isCommitted()) {
+      return null;
+    }
     String value = req.getParameter(field);
     if (value == null) {
       return defaultValue;
@@ -66,6 +78,9 @@ public final class ValidationUtils {
 
   public static Long mayBeLong(HttpServletRequest req, HttpServletResponse resp,
       String field, long defaultValue) throws IOException {
+    if (resp.isCommitted()) {
+      return null;
+    }
     String value = req.getParameter(field);
     if (value == null) {
       return defaultValue;

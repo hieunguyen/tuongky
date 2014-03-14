@@ -613,8 +613,7 @@ tkServices.factory('dbService', function(
   service.createGame = function(game, username) {
     var defer = $q.defer();
     notificationService.show('Đang tạo tài liệu...');
-    $http.post('/game/create', {
-      username: username,
+    $http.post('/game/save', {
       category: game.category,
       title: game.title,
       n_title: vnService.normalize(game.title),
@@ -637,7 +636,6 @@ tkServices.factory('dbService', function(
     notificationService.show('Đang lưu tài liệu...');
     $http.post('/game/save', {
       id: game.id,
-      username: username,
       category: game.category,
       title: game.title,
       n_title: vnService.normalize(game.title),

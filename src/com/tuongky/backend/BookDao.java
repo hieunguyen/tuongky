@@ -13,8 +13,8 @@ public class BookDao extends DAOBase {
     ObjectifyRegister.register();
   }
 
-  public Book save(String username, String name) {
-    Book book = new Book(username, name);
+  public Book save(String username, String fbId, String name) {
+    Book book = new Book(username, fbId, name);
     ObjectifyService.begin().put(book);
     return book;
   }
@@ -28,6 +28,16 @@ public class BookDao extends DAOBase {
         ObjectifyService.begin()
             .query(Book.class)
             .filter("username", username)
+            .filter("createdAt >", lastCreatedAt)
+            .fetch()
+            .iterator());
+  }
+
+  public List<Book> getByFbId(String fbId, long lastCreatedAt) {
+    return Lists.newArrayList(
+        ObjectifyService.begin()
+            .query(Book.class)
+            .filter("fbId", fbId)
             .filter("createdAt >", lastCreatedAt)
             .fetch()
             .iterator());

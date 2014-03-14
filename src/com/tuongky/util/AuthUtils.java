@@ -55,4 +55,13 @@ public final class AuthUtils {
   public static Session getSession(HttpServletRequest req) {
     return (Session) req.getAttribute(Constants.SESSION_ATTRIBUTE);
   }
+
+  public static Session mustHaveSession(HttpServletRequest req, HttpServletResponse resp)
+      throws IOException {
+    Session session = getSession(req);
+    if (session == null) {
+      resp.sendError(HttpServletResponse.SC_FORBIDDEN);
+    }
+    return session;
+  }
 }
