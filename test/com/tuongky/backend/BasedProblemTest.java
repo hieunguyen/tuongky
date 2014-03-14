@@ -34,9 +34,9 @@ public class BasedProblemTest {
     problemId_1 = ProblemDao.instance.create(fen, title, desc, requirement, null);
     problemId_2 = ProblemDao.instance.create(fen, title, desc, requirement, null);
 
-    User user = UserDao.instance.save("fb", "fb", UserRole.USER);
+    User user = UserDao.instance.save("fb", "fb", null, UserRole.USER);
     userId_1 = user.getId();
-    user = UserDao.instance.save("fb1", "fb2", UserRole.USER);
+    user = UserDao.instance.save("fb1", "fb2", null, UserRole.USER);
     userId_2 = user.getId();
   }
 

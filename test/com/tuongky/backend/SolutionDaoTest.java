@@ -37,5 +37,10 @@ public class SolutionDaoTest extends BasedProblemTest{
     UserMetadata userMetadata = UserMetadataDao.instance.get(userId_1);
     assertEquals(1, userMetadata.getSolves());
     assertEquals(1, userMetadata.getAttempts());
+
+    ProblemAttemptDao.instance.attempt(userId_1, problemId_1, true);
+    SolutionDao.instance.solve(userId_1, problemId_1);
+    userMetadata = UserMetadataDao.instance.get(userId_1);
+    assertEquals(2, userMetadata.getSolves());
   }
 }

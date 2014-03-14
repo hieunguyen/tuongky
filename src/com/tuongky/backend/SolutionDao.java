@@ -1,5 +1,6 @@
 package com.tuongky.backend;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -55,6 +56,16 @@ public class SolutionDao extends DAOBase{
     return solution.getId();
   }
 
+  public int getSolves(long actorId) {
+    List<Solution> solutions = ObjectifyService.begin().query(Solution.class).filter(Solution.ACTOR_ID_FIELD, actorId).list();
+
+    Set<Long> problemsolved = new HashSet<>();
+    for (Solution solution : solutions) {
+      problemsolved.add(solution.getProblemId());
+    }
+
+    return problemsolved.size();
+  }
   /**
    * Given actorId, return problems solved by this actor, sorted by createdDate.
    *

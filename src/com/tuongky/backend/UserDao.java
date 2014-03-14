@@ -1,7 +1,10 @@
 package com.tuongky.backend;
 
-import java.util.Map;
+import java.util.*;
 
+import javax.annotation.Nullable;
+
+import com.googlecode.objectify.Query;
 import com.tuongky.model.UserRole;
 import com.tuongky.service.email.EmailTaskQueueService;
 import org.mindrot.BCrypt;
@@ -34,11 +37,11 @@ public class UserDao extends DAOBase {
     return user;
   }
 
-  public User save(String fbId, String fbName, UserRole role) {
+  public User save(String fbId, String fbName, @Nullable String email, UserRole role) {
     User user = getByFbId(fbId);
 
     if (user == null) {
-      user = User.createFbUser(fbId, fbName, role);
+      user = User.createFbUser(fbId, fbName, email, role);
       ObjectifyService.begin().put(user);
       // create a new userMetadata
       UserMetadataDao.instance.create(user.getId());
@@ -46,6 +49,9 @@ public class UserDao extends DAOBase {
       EmailTaskQueueService.instance.pushWelcomeEmail(user.getId());
     } else {
       user.setFbName(fbName);
+      if (email != null) {
+        user.setEmail(email);
+      }
       user.setUserRole(role);
       ObjectifyService.begin().put(user);
     }
@@ -91,7 +97,8 @@ public class UserDao extends DAOBase {
         .get();
   }
 
-  public Map<Long, User> batchGetBuyId(Iterable<Long> ids){
+  public Map<Long, User> batchGetById(Iterable<Long> ids){
     return ObjectifyService.begin().get(User.class, ids);
   }
+
 }

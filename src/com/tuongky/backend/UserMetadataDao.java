@@ -5,7 +5,9 @@ import java.util.List;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.DAOBase;
+import com.tuongky.model.datastore.EmailHistory;
 import com.tuongky.model.datastore.Problem;
+import com.tuongky.model.datastore.User;
 import com.tuongky.model.datastore.UserMetadata;
 import com.tuongky.service.email.EmailTaskQueueService;
 import com.tuongky.util.ProblemUtils;
@@ -32,8 +34,8 @@ public class UserMetadataDao extends DAOBase{
     return user;
   }
 
-  public int computeLevel(int solves) {
-    return solves/ (int)CounterDao.getProblemsCount();
+  public static int computeLevel(int solves) {
+    return (solves * 12) / (int)CounterDao.getProblemsCount();
   }
 
   //transactional
@@ -60,6 +62,7 @@ public class UserMetadataDao extends DAOBase{
     if (oldLevel != newLevel) {
       EmailTaskQueueService.instance.pushLevelUpEmail(userId, oldLevel, newLevel);
     }
+    EmailHistoryDao.instance.save(newLevel);
   }
 
   //transactional
@@ -87,5 +90,9 @@ public class UserMetadataDao extends DAOBase{
   public List<UserMetadata> search(int offset, int limit){
     return ObjectifyService.begin().query(UserMetadata.class).order(ProblemUtils.MINUS + UserMetadata.SOLVES_FIELD).
             order(UserMetadata.ATTEMPTS_FIELD).offset(offset).limit(limit).list();
+  }
+
+  public List<UserMetadata> getAllUsers() {
+    return ObjectifyService.begin().query(UserMetadata.class).list();
   }
 }

@@ -15,10 +15,10 @@ public class LevelUpEmailServlet extends HttpServlet{
 
   private static final Logger log = Logger.getLogger(WelcomeEmailServlet.class.getName());
 
-  private static String ADDRESS_FIELD = "address";
-  private static String USER_NAME_FIELD = "name";
-  private static String OLD_LEVEL_FIELD = "old_level";
-  private static String NEW_LEVEL_FIELD = "new_level";
+  public static String ADDRESS_FIELD = "address";
+  public static String USER_NAME_FIELD = "name";
+  public static String OLD_LEVEL_FIELD = "old_level";
+  public static String NEW_LEVEL_FIELD = "new_level";
 
   public void doPost(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp)
           throws javax.servlet.ServletException, java.io.IOException {

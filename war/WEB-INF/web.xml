@@ -291,4 +291,31 @@
         <url-pattern>/mail/levelup</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>SendLeveldownEmail</servlet-name>
+        <servlet-class>com.tuongky.servlet.mail.LevelDownEmailServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SendLeveldownEmail</servlet-name>
+        <url-pattern>/mail/leveldown</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SendSpamReminderEmail</servlet-name>
+        <servlet-class>com.tuongky.servlet.mail.SpamReminderEmailServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SendSpamReminderEmail</servlet-name>
+        <url-pattern>/mail/inactive_reminder</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SendOfflineEmail</servlet-name>
+        <servlet-class>com.tuongky.servlet.mail.OfflineReminderEmailServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SendOfflineEmail</servlet-name>
+        <url-pattern>/mail/reminder</url-pattern>
+    </servlet-mapping>
+
 </web-app>

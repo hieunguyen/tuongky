@@ -1,7 +1,7 @@
 package com.tuongky.servlet.mail;
 
-import com.tuongky.service.email.EmailSendService;
 import com.tuongky.service.MailTemplate;
+import com.tuongky.service.email.EmailSendService;
 
 import javax.servlet.http.HttpServlet;
 import java.util.HashMap;
@@ -11,8 +11,7 @@ import java.util.logging.Logger;
 /**
  * Created by sngo on 3/9/14.
  */
-public class WelcomeEmailServlet extends HttpServlet{
-
+public class SpamReminderEmailServlet extends HttpServlet{
   private static final Logger log = Logger.getLogger(WelcomeEmailServlet.class.getName());
 
   public static String ADDRESS_FIELD = "address";
@@ -34,6 +33,7 @@ public class WelcomeEmailServlet extends HttpServlet{
     Map<String, String> contentMap = new HashMap<>();
     contentMap.put(USER_NAME_FIELD, userName);
 
-    EmailSendService.instance.send(address, userName, MailTemplate.FIRST_TIMER, contentMap);
+    EmailSendService.instance.send(address, userName, MailTemplate.SPAM_REMINDER, contentMap);
   }
+
 }

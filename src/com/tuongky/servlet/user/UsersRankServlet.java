@@ -83,7 +83,7 @@ public class UsersRankServlet extends HttpServlet {
       List<UserMetadata> list = UserMetadataDao.instance.search(startIndex, size);
       Set<Long> userIds = extractUserId(list);
 
-      Map<Long, User> userMap = UserDao.instance.batchGetBuyId(userIds);
+      Map<Long, User> userMap = UserDao.instance.batchGetById(userIds);
 
       long totalResults = CounterDao.getUsersCount();
       long problemCount = CounterDao.getProblemsCount();

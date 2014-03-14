@@ -1,11 +1,11 @@
 package com.tuongky.model.datastore;
 
+import javax.annotation.Nullable;
 import javax.persistence.Id;
 
 import org.mindrot.BCrypt;
 
 import com.googlecode.objectify.annotation.Unindexed;
-import com.tuongky.servlet.Constants;
 import com.tuongky.model.UserRole;
 
 public class User {
@@ -27,10 +27,12 @@ public class User {
     this.hashed = hashed;
   }
 
-  public static User createFbUser(String fbId, String fbName, UserRole role) {
+  public static User createFbUser(
+      String fbId, String fbName, @Nullable String email, UserRole role) {
     User user = new User();
     user.fbId = fbId;
     user.fbName = fbName;
+    user.email = email;
     user.setUserRole(role);
     return user;
   }
@@ -45,6 +47,10 @@ public class User {
 
   public String getEmail() {
     return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
   }
 
   public String getUsername() {
