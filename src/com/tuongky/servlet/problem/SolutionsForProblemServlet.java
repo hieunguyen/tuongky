@@ -1,14 +1,18 @@
 package com.tuongky.servlet.problem;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.labs.repackaged.com.google.common.collect.Sets;
 import com.google.common.collect.Lists;
 import com.tuongky.backend.ProblemDao;
 import com.tuongky.backend.SolutionDao;
@@ -32,6 +36,8 @@ public class SolutionsForProblemServlet extends HttpServlet {
   private static final String ITEMS_KEY = "items";
   private static final String PROBLEM_KEY = "problem";
 
+  private static final Logger log = Logger.getLogger(SolutionsForProblemServlet.class.getName());
+
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
@@ -52,17 +58,23 @@ public class SolutionsForProblemServlet extends HttpServlet {
 
     List<Solution> solutions = SolutionDao.instance.searchByProblem(problemId, pageSize, pageNum);
 
-    List<Long> ids = extractUserIds(solutions);
+    Set<Long> ids = extractUserIds(solutions);
     Map<Long, User> userMap = UserDao.instance.batchGetById(ids);
 
     if (userMap.size() != ids.size()) {
-      resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-      return;
+      log.severe("Data is inconsistent, asking for ids = " + ids + " got back: " + userMap.keySet());
     }
 
+    Set<Long> includedUserIds = new HashSet<>();
+
     List<ResponseObject> items = Lists.newArrayList();
-    for (int i = 0; i < ids.size(); i++) {
-      items.add(new ResponseObject(solutions.get(i), userMap.get(ids.get(i))));
+    for (Solution solution : solutions) {
+      long userId = solution.getActorId();
+
+      if (!includedUserIds.contains(userId)) {
+        items.add(new ResponseObject(solution, userMap.get(userId)));
+        includedUserIds.add(userId);
+      }
     }
 
     Problem problem = ProblemDao.instance.getById(problemId);
@@ -72,8 +84,8 @@ public class SolutionsForProblemServlet extends HttpServlet {
         ITEMS_KEY, items, PROBLEM_KEY, problem));
   }
 
-  private List<Long> extractUserIds(List<Solution> solutions) {
-    List<Long> userIds = Lists.newArrayList();
+  private Set<Long> extractUserIds(List<Solution> solutions) {
+    Set<Long> userIds = Sets.newHashSet();
     for (Solution solution : solutions) {
       userIds.add(solution.getActorId());
     }
