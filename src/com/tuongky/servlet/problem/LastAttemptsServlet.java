@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServlet;
 
 import com.tuongky.backend.ProblemAttemptDao;
 import com.tuongky.model.datastore.ProblemAttempt;
+import com.tuongky.servlet.Constants;
 import com.tuongky.util.JsonUtils;
 
 /**
@@ -38,7 +39,7 @@ public class LastAttemptsServlet extends HttpServlet{
 
     List<ProblemAttempt> list = ProblemAttemptDao.instance.find(0, size);
 
+    resp.setContentType(Constants.CT_JSON_UTF8);
     resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, list));
   }
-
 }

@@ -4,6 +4,7 @@ import com.google.appengine.labs.repackaged.com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.tuongky.backend.*;
 import com.tuongky.model.datastore.*;
+import com.tuongky.servlet.Constants;
 
 import javax.servlet.http.HttpServlet;
 
@@ -38,6 +39,7 @@ public class UserGetServlet extends HttpServlet {
     return null;
   }
 
+  @Override
   public void doGet(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp)
           throws javax.servlet.ServletException, java.io.IOException {
     String id = req.getParameter(ID_FIELD);
@@ -68,8 +70,7 @@ public class UserGetServlet extends HttpServlet {
 
     ret.put("rankInfo", getRankInfo(metadata));
 
+    resp.setContentType(Constants.CT_JSON_UTF8);
     resp.getWriter().println(new Gson().toJson(ret));
-
   }
-
 }

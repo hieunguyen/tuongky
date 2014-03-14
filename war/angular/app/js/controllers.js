@@ -1333,7 +1333,7 @@ tkControllers.controller('ProblemCtrl', function(
 
   $scope.retry = function() {
     problemService.attempt($scope.problem.id).then(function(response) {
-      $scope.attempting = true;
+      $scope.attempting = false;
       $scope.attemptId = response.attemptId;
       $scope.problem.attempts++;
       init($scope.problem);
@@ -1345,8 +1345,11 @@ tkControllers.controller('ProblemCtrl', function(
   };
 
   $scope.goToNextProblem = function() {
-    var nextProblemId = problemService.getNextProblemId(problemId);
-    $location.path('/problem/' + nextProblemId);
+    problemService.getNextProblemId(problemId).then(function(nextProblemId) {
+      if (nextProblemId >= 0) {
+        $location.path('/problem/' + nextProblemId);
+      }
+    });
   };
 });
 

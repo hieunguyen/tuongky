@@ -28,7 +28,7 @@ public class GameDeleteServlet extends HttpServlet {
     }
     gameDao.delete(id);
     SearchService.deleteGame(id);
-    resp.setContentType(Constants.CT_JSON);
+    resp.setContentType(Constants.CT_JSON_UTF8);
     resp.getWriter().println(JsonUtils.toJson("status", "ok"));
   }
 

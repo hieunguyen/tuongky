@@ -16,6 +16,7 @@ import com.tuongky.backend.UserDao;
 import com.tuongky.model.datastore.Problem;
 import com.tuongky.model.datastore.Solution;
 import com.tuongky.model.datastore.User;
+import com.tuongky.servlet.Constants;
 import com.tuongky.util.JsonUtils;
 import com.tuongky.util.ValidationUtils;
 
@@ -66,6 +67,7 @@ public class SolutionsForProblemServlet extends HttpServlet {
 
     Problem problem = ProblemDao.instance.getById(problemId);
 
+    resp.setContentType(Constants.CT_JSON_UTF8);
     resp.getWriter().println(JsonUtils.toJson(
         ITEMS_KEY, items, PROBLEM_KEY, problem));
   }

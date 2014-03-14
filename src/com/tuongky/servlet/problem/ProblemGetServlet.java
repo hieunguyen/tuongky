@@ -100,13 +100,17 @@ public class ProblemGetServlet extends HttpServlet {
 
     Session session = (Session) req.getAttribute(Constants.SESSION_ATTRIBUTE);
 
+    Long userId = null;
     if (session != null) {
       boolean solved = SolutionDao.instance.solvedByProblem(session.getUserId(), problem);
       ret.put(SOLVED, solved);
       ProblemUserMetadata metadata = ProblemUserMetadataDao.instance.get(session.getUserId(), problemId);
       ret.put(ATTEMPT_COUNT, metadata == null ? 0 : metadata.getAttempts());
-      ret.put(NEXT_PROBLEM, ProblemDao.instance.getNextUnsolved(session.getUserId(), problemId));
+      userId = session.getUserId();
     }
+
+    Problem nextProblem = ProblemDao.instance.getNextUnsolved(userId, problemId);
+    ret.put(NEXT_PROBLEM, nextProblem);
 
     resp.setContentType(Constants.CT_JSON_UTF8);
     resp.getWriter().println(new Gson().toJson(ret));

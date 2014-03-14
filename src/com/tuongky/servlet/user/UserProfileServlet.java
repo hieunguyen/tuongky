@@ -22,6 +22,7 @@ import com.tuongky.model.datastore.Session;
 import com.tuongky.model.datastore.Solution;
 import com.tuongky.model.datastore.User;
 import com.tuongky.model.datastore.UserMetadata;
+import com.tuongky.servlet.Constants;
 import com.tuongky.util.AuthUtils;
 
 @SuppressWarnings("serial")
@@ -86,6 +87,7 @@ public class UserProfileServlet extends HttpServlet {
       ret.put("failedAttempts", lastFailedAttempts);
     }
 
+    resp.setContentType(Constants.CT_JSON_UTF8);
     resp.getWriter().println(new Gson().toJson(ret));
   }
 }

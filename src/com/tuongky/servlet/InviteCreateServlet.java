@@ -18,7 +18,7 @@ public class InviteCreateServlet extends HttpServlet {
       throws IOException {
     InviteDao inviteDao = new InviteDao();
     Invite invite = inviteDao.save();
-    resp.setContentType(Constants.CT_JSON);
+    resp.setContentType(Constants.CT_JSON_UTF8);
     resp.getWriter().println(JsonUtils.toJson("inviteId", invite.getId()));
   }
 }

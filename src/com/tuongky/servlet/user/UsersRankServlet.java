@@ -8,6 +8,7 @@ import com.tuongky.backend.UserMetadataDao;
 import com.tuongky.model.UserData;
 import com.tuongky.model.datastore.User;
 import com.tuongky.model.datastore.UserMetadata;
+import com.tuongky.servlet.Constants;
 import com.tuongky.util.JsonUtils;
 
 import javax.servlet.ServletException;
@@ -63,6 +64,8 @@ public class UsersRankServlet extends HttpServlet {
       throws ServletException, IOException {
     String pageNum = req.getParameter(PAGE_NUM_FIELD);
     String pageSize = req.getParameter(PAGE_SIZE_FIELD);
+
+    resp.setContentType(Constants.CT_JSON_UTF8);
 
     try{
       int page = Integer.parseInt(pageNum);

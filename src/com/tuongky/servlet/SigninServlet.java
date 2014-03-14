@@ -38,7 +38,7 @@ public class SigninServlet extends HttpServlet {
       Session session = new SessionDao().save(user);
       data.put("sid", session.getId());
     }
-    resp.setContentType(Constants.CT_JSON);
+    resp.setContentType(Constants.CT_JSON_UTF8);
     resp.getWriter().println(new Gson().toJson(data));
   }
 }

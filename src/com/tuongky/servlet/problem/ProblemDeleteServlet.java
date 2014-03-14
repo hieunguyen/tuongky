@@ -1,6 +1,7 @@
 package com.tuongky.servlet.problem;
 
 import com.tuongky.backend.ProblemDao;
+import com.tuongky.servlet.Constants;
 import com.tuongky.util.JsonUtils;
 
 import javax.servlet.http.HttpServlet;
@@ -24,6 +25,7 @@ public class ProblemDeleteServlet extends HttpServlet {
 
     ProblemDao.instance.delete(idLong);
 
+    resp.setContentType(Constants.CT_JSON_UTF8);
     resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, "ok"));
   }
 

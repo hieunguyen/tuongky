@@ -46,7 +46,7 @@ public class GameInitServlet extends HttpServlet {
       game.setData("Game data of game " + (i + 1));
       SearchService.indexGame(gameDao.add(game));
     }
-    resp.setContentType(Constants.CT_JSON);
+    resp.setContentType(Constants.CT_JSON_UTF8);
     resp.getWriter().println(JsonUtils.toJson("status", "ok"));
   }
 
