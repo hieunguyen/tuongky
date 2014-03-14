@@ -38,6 +38,20 @@ public class UserMetadataDao extends DAOBase{
     return (solves * 12) / (int)CounterDao.getProblemsCount();
   }
 
+  public void setSolves(long userId, int solves) {
+    Objectify ofy = ObjectifyService.beginTransaction();
+
+    UserMetadata userMetadata = ofy.find(UserMetadata.class, userId);
+
+    if (userMetadata != null) {
+      userMetadata.setSolves(solves);
+    }
+
+    ofy.put(userMetadata);
+
+    ofy.getTxn().commit();
+  }
+
   //transactional
   public void solve(long userId) {
     Objectify ofy = ObjectifyService.beginTransaction();
