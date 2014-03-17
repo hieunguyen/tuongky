@@ -76,7 +76,7 @@ public class UserMetadataDao extends DAOBase{
     if (oldLevel != newLevel) {
       EmailTaskQueueService.instance.pushLevelUpEmail(userId, oldLevel, newLevel);
     }
-    EmailHistoryDao.instance.save(newLevel);
+    EmailHistoryDao.instance.save(userId);
   }
 
   //transactional
