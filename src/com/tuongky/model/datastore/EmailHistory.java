@@ -19,6 +19,7 @@ public class EmailHistory {
   @Nullable
   private Double currentReminderPeriod; // increase exponentially
 
+  @SuppressWarnings("unused")
   private EmailHistory() {
     // unused
   }

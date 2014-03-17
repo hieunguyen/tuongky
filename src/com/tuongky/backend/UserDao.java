@@ -1,18 +1,17 @@
 package com.tuongky.backend;
 
-import java.util.*;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.googlecode.objectify.Query;
-import com.tuongky.model.UserRole;
-import com.tuongky.service.email.EmailTaskQueueService;
 import org.mindrot.BCrypt;
 
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.DAOBase;
+import com.tuongky.model.UserRole;
 import com.tuongky.model.datastore.User;
+import com.tuongky.service.email.EmailTaskQueueService;
 
 public class UserDao extends DAOBase {
 

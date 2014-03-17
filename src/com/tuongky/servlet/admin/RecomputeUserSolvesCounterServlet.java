@@ -7,12 +7,15 @@ import com.tuongky.model.datastore.UserMetadata;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.util.List;
 
 /**
  * Created by sngo on 3/13/14.
  */
+@SuppressWarnings("serial")
 public class RecomputeUserSolvesCounterServlet extends HttpServlet {
+  @Override
   public void doPost(HttpServletRequest req, HttpServletResponse resp) {
     List<UserMetadata> userSet = UserMetadataDao.instance.getAllUsers();
 

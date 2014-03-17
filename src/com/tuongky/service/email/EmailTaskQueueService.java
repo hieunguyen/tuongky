@@ -1,5 +1,7 @@
 package com.tuongky.service.email;
 
+import java.util.logging.Logger;
+
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
@@ -9,9 +11,6 @@ import com.tuongky.servlet.mail.LevelDownEmailServlet;
 import com.tuongky.servlet.mail.LevelUpEmailServlet;
 import com.tuongky.servlet.mail.SpamReminderEmailServlet;
 import com.tuongky.servlet.mail.WelcomeEmailServlet;
-
-import java.net.URLEncoder;
-import java.util.logging.Logger;
 
 /**
  * Created by sngo on 3/9/14.

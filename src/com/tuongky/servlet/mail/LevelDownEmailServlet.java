@@ -4,6 +4,7 @@ import com.tuongky.service.MailTemplate;
 import com.tuongky.service.email.EmailSendService;
 
 import javax.servlet.http.HttpServlet;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -11,6 +12,7 @@ import java.util.logging.Logger;
 /**
  * Created by sngo on 3/9/14.
  */
+@SuppressWarnings("serial")
 public class LevelDownEmailServlet extends HttpServlet{
   private static final Logger log = Logger.getLogger(LevelDownEmailServlet.class.getName());
 
@@ -19,6 +21,7 @@ public class LevelDownEmailServlet extends HttpServlet{
   public static String OLD_LEVEL_FIELD = "old_level";
   public static String NEW_LEVEL_FIELD = "new_level";
 
+  @Override
   public void doPost(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp)
           throws javax.servlet.ServletException, java.io.IOException {
     String address = req.getParameter(ADDRESS_FIELD);
