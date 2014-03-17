@@ -5,10 +5,13 @@ import com.github.mustachejava.Mustache;
 import com.tuongky.service.MailTemplate;
 
 import javax.mail.Message;
+import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -50,14 +53,18 @@ public class EmailSendService {
 
       msg.setSubject(template.subject);
 
-      msg.setText(getMailHtml(template.template, contentMap));
+      Multipart mp = new MimeMultipart();
+
+      MimeBodyPart htmlPart = new MimeBodyPart();
+      htmlPart.setContent(getMailHtml(template.template, contentMap), "text/html");
+      mp.addBodyPart(htmlPart);
+
+      msg.setContent(mp);
 
       Transport.send(msg);
       log.info("Successfully sent " + template.name() + " to " + address);
     } catch (Exception e) {
-
       log.severe("Fail to send email to " + address + " " + stackTraceToString(e));
-
     }
   }
 
