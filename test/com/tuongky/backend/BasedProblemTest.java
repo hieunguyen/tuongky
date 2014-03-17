@@ -2,8 +2,6 @@ package com.tuongky.backend;
 
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
-import com.tuongky.backend.ProblemDao;
-import com.tuongky.backend.UserDao;
 import com.tuongky.model.UserRole;
 import com.tuongky.model.datastore.User;
 import org.junit.After;
@@ -14,7 +12,8 @@ import org.junit.Before;
  */
 public class BasedProblemTest {
 
-  private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+  private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig())
+          .setSimulateProdLatencies(true);
 
   protected long userId_1;
   protected long userId_2;
