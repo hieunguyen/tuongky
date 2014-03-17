@@ -1,7 +1,7 @@
 package com.tuongky.backend;
 
-import com.google.appengine.repackaged.org.joda.time.Period;
-import com.google.appengine.repackaged.org.joda.time.ReadableInstant;
+import org.joda.time.Period;
+
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.DAOBase;
 import com.tuongky.model.datastore.EmailHistory;

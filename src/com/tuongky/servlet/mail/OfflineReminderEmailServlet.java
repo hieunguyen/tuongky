@@ -1,25 +1,24 @@
 package com.tuongky.servlet.mail;
 
-import com.tuongky.backend.EmailHistoryDao;
-import com.tuongky.backend.UserDao;
-import com.tuongky.backend.UserMetadataDao;
-import com.tuongky.model.datastore.EmailHistory;
-import com.tuongky.model.datastore.User;
-import com.tuongky.model.datastore.UserMetadata;
-import com.tuongky.util.JsonUtils;
+import java.util.List;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-import java.util.Set;
+
+import com.tuongky.backend.EmailHistoryDao;
+import com.tuongky.backend.UserMetadataDao;
+import com.tuongky.model.datastore.UserMetadata;
+import com.tuongky.util.JsonUtils;
 
 /** Offline job
  *
  * Created by sngo on 3/9/14.
  */
+@SuppressWarnings("serial")
 public class OfflineReminderEmailServlet extends HttpServlet {
 
+  @Override
   public void doPost(HttpServletRequest req, HttpServletResponse resp)
           throws javax.servlet.ServletException, java.io.IOException {
     List<UserMetadata> userSet = UserMetadataDao.instance.getAllUsers();

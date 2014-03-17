@@ -12,6 +12,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+
+import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Map;
 import java.util.Properties;
@@ -25,7 +27,7 @@ public class EmailSendService {
   private static final Logger log = Logger.getLogger(EmailSendService.class.getName());
   public static final EmailSendService instance = new EmailSendService();
 
-  private static final String ADMIN_EMAIL_ADDRESS = "tuongkydatviet@gmail.com";
+  private static final String ADMIN_EMAIL_ADDRESS = "hieu.ngvan@gmail.com";
   private static final String ADMIN_EMAIL_PERSONAL = "tuongky.com Admin";
 
   private String getMailHtml(String template, Map<String, String> contentMap) {
@@ -60,11 +62,16 @@ public class EmailSendService {
       msg.setContent(mp);
 
       Transport.send(msg);
-
+      log.info("Successfully sent " + template.name() + " to " + address);
     } catch (Exception e) {
-      log.severe("Fail to send email to " + address + " " + e.getStackTrace());
+      log.severe("Fail to send email to " + address + " " + stackTraceToString(e));
     }
+  }
 
-    log.info("Successfully sent " + template.name() + " to " + address);
+  private String stackTraceToString(Exception e) {
+    StringWriter sw = new StringWriter();
+    PrintWriter pw = new PrintWriter(sw);
+    e.printStackTrace(pw);
+    return sw.toString();
   }
 }

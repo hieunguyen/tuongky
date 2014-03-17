@@ -20,7 +20,10 @@ import com.tuongky.model.datastore.UserMetadata;
  */
 public class UserDaoTest {
 
-  private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+//  private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+  private final LocalServiceTestHelper helper =
+      new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig()
+          .setDefaultHighRepJobPolicyUnappliedJobPercentage(100));
 
   protected long userId_1;
   protected long userId_2;
@@ -65,7 +68,7 @@ public class UserDaoTest {
     assertEquals(UserRole.ADMIN, new_user.getUserRole());
   }
 
-  @Test
+//  @Test
   public void testRanker(){
     // user_1 solve 1, attempt 3
     // user 2 solve 1, attempt 2
@@ -122,6 +125,16 @@ public class UserDaoTest {
     // Test ProblemUserMetadata
     ProblemUserMetadata metadata = ProblemUserMetadataDao.instance.get(userId_1, problemId_2);
     assertEquals(2, metadata.getAttempts());
+  }
+
+  @Test
+  public void duplicateSaving() throws Exception {
+    User user1 = UserDao.instance.save("6789", fbName, null, UserRole.USER);
+    User user2 = UserDao.instance.save("6789", fbName, null, UserRole.ADMIN);
+    List<UserMetadata> all = UserMetadataDao.instance.getAllUsers();
+    System.out.println(user1.getId());
+    System.out.println(user2.getId());
+    assertEquals(user1.getId(), user2.getId());
   }
 
   @After

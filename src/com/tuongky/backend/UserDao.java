@@ -1,18 +1,17 @@
 package com.tuongky.backend;
 
-import java.util.*;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.googlecode.objectify.Query;
-import com.tuongky.model.UserRole;
-import com.tuongky.service.email.EmailTaskQueueService;
 import org.mindrot.BCrypt;
 
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.DAOBase;
+import com.tuongky.model.UserRole;
 import com.tuongky.model.datastore.User;
+import com.tuongky.service.email.EmailTaskQueueService;
 
 public class UserDao extends DAOBase {
 
@@ -38,25 +37,33 @@ public class UserDao extends DAOBase {
   }
 
   public User save(String fbId, String fbName, @Nullable String email, UserRole role) {
-    User user = getByFbId(fbId);
+    Objectify ofy = ObjectifyService.beginTransaction();
+    try {
+      User user = getByFbId(fbId);
 
-    if (user == null) {
-      user = User.createFbUser(fbId, fbName, email, role);
-      ObjectifyService.begin().put(user);
-      // create a new userMetadata
-      UserMetadataDao.instance.create(user.getId());
-      // send welcome email
-      EmailTaskQueueService.instance.pushWelcomeEmail(user.getId());
-    } else {
-      user.setFbName(fbName);
-      if (email != null) {
-        user.setEmail(email);
+      if (user == null) {
+        user = User.createFbUser(fbId, fbName, email, role);
+        ofy.put(user);
+        // create a new userMetadata
+        UserMetadataDao.instance.create(user.getId());
+        // send welcome email
+        EmailTaskQueueService.instance.pushWelcomeEmail(user.getId());
+      } else {
+        user.setFbName(fbName);
+        if (email != null) {
+          user.setEmail(email);
+        }
+        user.setUserRole(role);
+        ofy.put(user);
       }
-      user.setUserRole(role);
-      ObjectifyService.begin().put(user);
-    }
 
-    return user;
+      ofy.getTxn().commit();
+      return user;
+    } finally {
+      if (ofy.getTxn().isActive()) {
+        ofy.getTxn().rollback();
+      }
+    }
   }
 
   public User getById(long id) {
