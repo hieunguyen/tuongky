@@ -15,9 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.tuongky.backend.DatastoreUpdateService;
 import com.tuongky.backend.EmailHistoryDao;
 import com.tuongky.backend.SessionDao;
-import com.tuongky.backend.UserDao;
 import com.tuongky.model.UserRole;
 import com.tuongky.model.datastore.Session;
 import com.tuongky.model.datastore.User;
@@ -88,7 +88,10 @@ public class FacebookSigninServlet extends HttpServlet {
 
     UserRole role = Constants.USER_ROLE_MAP.containsKey(fbAuth.fbId) ?
         Constants.USER_ROLE_MAP.get(fbAuth.fbId) : UserRole.USER;
-    User user = UserDao.instance.save(fbAuth.fbId, fbAuth.fbName, fbAuth.email, role);
+    User user = DatastoreUpdateService.instance.saveFacebookUser(
+        fbAuth.fbId, fbAuth.fbName, fbAuth.email, role);
+    // reset email reminder
+    EmailHistoryDao.instance.save(user.getId());
 
     Session session = new SessionDao().save(user.getId(), user.getUserRole());
     Map<String, Object> data = new HashMap<>();
@@ -98,8 +101,5 @@ public class FacebookSigninServlet extends HttpServlet {
     data.put("roleId", user.getRoleIndex());
     resp.setContentType(Constants.CT_JSON_UTF8);
     resp.getWriter().println(new Gson().toJson(data));
-
-    // reset email reminder
-    EmailHistoryDao.instance.save(user.getId());
   }
 }

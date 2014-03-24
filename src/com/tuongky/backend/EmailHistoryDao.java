@@ -11,13 +11,16 @@ import com.tuongky.service.email.EmailTaskQueueService;
  * Created by sngo on 3/9/14.
  */
 public class EmailHistoryDao extends DAOBase {
+
   static {
     ObjectifyRegister.register();
   }
 
-  public static final EmailHistoryDao instance = new EmailHistoryDao();
   private static final double EXP_FACTOR = 2;
-  private static final double INITIAL_REMINDER_PERIOD = Period.days(7).toStandardDuration().getMillis();
+  private static final double INITIAL_REMINDER_PERIOD =
+      Period.days(7).toStandardDuration().getMillis();
+
+  public static EmailHistoryDao instance = new EmailHistoryDao();
 
   public void save(long userId, int levelNotified) {
     EmailHistory emailHistory = new EmailHistory(userId, levelNotified);
@@ -25,7 +28,8 @@ public class EmailHistoryDao extends DAOBase {
   }
 
   public void save(long userId) {
-    EmailHistory emailHistory = new EmailHistory(userId, (double)System.currentTimeMillis(), INITIAL_REMINDER_PERIOD);
+    EmailHistory emailHistory = new EmailHistory(
+        userId, (double) System.currentTimeMillis(), INITIAL_REMINDER_PERIOD);
     ObjectifyService.begin().put(emailHistory);
   }
 
@@ -43,7 +47,8 @@ public class EmailHistoryDao extends DAOBase {
     }
 
     if (emailHistory.getLastLevelNotified() > newLevel) {
-      EmailTaskQueueService.instance.pushLevelDownEmail(userId, emailHistory.getLastLevelNotified(), newLevel);
+      EmailTaskQueueService.instance.pushLevelDownEmail(
+          userId, emailHistory.getLastLevelNotified(), newLevel);
       emailHistory.setLastLevelNotified(newLevel);
       ObjectifyService.begin().put(emailHistory);
     }
@@ -51,23 +56,18 @@ public class EmailHistoryDao extends DAOBase {
 
   public void spamRemind(long userId) {
     EmailHistory emailHistory = get(userId);
-
     if (emailHistory == null) {
-      emailHistory = new EmailHistory(userId, (double)System.currentTimeMillis(), INITIAL_REMINDER_PERIOD);
-
+      emailHistory = new EmailHistory(userId,
+          (double) System.currentTimeMillis(), INITIAL_REMINDER_PERIOD);
     } else if (emailHistory.getLastTimeReminded() == null) {
-
       emailHistory.setLastTimeReminded((double)System.currentTimeMillis());
       emailHistory.setCurrentReminderPeriod(INITIAL_REMINDER_PERIOD);
-
-    } else if (emailHistory.getLastTimeReminded() + emailHistory.getCurrentReminderPeriod() > System.currentTimeMillis()) {
-
+    } else if (emailHistory.getLastTimeReminded() + emailHistory.getCurrentReminderPeriod() >
+        System.currentTimeMillis()) {
       EmailTaskQueueService.instance.pushSpamReminderEmail(userId);
-
       emailHistory.setLastTimeReminded((double)System.currentTimeMillis());
       emailHistory.setCurrentReminderPeriod(emailHistory.getCurrentReminderPeriod() * EXP_FACTOR);
     }
-
     ObjectifyService.begin().put(emailHistory);
   }
 }

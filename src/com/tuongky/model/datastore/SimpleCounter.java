@@ -6,8 +6,9 @@ import javax.persistence.Id;
  * Created by sngo on 2/12/14.
  */
 public class SimpleCounter {
-  private long counter = 0;
+
   private @Id String id;
+  private long counter = 0;
 
   @SuppressWarnings("unused")
   private SimpleCounter(){

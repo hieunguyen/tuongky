@@ -2,22 +2,14 @@ package com.tuongky.backend;
 
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
 import org.mindrot.BCrypt;
 
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.DAOBase;
-import com.tuongky.model.UserRole;
 import com.tuongky.model.datastore.User;
-import com.tuongky.service.email.EmailTaskQueueService;
 
 public class UserDao extends DAOBase {
-
-  static {
-    ObjectifyRegister.register();
-  }
 
   public static final UserDao instance = new UserDao();
 
@@ -32,38 +24,8 @@ public class UserDao extends DAOBase {
     ObjectifyService.begin().put(user);
 
     // create a new userMetadata
-    UserMetadataDao.instance.create(user.getId());
+    UserMetadataDao.instance.create(user);
     return user;
-  }
-
-  public User save(String fbId, String fbName, @Nullable String email, UserRole role) {
-    Objectify ofy = ObjectifyService.beginTransaction();
-    try {
-      User user = getByFbId(fbId);
-
-      if (user == null) {
-        user = User.createFbUser(fbId, fbName, email, role);
-        ofy.put(user);
-        // create a new userMetadata
-        UserMetadataDao.instance.create(user.getId());
-        // send welcome email
-        EmailTaskQueueService.instance.pushWelcomeEmail(user.getId());
-      } else {
-        user.setFbName(fbName);
-        if (email != null) {
-          user.setEmail(email);
-        }
-        user.setUserRole(role);
-        ofy.put(user);
-      }
-
-      ofy.getTxn().commit();
-      return user;
-    } finally {
-      if (ofy.getTxn().isActive()) {
-        ofy.getTxn().rollback();
-      }
-    }
   }
 
   public User getById(long id) {
@@ -104,8 +66,7 @@ public class UserDao extends DAOBase {
         .get();
   }
 
-  public Map<Long, User> batchGetById(Iterable<Long> ids){
+  public Map<Long, User> batchGetById(Iterable<Long> ids) {
     return ObjectifyService.begin().get(User.class, ids);
   }
-
 }

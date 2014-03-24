@@ -6,7 +6,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.tuongky.backend.ProblemAttemptDao;
+import com.tuongky.backend.DatastoreUpdateService;
+import com.tuongky.model.datastore.ProblemAttempt;
 import com.tuongky.model.datastore.Session;
 import com.tuongky.servlet.Constants;
 import com.tuongky.util.JsonUtils;
@@ -29,12 +30,11 @@ public class ProblemAttemptServlet extends HttpServlet {
       resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
       return;
     }
-
     long userId = session.getUserId();
     String problemId = req.getParameter(PROBLEM_ID_FIELD);
     long problem = Long.parseLong(problemId);
-    String attemptId = ProblemAttemptDao.instance.attempt(userId, problem, false);
+    ProblemAttempt attempt = DatastoreUpdateService.instance.attemptProblem(userId, problem);
     resp.setContentType(Constants.CT_JSON_UTF8);
-    resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, attemptId));
+    resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, attempt.getId()));
   }
 }

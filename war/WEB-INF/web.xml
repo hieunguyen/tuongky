@@ -316,14 +316,4 @@
       <servlet-name>SendOfflineEmail</servlet-name>
       <url-pattern>/mail/reminder</url-pattern>
   </servlet-mapping>
-
-  <servlet>
-      <servlet-name>ResetSolvesCounter</servlet-name>
-      <servlet-class>com.tuongky.servlet.admin.RecomputeUserSolvesCounterServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-      <servlet-name>ResetSolvesCounter</servlet-name>
-      <url-pattern>/admin/reset_solves</url-pattern>
-  </servlet-mapping>
-
 </web-app>

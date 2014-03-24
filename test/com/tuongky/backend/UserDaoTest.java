@@ -1,6 +1,7 @@
 package com.tuongky.backend;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
@@ -20,10 +21,12 @@ import com.tuongky.model.datastore.UserMetadata;
  */
 public class UserDaoTest {
 
-//  private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
   private final LocalServiceTestHelper helper =
-      new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig()
-          .setDefaultHighRepJobPolicyUnappliedJobPercentage(100));
+      new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+
+//  private final LocalServiceTestHelper helper =
+//      new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig()
+//          .setDefaultHighRepJobPolicyUnappliedJobPercentage(100));
 
   protected long userId_1;
   protected long userId_2;
@@ -37,7 +40,7 @@ public class UserDaoTest {
   String fbId = "12345";
 
   @Before
-  public void setUp(){
+  public void setUp() {
     helper.setUp();
 
     String fen = "fen";
@@ -48,28 +51,32 @@ public class UserDaoTest {
     problemId_1 = ProblemDao.instance.create(fen, title, desc, requirement, null);
     problemId_2 = ProblemDao.instance.create(fen, title, desc, requirement, null);
     problemId_3 = ProblemDao.instance.create(fen, title, desc, requirement, null);
-
-    userId_1 = UserDao.instance.save(fbId, fbName, null, UserRole.USER).getId();
-    userId_2 = UserDao.instance.save("fbId1", "fb2", null, UserRole.USER).getId();
-    userId_3 = UserDao.instance.save("fbId2", "fb2", null, UserRole.USER).getId();
   }
 
   @Test
-  public void testUser(){
-    User user = UserDao.instance.getById(userId_1);
+  public void testUser() {
+    UserDao.instance.saveFbUser(fbId, fbName, null, UserRole.USER).getId();
+    User user = UserDao.instance.getByFbId(fbId);
     assertEquals(fbId, user.getFbId());
     assertEquals(fbName, user.getFbName());
-
-    user = UserDao.instance.getByFbId(fbId);
-    assertEquals(userId_1, user.getId().longValue());
-
-    User new_user = UserDao.instance.save(fbId, fbName, null, UserRole.ADMIN);
-    assertEquals(userId_1, new_user.getId().longValue());
+    User new_user = UserDao.instance.saveFbUser(fbId, fbName, null, UserRole.ADMIN);
+    assertEquals(user.getId(), new_user.getId());
     assertEquals(UserRole.ADMIN, new_user.getUserRole());
+
+    UserMetadata userMetadata = UserMetadataDao.instance.getByUser(user);
+    assertEquals(userMetadata.getId(), (long) user.getId());
+    System.out.println(userMetadata.getUserKey());
+    System.out.println(userMetadata.getUserKey().getParent());
+    System.out.println(user.getExternalUserKey());
+
+    System.out.println(UserMetadataDao.instance.getAllUserMetadatas().size());
   }
 
 //  @Test
-  public void testRanker(){
+  public void testRanker() {
+    userId_1 = UserDao.instance.saveFbUser(fbId, fbName, null, UserRole.USER).getId();
+    userId_2 = UserDao.instance.saveFbUser("fbId1", "fb2", null, UserRole.USER).getId();
+    userId_3 = UserDao.instance.saveFbUser("fbId2", "fb2", null, UserRole.USER).getId();
     // user_1 solve 1, attempt 3
     // user 2 solve 1, attempt 2
     // user 3 solve 2, attempt 2
@@ -127,18 +134,8 @@ public class UserDaoTest {
     assertEquals(2, metadata.getAttempts());
   }
 
-  @Test
-  public void duplicateSaving() throws Exception {
-    User user1 = UserDao.instance.save("6789", fbName, null, UserRole.USER);
-    User user2 = UserDao.instance.save("6789", fbName, null, UserRole.ADMIN);
-    List<UserMetadata> all = UserMetadataDao.instance.getAllUsers();
-    System.out.println(user1.getId());
-    System.out.println(user2.getId());
-    assertEquals(user1.getId(), user2.getId());
-  }
-
   @After
-  public void tearDown(){
+  public void tearDown() {
     helper.tearDown();
   }
 }

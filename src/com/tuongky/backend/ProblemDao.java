@@ -90,8 +90,6 @@ public class ProblemDao extends DAOBase {
     return solvers;
   }
 
-  // return -1 if problemId is not found
-  //transactional
   public int addAttempter(long problemId) {
     Objectify ofy = ObjectifyService.beginTransaction();
 

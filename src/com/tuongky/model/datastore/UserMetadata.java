@@ -2,32 +2,35 @@ package com.tuongky.model.datastore;
 
 import javax.persistence.Id;
 
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Parent;
+
 /**
  * Created by sngo on 2/10/14.
  */
 public class UserMetadata {
+
   // Same as User.id
-  private @Id long id;
+  private @Id Long id;
   private int solves = 0;
   private int attempts = 0;
+
+  @Parent private Key<User> userKey;
 
   public static final String SOLVES_FIELD = "solves";
   public static final String ATTEMPTS_FIELD = "attempts";
 
-  @SuppressWarnings("unused")
-  private UserMetadata(){
-    // Used by Objectify.
-  }
-  public UserMetadata(long id){
-    this.id = id;
+  @SuppressWarnings("unused") // Used by Objectify.
+  private UserMetadata() {
   }
 
-  public long getId() {
+  public UserMetadata(Key<User> userKey) {
+    this.id = userKey.getId();
+    this.userKey = userKey;
+  }
+
+  public Long getId() {
     return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
   }
 
   public int getSolves() {
@@ -52,5 +55,9 @@ public class UserMetadata {
 
   public void incrementAttempt() {
     attempts++;
+  }
+
+  public Key<User> getUserKey() {
+    return userKey;
   }
 }

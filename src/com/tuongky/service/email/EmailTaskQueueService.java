@@ -26,19 +26,14 @@ public class EmailTaskQueueService {
   private static final String SPAM_REMINDER_EMAIL_SERVLET = "/mail/inactive_reminder";
   private static final String EMAIL_QUEUE = "email-queue";
 
-  public void pushWelcomeEmail(long userId) {
-    User user = UserDao.instance.getById(userId);
-
-    if (user == null) {
-      log.severe("User not found: " + userId);
-      return;
-    }
-
+  public void pushWelcomeEmail(User user) {
     String email = user.getEmail();
-
     if (email != null && !email.isEmpty()) {
       Queue queue = QueueFactory.getQueue(EMAIL_QUEUE);
-      queue.add(TaskOptions.Builder.withUrl(WELCOME_EMAIL_SERVLET).param(WelcomeEmailServlet.ADDRESS_FIELD, email)
+      queue.add(
+          TaskOptions.Builder
+              .withUrl(WELCOME_EMAIL_SERVLET)
+              .param(WelcomeEmailServlet.ADDRESS_FIELD, email)
               .param(WelcomeEmailServlet.USER_NAME_FIELD, user.getFbName()));
     }
   }
@@ -55,7 +50,10 @@ public class EmailTaskQueueService {
 
     if (email != null && !email.isEmpty()) {
       Queue queue = QueueFactory.getQueue(EMAIL_QUEUE);
-      queue.add(TaskOptions.Builder.withUrl(SPAM_REMINDER_EMAIL_SERVLET).param(SpamReminderEmailServlet.ADDRESS_FIELD, email)
+      queue.add(
+          TaskOptions.Builder
+              .withUrl(SPAM_REMINDER_EMAIL_SERVLET)
+              .param(SpamReminderEmailServlet.ADDRESS_FIELD, email)
               .param(SpamReminderEmailServlet.USER_NAME_FIELD, user.getFbName()));
     }
   }
@@ -72,7 +70,9 @@ public class EmailTaskQueueService {
 
     if (email != null && !email.isEmpty()) {
       Queue queue = QueueFactory.getQueue(EMAIL_QUEUE);
-      queue.add(TaskOptions.Builder.withUrl(LEVEL_UP_EMAIL_SERVLET).param(LevelUpEmailServlet.ADDRESS_FIELD, email)
+      queue.add(
+          TaskOptions.Builder.withUrl(LEVEL_UP_EMAIL_SERVLET)
+              .param(LevelUpEmailServlet.ADDRESS_FIELD, email)
               .param(LevelUpEmailServlet.USER_NAME_FIELD, user.getFbName())
               .param(LevelUpEmailServlet.OLD_LEVEL_FIELD, String.valueOf(oldLevel))
               .param(LevelUpEmailServlet.NEW_LEVEL_FIELD, String.valueOf(newLevel)));
@@ -91,12 +91,13 @@ public class EmailTaskQueueService {
 
     if (email != null && !email.isEmpty()) {
       Queue queue = QueueFactory.getQueue(EMAIL_QUEUE);
-      queue.add(TaskOptions.Builder.withUrl(LEVEL_DOWN_EMAIL_SERVLET).param(LevelDownEmailServlet.ADDRESS_FIELD, email)
+      queue.add(
+          TaskOptions.Builder
+              .withUrl(LEVEL_DOWN_EMAIL_SERVLET)
+              .param(LevelDownEmailServlet.ADDRESS_FIELD, email)
               .param(LevelDownEmailServlet.USER_NAME_FIELD, user.getFbName())
               .param(LevelDownEmailServlet.OLD_LEVEL_FIELD, String.valueOf(oldLevel))
               .param(LevelDownEmailServlet.NEW_LEVEL_FIELD, String.valueOf(newLevel)));
     }
-
   }
-
 }

@@ -1,9 +1,10 @@
 package com.tuongky.servlet.problem;
 
+import com.tuongky.backend.DatastoreUpdateService;
 import com.tuongky.backend.ProblemAttemptDao;
-import com.tuongky.backend.SolutionDao;
 import com.tuongky.model.datastore.ProblemAttempt;
 import com.tuongky.model.datastore.Session;
+import com.tuongky.model.datastore.Solution;
 import com.tuongky.servlet.Constants;
 import com.tuongky.util.JsonUtils;
 
@@ -26,22 +27,22 @@ public class ProblemSolveServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    Session session = (Session) req.getAttribute(Constants.SESSION_ATTRIBUTE);
+    if (session == null) {
+      resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+      return;
+    }
+
     String attemptId = req.getParameter(ATTEMPT_ID_FIELD);
 
     if (attemptId == null) {
       resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "attemptId is required.");
       return;
     }
-    ProblemAttempt attempt = ProblemAttemptDao.instance.getById(attemptId);
+    ProblemAttempt attempt = ProblemAttemptDao.instance.getById(session.getUserId(), attemptId);
 
     if (attempt == null) {
       resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Attempt not found.");
-      return;
-    }
-
-    Session session = (Session) req.getAttribute(Constants.SESSION_ATTRIBUTE);
-    if (session == null) {
-      resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
       return;
     }
 
@@ -50,9 +51,10 @@ public class ProblemSolveServlet extends HttpServlet {
       return;
     }
 
-    String id = SolutionDao.instance.solve(attempt.getActorId(), attempt.getProblemId());
-    ProblemAttemptDao.instance.setAttemptStatus(attemptId, true);
+    Solution solution = DatastoreUpdateService.instance.solveProblem(
+        attempt.getActorId(), attempt.getProblemId(), attempt);
+
     resp.setContentType(Constants.CT_JSON_UTF8);
-    resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, id));
+    resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, solution.getId()));
   }
 }

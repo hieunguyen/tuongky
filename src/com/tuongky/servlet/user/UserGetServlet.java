@@ -51,7 +51,7 @@ public class UserGetServlet extends HttpServlet {
 
     long idLong = Long.parseLong(id);
     User user = UserDao.instance.getById(idLong);
-    UserMetadata metadata = UserMetadataDao.instance.get(idLong);
+    UserMetadata metadata = UserMetadataDao.instance.getByUser(user);
 
     Map<String, Object> ret = Maps.newHashMap();
 

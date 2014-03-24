@@ -1,5 +1,6 @@
 package com.tuongky.servlet.problem;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -7,7 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -27,7 +31,7 @@ import com.tuongky.util.JsonUtils;
  * Created by sngo on 2/12/14.
  */
 @SuppressWarnings("serial")
-public class ProblemsFindServlet extends HttpServlet{
+public class ProblemsFindServlet extends HttpServlet {
 
   private static final String PAGE_NUM_FIELD = "page_num";
   private static final String PAGE_SIZE_FIELD = "page_size";
@@ -38,18 +42,17 @@ public class ProblemsFindServlet extends HttpServlet{
 
   private static int PAGE_SIZE_DEFAULT = 10;
 
-  private Set<Long> getProblemIds(List<Problem> problemns){
+  private Set<Long> getProblemIds(List<Problem> problemns) {
     Set<Long> ids = new HashSet<>();
-    for (Problem problem : problemns){
+    for (Problem problem : problemns) {
       ids.add(problem.getId());
     }
-
     return ids;
   }
 
   @Override
-  public void doGet(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp)
-          throws javax.servlet.ServletException, java.io.IOException {
+  public void doGet(HttpServletRequest req, HttpServletResponse resp)
+      throws ServletException, IOException {
     String pageNum = req.getParameter(PAGE_NUM_FIELD);
     String pageSize = req.getParameter(PAGE_SIZE_FIELD);
     String order = req.getParameter(ORDER_FIELD);
@@ -99,10 +102,8 @@ public class ProblemsFindServlet extends HttpServlet{
 
       Iterator<Boolean> solvedIterator = solved.iterator();
 
-      for (Problem problem : problems){
-
+      for (Problem problem : problems) {
         ResponseObject object;
-
         if (session != null) {
           object = new ResponseObject(
               problem,
@@ -111,7 +112,6 @@ public class ProblemsFindServlet extends HttpServlet{
         } else {
           object = new ResponseObject(problem, solvedIterator.next(), 0);
         }
-
         responseObjects.add(object);
       }
 

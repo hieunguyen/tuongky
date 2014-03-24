@@ -21,7 +21,7 @@ public class OfflineReminderEmailServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest req, HttpServletResponse resp)
           throws javax.servlet.ServletException, java.io.IOException {
-    List<UserMetadata> userSet = UserMetadataDao.instance.getAllUsers();
+    List<UserMetadata> userSet = UserMetadataDao.instance.getAllUserMetadatas();
 
     for (UserMetadata user : userSet) {
       EmailHistoryDao.instance.spamRemind(user.getId());

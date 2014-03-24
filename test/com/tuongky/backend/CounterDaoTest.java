@@ -47,12 +47,12 @@ public class CounterDaoTest {
 
     assertEquals(0, CounterDao.getUsersCount());
 
-    UserDao.instance.save("fb", "fb", null, UserRole.ADMIN);
-    UserDao.instance.save("fb", "fb", null, UserRole.USER).getId();
+    UserDao.instance.saveFbUser("fb", "fb", null, UserRole.ADMIN);
+    UserDao.instance.saveFbUser("fb", "fb", null, UserRole.USER).getId();
 
     assertEquals(1, CounterDao.getUsersCount());
 
-    UserDao.instance.save("fb2", "fb2", null, UserRole.USER).getId();
+    UserDao.instance.saveFbUser("fb2", "fb2", null, UserRole.USER).getId();
 
     assertEquals(2, CounterDao.getUsersCount());
   }

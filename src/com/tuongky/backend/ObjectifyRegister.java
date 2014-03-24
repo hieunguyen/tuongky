@@ -20,26 +20,27 @@ import com.tuongky.model.datastore.UserMetadata;
  */
 public class ObjectifyRegister {
 
-  private static final ObjectifyRegister instance = new ObjectifyRegister();
-
   static {
     ObjectifyService.register(Book.class);
+    ObjectifyService.register(EmailHistory.class);
+    ObjectifyService.register(ExternalUser.class);
     ObjectifyService.register(Game.class);
     ObjectifyService.register(GameMetadata.class);
     ObjectifyService.register(Invite.class);
-    ObjectifyService.register(ProblemAttempt.class);
     ObjectifyService.register(Problem.class);
+    ObjectifyService.register(ProblemAttempt.class);
+    ObjectifyService.register(ProblemUserMetadata.class);
     ObjectifyService.register(Ranker.class);
     ObjectifyService.register(Session.class);
+    ObjectifyService.register(SimpleCounter.class);
     ObjectifyService.register(Solution.class);
     ObjectifyService.register(User.class);
     ObjectifyService.register(UserMetadata.class);
-    ObjectifyService.register(SimpleCounter.class);
-    ObjectifyService.register(ProblemUserMetadata.class);
-    ObjectifyService.register(EmailHistory.class);
   }
 
-  public static ObjectifyRegister register(){
+  private static final ObjectifyRegister instance = new ObjectifyRegister();
+
+  public static ObjectifyRegister register() {
     return instance;
   }
 }

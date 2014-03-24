@@ -9,10 +9,13 @@ import javax.persistence.Id;
  * @author sngo
  */
 public class Problem {
+
   // sequentially increasing
-  private @Id long id;
+  private @Id Long id;
+
   // encode a state of a chess game
   private String fen;
+
   // refer to User.id of the creatorId
   @Index
   private Long creatorId;
@@ -20,8 +23,10 @@ public class Problem {
   private String title;
 
   private String description;
+
   // requirement, eg: moves limitation. Json format.
   private String requirement;
+
   // number of users who solved this problem
   private int solvers;
   private int attempters;
@@ -37,7 +42,8 @@ public class Problem {
     // Used by Objectify.
   }
 
-  public Problem(long id, String title, String fen, String description, String requirement, Long creatorId) {
+  public Problem(Long id, String title, String fen,
+      String description, String requirement, Long creatorId) {
     this.id = id;
     this.title = title;
     this.fen = fen;
@@ -48,11 +54,11 @@ public class Problem {
     createdDate = System.currentTimeMillis();
   }
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

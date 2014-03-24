@@ -1,12 +1,15 @@
 package com.tuongky.servlet.problem;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.appengine.labs.repackaged.com.google.common.collect.Maps;
@@ -15,11 +18,13 @@ import com.tuongky.backend.ProblemAttemptDao;
 import com.tuongky.backend.ProblemDao;
 import com.tuongky.backend.ProblemUserMetadataDao;
 import com.tuongky.backend.SolutionDao;
+import com.tuongky.backend.UserDao;
 import com.tuongky.model.datastore.Problem;
 import com.tuongky.model.datastore.ProblemAttempt;
 import com.tuongky.model.datastore.ProblemUserMetadata;
 import com.tuongky.model.datastore.Session;
 import com.tuongky.model.datastore.Solution;
+import com.tuongky.model.datastore.User;
 import com.tuongky.servlet.Constants;
 import com.tuongky.util.ValidationUtils;
 
@@ -50,8 +55,8 @@ public class ProblemGetServlet extends HttpServlet {
   }
 
   @Override
-  public void doGet(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp)
-          throws javax.servlet.ServletException, java.io.IOException {
+  public void doGet(HttpServletRequest req, HttpServletResponse resp)
+      throws ServletException, IOException {
 
     Long problemId = ValidationUtils.mustBeLong(req, resp, ID_FIELD);
     if (problemId == null) {
@@ -94,7 +99,8 @@ public class ProblemGetServlet extends HttpServlet {
     }
 
     if (attemptIncluded){
-      List<ProblemAttempt> attempts = ProblemAttemptDao.instance.searchByProblem(problemId, false, Integer.MAX_VALUE, 0);
+      List<ProblemAttempt> attempts = ProblemAttemptDao.instance.searchByProblem(
+          problemId, false, Integer.MAX_VALUE, 0);
       ret.put(ATTEMPT, attempts);
     }
 
@@ -102,9 +108,11 @@ public class ProblemGetServlet extends HttpServlet {
 
     Long userId = null;
     if (session != null) {
+      User user = UserDao.instance.getById(session.getUserId());
       boolean solved = SolutionDao.instance.solvedByProblem(session.getUserId(), problem);
       ret.put(SOLVED, solved);
-      ProblemUserMetadata metadata = ProblemUserMetadataDao.instance.get(session.getUserId(), problemId);
+      ProblemUserMetadata metadata =
+          ProblemUserMetadataDao.instance.getByUserAndProblem(user, problemId);
       ret.put(ATTEMPT_COUNT, metadata == null ? 0 : metadata.getAttempts());
       userId = session.getUserId();
     }

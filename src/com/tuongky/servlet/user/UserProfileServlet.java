@@ -61,7 +61,7 @@ public class UserProfileServlet extends HttpServlet {
       return;
     }
 
-    UserMetadata metadata = UserMetadataDao.instance.get(user.getId());
+    UserMetadata metadata = UserMetadataDao.instance.getByUser(user);
 
     Map<String, Object> ret = Maps.newHashMap();
 

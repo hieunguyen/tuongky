@@ -1,18 +1,19 @@
 package com.tuongky.backend;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 import com.google.appengine.labs.repackaged.com.google.common.collect.Lists;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.DAOBase;
 import com.tuongky.model.datastore.ProblemAttempt;
+import com.tuongky.model.datastore.User;
 import com.tuongky.util.ProblemUtils;
 
 /**
  * Created by sngo on 2/3/14.
  */
-public class ProblemAttemptDao extends DAOBase{
+public class ProblemAttemptDao extends DAOBase {
 
   static {
     ObjectifyRegister.register();
@@ -20,10 +21,10 @@ public class ProblemAttemptDao extends DAOBase{
 
   public static ProblemAttemptDao instance = new ProblemAttemptDao();
 
-  private static final Logger log = Logger.getLogger(ProblemAttemptDao.class.getName());
-
-  public ProblemAttempt getById(String id){
-    return ObjectifyService.begin().find(ProblemAttempt.class, id);
+  public ProblemAttempt getById(long userId, String id) {
+    Key<User> parentKey = Key.create(User.class, userId);
+    Key<ProblemAttempt> key = Key.create(parentKey, ProblemAttempt.class, id);
+    return ObjectifyService.begin().find(key);
   }
 
   public void setAttemptStatus(String id, boolean isSuccess) {
@@ -32,29 +33,6 @@ public class ProblemAttemptDao extends DAOBase{
       attempt.setSuccessful(isSuccess);
       ObjectifyService.begin().put(attempt);
     }
-  }
-  /**
-   * Save the outcome of an attempt made by a user, either success or fail
-   *
-   * @param actorId
-   * @param problemId
-   * @param isSuccess
-   * @return id
-   */
-  public String attempt(long actorId, long problemId, boolean isSuccess) {
-
-    ProblemAttempt attempt = ProblemUtils.newProblemAttempt(actorId, problemId, isSuccess);
-
-    ObjectifyService.begin().put(attempt);
-
-    if (ProblemDao.instance.addAttempter(problemId) == -1) {
-      log.severe("Fail to add attempter to problem " + problemId);
-    }
-
-    UserMetadataDao.instance.attempt(actorId);
-    ProblemUserMetadataDao.instance.increaseAttempt(actorId, problemId);
-
-    return attempt.getId();
   }
 
   private static int PAGE_SIZE_DEFAULT = 20;
@@ -67,7 +45,8 @@ public class ProblemAttemptDao extends DAOBase{
    * @param pageNum
    * @return
    */
-  public List<ProblemAttempt> searchByActor(long actorId, Boolean isSuccess, Integer pageSize, int pageNum) {
+  public List<ProblemAttempt> searchByActor(
+      long actorId, Boolean isSuccess, Integer pageSize, int pageNum) {
 
     if (pageSize == null) {
       pageSize = PAGE_SIZE_DEFAULT;

@@ -1,6 +1,5 @@
 package com.tuongky.backend;
 
-import com.google.appengine.api.datastore.Transaction;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.tuongky.model.datastore.SimpleCounter;
@@ -21,79 +20,86 @@ public class CounterDao {
   private static final String PROBLEM_COUNT = "problemCount";
   private static final String USER_COUNT = "userCount";
 
-  public static long increaseAndGet(String key) {
-    Objectify ofy = ObjectifyService.beginTransaction();
-
-    Transaction txn = ofy.getTxn();
-
+  public static long increaseAndGet(String key, Objectify ofy) {
     SimpleCounter counter = ofy.find(SimpleCounter.class, key);
     if (counter == null) {
       counter = new SimpleCounter(key);
     }
     counter.increase();
     long id = counter.getCounter();
-
     ofy.put(counter);
-
-    txn.commit();
-
     return id;
   }
 
-  public static long decreaseAndGet(String key) {
-    Objectify ofy = ObjectifyService.beginTransaction();
+  public static long increaseAndGet(String key) {
+    return increaseAndGet(key, ObjectifyService.begin());
+  }
 
-    Transaction txn = ofy.getTxn();
-
+  public static long decreaseAndGet(String key, Objectify ofy) {
     SimpleCounter counter = ofy.find(SimpleCounter.class, key);
     if (counter == null) {
       counter = new SimpleCounter(key);
     }
     counter.decrease();
     long id = counter.getCounter();
-
     ofy.put(counter);
-
-    txn.commit();
-
     return id;
   }
 
-  public static long getProblemsCount(){
+  public static long decreaseAndGet(String key) {
+    return decreaseAndGet(key, ObjectifyService.begin());
+  }
+
+  public static long getProblemsCount() {
     SimpleCounter counter = ObjectifyService.begin().find(SimpleCounter.class, PROBLEM_COUNT);
-    if (counter == null){
+    if (counter == null) {
       return 0;
     } else {
       return counter.getCounter();
     }
   }
 
-  public static long getUsersCount(){
+  public static long getUsersCount() {
     SimpleCounter counter = ObjectifyService.begin().find(SimpleCounter.class, USER_COUNT);
-    if (counter == null){
+    if (counter == null) {
       return 0;
     } else {
       return counter.getCounter();
     }
   }
 
-  public static long addProblem(){
+  public static long addProblem() {
     return increaseAndGet(PROBLEM_COUNT);
   }
 
-  public static long subtractProblem(){
+  public static long addProblem(Objectify ofy) {
+    return increaseAndGet(PROBLEM_COUNT, ofy);
+  }
+
+  public static long subtractProblem() {
     return decreaseAndGet(PROBLEM_COUNT);
   }
-  public static long addUser(){
-    return increaseAndGet(USER_COUNT);
+
+  public static long subtractProblem(Objectify ofy) {
+    return decreaseAndGet(PROBLEM_COUNT, ofy);
   }
-  public static long subtractUser(){
+
+  public static long addUser(Objectify ofy) {
+    return increaseAndGet(USER_COUNT, ofy);
+  }
+
+  public static long subtractUser() {
     return decreaseAndGet(USER_COUNT);
   }
 
   // This method returns the next number in the sequence atomically
-  public static long getNextAvailableProblemId(){
-    return increaseAndGet(PROBLEM_ID_GENERATOR_STORE);
+  public static long getNextAvailableProblemId(Objectify ofy) {
+    return increaseAndGet(PROBLEM_ID_GENERATOR_STORE, ofy);
+  }
+
+  // This method returns the next number in the sequence atomically
+  public static long getNextAvailableProblemId() {
+    return increaseAndGet(PROBLEM_ID_GENERATOR_STORE, ObjectifyService.begin());
   }
 
   public static long getLastProblemId() {

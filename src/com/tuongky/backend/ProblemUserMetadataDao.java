@@ -5,9 +5,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.tuongky.model.datastore.ProblemUserMetadata;
+import com.tuongky.model.datastore.User;
 
 /**
  * Created by sngo on 2/23/14.
@@ -18,40 +20,15 @@ public class ProblemUserMetadataDao {
     ObjectifyRegister.register();
   }
 
-  public static final ProblemUserMetadataDao instance = new ProblemUserMetadataDao();
+  public static ProblemUserMetadataDao instance = new ProblemUserMetadataDao();
 
-  public ProblemUserMetadata create(long userId, long problemId){
-    ProblemUserMetadata problemUserMetadata = new ProblemUserMetadata(userId, problemId);
-
-    ObjectifyService.begin().put(problemUserMetadata);
-
-    return problemUserMetadata;
-  }
-
-  public int increaseAttempt(long userId,long problemId){
-    String id = ProblemUserMetadata.createId(userId, problemId);
-
-    Objectify ofy = ObjectifyService.beginTransaction();
-
-    ProblemUserMetadata metadata = ofy.find(ProblemUserMetadata.class, id);
-
-    int count;
-
-    if (metadata != null){
-      count = metadata.increaseAndGetAttempts();
-    }else {
-      metadata = new ProblemUserMetadata(userId, problemId);
-      metadata.setAttempts(1);
-
-      count = 1;
-    }
-
-    ofy.put(metadata);
-
-    ofy.getTxn().commit();
-
-    return count;
-  }
+//  public ProblemUserMetadata create(long userId, long problemId){
+//    ProblemUserMetadata problemUserMetadata = new ProblemUserMetadata(userId, problemId);
+//
+//    ObjectifyService.begin().put(problemUserMetadata);
+//
+//    return problemUserMetadata;
+//  }
 
   // Given a user and a list of ProblemId, return how many attempts he has made to solve these problems
   public Map<Long, Integer> findAttemptsByUser(long userId, Set<Long> problemIds){
@@ -91,7 +68,13 @@ public class ProblemUserMetadataDao {
     return ret;
   }
 
-  public ProblemUserMetadata get(long actorId, long problemId){
-    return ObjectifyService.begin().find(ProblemUserMetadata.class, ProblemUserMetadata.createId(actorId, problemId));
+  public ProblemUserMetadata getByUserAndProblem(User user, long problemId, Objectify ofy) {
+    String id = ProblemUserMetadata.createId(user.getId(), problemId);
+    Key<ProblemUserMetadata> key = Key.create(user.createKey(), ProblemUserMetadata.class, id);
+    return ofy.find(key);
+  }
+
+  public ProblemUserMetadata getByUserAndProblem(User user, long problemId) {
+    return getByUserAndProblem(user, problemId, ObjectifyService.begin());
   }
 }

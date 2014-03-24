@@ -12,7 +12,6 @@ import org.junit.Before;
  */
 public class BasedProblemTest {
 
-//  private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
   private final LocalServiceTestHelper helper =
       new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig()
           .setDefaultHighRepJobPolicyUnappliedJobPercentage(100));
@@ -35,9 +34,9 @@ public class BasedProblemTest {
     problemId_1 = ProblemDao.instance.create(fen, title, desc, requirement, null);
     problemId_2 = ProblemDao.instance.create(fen, title, desc, requirement, null);
 
-    User user = UserDao.instance.save("fb", "fb", null, UserRole.USER);
+    User user = UserDao.instance.saveFbUser("fb", "fb", null, UserRole.USER);
     userId_1 = user.getId();
-    user = UserDao.instance.save("fb1", "fb2", null, UserRole.USER);
+    user = UserDao.instance.saveFbUser("fb1", "fb2", null, UserRole.USER);
     userId_2 = user.getId();
   }
 
