@@ -46,6 +46,10 @@ public class Solution {
     userKey = user.createKey();
   }
 
+  public void resetCreatedDate() {
+    this.createdDate = System.currentTimeMillis();
+  }
+
   public String getId() {
     return id;
   }

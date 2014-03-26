@@ -1,5 +1,7 @@
 package com.tuongky.backend;
 
+import javax.annotation.Nullable;
+
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.tuongky.model.UserRole;
@@ -14,6 +16,10 @@ import com.tuongky.service.UpdateService;
 import com.tuongky.service.email.EmailTaskQueueService;
 
 public class DatastoreUpdateService implements UpdateService {
+
+  static {
+    ObjectifyRegister.register();
+  }
 
   public static DatastoreUpdateService instance = new DatastoreUpdateService();
 
@@ -48,7 +54,7 @@ public class DatastoreUpdateService implements UpdateService {
     return false;
   }
 
-  @Override
+  @Override @Nullable
   public User saveFacebookUser(String fbId, String fbName, String email, UserRole role) {
     boolean newFbUser = createIfNewFbUser(fbId);
     Objectify ofy = ObjectifyService.beginTransaction();
@@ -68,6 +74,7 @@ public class DatastoreUpdateService implements UpdateService {
         // send a welcome email.
         EmailTaskQueueService.instance.pushWelcomeEmail(user);
       } else {
+        // This can return null even in case the FB user exists due to eventual consistency.
         user = UserDao.instance.getByFbId(fbId);
         if (user != null && hasChanges(user, fbName, email, role)) {
           user.setFbName(fbName);
@@ -167,7 +174,9 @@ public class DatastoreUpdateService implements UpdateService {
   }
 
   @Override
-  public Solution solveProblem(long userId, long problemId, ProblemAttempt attempt) {
+  public Solution solveProblem(ProblemAttempt attempt) {
+    long userId = attempt.getActorId();
+    long problemId = attempt.getProblemId();
     User user = UserDao.instance.getById(userId);
     Problem problem = ProblemDao.instance.getById(problemId);
     String solutionId = Solution.createId(user.getId(), problem.getId());
@@ -175,10 +184,10 @@ public class DatastoreUpdateService implements UpdateService {
 
     Objectify ofy = ObjectifyService.beginTransaction();
     try {
-      Solution solution = null;
-      if (SolutionDao.instance.getById(user.getId(), solutionId) == null) {
+      Solution solution = SolutionDao.instance.getById(user.getId(), solutionId);
+      if (solution == null) {
         solution = new Solution(user, problem.getId(), user.getFbName(), problem.getTitle());
-        SolutionDao.instance.save(solution);
+        ofy.put(solution);
 
         // increase the attempt counter of the problem.
         problem.addSolver();
@@ -194,15 +203,19 @@ public class DatastoreUpdateService implements UpdateService {
         int oldLevel = computeLevel(userMetadata.getSolves() - 1, problemCount);
         int newLevel = computeLevel(userMetadata.getSolves(), problemCount);
         if (oldLevel != newLevel) {
-          EmailTaskQueueService.instance.pushLevelUpEmail(userId, oldLevel, newLevel);
+          EmailTaskQueueService.instance.pushLevelUpEmail(user, oldLevel, newLevel);
           EmailHistoryDao.instance.save(userId);
         }
 
-        attempt.setSuccessful(true);
-        ofy.put(attempt);
-
-        ofy.getTxn().commit();
+      } else {
+        solution.resetCreatedDate();
+        ofy.put(solution);
       }
+
+      attempt.setSuccessful(true);
+      ofy.put(attempt);
+
+      ofy.getTxn().commit();
       return solution;
     } finally {
       if (ofy.getTxn().isActive()) {

@@ -64,7 +64,8 @@ public class UserGetServlet extends HttpServlet {
     }
 
     if (attemptIncluded){
-      List<ProblemAttempt> attempts = ProblemAttemptDao.instance.searchByActor(idLong, false, Integer.MAX_VALUE, 0);
+      List<ProblemAttempt> attempts = ProblemAttemptDao.instance.searchByActor(
+          user, false, Integer.MAX_VALUE, 0);
       ret.put(ATTEMPT_KEY, attempts);
     }
 

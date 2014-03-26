@@ -37,9 +37,8 @@ public class Problem {
   public static String ID_FIELD = "id";
   public static String CREATED_DATE_FIELD = "createdDate";
 
-  @SuppressWarnings("unused")
-  private Problem(){
-    // Used by Objectify.
+  @SuppressWarnings("unused") // Used by Objectify.
+  private Problem() {
   }
 
   public Problem(Long id, String title, String fen,

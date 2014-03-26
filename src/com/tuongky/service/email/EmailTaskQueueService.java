@@ -58,16 +58,8 @@ public class EmailTaskQueueService {
     }
   }
 
-  public void pushLevelUpEmail(long userId, int oldLevel, int newLevel) {
-    User user = UserDao.instance.getById(userId);
-
-    if (user == null) {
-      log.severe("User not found: " + userId);
-      return;
-    }
-
+  public void pushLevelUpEmail(User user, int oldLevel, int newLevel) {
     String email = user.getEmail();
-
     if (email != null && !email.isEmpty()) {
       Queue queue = QueueFactory.getQueue(EMAIL_QUEUE);
       queue.add(
@@ -77,7 +69,6 @@ public class EmailTaskQueueService {
               .param(LevelUpEmailServlet.OLD_LEVEL_FIELD, String.valueOf(oldLevel))
               .param(LevelUpEmailServlet.NEW_LEVEL_FIELD, String.valueOf(newLevel)));
     }
-
   }
 
   public void pushLevelDownEmail(long userId, int oldLevel, int newLevel) {

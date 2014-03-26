@@ -22,14 +22,6 @@ public class ProblemUserMetadataDao {
 
   public static ProblemUserMetadataDao instance = new ProblemUserMetadataDao();
 
-//  public ProblemUserMetadata create(long userId, long problemId){
-//    ProblemUserMetadata problemUserMetadata = new ProblemUserMetadata(userId, problemId);
-//
-//    ObjectifyService.begin().put(problemUserMetadata);
-//
-//    return problemUserMetadata;
-//  }
-
   // Given a user and a list of ProblemId, return how many attempts he has made to solve these problems
   public Map<Long, Integer> findAttemptsByUser(long userId, Set<Long> problemIds){
 

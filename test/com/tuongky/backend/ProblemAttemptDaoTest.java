@@ -13,26 +13,24 @@ import static org.junit.Assert.*;
 public class ProblemAttemptDaoTest extends BasedProblemTest {
 
   @Test
-  public void testFailAttempt(){
-    String attemptId = ProblemAttemptDao.instance.attempt(userId_1, problemId_1, false);
-    ProblemAttemptDao.instance.attempt(userId_2, problemId_1, false);
+  public void testFailAttempt() {
+    ProblemAttempt attempt1 = updateService.attemptProblem(userId_1, problemId_1);
+    ProblemAttempt attempt2 = updateService.attemptProblem(userId_2, problemId_1);
+    UserMetadata userMetadata = UserMetadataDao.instance.getByUser(user1);
 
-    Problem problem = ProblemDao.instance.getById(problemId_1);
-    UserMetadata userMetadata = UserMetadataDao.instance.get(userId_1);
-
-    ProblemAttempt problemAttempt = ProblemAttemptDao.instance.getById(attemptId);
-
-    assertNotNull(problem);
-    assertNotNull(userMetadata);
-    assertNotNull(problemAttempt);
+    assertNotNull(attempt1);
+    assertNotNull(attempt2);
 
     // check #attempt increases
-    assertEquals(0, problem.getSolvers());
-    assertEquals(2, problem.getAttempters());
+    assertEquals(0, ProblemDao.instance.getById(problemId_1).getSolvers());
+    assertEquals(2, ProblemDao.instance.getById(problemId_1).getAttempters());
 
-    assertFalse(problemAttempt.isSuccessful());
+    assertFalse(attempt1.isSuccessful());
+    assertFalse(attempt2.isSuccessful());
+
     // check get
-    List<ProblemAttempt> list = ProblemAttemptDao.instance.searchByActor(userId_1, null, null, 0);
+    List<ProblemAttempt> list =
+        ProblemAttemptDao.instance.searchByActor(user1, null, null, 0);
     assertNotNull(list);
     assertEquals(list.size(), 1);
     assertEquals(list.get(0).getActorId(), userId_1);
@@ -47,5 +45,4 @@ public class ProblemAttemptDaoTest extends BasedProblemTest {
     assertEquals(list.get(1).getActorId(), userId_1);
     assertEquals(list.get(1).getProblemId(), problemId_1);
   }
-
 }

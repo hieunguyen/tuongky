@@ -51,8 +51,7 @@ public class ProblemSolveServlet extends HttpServlet {
       return;
     }
 
-    Solution solution = DatastoreUpdateService.instance.solveProblem(
-        attempt.getActorId(), attempt.getProblemId(), attempt);
+    Solution solution = DatastoreUpdateService.instance.solveProblem(attempt);
 
     resp.setContentType(Constants.CT_JSON_UTF8);
     resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, solution.getId()));

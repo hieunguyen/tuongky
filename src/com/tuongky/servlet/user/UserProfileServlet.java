@@ -73,7 +73,7 @@ public class UserProfileServlet extends HttpServlet {
     ret.put(SOLVE_KEY, solutionList);
 
     List<ProblemAttempt> attempts = ProblemAttemptDao.instance.searchByActor(
-        user.getId(), false, Integer.MAX_VALUE, 0);
+        user, false, Integer.MAX_VALUE, 0);
     ret.put(ATTEMPT_KEY, attempts);
 
     ret.put("rankInfo", getRankInfo(metadata));
@@ -83,7 +83,7 @@ public class UserProfileServlet extends HttpServlet {
     Session session = AuthUtils.getSession(req);
     if (session != null && session.getUserId() == user.getId()) {
       List<ProblemAttempt> lastFailedAttempts =
-          ProblemAttemptDao.instance.findLastFailedAttempts(user.getId());
+          ProblemAttemptDao.instance.findLastFailedAttempts(user);
       ret.put("failedAttempts", lastFailedAttempts);
     }
 

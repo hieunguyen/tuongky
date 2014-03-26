@@ -20,5 +20,5 @@ public interface UpdateService {
 
   ProblemAttempt attemptProblem(long userId, long problemId);
 
-  Solution solveProblem(long userId, long problemId, ProblemAttempt attempt);
+  Solution solveProblem(ProblemAttempt attempt);
 }

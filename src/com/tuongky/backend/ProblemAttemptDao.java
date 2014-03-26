@@ -15,6 +15,8 @@ import com.tuongky.util.ProblemUtils;
  */
 public class ProblemAttemptDao extends DAOBase {
 
+  private static int PAGE_SIZE_DEFAULT = 20;
+
   static {
     ObjectifyRegister.register();
   }
@@ -27,26 +29,11 @@ public class ProblemAttemptDao extends DAOBase {
     return ObjectifyService.begin().find(key);
   }
 
-  public void setAttemptStatus(String id, boolean isSuccess) {
-    ProblemAttempt attempt = ObjectifyService.begin().find(ProblemAttempt.class, id);
-    if (attempt != null){
-      attempt.setSuccessful(isSuccess);
-      ObjectifyService.begin().put(attempt);
-    }
-  }
-
-  private static int PAGE_SIZE_DEFAULT = 20;
-
   /**
    * Given actorId, return problems attempted by this actor, sorted by createdDate.
-   *
-   * @param actorId
-   * @param isSuccess
-   * @param pageNum
-   * @return
    */
   public List<ProblemAttempt> searchByActor(
-      long actorId, Boolean isSuccess, Integer pageSize, int pageNum) {
+      User user, Boolean isSuccess, Integer pageSize, int pageNum) {
 
     if (pageSize == null) {
       pageSize = PAGE_SIZE_DEFAULT;
@@ -56,25 +43,29 @@ public class ProblemAttemptDao extends DAOBase {
 
     Iterable<ProblemAttempt> problemAttempts;
     if (isSuccess == null) {
-      problemAttempts = ObjectifyService.begin().query(ProblemAttempt.class).
-              filter(ProblemAttempt.ACTOR_ID_FIELD, actorId).order(ProblemUtils.MINUS + ProblemAttempt.CREATED_DATE).offset(startIndex).limit(count);
+      problemAttempts = ObjectifyService.begin()
+          .query(ProblemAttempt.class)
+          .ancestor(user)
+          .order(ProblemUtils.MINUS + ProblemAttempt.CREATED_DATE)
+          .offset(startIndex)
+          .limit(count);
     } else {
-      problemAttempts = ObjectifyService.begin().query(ProblemAttempt.class).
-              filter(ProblemAttempt.ACTOR_ID_FIELD, actorId).filter(ProblemAttempt.SUCCESS_FIELD, isSuccess).
-              offset(startIndex).limit(count);
+      problemAttempts = ObjectifyService.begin()
+          .query(ProblemAttempt.class)
+          .ancestor(user)
+          .filter(ProblemAttempt.SUCCESS_FIELD, isSuccess)
+          .offset(startIndex)
+          .limit(count);
     }
 
     return Lists.newArrayList(problemAttempts);
   }
 
   /**
-   * Given a problemId, return users who have tried to solve it, sorted by createDate
-   *
-   * @param problemId
-   * @param isSuccess
-   * @return
+   * Given a problemId, return users who have tried to solve it, sorted by createDate.
    */
-  public List<ProblemAttempt> searchByProblem(long problemId, Boolean isSuccess, Integer pageSize, int pageNum) {
+  public List<ProblemAttempt> searchByProblem(
+      long problemId, Boolean isSuccess, Integer pageSize, int pageNum) {
 
     if (pageSize == null) {
       pageSize = PAGE_SIZE_DEFAULT;
@@ -84,24 +75,35 @@ public class ProblemAttemptDao extends DAOBase {
 
     Iterable<ProblemAttempt> problemAttempts;
     if (isSuccess == null) {
-      problemAttempts = ObjectifyService.begin().query(ProblemAttempt.class).
-              filter(ProblemAttempt.PROBLEM_ID_FIELD, problemId).order(ProblemUtils.MINUS + ProblemAttempt.CREATED_DATE).offset(startIndex).limit(count);
+      problemAttempts = ObjectifyService.begin()
+          .query(ProblemAttempt.class)
+          .filter(ProblemAttempt.PROBLEM_ID_FIELD, problemId)
+          .order(ProblemUtils.MINUS + ProblemAttempt.CREATED_DATE)
+          .offset(startIndex)
+          .limit(count);
     } else {
-      problemAttempts = ObjectifyService.begin().query(ProblemAttempt.class).
-              filter(ProblemAttempt.PROBLEM_ID_FIELD, problemId).filter(ProblemAttempt.SUCCESS_FIELD, isSuccess).
-              offset(startIndex).limit(count);
+      problemAttempts = ObjectifyService.begin()
+          .query(ProblemAttempt.class)
+          .filter(ProblemAttempt.PROBLEM_ID_FIELD, problemId)
+          .filter(ProblemAttempt.SUCCESS_FIELD, isSuccess)
+          .offset(startIndex)
+          .limit(count);
     }
 
     return Lists.newArrayList(problemAttempts);
   }
 
   public List<ProblemAttempt> find(int offSet, int limit) {
-    return ObjectifyService.begin().query(ProblemAttempt.class).order(ProblemUtils.MINUS + ProblemAttempt.CREATED_DATE)
-            .offset(offSet).limit(limit).list();
+    return ObjectifyService.begin()
+        .query(ProblemAttempt.class)
+        .order(ProblemUtils.MINUS + ProblemAttempt.CREATED_DATE)
+        .offset(offSet)
+        .limit(limit)
+        .list();
   }
 
-  public List<ProblemAttempt> findLastFailedAttempts(long actorId) {
-    List<ProblemAttempt> attempts = searchByActor(actorId, null, 100, 0);
+  public List<ProblemAttempt> findLastFailedAttempts(User user) {
+    List<ProblemAttempt> attempts = searchByActor(user, null, 100, 0);
     List<ProblemAttempt> failedAttempts = Lists.newArrayList();
     for (int i = 0; i < attempts.size(); i++)
     if (!attempts.get(i).isSuccessful()) {
