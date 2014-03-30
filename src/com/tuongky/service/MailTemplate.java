@@ -5,15 +5,23 @@ package com.tuongky.service;
  */
 public enum MailTemplate {
   FIRST_TIMER("templates/first_timer_email.html", "Chào mừng bạn đến với tuongky.com"),
-  LEVEL_DOWN("templates/level_down_email.html", "Có Thêm Bài Mới"),
-  LEVEL_UP("templates/level_up_email.html", "Bạn Đã Được Tăng Level!"),
-  SPAM_REMINDER("templates/spam_reminder.html", "Có Thêm Bài Mới");
+  LEVEL_DOWN("templates/level_down_email.html", "Có thêm bài mới."),
+  LEVEL_UP("templates/level_up_email.html", "Chúc mừng bạn đã lên trình!"),
+  SPAM_REMINDER("templates/spam_reminder.html", "Có thêm bài mới.");
 
-  public String template;
-  public String subject;
+  private String template;
+  private String subject;
 
-  MailTemplate(String template, String subject) {
+  private MailTemplate(String template, String subject) {
     this.template = template;
     this.subject = subject;
+  }
+
+  public String getTemplate() {
+    return template;
+  }
+
+  public String getSubject() {
+    return subject;
   }
 }

@@ -51,12 +51,12 @@ public class EmailSendService {
       msg.addRecipient(Message.RecipientType.TO,
               new InternetAddress(address, personal));
 
-      msg.setSubject(template.subject);
+      msg.setSubject(template.getSubject());
 
       Multipart mp = new MimeMultipart();
 
       MimeBodyPart htmlPart = new MimeBodyPart();
-      htmlPart.setContent(getMailHtml(template.template, contentMap), "text/html");
+      htmlPart.setContent(getMailHtml(template.getTemplate(), contentMap), "text/html");
       mp.addBodyPart(htmlPart);
 
       msg.setContent(mp);
