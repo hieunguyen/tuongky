@@ -177,13 +177,12 @@ public class DatastoreUpdateService implements UpdateService {
   public Solution solveProblem(ProblemAttempt attempt) {
     long userId = attempt.getActorId();
     long problemId = attempt.getProblemId();
-    User user = UserDao.instance.getById(userId);
-    Problem problem = ProblemDao.instance.getById(problemId);
-    String solutionId = Solution.createId(user.getId(), problem.getId());
-    long problemCount = (int) CounterDao.getProblemsCount();
-
     Objectify ofy = ObjectifyService.beginTransaction();
     try {
+      long problemCount = (int) CounterDao.getProblemsCount();
+      User user = UserDao.instance.getById(userId);
+      Problem problem = ProblemDao.instance.getById(problemId);
+      String solutionId = Solution.createId(user.getId(), problem.getId());
       Solution solution = SolutionDao.instance.getById(user.getId(), solutionId);
       if (solution == null) {
         solution = new Solution(user, problem.getId(), user.getFbName(), problem.getTitle());
@@ -206,7 +205,6 @@ public class DatastoreUpdateService implements UpdateService {
           EmailTaskQueueService.instance.pushLevelUpEmail(user, oldLevel, newLevel);
           EmailHistoryDao.instance.save(userId);
         }
-
       } else {
         solution.resetCreatedDate();
         ofy.put(solution);
