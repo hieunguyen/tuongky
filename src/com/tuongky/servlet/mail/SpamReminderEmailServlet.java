@@ -26,11 +26,11 @@ public class SpamReminderEmailServlet extends HttpServlet{
     String userName = req.getParameter(USER_NAME_FIELD);
 
     if (address == null){
-      log.severe("WelcomeEmailServlet fail: address = " + address);
+      log.severe("SpamReminderEmailServlet fail: address = " + address);
       return;
     }
     if (userName == null){
-      log.warning("WelcomeEmailServlet name is null");
+      log.warning("SpamReminderEmailServlet name is null");
     }
 
     Map<String, String> contentMap = new HashMap<>();
