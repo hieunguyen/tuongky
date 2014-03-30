@@ -169,10 +169,6 @@ public class DatastoreUpdateService implements UpdateService {
     }
   }
 
-  private int computeLevel(int solves, long problemCount) {
-    return (int) ((solves * 12) / problemCount);
-  }
-
   @Override
   public Solution solveProblem(ProblemAttempt attempt) {
     long userId = attempt.getActorId();
@@ -199,12 +195,13 @@ public class DatastoreUpdateService implements UpdateService {
 
         UserRankerDao.instance.increaseRank(userMetadata.getSolves(), ofy);
 
-        int oldLevel = computeLevel(userMetadata.getSolves() - 1, problemCount);
-        int newLevel = computeLevel(userMetadata.getSolves(), problemCount);
+        int oldLevel = UserMetadataDao.computeLevel(userMetadata.getSolves() - 1);
+        int newLevel = UserMetadataDao.computeLevel(userMetadata.getSolves());
         if (oldLevel != newLevel) {
           EmailTaskQueueService.instance.pushLevelUpEmail(user, oldLevel, newLevel);
-          EmailHistoryDao.instance.save(userId);
+          EmailHistoryDao.instance.save(userId, newLevel);
         }
+
       } else {
         solution.resetCreatedDate();
         ofy.put(solution);
