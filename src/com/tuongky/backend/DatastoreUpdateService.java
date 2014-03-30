@@ -133,11 +133,11 @@ public class DatastoreUpdateService implements UpdateService {
 
   @Override
   public ProblemAttempt attemptProblem(long userId, long problemId) {
-    User user = UserDao.instance.getById(userId);
-    Problem problem = ProblemDao.instance.getById(problemId);
-
     Objectify ofy = ObjectifyService.beginTransaction();
     try {
+      User user = UserDao.instance.getById(userId);
+      Problem problem = ProblemDao.instance.getById(problemId);
+
       ProblemAttempt attempt =
           new ProblemAttempt(user, problemId, user.getFbName(), problem.getTitle(), false);
       ofy.put(attempt);
