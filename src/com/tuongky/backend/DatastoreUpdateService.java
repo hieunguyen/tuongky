@@ -175,7 +175,7 @@ public class DatastoreUpdateService implements UpdateService {
     long problemId = attempt.getProblemId();
     Objectify ofy = ObjectifyService.beginTransaction();
     try {
-      long problemCount = (int) CounterDao.getProblemsCount();
+//      long problemCount = (int) CounterDao.getProblemsCount();
       User user = UserDao.instance.getById(userId);
       Problem problem = ProblemDao.instance.getById(problemId);
       String solutionId = Solution.createId(user.getId(), problem.getId());
