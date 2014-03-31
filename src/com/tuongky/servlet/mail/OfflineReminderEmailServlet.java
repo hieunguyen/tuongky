@@ -24,7 +24,7 @@ public class OfflineReminderEmailServlet extends HttpServlet {
     List<UserMetadata> userSet = UserMetadataDao.instance.getAllUserMetadatas();
 
     for (UserMetadata user : userSet) {
-      EmailHistoryDao.instance.spamRemind(user.getId());
+//      EmailHistoryDao.instance.spamRemind(user.getId());
       EmailHistoryDao.instance.notifyLevelDown(user.getId(), UserMetadataDao.computeLevel(user.getSolves()));
     }
 
