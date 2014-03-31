@@ -30,21 +30,6 @@ public class ProblemDao extends DAOBase {
     return ObjectifyService.begin().find(Problem.class, problemId);
   }
 
-  public long create(String fen, String title, String description, String requirement, Long creatorId) {
-    long id = CounterDao.getNextAvailableProblemId();
-
-    Problem problem = new Problem(id, title, fen, description, requirement, creatorId);
-    ObjectifyService.begin().put(problem);
-
-    CounterDao.addProblem();
-    return id;
-  }
-
-  public void delete(long problemId) {
-    ObjectifyService.begin().delete(Problem.class, problemId);
-    CounterDao.subtractProblem();
-  }
-
   public List<Problem> findByCreator(long creatorId) {
     Objectify ofy = ObjectifyService.begin();
 
