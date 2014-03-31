@@ -13,7 +13,7 @@ public class EmailHistory {
   private @Id long id;  // == userId
 
   @Nullable
-  private Integer lastLevelNotified; // last level change notified
+  private Integer lastLevelNotified = 0; // last level change notified
   @Nullable
   private Double lastTimeReminded; // last time we sent reminder email to user
   @Nullable
