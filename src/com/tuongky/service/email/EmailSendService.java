@@ -12,6 +12,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.MimeUtility;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -27,6 +28,8 @@ public class EmailSendService {
   private static final Logger log = Logger.getLogger(EmailSendService.class.getName());
   public static final EmailSendService instance = new EmailSendService();
 
+  private static final String CHARSET = "UTF-8";
+
   private static final String ADMIN_EMAIL_ADDRESS = "hieu.ngvan@gmail.com";
   private static final String ADMIN_EMAIL_PERSONAL = "tuongky.com Admin";
 
@@ -38,7 +41,8 @@ public class EmailSendService {
     return writer.toString();
   }
 
-  public void send(String address, String personal, MailTemplate template, Map<String, String> contentMap){
+  public void send(String address, String personal,
+      MailTemplate template, Map<String, String> contentMap){
     log.info("Sending " + template.name() + " to " + address);
 
     Properties props = new Properties();
@@ -46,12 +50,13 @@ public class EmailSendService {
 
     try {
       Message msg = new MimeMessage(session);
-      msg.setFrom(new InternetAddress(ADMIN_EMAIL_ADDRESS, ADMIN_EMAIL_PERSONAL));
+      msg.setFrom(new InternetAddress(ADMIN_EMAIL_ADDRESS, ADMIN_EMAIL_PERSONAL, CHARSET));
 
       msg.addRecipient(Message.RecipientType.TO,
               new InternetAddress(address, personal));
 
-      msg.setSubject(template.getSubject());
+      msg.setSubject(
+          MimeUtility.encodeText(template.getSubject(), CHARSET, "Q"));
 
       Multipart mp = new MimeMultipart();
 

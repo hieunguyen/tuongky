@@ -316,4 +316,31 @@
       <servlet-name>SendOfflineEmail</servlet-name>
       <url-pattern>/mail/reminder</url-pattern>
   </servlet-mapping>
+
+  <servlet>
+      <servlet-name>AdminMain</servlet-name>
+      <servlet-class>com.tuongky.servlet.admin.AdminMainServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>AdminMain</servlet-name>
+      <url-pattern>/admin</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+      <servlet-name>ResetAll</servlet-name>
+      <servlet-class>com.tuongky.servlet.admin.ResetAllServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>ResetAll</servlet-name>
+      <url-pattern>/admin/reset_all</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+      <servlet-name>ProblemBatchCreate</servlet-name>
+      <servlet-class>com.tuongky.servlet.admin.ProblemBatchCreateServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>ProblemBatchCreate</servlet-name>
+      <url-pattern>/admin/problem_batch_create</url-pattern>
+  </servlet-mapping>
 </web-app>

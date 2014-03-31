@@ -9,6 +9,7 @@ import org.junit.Test;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.tuongky.model.UserRole;
+import com.tuongky.model.datastore.Problem;
 import com.tuongky.model.datastore.User;
 import com.tuongky.service.UpdateService;
 
@@ -28,6 +29,13 @@ public class CounterDaoTest {
     helper.setUp();
   }
 
+  private Problem createProblem(
+      String fen, String title, String requirement, String desc, Long creatorId) {
+    Problem problem = new Problem(null, title, fen, desc, requirement, creatorId);
+    DatastoreUpdateService.instance.createProblem(problem);
+    return problem;
+  }
+
   @Test
   public void testProblem() {
     String fen = "fen";
@@ -35,13 +43,13 @@ public class CounterDaoTest {
     String desc = "desc";
     String requirement = "req";
 
-    long problemId_1 = ProblemDao.instance.create(fen, title, requirement, desc, null);
-    long problemId_2 = ProblemDao.instance.create(fen, title, requirement, desc, null);
+    long problemId_1 = createProblem(fen, title, requirement, desc, null).getId();
+    long problemId_2 = createProblem(fen, title, requirement, desc, null).getId();
 
     assertEquals(2, CounterDao.getProblemsCount());
     assertEquals(1, problemId_2 - problemId_1);
 
-    ProblemDao.instance.delete(problemId_1);
+    DatastoreUpdateService.instance.deleteProblem(problemId_1);
     assertEquals(1, CounterDao.getProblemsCount());
   }
 
