@@ -1120,7 +1120,6 @@ tkControllers.controller('ProblemCtrl', function(
   authService, problemService, gameService, fenService, engineService) {
 
   $scope.attempting = false;
-  $scope.authenticated = authService.isAuthenticated();
 
   function getBaseUrl() {
     return window.location.origin;
