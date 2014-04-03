@@ -1104,6 +1104,7 @@ tkControllers.controller('ProblemSetCtrl', function(
     $scope.problems = _.map(response.problem_search, function(result) {
       var problem = result.problem;
       problem.solved = result.isSolved;
+      problem.views = result.views;
       return problem;
     });
   });
