@@ -16,11 +16,13 @@ import com.google.appengine.labs.repackaged.com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.tuongky.backend.ProblemAttemptDao;
 import com.tuongky.backend.ProblemDao;
+import com.tuongky.backend.ProblemMetadataDao;
 import com.tuongky.backend.ProblemUserMetadataDao;
 import com.tuongky.backend.SolutionDao;
 import com.tuongky.backend.UserDao;
 import com.tuongky.model.datastore.Problem;
 import com.tuongky.model.datastore.ProblemAttempt;
+import com.tuongky.model.datastore.ProblemMetadata;
 import com.tuongky.model.datastore.ProblemUserMetadata;
 import com.tuongky.model.datastore.Session;
 import com.tuongky.model.datastore.Solution;
@@ -54,6 +56,15 @@ public class ProblemGetServlet extends HttpServlet {
     return ret;
   }
 
+  private void recordView(long problemId) {
+    ProblemMetadata problemMetadata = ProblemMetadataDao.instance.getById(problemId);
+    if (problemMetadata == null) {
+      problemMetadata = new ProblemMetadata(problemId);
+    }
+    problemMetadata.view();
+    ProblemMetadataDao.instance.save(problemMetadata);
+  }
+
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
@@ -76,15 +87,19 @@ public class ProblemGetServlet extends HttpServlet {
       return;
     }
 
+    recordView(problem.getId());
+
     Map<String, Object> ret = Maps.newHashMap();
 
     ret.put(ROOT_KEY, problem);
 
-    if (solveIncluded){
-      List<Solution> solutionList = SolutionDao.instance.searchByProblem(problemId, Integer.MAX_VALUE, 0);
+    if (solveIncluded) {
+      List<Solution> solutionList =
+          SolutionDao.instance.searchByProblem(problemId, Integer.MAX_VALUE, 0);
 
       Set<Long> userIdSet = getUserIdSet(solutionList);
-      Map<Long, Integer> userMap = ProblemUserMetadataDao.instance.findAttemptsByProblem(problemId, userIdSet);
+      Map<Long, Integer> userMap =
+          ProblemUserMetadataDao.instance.findAttemptsByProblem(problemId, userIdSet);
 
       List<ResponseObject> responseObjects = new ArrayList<>();
       for (Solution solution :solutionList){
@@ -98,7 +113,7 @@ public class ProblemGetServlet extends HttpServlet {
       ret.put(SOLVE, responseObjects);
     }
 
-    if (attemptIncluded){
+    if (attemptIncluded) {
       List<ProblemAttempt> attempts = ProblemAttemptDao.instance.searchByProblem(
           problemId, false, Integer.MAX_VALUE, 0);
       ret.put(ATTEMPT, attempts);
@@ -125,11 +140,11 @@ public class ProblemGetServlet extends HttpServlet {
   }
 
   @SuppressWarnings("unused") // Used by Gson.
-  private static class ResponseObject{
+  private static class ResponseObject {
     private final Solution solution;
     private final int attempts;
 
-    public ResponseObject(Solution solution, int attempts){
+    public ResponseObject(Solution solution, int attempts) {
       this.solution = solution;
       this.attempts = attempts;
     }
