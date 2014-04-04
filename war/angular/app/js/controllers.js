@@ -53,6 +53,8 @@ tkControllers.controller('AppCtrl', function(
     } else {
       cookieService.delete(SESSION_ID);
     }
+  }, function() {
+    $scope.data.loading--;
   });
 
   $scope.$on('facebook.auth.authResponseChange', function(e, response) {
@@ -68,6 +70,8 @@ tkControllers.controller('AppCtrl', function(
         authService.signIn(status.fbId, status.fbName, status.roleId);
         $route.reload();
       }
+    }, function() {
+      $scope.data.loading--;
     });
   });
 });
@@ -1124,7 +1128,6 @@ tkControllers.controller('ProblemCtrl', function(
 
   function getBaseUrl() {
     return window.location.origin;
-    // return 'http://tuongky.ngrok.com';
   }
 
   $scope.getShareUrl = function(problemId) {

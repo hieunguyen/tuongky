@@ -72,11 +72,11 @@
       </div>
       <div class="row" ng-hide="embed">
         <div class="col-md-12 loading">
-          <img src="img/load_lg.gif" ng-show="data.loading" ng-cloak>
+          <img src="img/load_lg.gif" ng-show="data.loading > 0" ng-cloak>
         </div>
       </div>
       <div class="clear"></div>
-      <div ng-view class="view-container" ng-class="{embed: !!embed}" ng-hide="data.loading"></div>
+      <div ng-view class="view-container" ng-class="{embed: !!embed}" ng-hide="data.loading > 0"></div>
     </div>
 
     <div class="push"></div>
