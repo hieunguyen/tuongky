@@ -576,6 +576,10 @@ tkControllers.controller('SearchCtrl', function(
     $scope.data.loading--;
   }
 
+  function searchFailureCallback() {
+    $scope.data.loading--;
+  }
+
   var params = new Params($routeParams.params);
 
   $scope.start = Number(params.get('start') || '0');
@@ -586,7 +590,8 @@ tkControllers.controller('SearchCtrl', function(
   $scope.totalItems = 0;
   $scope.data.loading++;
   dbService.searchGames(
-      params.get('q'), params.get('start')).then(searchSuccessCallback);
+      params.get('q'), params.get('start')).then(
+      searchSuccessCallback, searchFailureCallback);
 
   $scope.currentPage =
       Math.floor(params.get('start') / $scope.ITEMS_PER_PAGE) + 1;
@@ -1102,8 +1107,11 @@ tkControllers.controller('ProblemSetCtrl', function(
 
   $scope.currentPage = Math.floor(start / $scope.ITEMS_PER_PAGE) + 1;
 
+  $scope.data.loading = 1;
+
   problemService.getProblems(
       $scope.currentPage - 1, $scope.ITEMS_PER_PAGE, 'id').then(function(response) {
+    $scope.data.loading--;
     $scope.totalItems = response.total;
     $scope.problems = _.map(response.problem_search, function(result) {
       var problem = result.problem;
@@ -1111,6 +1119,8 @@ tkControllers.controller('ProblemSetCtrl', function(
       problem.views = result.views;
       return problem;
     });
+  }, function() {
+    $scope.data.loading--;
   });
 
   $scope.selectPage = function(page) {
@@ -1161,6 +1171,8 @@ tkControllers.controller('ProblemCtrl', function(
     $scope.turn = gameService.getTurn();
   }
 
+  $scope.data.loading = 1;
+
   var problemId = $routeParams.problemId;
   problemService.getProblem(problemId).then(function(response) {
     var problem = response.problem;
@@ -1169,7 +1181,9 @@ tkControllers.controller('ProblemCtrl', function(
     $scope.problem = problem;
     fen = problem.fen;
     init(problem);
+    $scope.data.loading--;
   }, function() {
+    $scope.data.loading--;
     alert('Bài không tồn tại.');
   });
 
@@ -1371,12 +1385,17 @@ tkControllers.controller('SolvedByCtrl', function(
 
   $scope.currentPage = Math.floor(start / $scope.ITEMS_PER_PAGE) + 1;
 
+  $scope.data.loading = 1;
+
   solutionService.getSolutionsForProblem(
     problemId, $scope.currentPage - 1, $scope.ITEMS_PER_PAGE)
     .then(function(response) {
+      $scope.data.loading--;
       $scope.problem = response.problem;
       $scope.totalItems = $scope.problem.solvers;
       $scope.items = response.items;
+    }, function() {
+      $scope.data.loading--;
     });
 
 
@@ -1399,14 +1418,19 @@ tkControllers.controller('RankCtrl', function(
 
   $scope.currentPage = Math.floor(start / $scope.ITEMS_PER_PAGE) + 1;
 
+  $scope.data.loading = 1;
+
   rankService.getRanks(
       $scope.currentPage - 1, $scope.ITEMS_PER_PAGE).then(function(response) {
+    $scope.data.loading--;
     $scope.totalItems = response.total;
     $scope.ranks = response.usersRank;
     _.each($scope.ranks, function(rank) {
       rank.levelDesc = levelService.getLevelDesc(
           rank.userMetadata.solves, response.problemCount);
     });
+  }, function() {
+    $scope.data.loading--;
   });
 
   $scope.selectPage = function(page) {
@@ -1430,10 +1454,15 @@ tkControllers.controller('ProfileCtrl', function(
     fbId = authService.getUser().fbId;
   }
 
+  $scope.data.loading = 1;
+
   userService.getProfile(fbId).then(function(response) {
+    $scope.data.loading--;
     $scope.profile = response;
     $scope.profile.levelDesc = levelService.getLevelDesc(
         $scope.profile.metadata.solves, response.problemCount);
+  }, function() {
+    $scope.data.loading--;
   });
 });
 
