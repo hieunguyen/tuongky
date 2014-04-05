@@ -6,7 +6,7 @@ var tkControllers = angular.module('tkApp.controllers', []);
 
 
 tkControllers.controller('AppCtrl', function(
-    $scope, $location, $route, $facebook,
+    $scope, $location, $route, $window, $facebook,
     notificationService, authService, userService, cookieService) {
 
   $scope.isAdmin = function() {
@@ -34,8 +34,12 @@ tkControllers.controller('AppCtrl', function(
     $scope.embed = embed;
   });
 
-  $scope.$on('$routeChangeStart', function(event, next) {
+  $scope.$on('$viewContentLoaded', function(event) {
+    // console.log('GA pageview: ' + $location.path());
+    $window.ga('send', 'pageview', $location.path());
+  });
 
+  $scope.$on('$routeChangeStart', function(event, next) {
     if (next.accessLevel > Roles.ANONYMOUS && !authService.isAuthenticated()) {
       $location.path('/fb_signin');
       return;
