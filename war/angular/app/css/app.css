@@ -712,3 +712,7 @@ button.fb-login:hover {
 	margin-top: 30px;
 	text-align: center;
 }
+
+.help-view .levels {
+	margin-top: 15px;
+}

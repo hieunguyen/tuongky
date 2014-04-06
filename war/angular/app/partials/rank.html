@@ -15,7 +15,7 @@
       <img ng-src="http://graph.facebook.com/{{rank.user.fbId}}/picture?type=square">
       <a ng-href="#/profile/{{rank.user.fbId}}">{{rank.user.fbName}}</a>
     </td>
-    <td>{{rank.levelDesc}}</td>
+    <td><a ng-href="#/help">{{rank.levelDesc}}</a></td>
     <td>{{rank.userMetadata.solves}}</th>
     <td>{{rank.userMetadata.attempts}}</th>
   </tr>
