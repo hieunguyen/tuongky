@@ -6,7 +6,9 @@ import com.tuongky.model.datastore.ProblemAttempt;
 import com.tuongky.model.datastore.Session;
 import com.tuongky.model.datastore.Solution;
 import com.tuongky.servlet.Constants;
+import com.tuongky.util.AuthUtils;
 import com.tuongky.util.JsonUtils;
+import com.tuongky.util.ValidationUtils;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,20 +29,22 @@ public class ProblemSolveServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-    Session session = (Session) req.getAttribute(Constants.SESSION_ATTRIBUTE);
+    Session session = AuthUtils.mustHaveSession(req, resp);
     if (session == null) {
-      resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
       return;
     }
 
-    String attemptId = req.getParameter(ATTEMPT_ID_FIELD);
+    String jsonData = ValidationUtils.mustBeSet(req, resp, "json_data");
+    if (jsonData == null) {
+      return;
+    }
 
+    String attemptId = ValidationUtils.mustBeSet(req, resp, ATTEMPT_ID_FIELD);
     if (attemptId == null) {
-      resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "attemptId is required.");
       return;
     }
-    ProblemAttempt attempt = ProblemAttemptDao.instance.getById(session.getUserId(), attemptId);
 
+    ProblemAttempt attempt = ProblemAttemptDao.instance.getById(session.getUserId(), attemptId);
     if (attempt == null) {
       resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Attempt not found.");
       return;
@@ -51,7 +55,7 @@ public class ProblemSolveServlet extends HttpServlet {
       return;
     }
 
-    Solution solution = DatastoreUpdateService.instance.solveProblem(attempt);
+    Solution solution = DatastoreUpdateService.instance.solveProblem(attempt, jsonData);
 
     resp.setContentType(Constants.CT_JSON_UTF8);
     resp.getWriter().println(JsonUtils.toJson(ROOT_KEY, solution.getId()));

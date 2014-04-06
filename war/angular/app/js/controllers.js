@@ -1210,7 +1210,8 @@ tkControllers.controller('ProblemCtrl', function(
   }
 
   function solveIt() {
-    problemService.solve($scope.attemptId).then(function(response) {
+    var jsonData = JSON.stringify(gameService.getMoves());
+    problemService.solve($scope.attemptId, jsonData).then(function(response) {
       $scope.problem.solved = true;
       $scope.attempting = false;
     });

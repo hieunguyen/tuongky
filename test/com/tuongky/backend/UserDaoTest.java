@@ -26,11 +26,11 @@ public class UserDaoTest extends BasedProblemTest {
   public void testRanker() {
     ProblemAttempt attempt = updateService.attemptProblem(userId_1, problemId_1);
     ProblemAttempt attempt2 = updateService.attemptProblem(userId_1, problemId_2);
-    updateService.solveProblem(attempt2);
+    updateService.solveProblem(attempt2, "");
 
     ProblemAttempt attempt3 = updateService.attemptProblem(userId_2, problemId_2);
     ProblemAttempt attempt4 = updateService.attemptProblem(userId_2, problemId_1);
-    updateService.solveProblem(attempt4);
+    updateService.solveProblem(attempt4, "");
 
     List<UserMetadata> userList = UserMetadataDao.instance.search(0, 100);
     assertEquals(2, userList.size());

@@ -4,6 +4,7 @@ import javax.persistence.Id;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Parent;
+import com.googlecode.objectify.annotation.Unindexed;
 
 /**
  * Created by sngo on 2/9/14.
@@ -31,17 +32,22 @@ public class Solution {
 
   private long createdDate;
 
+  // JSON encoded string storing solution's details (moves, time, etc).
+  @Unindexed private String jsonData;
+
   @Parent private Key<User> userKey;
 
   @SuppressWarnings("unused") // Used by Objectify.
   private Solution() {}
 
-  public Solution(User user, long problemId, String actorName, String problemTitle) {
+  public Solution(
+      User user, long problemId, String actorName, String problemTitle, String jsonData) {
     id = createId(user.getId(), problemId);
     this.actorId = user.getId();
     this.problemId = problemId;
     this.actorName = actorName;
     this.problemTitle = problemTitle;
+    this.jsonData = jsonData;
     createdDate = System.currentTimeMillis();
     userKey = user.createKey();
   }
@@ -76,6 +82,14 @@ public class Solution {
 
   public Key<User> getUserKey() {
     return userKey;
+  }
+
+  public String getJsonData() {
+    return jsonData;
+  }
+
+  public void setJsonData(String jsonData) {
+    this.jsonData = jsonData;
   }
 
   public static String createId(long actorId, long problemId) {

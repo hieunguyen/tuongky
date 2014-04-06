@@ -18,19 +18,19 @@ public class SolutionDaoTest extends BasedProblemTest {
   @Test
   public void testSolve() {
     ProblemAttempt attempt = updateService.attemptProblem(userId_1, problemId_2);
-    updateService.solveProblem(attempt);
+    updateService.solveProblem(attempt, "");
 
     List<Solution> solutions = SolutionDao.instance.searchByProblem(problemId_2, null, 0);
     assertEquals(solutions.size(), 1);
 
     // user_1 solve again
-    updateService.solveProblem(attempt);
+    updateService.solveProblem(attempt, "");
     solutions = SolutionDao.instance.searchByProblem(problemId_2, null, 0);
     assertEquals(solutions.size(), 1);
 
     // user_2 solve
     ProblemAttempt attempt2 = updateService.attemptProblem(userId_2, problemId_2);
-    updateService.solveProblem(attempt2);
+    updateService.solveProblem(attempt2, "");
     solutions = SolutionDao.instance.searchByProblem(problemId_2, null, 0);
     assertEquals(solutions.size(), 2);
 
@@ -42,7 +42,7 @@ public class SolutionDaoTest extends BasedProblemTest {
     assertEquals(1, userMetadata.getAttempts());
 
     ProblemAttempt attempt3 = updateService.attemptProblem(userId_1, problemId_1);
-    updateService.solveProblem(attempt3);
+    updateService.solveProblem(attempt3, "");
     userMetadata = UserMetadataDao.instance.getByUser(user1);
     assertEquals(2, userMetadata.getSolves());
   }

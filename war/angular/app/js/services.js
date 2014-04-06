@@ -1232,10 +1232,11 @@ tkServices.factory('problemService', function($q, $http, notificationService) {
     return defer.promise;
   };
 
-  service.solve = function(attemptId) {
+  service.solve = function(attemptId, jsonData) {
     var defer = $q.defer();
     $http.post('/problem/solve', {
-      attempt_id: attemptId
+      attempt_id: attemptId,
+      json_data: jsonData
     }).success(function(response) {
       defer.resolve(response);
     }).error(function() {
