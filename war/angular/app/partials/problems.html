@@ -6,6 +6,7 @@
     <th>Đã giải xong</td>
     <th>Số người giải được</th>
     <th>Tổng số lần thử</th>
+    <th>Tổng số lần xem</th>
   </tr>
 
   <tr ng-repeat="problem in problems">
@@ -15,6 +16,7 @@
     <td><span ng-if="problem.solved"><img src="/img/checkmark.png" class="done"></span></th>
     <td><a ng-href="#/solvedby/{{problem.id}}">{{problem.solvers}}</a></td>
     <td>{{problem.attempters}}</a></td>
+    <td>{{problem.views}}</a></td>
   </tr>
 </table>
 

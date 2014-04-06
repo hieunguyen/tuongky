@@ -72,11 +72,11 @@
       </div>
       <div class="row" ng-hide="embed">
         <div class="col-md-12 loading">
-          <img src="img/load_lg.gif" ng-show="data.loading" ng-cloak>
+          <img src="img/load_lg.gif" ng-show="data.loading > 0" ng-cloak>
         </div>
       </div>
       <div class="clear"></div>
-      <div ng-view class="view-container" ng-class="{embed: !!embed}" ng-hide="data.loading"></div>
+      <div ng-view class="view-container" ng-class="{embed: !!embed}" ng-hide="data.loading > 0"></div>
     </div>
 
     <div class="push"></div>
@@ -129,13 +129,25 @@
   <script src="js/directives.js"></script>
 
   <script>
+    // (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    // (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    // m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    // })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    // ga('create', 'UA-4550533-6', 'tuongky.com');
+
+    // AngularJS will handle this.
+    // ga('send', 'pageview');
+
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-    ga('create', 'UA-4550533-6', 'tuongky.com');
-    ga('send', 'pageview');
+    ga('create', 'UA-4550533-7', 'vntuongky.appspot.com');
+
+    // AngularJS will handle this.
+    // ga('send', 'pageview');
 
   </script>
 </body>

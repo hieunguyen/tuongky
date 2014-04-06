@@ -105,7 +105,7 @@ public class DatastoreUpdateServiceTest {
     assertEquals(1, CounterDao.getProblemsCount());
     ProblemAttempt attempt = updateService.attemptProblem(user.getId(), problem.getId());
     assertFalse(attempt.isSuccessful());
-    Solution solution = updateService.solveProblem(attempt);
+    Solution solution = updateService.solveProblem(attempt, "");
     ProblemAttempt newAttempt = ProblemAttemptDao.instance.getById(user.getId(), attempt.getId());
     assertTrue(newAttempt.isSuccessful());
     UserMetadata metadata = UserMetadataDao.instance.getByUser(user);
@@ -118,7 +118,7 @@ public class DatastoreUpdateServiceTest {
     assertEquals(2, CounterDao.getProblemsCount());
     ProblemAttempt attempt2 = updateService.attemptProblem(user.getId(), problem2.getId());
     assertFalse(attempt2.isSuccessful());
-    Solution solution2 = updateService.solveProblem(attempt2);
+    Solution solution2 = updateService.solveProblem(attempt2, "");
     ProblemAttempt newAttempt2 = ProblemAttemptDao.instance.getById(user.getId(), attempt2.getId());
     assertTrue(newAttempt2.isSuccessful());
     UserMetadata metadata2 = UserMetadataDao.instance.getByUser(user);

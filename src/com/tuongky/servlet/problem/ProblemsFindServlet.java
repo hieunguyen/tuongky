@@ -18,9 +18,11 @@ import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.tuongky.backend.CounterDao;
 import com.tuongky.backend.ProblemDao;
+import com.tuongky.backend.ProblemMetadataDao;
 import com.tuongky.backend.ProblemUserMetadataDao;
 import com.tuongky.backend.SolutionDao;
 import com.tuongky.model.datastore.Problem;
+import com.tuongky.model.datastore.ProblemMetadata;
 import com.tuongky.model.datastore.Session;
 import com.tuongky.servlet.Constants;
 import com.tuongky.util.JsonUtils;
@@ -98,19 +100,28 @@ public class ProblemsFindServlet extends HttpServlet {
         }
       }
 
+      Map<Long, Integer> viewsMap = Maps.newHashMap();
+      List<ProblemMetadata> problemMetadatas = ProblemMetadataDao.instance.getByIds(
+          Lists.newArrayList(getProblemIds(problems)));
+      for (ProblemMetadata problemMetadata : problemMetadatas) {
+        viewsMap.put(problemMetadata.getId(), problemMetadata.getViews());
+      }
+
       List<ResponseObject> responseObjects = new ArrayList<>();
 
       Iterator<Boolean> solvedIterator = solved.iterator();
 
       for (Problem problem : problems) {
         ResponseObject object;
+        int views = viewsMap.containsKey(problem.getId()) ? viewsMap.get(problem.getId()) : 0;
         if (session != null) {
           object = new ResponseObject(
               problem,
               solvedIterator.next(),
-              problemMap.containsKey(problem.getId()) ? problemMap.get(problem.getId()) : 0);
+              problemMap.containsKey(problem.getId()) ? problemMap.get(problem.getId()) : 0,
+              views);
         } else {
-          object = new ResponseObject(problem, solvedIterator.next(), 0);
+          object = new ResponseObject(problem, solvedIterator.next(), 0, views);
         }
         responseObjects.add(object);
       }
@@ -125,15 +136,17 @@ public class ProblemsFindServlet extends HttpServlet {
   }
 
   @SuppressWarnings("unused") // Used by Gson.
-  private static class ResponseObject{
+  private static class ResponseObject {
     private final Problem problem;
     private final boolean isSolved;
     private final int attempts;
+    private final int views;
 
-    public ResponseObject(Problem problem, boolean isSolved, int attempts){
+    public ResponseObject(Problem problem, boolean isSolved, int attempts, int views) {
       this.problem = problem;
       this.isSolved = isSolved;
       this.attempts = attempts;
+      this.views = views;
     }
   }
 }

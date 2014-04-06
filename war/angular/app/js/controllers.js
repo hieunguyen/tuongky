@@ -6,7 +6,7 @@ var tkControllers = angular.module('tkApp.controllers', []);
 
 
 tkControllers.controller('AppCtrl', function(
-    $scope, $location, $route, $facebook,
+    $scope, $location, $route, $window, $facebook,
     notificationService, authService, userService, cookieService) {
 
   $scope.isAdmin = function() {
@@ -34,8 +34,12 @@ tkControllers.controller('AppCtrl', function(
     $scope.embed = embed;
   });
 
-  $scope.$on('$routeChangeStart', function(event, next) {
+  $scope.$on('$viewContentLoaded', function(event) {
+    // console.log('GA pageview: ' + $location.path());
+    $window.ga('send', 'pageview', $location.path());
+  });
 
+  $scope.$on('$routeChangeStart', function(event, next) {
     if (next.accessLevel > Roles.ANONYMOUS && !authService.isAuthenticated()) {
       $location.path('/fb_signin');
       return;
@@ -53,6 +57,8 @@ tkControllers.controller('AppCtrl', function(
     } else {
       cookieService.delete(SESSION_ID);
     }
+  }, function() {
+    $scope.data.loading--;
   });
 
   $scope.$on('facebook.auth.authResponseChange', function(e, response) {
@@ -68,6 +74,8 @@ tkControllers.controller('AppCtrl', function(
         authService.signIn(status.fbId, status.fbName, status.roleId);
         $route.reload();
       }
+    }, function() {
+      $scope.data.loading--;
     });
   });
 });
@@ -572,6 +580,10 @@ tkControllers.controller('SearchCtrl', function(
     $scope.data.loading--;
   }
 
+  function searchFailureCallback() {
+    $scope.data.loading--;
+  }
+
   var params = new Params($routeParams.params);
 
   $scope.start = Number(params.get('start') || '0');
@@ -582,7 +594,8 @@ tkControllers.controller('SearchCtrl', function(
   $scope.totalItems = 0;
   $scope.data.loading++;
   dbService.searchGames(
-      params.get('q'), params.get('start')).then(searchSuccessCallback);
+      params.get('q'), params.get('start')).then(
+      searchSuccessCallback, searchFailureCallback);
 
   $scope.currentPage =
       Math.floor(params.get('start') / $scope.ITEMS_PER_PAGE) + 1;
@@ -1098,14 +1111,20 @@ tkControllers.controller('ProblemSetCtrl', function(
 
   $scope.currentPage = Math.floor(start / $scope.ITEMS_PER_PAGE) + 1;
 
+  $scope.data.loading = 1;
+
   problemService.getProblems(
       $scope.currentPage - 1, $scope.ITEMS_PER_PAGE, 'id').then(function(response) {
+    $scope.data.loading--;
     $scope.totalItems = response.total;
     $scope.problems = _.map(response.problem_search, function(result) {
       var problem = result.problem;
       problem.solved = result.isSolved;
+      problem.views = result.views;
       return problem;
     });
+  }, function() {
+    $scope.data.loading--;
   });
 
   $scope.selectPage = function(page) {
@@ -1120,11 +1139,9 @@ tkControllers.controller('ProblemCtrl', function(
   authService, problemService, gameService, fenService, engineService) {
 
   $scope.attempting = false;
-  $scope.authenticated = authService.isAuthenticated();
 
   function getBaseUrl() {
     return window.location.origin;
-    // return 'http://tuongky.ngrok.com';
   }
 
   $scope.getShareUrl = function(problemId) {
@@ -1158,6 +1175,8 @@ tkControllers.controller('ProblemCtrl', function(
     $scope.turn = gameService.getTurn();
   }
 
+  $scope.data.loading = 1;
+
   var problemId = $routeParams.problemId;
   problemService.getProblem(problemId).then(function(response) {
     var problem = response.problem;
@@ -1166,7 +1185,9 @@ tkControllers.controller('ProblemCtrl', function(
     $scope.problem = problem;
     fen = problem.fen;
     init(problem);
+    $scope.data.loading--;
   }, function() {
+    $scope.data.loading--;
     alert('Bài không tồn tại.');
   });
 
@@ -1189,7 +1210,8 @@ tkControllers.controller('ProblemCtrl', function(
   }
 
   function solveIt() {
-    problemService.solve($scope.attemptId).then(function(response) {
+    var jsonData = JSON.stringify(gameService.getMoves());
+    problemService.solve($scope.attemptId, jsonData).then(function(response) {
       $scope.problem.solved = true;
       $scope.attempting = false;
     });
@@ -1368,12 +1390,17 @@ tkControllers.controller('SolvedByCtrl', function(
 
   $scope.currentPage = Math.floor(start / $scope.ITEMS_PER_PAGE) + 1;
 
+  $scope.data.loading = 1;
+
   solutionService.getSolutionsForProblem(
     problemId, $scope.currentPage - 1, $scope.ITEMS_PER_PAGE)
     .then(function(response) {
+      $scope.data.loading--;
       $scope.problem = response.problem;
       $scope.totalItems = $scope.problem.solvers;
       $scope.items = response.items;
+    }, function() {
+      $scope.data.loading--;
     });
 
 
@@ -1396,14 +1423,19 @@ tkControllers.controller('RankCtrl', function(
 
   $scope.currentPage = Math.floor(start / $scope.ITEMS_PER_PAGE) + 1;
 
+  $scope.data.loading = 1;
+
   rankService.getRanks(
       $scope.currentPage - 1, $scope.ITEMS_PER_PAGE).then(function(response) {
+    $scope.data.loading--;
     $scope.totalItems = response.total;
     $scope.ranks = response.usersRank;
     _.each($scope.ranks, function(rank) {
       rank.levelDesc = levelService.getLevelDesc(
           rank.userMetadata.solves, response.problemCount);
     });
+  }, function() {
+    $scope.data.loading--;
   });
 
   $scope.selectPage = function(page) {
@@ -1427,10 +1459,15 @@ tkControllers.controller('ProfileCtrl', function(
     fbId = authService.getUser().fbId;
   }
 
+  $scope.data.loading = 1;
+
   userService.getProfile(fbId).then(function(response) {
+    $scope.data.loading--;
     $scope.profile = response;
     $scope.profile.levelDesc = levelService.getLevelDesc(
         $scope.profile.metadata.solves, response.problemCount);
+  }, function() {
+    $scope.data.loading--;
   });
 });
 

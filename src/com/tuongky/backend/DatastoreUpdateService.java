@@ -170,7 +170,7 @@ public class DatastoreUpdateService implements UpdateService {
   }
 
   @Override
-  public Solution solveProblem(ProblemAttempt attempt) {
+  public Solution solveProblem(ProblemAttempt attempt, String jsonData) {
     long userId = attempt.getActorId();
     long problemId = attempt.getProblemId();
     Objectify ofy = ObjectifyService.beginTransaction();
@@ -181,7 +181,8 @@ public class DatastoreUpdateService implements UpdateService {
       String solutionId = Solution.createId(user.getId(), problem.getId());
       Solution solution = SolutionDao.instance.getById(user.getId(), solutionId);
       if (solution == null) {
-        solution = new Solution(user, problem.getId(), user.getFbName(), problem.getTitle());
+        solution = new Solution(
+            user, problem.getId(), user.getFbName(), problem.getTitle(), jsonData);
         ofy.put(solution);
 
         // increase the attempt counter of the problem.
@@ -203,7 +204,8 @@ public class DatastoreUpdateService implements UpdateService {
         }
 
       } else {
-        solution.resetCreatedDate();
+        solution = new Solution(
+            user, problem.getId(), user.getFbName(), problem.getTitle(), jsonData);
         ofy.put(solution);
       }
 

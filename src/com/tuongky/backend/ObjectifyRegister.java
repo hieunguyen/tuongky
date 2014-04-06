@@ -29,6 +29,7 @@ public class ObjectifyRegister {
     ObjectifyService.register(Invite.class);
     ObjectifyService.register(Problem.class);
     ObjectifyService.register(ProblemAttempt.class);
+    ObjectifyService.register(ProblemMetadata.class);
     ObjectifyService.register(ProblemUserMetadata.class);
     ObjectifyService.register(Ranker.class);
     ObjectifyService.register(Session.class);

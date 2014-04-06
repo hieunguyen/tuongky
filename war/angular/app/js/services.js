@@ -793,7 +793,7 @@ tkServices.factory('cookieService', function() {
 });
 
 
-tkServices.factory('authService', function(cookieService) {
+tkServices.factory('authService', function($rootScope, cookieService) {
   var service = {};
 
   var user = {
@@ -810,6 +810,7 @@ tkServices.factory('authService', function(cookieService) {
     user.fbId = fbId;
     user.fbName = fbName;
     user.role = role;
+    $rootScope.authenticated = true;
   };
 
   service.signOut = function() {
@@ -817,6 +818,7 @@ tkServices.factory('authService', function(cookieService) {
     user.fbName = '';
     user.role = Roles.ANONYMOUS;
     cookieService.delete(SESSION_ID);
+    $rootScope.authenticated = false;
   };
 
   service.isAuthenticated = function() {
@@ -906,7 +908,6 @@ tkServices.factory('userService', function(
     $facebook.getLoginStatus().then(function(response) {
       var authResp = response.authResponse;
       if (authResp) {
-        // console.log(authResp);
         $http.post('/fb_signin', {
           access_token: authResp.accessToken
         }).success(function(response) {
@@ -1231,10 +1232,11 @@ tkServices.factory('problemService', function($q, $http, notificationService) {
     return defer.promise;
   };
 
-  service.solve = function(attemptId) {
+  service.solve = function(attemptId, jsonData) {
     var defer = $q.defer();
     $http.post('/problem/solve', {
-      attempt_id: attemptId
+      attempt_id: attemptId,
+      json_data: jsonData
     }).success(function(response) {
       defer.resolve(response);
     }).error(function() {
