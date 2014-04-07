@@ -58,7 +58,7 @@
     <url-pattern>/fb_signin</url-pattern>
   </servlet-mapping>
 
-  <servlet>
+<!--   <servlet>
     <servlet-name>Signin</servlet-name>
     <servlet-class>com.tuongky.servlet.SigninServlet</servlet-class>
   </servlet>
@@ -75,7 +75,7 @@
     <servlet-name>Signup</servlet-name>
     <url-pattern>/signup</url-pattern>
   </servlet-mapping>
-
+ -->
 	<servlet>
 		<servlet-name>GameInit</servlet-name>
 		<servlet-class>com.tuongky.servlet.game.GameInitServlet</servlet-class>

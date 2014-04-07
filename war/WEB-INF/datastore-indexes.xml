@@ -28,4 +28,8 @@
 		<property name="attempts" direction="asc" />
 	</datastore-index>
 
+	<datastore-index kind="Book" ancestor="false" source="manual">
+		<property name="username" direction="asc" />
+		<property name="createdAt" direction="asc" />
+	</datastore-index>
 </datastore-indexes>
