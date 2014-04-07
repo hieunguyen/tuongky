@@ -1,17 +1,18 @@
 package com.tuongky.servlet.admin;
 
-import com.tuongky.backend.StatisticsDao;
-import com.tuongky.util.JsonUtils;
+import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.logging.Logger;
+
+import com.tuongky.backend.StatisticsDao;
 
 /**
  * Created by sngo on 4/6/14.
  */
+@SuppressWarnings("serial")
 public class ComputeStatisticsServlet extends HttpServlet {
 
   private static final Logger log = Logger.getLogger(ComputeStatisticsServlet.class.getName());
