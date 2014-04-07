@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<datastore-indexes autoGenerate="false">
+
+	<!-- Used 8 times in query history -->
+	<datastore-index kind="Solution" ancestor="false"
+		source="auto">
+		<property name="actorId" direction="asc" />
+		<property name="createdDate" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 1 time in query history -->
+	<datastore-index kind="Solution" ancestor="false"
+		source="auto">
+		<property name="problemId" direction="asc" />
+		<property name="createdDate" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 3 times in query history -->
+	<datastore-index kind="ProblemAttempt" ancestor="true"
+		source="auto">
+		<property name="createdDate" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 1 time in query history -->
+	<datastore-index kind="UserMetadata" ancestor="false"
+		source="auto">
+		<property name="solves" direction="desc" />
+		<property name="attempts" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="Book" ancestor="false" source="manual">
+		<property name="username" direction="asc" />
+		<property name="createdAt" direction="asc" />
+	</datastore-index>
+</datastore-indexes>
