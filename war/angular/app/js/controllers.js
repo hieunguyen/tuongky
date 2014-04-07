@@ -1431,6 +1431,8 @@ tkControllers.controller('RankCtrl', function(
     $scope.totalItems = response.total;
     $scope.ranks = response.usersRank;
     _.each($scope.ranks, function(rank) {
+      rank.level = levelService.getLevel(
+          rank.userMetadata.solves, response.problemCount);
       rank.levelDesc = levelService.getLevelDesc(
           rank.userMetadata.solves, response.problemCount);
     });
@@ -1464,6 +1466,8 @@ tkControllers.controller('ProfileCtrl', function(
   userService.getProfile(fbId).then(function(response) {
     $scope.data.loading--;
     $scope.profile = response;
+    $scope.profile.level = levelService.getLevel(
+        $scope.profile.metadata.solves, response.problemCount);
     $scope.profile.levelDesc = levelService.getLevelDesc(
         $scope.profile.metadata.solves, response.problemCount);
   }, function() {

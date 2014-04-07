@@ -1,23 +1,23 @@
-<h2 style="text-align:center;">Các câu hỏi thường gặp</h2>
+<div class="help-view">
+  <h2 style="text-align:center;">Các câu hỏi thường gặp</h2>
 
-<h3>Luyện công</h3>
+  <h4>Trình độ có bao nhiêu mức và được tính thế nào?</h4>
+  <p>Tổng cộng 13 mức từ 0 đến 12. Trình của bạn được tính dựa vào số bài bạn giải được và tổng số bài đang có trên tuongky.com. Công thức như sau:</p>
 
-<h4>Có bao nhiêu trình độ?</h4>
-13.
+  <h4 style="text-align:center; bold;">Trình Độ = [Số bài bạn giải được * 12 / Tổng số bài] (làm tròn xuống)</h4>
 
-<table class="table table-striped table-bordered">
-  <tr>
-    <th>Trình độ</th>
-    <th>Danh hiệu</th>
-  </tr>
-  <tr ng-repeat="levelDesc in levelDescs">
-    <td>Cấp độ {{$index}}</td>
-    <td>{{levelDesc}}</td>
-  </tr>
-</table>
+  <p>Như vậy trình của bạn tăng khi bạn giải được thêm bài và giảm khi có thêm bài mới trên tuongky (và số bài bạn giải được không đổi). Điều này khuyến khích bạn thường xuyên luyện tập để nâng cao hoặc giữ nguyên lực cờ. Cụ thể danh hiệu của 13 trình như sau.<p>
 
-<h3>Tài liệu</h3>
+  <table class="table table-striped table-bordered levels">
+    <tr>
+      <th>Trình độ</th>
+      <th>Danh hiệu</th>
+    </tr>
+    <tr ng-repeat="levelDesc in levelDescs">
+      <td>{{$index}}</td>
+      <td>{{levelDesc}}</td>
+    </tr>
+  </table>
 
-<h4>Cách tạo tài liệu từ đầu?</h4>
-
-<h4>Cách tạo tài liệu từ 1 hình cờ?</h4>
+  <p>Chúc bạn sớm đạt đến cảnh giới <b>Vô Đối</b>!</p>
+<div>
