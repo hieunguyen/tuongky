@@ -15,7 +15,9 @@
       <configuration>
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="" />
-        <datasource-mapping />
+        <datasource-mapping>
+          <factory-entry name="transactions-optional" />
+        </datasource-mapping>
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/META-INF/persistence.xml" />
       </configuration>
     </facet>
@@ -31,9 +33,12 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="google-gson-2.2.4" level="project" />
-    <orderEntry type="library" name="objectify-3.1" level="project" />
     <orderEntry type="library" name="jar" level="project" />
     <orderEntry type="module" module-name="objectify-3.1" />
+    <orderEntry type="library" name="javax.servlet:javax.servlet-api:3.0.1" level="project" />
+    <orderEntry type="library" name="objectify-3.1" level="project" />
+    <orderEntry type="library" name="appengine-api-1.0-sdk-1.8.91" level="project" />
+    <orderEntry type="library" name="joda-time:joda-time:2.3" level="project" />
   </component>
 </module>
 

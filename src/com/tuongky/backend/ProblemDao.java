@@ -130,4 +130,7 @@ public class ProblemDao extends DAOBase {
     return problem;
   }
 
+  public List<Problem> getAll() {
+    return ObjectifyService.begin().query(Problem.class).list();
+  }
 }

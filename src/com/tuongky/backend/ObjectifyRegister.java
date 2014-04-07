@@ -1,5 +1,6 @@
 package com.tuongky.backend;
 
+import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.tuongky.model.datastore.*;
 import com.tuongky.model.datastore.Book;
@@ -37,6 +38,7 @@ public class ObjectifyRegister {
     ObjectifyService.register(Solution.class);
     ObjectifyService.register(User.class);
     ObjectifyService.register(UserMetadata.class);
+    ObjectifyService.register(Statistics.class);
   }
 
   private static final ObjectifyRegister instance = new ObjectifyRegister();
