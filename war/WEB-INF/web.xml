@@ -343,4 +343,14 @@
       <servlet-name>ProblemBatchCreate</servlet-name>
       <url-pattern>/admin/problem_batch_create</url-pattern>
   </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ComputeStatisticsServlet</servlet-name>
+        <servlet-class>com.tuongky.servlet.admin.ComputeStatisticsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ComputeStatisticsServlet</servlet-name>
+        <url-pattern>/admin/compute_statistics</url-pattern>
+    </servlet-mapping>
+
 </web-app>

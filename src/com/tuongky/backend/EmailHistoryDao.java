@@ -1,6 +1,6 @@
 package com.tuongky.backend;
 
-import org.joda.time.Period;
+//import org.joda.time.Period;
 
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.DAOBase;
@@ -17,8 +17,8 @@ public class EmailHistoryDao extends DAOBase {
   }
 
   private static final double EXP_FACTOR = 2;
-  private static final double INITIAL_REMINDER_PERIOD =
-      Period.days(7).toStandardDuration().getMillis();
+  private static final double INITIAL_REMINDER_PERIOD = 7 * 24 * 60 * 60 * 1000; // 7 days
+//      Period.days(7).toStandardDuration().getMillis();
 
   public static EmailHistoryDao instance = new EmailHistoryDao();
 
@@ -56,6 +56,7 @@ public class EmailHistoryDao extends DAOBase {
 
   public void spamRemind(long userId) {
     EmailHistory emailHistory = get(userId);
+
     if (emailHistory == null) {
       emailHistory = new EmailHistory(userId,
           (double) System.currentTimeMillis(), INITIAL_REMINDER_PERIOD);

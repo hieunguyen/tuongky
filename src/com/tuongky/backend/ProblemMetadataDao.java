@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.DAOBase;
 import com.tuongky.model.datastore.ProblemMetadata;
@@ -32,5 +33,9 @@ public class ProblemMetadataDao extends DAOBase {
     }
     return Lists.newArrayList(
         ObjectifyService.begin().get(keys).values());
+  }
+
+  public List<ProblemMetadata> getAll() {
+    return ObjectifyService.begin().query(ProblemMetadata.class).list();
   }
 }
