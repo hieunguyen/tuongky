@@ -30,7 +30,8 @@ public class EmailSendService {
 
   private static final String CHARSET = "UTF-8";
 
-  private static final String ADMIN_EMAIL_ADDRESS = "hieu.ngvan@gmail.com";
+//  private static final String ADMIN_EMAIL_ADDRESS = "hieu.ngvan@gmail.com";
+  private static final String ADMIN_EMAIL_ADDRESS = "tuongkydatviet@gmail.com";
   private static final String ADMIN_EMAIL_PERSONAL = "tuongky.com Admin";
 
   private String getMailHtml(String template, Map<String, String> contentMap) {

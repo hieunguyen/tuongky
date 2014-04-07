@@ -32,8 +32,8 @@
 					</a>
 				</td>
 				<td>
-					<div ng-if="!searchResult.fbId || !searchResult.fbName && searchResult.userName">
-						<a href="#/search/q={{searchResult.username}}" ng-if="searchResult.userName">
+					<div ng-if="(!searchResult.fbId || !searchResult.fbName) && searchResult.username">
+						<a href="#/search/q={{searchResult.username}}" ng-if="searchResult.username">
 							<span ng-bind-html="searchResult.annotated_username"></span>
 						</a>
 					</div>
