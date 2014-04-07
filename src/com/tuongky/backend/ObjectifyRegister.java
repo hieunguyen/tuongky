@@ -1,18 +1,21 @@
 package com.tuongky.backend;
 
-import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
-import com.tuongky.model.datastore.*;
 import com.tuongky.model.datastore.Book;
+import com.tuongky.model.datastore.EmailHistory;
+import com.tuongky.model.datastore.ExternalUser;
 import com.tuongky.model.datastore.Game;
 import com.tuongky.model.datastore.GameMetadata;
 import com.tuongky.model.datastore.Invite;
 import com.tuongky.model.datastore.Problem;
 import com.tuongky.model.datastore.ProblemAttempt;
+import com.tuongky.model.datastore.ProblemMetadata;
+import com.tuongky.model.datastore.ProblemUserMetadata;
 import com.tuongky.model.datastore.Ranker;
 import com.tuongky.model.datastore.Session;
 import com.tuongky.model.datastore.SimpleCounter;
 import com.tuongky.model.datastore.Solution;
+import com.tuongky.model.datastore.Statistics;
 import com.tuongky.model.datastore.User;
 import com.tuongky.model.datastore.UserMetadata;
 
@@ -36,9 +39,9 @@ public class ObjectifyRegister {
     ObjectifyService.register(Session.class);
     ObjectifyService.register(SimpleCounter.class);
     ObjectifyService.register(Solution.class);
+    ObjectifyService.register(Statistics.class);
     ObjectifyService.register(User.class);
     ObjectifyService.register(UserMetadata.class);
-    ObjectifyService.register(Statistics.class);
   }
 
   private static final ObjectifyRegister instance = new ObjectifyRegister();
