@@ -50,6 +50,23 @@
     </div>
   </div>
 
+  <div class="mobile-problem-info">
+    <div class="problem-title">
+      <problem-name problem-id="problem.id" problem-title="problem.title" />
+    </div>
+    <img src="/img/checkmark.png" ng-if="problem.solved" class="tick" title="Da xong">
+    <div class="requirement">Đỏ đi trước thắng.</div>
+    <div class="attempts" ng-if="authenticated">
+      <span ng-if="attempting">Lần thử thứ <b>{{problem.attempts}}</b>.</span>
+      <span ng-if="!attempting && !!problem.attempts">
+        Đã thử <strong>{{problem.attempts}}</strong> lần.
+      </span>
+      <span ng-if="!attempting && !problem.attempts">
+        Bạn chưa thử giải thế lần nào.
+      </span>
+    </div>
+  </div>
+
   <div class="board">
     <div class="top-player-turn" ng-show="turn == 2"></div>
     <div class="bottom-player-turn" ng-show="turn == 1"></div>
@@ -59,6 +76,33 @@
          api="boardApi"
          drop-on="dropIt(dragId, row, col)"
          select-piece="selectPiece(row, col)"></div>
+
+  </div>
+
+  <div class="mobile-buttons-container">
+
+    <button class="btn action-btn fb-login"
+            ng-click="signInWithFacebook()"
+            ng-hide="authenticated">Đăng nhập để giải thế</button>
+    <button class="btn btn-default action-btn attempt-btn"
+            ng-click="attempt()"
+            ng-hide="!authenticated || attempting">
+      <span class="glyphicon glyphicon-play"></span>
+      Giải thế
+    </button>
+    <button class="btn btn-default action-btn retry-btn"
+            ng-click="retry()"
+            ng-show="authenticated && attempting"
+            ng-disabled="hasNotMoved()">
+      <span class="glyphicon glyphicon-repeat"></span>
+      Thử lại
+    </button>
+    <button class="btn btn-default next-btn"
+            ng-click="goToNextProblem()">
+      <span class="glyphicon glyphicon-forward"></span>
+      Bài tiếp theo
+    </button>
+
   </div>
 
 </div>

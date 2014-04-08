@@ -117,3 +117,61 @@
     height: 465px;
   }
 }
+
+@media only screen and (max-width : 359px) {
+  .problem-viewer .board {
+    width: 288px;
+  }
+}
+
+@media only screen and (max-width : 400px) {
+  .main-menu a {
+    font-size: 11px;
+  }
+
+  .main-menu li {
+    margin-right: 0.5em;
+  }
+}
+
+@media only screen and (max-width : 1169px) {
+  .problem-viewer .right-pane {
+    display: none;
+  }
+
+  .problem-viewer .mobile-buttons-container button {
+    margin-right: 5px;
+    margin-top: 15px;
+  }
+
+  .problem-viewer .mobile-problem-info {
+    border: 1px solid #ccc;
+    padding: 7px;
+    border-radius: 3px;
+    font-size: 120%;
+    margin-bottom: 10px;
+  }
+
+  .problem-viewer .mobile-problem-info .problem-title {
+    font-size: 150%;
+    text-decoration: underline;
+    display: inline;
+  }
+
+  .problem-viewer .mobile-problem-info .tick {
+    height: 24px;
+    margin-top: -8px;
+    margin-left: 5px;
+  }
+
+}
+
+@media only screen and (min-width : 1170px) {
+  .problem-viewer .mobile-buttons-container {
+    display: none;
+  }
+
+  .problem-viewer .mobile-problem-info {
+    display: none;
+  }
+}
