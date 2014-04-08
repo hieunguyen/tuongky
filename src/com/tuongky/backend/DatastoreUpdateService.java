@@ -15,6 +15,8 @@ import com.tuongky.model.datastore.UserMetadata;
 import com.tuongky.service.UpdateService;
 import com.tuongky.service.email.EmailTaskQueueService;
 
+import java.util.Date;
+
 public class DatastoreUpdateService implements UpdateService {
 
   static {
@@ -76,8 +78,9 @@ public class DatastoreUpdateService implements UpdateService {
       } else {
         // This can return null even in case the FB user exists due to eventual consistency.
         user = UserDao.instance.getByFbId(fbId);
-        if (user != null && hasChanges(user, fbName, email, role)) {
+        if (user != null) {
           user.setFbName(fbName);
+          user.setLastLogin(new Date());
           if (email != null) {
             user.setEmail(email);
           }
