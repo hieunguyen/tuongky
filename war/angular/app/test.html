@@ -1,0 +1,80 @@
+Get Problem
+<form action="problem/get" method="get">
+    <input type="text" name="id" value="id" />
+    IsSolveIncluded?
+    <input type="checkbox" name="solve_included">
+    IsAttemptIncluded?
+    <input type="checkbox" name="attempt_included">
+    <input type="submit" value="get" />
+</form>
+
+Create Problem
+<form action="problem/create" method="post">
+    <input type="text" name="title" value="title" />
+    <input type="text" name="fen" value="fen" />
+    <input type="text" name="description" value="description" />
+    <input type="creator" name="creator_id" value="creatorId" />
+    <input type="text" name="requirement" value="requirement" />
+
+    <input type="submit" value="create" />
+</form>
+
+Delete Problem
+<form action="problem/delete" method="post">
+    <input type="text" name="id" value="id" />
+    <input type="submit" value="delete" />
+</form>
+
+Search Problem
+<form action="problem/search" method="get">
+    <input type="text" name="page_num" value="pageNum" />
+    <input type="text" name="page_size" value="pageSize" />
+    <input type="text" name="order" value="order" />
+    <input type="submit" value="get" />
+</form>
+
+Attemp Problem
+<form action="problem/attempt" method="post">
+    <input type="text" name="actor_id" value="actorId" />
+    <input type="text" name="problem_id" value="problemId" />
+    <input type="submit" value="attempt" />
+</form>
+
+Solve Problem
+<form action="problem/solve" method="post">
+    <input type="text" name="attempt_id" value="attemptId" />
+    <input type="text" name="json_data" value="json_data" />
+    <input type="submit" value="solve" />
+</form>
+
+Users rank
+<form action="users/rank" method="get">
+    <input type="text" name="page_num" value="pageNum" />
+    <input type="text" name="page_size" value="pageSize" />
+    <input type="submit" value="get" />
+</form>
+
+Get User
+<form action="user/get" method="get">
+    <input type="text" name="id" value="id" />
+    IsSolveIncluded?
+    <input type="checkbox" name="solve_included">
+    IsAttemptIncluded?
+    <input type="checkbox" name="attempt_included">
+    <input type="submit" value="get" />
+</form>
+
+Last attempts
+<form action="problem/lastAttempts" method="get">
+    <input type="submit" value="get" />
+</form>
+
+Ranker recompute
+<form action="user/ranker" method="post">
+    <input type="submit" value="post" />
+</form>
+
+Trigger spam_reminder
+<form action="/mail/reminder" method="post">
+    <input type="submit" value="post" />
+</form>
