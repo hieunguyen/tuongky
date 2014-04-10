@@ -1212,9 +1212,11 @@ tkControllers.controller('ProblemCtrl', function(
   function solveIt() {
     var jsonData = JSON.stringify(gameService.getMoves());
     problemService.solve($scope.attemptId, jsonData).then(function(response) {
+      if (!$scope.problem.solved) {
+        $scope.problem.solvers++;
+      }
       $scope.problem.solved = true;
       $scope.attempting = false;
-      $scope.problem.solvers++;
     });
   };
 
