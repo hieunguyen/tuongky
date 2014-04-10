@@ -15,6 +15,9 @@
           Bạn chưa thử giải thế lần nào.
         </span>
       </div>
+      <div class="solvers">
+        <a ng-href="#/solvedby/{{problem.id}}">{{problem.solvers}}</a> kỳ thủ đã giải được bài này.
+      </div>
     </div>
 
     <div class="buttons-container">
@@ -64,6 +67,9 @@
       <span ng-if="!attempting && !problem.attempts">
         Bạn chưa thử giải thế lần nào.
       </span>
+    </div>
+    <div class="solvers">
+      <a ng-href="#/solvedby/{{problem.id}}">{{problem.solvers}}</a> kỳ thủ đã giải được bài này.
     </div>
   </div>
 

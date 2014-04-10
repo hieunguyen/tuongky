@@ -1214,6 +1214,7 @@ tkControllers.controller('ProblemCtrl', function(
     problemService.solve($scope.attemptId, jsonData).then(function(response) {
       $scope.problem.solved = true;
       $scope.attempting = false;
+      $scope.problem.solvers++;
     });
   };
 
@@ -1452,6 +1453,8 @@ tkControllers.controller('ProfileCtrl', function(
   $scope.mainNav.tab = 'profile';
 
   var fbId = $routeParams.fbId;
+
+  $scope.explicitFbId = !!fbId;
 
   if (!fbId) {
     if (!authService.isAuthenticated()) {

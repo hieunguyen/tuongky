@@ -11,6 +11,7 @@
         <span ng-if="profile.rankInfo.ties > 1">
           khoảng từ hạng {{profile.rankInfo.rank}} đến hạng {{profile.rankInfo.rank + profile.rankInfo.ties - 1}}
         </span>
+        <span ng-if="!profile.rankInfo">Chưa được xếp hạng</span>
       </td>
     </tr>
     <tr>
@@ -27,7 +28,7 @@
     </tr>
   </table>
 
-  <div class="failed-attempts" ng-if="profile.failedAttempts">
+  <div class="failed-attempts" ng-if="profile.failedAttempts && !explicitFbId">
     <h4 style="text-align:center">
       {{profile.failedAttempts.length}} bài chưa giải được gần đây nhất
     </h4>
@@ -41,6 +42,27 @@
           <problem-link problem-id="failedAttempt.problemId" problem-title="failedAttempt.problemTitle" />
         </td>
         <td>{{failedAttempt.createdDate | date:'dd/MM/yyyy - HH:mm'}}</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="solutions" ng-if="!profile.failedAttempts || explicitFbId">
+    <h4 style="text-align:center" ng-show="profile.solve.length > 0">
+      Đã giải được {{profile.solve.length}} bài.
+    </h4>
+    <h4 style="text-align:center" ng-hide="profile.solve.length > 0">
+      Chưa giải được bài nào.
+    </h4>
+    <table class="table table-striped table-bordered" ng-show="profile.solve.length > 0">
+      <tr>
+        <th>Tên bài</th>
+        <th>Thời điểm giải được</th>
+      </tr>
+      <tr ng-repeat="solution in profile.solve">
+        <td>
+          <problem-link problem-id="solution.problemId" problem-title="failedAttempt.problemTitle" />
+        </td>
+        <td>{{solution.createdDate | date:'dd/MM/yyyy - HH:mm'}}</td>
       </tr>
     </table>
   </div>

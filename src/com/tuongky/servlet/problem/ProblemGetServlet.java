@@ -27,6 +27,7 @@ import com.tuongky.model.datastore.ProblemUserMetadata;
 import com.tuongky.model.datastore.Session;
 import com.tuongky.model.datastore.Solution;
 import com.tuongky.model.datastore.User;
+import com.tuongky.model.response.SolutionResponse;
 import com.tuongky.servlet.Constants;
 import com.tuongky.util.ValidationUtils;
 
@@ -102,11 +103,13 @@ public class ProblemGetServlet extends HttpServlet {
           ProblemUserMetadataDao.instance.findAttemptsByProblem(problemId, userIdSet);
 
       List<ResponseObject> responseObjects = new ArrayList<>();
-      for (Solution solution :solutionList){
+      for (Solution solution : solutionList) {
+        SolutionResponse solutionResponse = SolutionResponse.fromSolution(solution);
         if (userMap.containsKey(solution.getActorId())) {
-          responseObjects.add(new ResponseObject(solution, userMap.get(solution.getActorId())));
+          responseObjects.add(new ResponseObject(
+              solutionResponse, userMap.get(solution.getActorId())));
         }else {
-          responseObjects.add(new ResponseObject(solution, 1));
+          responseObjects.add(new ResponseObject(solutionResponse, 1));
         }
       }
 
@@ -141,10 +144,10 @@ public class ProblemGetServlet extends HttpServlet {
 
   @SuppressWarnings("unused") // Used by Gson.
   private static class ResponseObject {
-    private final Solution solution;
+    private final SolutionResponse solution;
     private final int attempts;
 
-    public ResponseObject(Solution solution, int attempts) {
+    public ResponseObject(SolutionResponse solution, int attempts) {
       this.solution = solution;
       this.attempts = attempts;
     }

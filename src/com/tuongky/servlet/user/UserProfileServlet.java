@@ -24,6 +24,7 @@ import com.tuongky.model.datastore.User;
 import com.tuongky.model.datastore.UserMetadata;
 import com.tuongky.servlet.Constants;
 import com.tuongky.util.AuthUtils;
+import com.tuongky.util.SolutionUtils;
 
 @SuppressWarnings("serial")
 public class UserProfileServlet extends HttpServlet {
@@ -70,7 +71,7 @@ public class UserProfileServlet extends HttpServlet {
 
     List<Solution> solutionList = SolutionDao.instance.searchByActor(
         user.getId(), Integer.MAX_VALUE, 0);
-    ret.put(SOLVE_KEY, solutionList);
+    ret.put(SOLVE_KEY, SolutionUtils.toSolutionResponses(solutionList));
 
     List<ProblemAttempt> attempts = ProblemAttemptDao.instance.searchByActor(
         user, false, Integer.MAX_VALUE, 0);

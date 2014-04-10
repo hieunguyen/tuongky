@@ -20,6 +20,7 @@ import com.tuongky.backend.UserDao;
 import com.tuongky.model.datastore.Problem;
 import com.tuongky.model.datastore.Solution;
 import com.tuongky.model.datastore.User;
+import com.tuongky.model.response.SolutionResponse;
 import com.tuongky.servlet.Constants;
 import com.tuongky.util.JsonUtils;
 import com.tuongky.util.ValidationUtils;
@@ -69,10 +70,11 @@ public class SolutionsForProblemServlet extends HttpServlet {
 
     List<ResponseObject> items = Lists.newArrayList();
     for (Solution solution : solutions) {
+      SolutionResponse solutionResponse = SolutionResponse.fromSolution(solution);
       long userId = solution.getActorId();
 
       if (!includedUserIds.contains(userId)) {
-        items.add(new ResponseObject(solution, userMap.get(userId)));
+        items.add(new ResponseObject(solutionResponse, userMap.get(userId)));
         includedUserIds.add(userId);
       }
     }
@@ -95,10 +97,10 @@ public class SolutionsForProblemServlet extends HttpServlet {
   @SuppressWarnings("unused") // Used by Gson.
   private static class ResponseObject{
 
-    private final Solution solution;
+    private final SolutionResponse solution;
     private final User user;
 
-    public ResponseObject(Solution solution, User user) {
+    public ResponseObject(SolutionResponse solution, User user) {
       this.solution = solution;
       this.user = user;
     }

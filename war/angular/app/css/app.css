@@ -708,6 +708,10 @@ button.fb-login:hover {
   width: 50%;
 }
 
+.profile .solutions, .profile .failed-attempts {
+	margin-top: 20px;
+}
+
 .fb-comments-plugin {
 	margin-top: 30px;
 	text-align: center;
