@@ -1,7 +1,9 @@
 package com.tuongky.servlet.mail;
 
+import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,8 +21,8 @@ import com.tuongky.util.JsonUtils;
 public class OfflineReminderEmailServlet extends HttpServlet {
 
   @Override
-  public void doPost(HttpServletRequest req, HttpServletResponse resp)
-          throws javax.servlet.ServletException, java.io.IOException {
+  public void doGet(HttpServletRequest req, HttpServletResponse resp)
+      throws ServletException, IOException {
     List<UserMetadata> userSet = UserMetadataDao.instance.getAllUserMetadatas();
 
     for (UserMetadata user : userSet) {
