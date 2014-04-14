@@ -44,7 +44,7 @@ var LEVEL_DESCRIPTIONS = [
   'Nổi danh khắp xóm',
   'Vô địch phường',
   'Vô địch quận',
-  'Vô địch huyện',
+  'Vô địch tỉnh',
   'Vô địch quốc gia',
   'Vô địch thế giới',
   'Đánh đâu thắng đó',

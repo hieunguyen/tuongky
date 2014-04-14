@@ -2,7 +2,7 @@
 <cronentries>
     <cron>
         <url>/mail/reminder</url>
-        <description>Send reminder to users who have not logged after a period of time</description>
+        <description>Send reminder to users who have not logged in after a period of time</description>
         <schedule>every 1 hours</schedule>
     </cron>
     <cron>

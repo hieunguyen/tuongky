@@ -9,6 +9,8 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Unindexed;
 import com.tuongky.model.UserRole;
 
+import java.util.Date;
+
 public class User {
 
   private @Id Long id;
@@ -19,6 +21,9 @@ public class User {
 
   private String fbId;
   @Unindexed private String fbName;
+
+  private Date lastLogin;
+  private Date createdDate;
 
   private User() {}
 
@@ -35,7 +40,25 @@ public class User {
     user.fbName = fbName;
     user.email = email;
     user.setUserRole(role);
+    user.setCreatedDate(new Date());
+    user.setLastLogin(new Date());
     return user;
+  }
+
+  public Date getLastLogin() {
+    return lastLogin;
+  }
+
+  public void setLastLogin(Date lastLogin) {
+    this.lastLogin = lastLogin;
+  }
+
+  public Date getCreatedDate() {
+    return createdDate;
+  }
+
+  public void setCreatedDate(Date createdDate) {
+    this.createdDate = createdDate;
   }
 
   public boolean isValidPassword(String pwd) {
