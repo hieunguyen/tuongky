@@ -1240,6 +1240,7 @@ tkServices.factory('problemService', function($q, $http, notificationService) {
     }).success(function(response) {
       defer.resolve(response);
     }).error(function() {
+      notificationService.show('Gặp lỗi, không lưu được kết quả.');
       defer.reject();
     });
     return defer.promise;

@@ -104,7 +104,40 @@ tkControllers.controller('AuthController', function(
 });
 
 
-tkControllers.controller('SandboxCtrl', function() {
+tkControllers.controller('SandboxCtrl', function($scope, $modal, $sce) {
+
+  function getBaseUrl() {
+    return window.location.origin;
+  }
+
+  $scope.getShareUrl = function(problemId) {
+    var canonicalProblemUrl =
+        getBaseUrl() + '/problem/id/' + problemId;
+    var url = 'http://www.facebook.com/plugins/like.php?href=' +
+        canonicalProblemUrl +
+        '&width&layout=button_count&action=like&share=true&appId=' + FB_APP_ID;
+    return $sce.trustAsResourceUrl(url);
+  };
+
+  $scope.shareUrl = $scope.getShareUrl(1);
+
+  $scope.open = function () {
+    $modal.open({
+      // templateUrl: 'partials/success_modal.html',
+      templateUrl: 'partials/failure_modal.html',
+      controller: function ($scope, $modalInstance, shareUrl) {
+        $scope.shareUrl = shareUrl;
+        $scope.ok = function () {
+          $modalInstance.close();
+        };
+      },
+      resolve: {
+        shareUrl: function () {
+          return $scope.shareUrl;
+        }
+      }
+    });
+  };
 });
 
 
@@ -1135,7 +1168,7 @@ tkControllers.controller('ProblemSetCtrl', function(
 
 
 tkControllers.controller('ProblemCtrl', function(
-  $scope, $timeout, $routeParams, $sce, $location, $facebook,
+  $scope, $timeout, $routeParams, $sce, $location, $facebook, $modal,
   authService, problemService, gameService, fenService, engineService) {
 
   $scope.attempting = false;
@@ -1212,6 +1245,7 @@ tkControllers.controller('ProblemCtrl', function(
   function solveIt() {
     var jsonData = JSON.stringify(gameService.getMoves());
     problemService.solve($scope.attemptId, jsonData).then(function(response) {
+      showResultModal(true);
       if (!$scope.problem.solved) {
         $scope.problem.solvers++;
       }
@@ -1220,16 +1254,33 @@ tkControllers.controller('ProblemCtrl', function(
     });
   };
 
+  function showResultModal(success) {
+    var template = success ? 'success_modal.html' : 'failure_modal.html';
+    var modalInstance = $modal.open({
+      templateUrl: 'partials/' + template,
+      controller: function ($scope, $modalInstance, shareUrl) {
+        $scope.shareUrl = shareUrl;
+        $scope.ok = function () {
+          $modalInstance.close();
+        };
+      },
+      resolve: {
+        shareUrl: function () {
+          return $scope.getShareUrl($scope.problem.id);
+        }
+      }
+    });
+  }
+
   function makeMove(x, y, u, v) {
     gameService.makeMove(x, y, u, v);
     $scope.turn = gameService.getTurn();
     $timeout(function() {
       if (gameService.isCheckmated()) {
         if ($scope.turn === BLACK) {
-          alert('Đỏ thắng. Xin chức mừng, bạn đã vượt qua thử thách này!');
           solveIt();
         } else {
-          alert('Đen thắng.');
+          showResultModal(false);
           init($scope.problem);
           $scope.attempting = false;
         }
