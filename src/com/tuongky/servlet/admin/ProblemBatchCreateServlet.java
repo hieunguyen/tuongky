@@ -34,7 +34,7 @@ public class ProblemBatchCreateServlet extends HttpServlet {
   private List<Long> createProblems(long creatorId, List<String> fens) {
     List<Long> problemIds = Lists.newArrayList();
     for (String fen : fens) {
-      Problem problem = new Problem(null, null, fen, null, null, null);
+      Problem problem = new Problem(null, null, fen, null, null, creatorId);
       DatastoreUpdateService.instance.createProblem(problem);
       problemIds.add(problem.getId());
     }
