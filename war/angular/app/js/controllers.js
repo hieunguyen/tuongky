@@ -560,7 +560,6 @@ tkControllers.controller('SearchBarCtrl', function(
       var params = new Params();
       params.set('q', query);
       $location.path('/search/' + params.encode());
-      // $location.search({q: query});
       return;
     }
     $scope.searchData.queryString = '';
@@ -635,7 +634,6 @@ tkControllers.controller('SearchCtrl', function(
       Math.floor(params.get('start') / $scope.ITEMS_PER_PAGE) + 1;
 
   $scope.selectPage = function(page) {
-    debugger;
     params.set('start', (page - 1) * $scope.ITEMS_PER_PAGE);
     $location.path('/search/' + params.encode());
   };
