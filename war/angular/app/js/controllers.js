@@ -22,7 +22,7 @@ tkControllers.controller('AppCtrl', function(
 
   $scope.alert = notificationService.getAlert();
   $scope.user = authService.getUser();
-  $scope.data = {loading: false};
+  $scope.data = {loading: 0};
   $scope.searchData = {
     queryString: '',
     searchBoxFocused: false
@@ -588,7 +588,7 @@ tkControllers.controller('SearchCtrl', function(
 
   $scope.mainNav.tab = 'document';
 
-  $scope.ITEMS_PER_PAGE = 2;
+  $scope.ITEMS_PER_PAGE = 10;
 
   function searchSuccessCallback(response) {
     var idsToViews = {};

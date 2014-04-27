@@ -1,4 +1,4 @@
-<div class="row search-results" ng-show="totalItems && !data.loading">
+<div class="row search-results" ng-if="totalItems && data.loading <= 0">
 	<div class="col-md-12">
 		<div class="search-stats">
 			Có <em>{{totalItems | number:0}}</em> kết quả
@@ -33,7 +33,7 @@
 				</td>
 				<td>
 					<div ng-if="(!searchResult.fbId || !searchResult.fbName) && searchResult.username">
-						<a href="#/search/q={{searchResult.username}}" ng-if="searchResult.username">
+						<a href="#/search/q={{searchResult.username}}">
 							<span ng-bind-html="searchResult.annotated_username"></span>
 						</a>
 					</div>
@@ -47,7 +47,7 @@
 		</table>
 	</div>
 </div>
-<div class="row" ng-show="totalItems > ITEMS_PER_PAGE">
+<div class="row" ng-if="totalItems > ITEMS_PER_PAGE">
 	<div class="col-md-12 pagination-container">
 		<pagination total-items="totalItems"
 								items-per-page="ITEMS_PER_PAGE"
@@ -58,6 +58,6 @@
 		            on-select-page="selectPage(page)"></pagination>
 	</diV>
 </div>
-<div class="row no-search-results" ng-hide="totalItems || data.loading" ng-cloak>
+<div class="row no-search-results" ng-if="!totalItems && data.loading <= 0" ng-cloak>
 	<div ng-include="'partials/no_search_results.html'"></div>
 </div>
