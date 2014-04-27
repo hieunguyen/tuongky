@@ -51,15 +51,13 @@
     </div>
     <div class="game-category-username" ng-hide="embed">{{CATEGORIES[game.category]}} được tạo bởi
       <span ng-if="(!game.fbId || !game.fbName) && game.username">
-        <a href="#/search/q={{game.username}}">
-          <span ng-bind-html="game.annotated_username"></span>
-        </a>
+        <a href="#/search/q={{game.username}}">{{game.username}}</a>
       </span>
       <span ng-if="game.fbId && game.fbName">
         <a ng-href="#/profile/{{game.fbId}}">{{game.fbName}}</a>
       </span>
     </div>
-    <div ng-show="game.username == user.username">
+    <div ng-show="(user.username && game.username == user.username) || (user.fbId && game.fbId == user.fbId)">
       <button class="btn btn-sm btn-primary" ng-click="editGame()">Cập nhật</button>
       <button class="btn btn-sm btn-danger" ng-click="deleteGame()">Xóa tài liệu</button>
     </div>
