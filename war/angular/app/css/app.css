@@ -554,7 +554,7 @@ html, body {
 }
 
 .tk-board-cell.highlighted {
-	border: 2px solid #800000;
+	background-color: #bfb9d3;
 }
 
 .tk-board-cell img {

@@ -560,6 +560,7 @@ tkControllers.controller('SearchBarCtrl', function(
       var params = new Params();
       params.set('q', query);
       $location.path('/search/' + params.encode());
+      // $location.search({q: query});
       return;
     }
     $scope.searchData.queryString = '';
@@ -587,7 +588,7 @@ tkControllers.controller('SearchCtrl', function(
 
   $scope.mainNav.tab = 'document';
 
-  $scope.ITEMS_PER_PAGE = 10;
+  $scope.ITEMS_PER_PAGE = 2;
 
   function searchSuccessCallback(response) {
     var idsToViews = {};
@@ -634,6 +635,7 @@ tkControllers.controller('SearchCtrl', function(
       Math.floor(params.get('start') / $scope.ITEMS_PER_PAGE) + 1;
 
   $scope.selectPage = function(page) {
+    debugger;
     params.set('start', (page - 1) * $scope.ITEMS_PER_PAGE);
     $location.path('/search/' + params.encode());
   };
@@ -1373,12 +1375,20 @@ tkControllers.controller('ProblemCtrl', function(
     maybeMakeAnimatedMove(x, y, u, v);
   }
 
+  function handleComputerFailure() {
+    if ($scope.turn == COMPUTER) {
+      gameService.unMakeMove();
+      $scope.turn = gameService.getTurn();
+      forgetSelectedPiece();
+    }
+  }
+
   function maybeComputerPlay(inTurn) {
     if (Number(inTurn) === COMPUTER) {
       if (gameService.isCheckmated()) {
         return;
       }
-      computerPlay().then(handleComputerMove);
+      computerPlay().then(handleComputerMove, handleComputerFailure);
     }
   }
 

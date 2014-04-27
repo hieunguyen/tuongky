@@ -1155,15 +1155,14 @@ tkServices.factory('engineService', function($q, $http, notificationService) {
       fen: fen,
       moves: moves
     };
-    // var url = 'http://localhost:1234/go?' + $.param(params);
-    var url = 'http://8.34.217.129:1234/go?' + $.param(params);
+    var url = 'http://localhost:1234/go?' + $.param(params);
+    // var url = 'http://8.34.217.129:1234/go?' + $.param(params);
     notificationService.show('Máy đang nghĩ...');
-    $http.get(url)
-    .success(function(response) {
+    $http.get(url).success(function(response) {
       notificationService.hide();
       defer.resolve(response);
     }).error(function() {
-      notificationService.showError('Gặp vấn đề, máy chưa nghĩ ra.');
+      notificationService.showError('Gặp vấn đề, máy chưa nghĩ ra. Mời bạn đi lại.');
       defer.reject();
     });
     return defer.promise;
