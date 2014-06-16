@@ -632,7 +632,7 @@ html, body {
 }
 
 .problem-viewer .problem-info .problem-title {
-	font-size: 150%;
+	font-size: 120%;
 	text-decoration: underline;
 	display: inline;
 }

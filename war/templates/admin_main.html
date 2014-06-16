@@ -1,3 +1,26 @@
+Simple Email Sender
+<form action="mail/simple_sender" method="post">
+    Subject<br>
+    <input type="text" name="subject" value="" size="100"><br>
+    Content<br>
+    <textarea name="content" rows="5" cols="83"></textarea><br>  
+    to this list
+    <input type="text" name="emails" value="hieu.ngvan@gmail.com" size="100"><br>
+    or to all users
+    <input type="checkbox" name="to_all"><br>
+    <input type="submit" value="Send" />
+</form>
+
+Create Problem
+<form action="problem/create" method="post">
+    <input type="text" name="title" value="title" />
+    <input type="text" name="fen" value="fen" />
+    <input type="text" name="description" value="" />
+    <input type="text" name="requirement" value="" />
+
+    <input type="submit" value="create" />
+</form>
+
 Reset all
 <form action="/admin/reset_all" method="post">
 	<input type="submit" value="Reset all" />
@@ -17,16 +40,6 @@ Get Problem
     IsAttemptIncluded?
     <input type="checkbox" name="attempt_included">
     <input type="submit" value="get" />
-</form>
-
-Create Problem
-<form action="problem/create" method="post">
-    <input type="text" name="title" value="title" />
-    <input type="text" name="fen" value="fen" />
-    <input type="text" name="description" value="description" />
-    <input type="text" name="requirement" value="requirement" />
-
-    <input type="submit" value="create" />
 </form>
 
 Delete Problem

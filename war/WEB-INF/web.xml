@@ -273,6 +273,15 @@
   </servlet-mapping>
 
   <servlet>
+      <servlet-name>SimpleEmailSender</servlet-name>
+      <servlet-class>com.tuongky.servlet.mail.SimpleEmailSenderServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>SimpleEmailSender</servlet-name>
+      <url-pattern>/mail/simple_sender</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
       <servlet-name>SendWelcomeEmail</servlet-name>
       <servlet-class>com.tuongky.servlet.mail.WelcomeEmailServlet</servlet-class>
   </servlet>
