@@ -336,6 +336,15 @@
   </servlet-mapping>
 
   <servlet>
+      <servlet-name>UserEmailList</servlet-name>
+      <servlet-class>com.tuongky.servlet.admin.UserEmailListServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>UserEmailList</servlet-name>
+      <url-pattern>/admin/user_emails</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
       <servlet-name>ResetAll</servlet-name>
       <servlet-class>com.tuongky.servlet.admin.ResetAllServlet</servlet-class>
   </servlet>

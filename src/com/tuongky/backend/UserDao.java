@@ -1,5 +1,6 @@
 package com.tuongky.backend;
 
+import java.util.List;
 import java.util.Map;
 
 import org.mindrot.BCrypt;
@@ -68,5 +69,9 @@ public class UserDao extends DAOBase {
 
   public Map<Long, User> batchGetById(Iterable<Long> ids) {
     return ObjectifyService.begin().get(User.class, ids);
+  }
+
+  public List<User> getAll() {
+    return ObjectifyService.begin().query(User.class).list();
   }
 }

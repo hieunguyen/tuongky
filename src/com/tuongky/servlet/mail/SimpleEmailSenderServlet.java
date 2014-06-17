@@ -1,6 +1,7 @@
 package com.tuongky.servlet.mail;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -18,6 +19,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
+import com.tuongky.backend.UserDao;
+import com.tuongky.model.datastore.User;
 import com.tuongky.util.AuthUtils;
 import com.tuongky.util.ValidationUtils;
 
@@ -30,6 +36,8 @@ public class SimpleEmailSenderServlet extends HttpServlet {
 
   private static final String ADMIN_EMAIL_ADDRESS = "tuongkydatviet@gmail.com";
   private static final String ADMIN_EMAIL_PERSONAL = "tuongky.com Admin";
+
+  private static final String DEFAULT_TO_NAME = "Bạn yêu cờ";
 
   private void send(String toAddress, String toName, String subject, String htmlContent) {
     Properties props = new Properties();
@@ -70,6 +78,25 @@ public class SimpleEmailSenderServlet extends HttpServlet {
     String content = ValidationUtils.mustBeSet(req, resp, "content");
     String emails = req.getParameter("emails");
     boolean toAll = req.getParameter("to_all") != null;
-    send(emails, "testing", subject, content);
+    if (toAll) {
+      List<User> users = UserDao.instance.getAll();
+      for (User user : users) {
+        if (Strings.isNullOrEmpty(user.getFbId()) || Strings.isNullOrEmpty(user.getEmail())) {
+          continue;
+        }
+        String toName = Strings.isNullOrEmpty(user.getFbName()) ?
+            DEFAULT_TO_NAME : user.getFbName();
+        send(user.getEmail(), toName, subject, content);
+      }
+    } else {
+      List<String> toAddresses = Lists.newArrayList(Splitter
+          .on(",")
+          .trimResults()
+          .omitEmptyStrings()
+          .split(emails));
+      for (String toAddress : toAddresses) {
+        send(toAddress, DEFAULT_TO_NAME, subject, content);
+      }
+    }
   }
 }
