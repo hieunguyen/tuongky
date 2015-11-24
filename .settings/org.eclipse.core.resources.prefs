@@ -1,0 +1,10 @@
+eclipse.preferences.version=1
+encoding//src/com/tuongky/service/MailTemplate.java=UTF-8
+encoding//src/com/tuongky/servlet/FenImageGenerateServlet.java=UTF-8
+encoding//src/com/tuongky/servlet/mail/SimpleEmailSenderServlet.java=UTF-8
+encoding//src/com/tuongky/servlet/problem/CanonicalProblemServlet.java=UTF-8
+encoding//war/angular/app/partials/about.html=UTF-8
+encoding//war/templates/first_timer_email.html=UTF-8
+encoding//war/templates/level_down_email.html=UTF-8
+encoding//war/templates/level_up_email.html=UTF-8
+encoding//war/templates/spam_reminder.html=UTF-8

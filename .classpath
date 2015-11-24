@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="test">
+		<attributes>
+			<attribute name="ignore_optional_problems" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gson-2.2.4.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/guava-15.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/objectify-3.1.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/mustache.java-0.8.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/joda-time-2.3.jar"/>
+	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER/App Engine (2)"/>
+	<classpathentry kind="lib" path="/Users/ongbe/Documents/work/eclipses/eclipse43/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.9.25/appengine-java-sdk-1.9.25/lib/impl/appengine-api-labs.jar"/>
+	<classpathentry kind="lib" path="/Users/ongbe/Documents/work/eclipses/eclipse43/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.9.25/appengine-java-sdk-1.9.25/lib/impl/appengine-api-stubs.jar"/>
+	<classpathentry kind="lib" path="/Users/ongbe/Documents/work/eclipses/eclipse43/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.9.25/appengine-java-sdk-1.9.25/lib/impl/appengine-api.jar"/>
+	<classpathentry kind="lib" path="/Users/ongbe/Documents/work/eclipses/eclipse43/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.9.25/appengine-java-sdk-1.9.25/lib/testing/appengine-testing.jar"/>
+	<classpathentry kind="output" path="war/WEB-INF/classes"/>
+</classpath>
